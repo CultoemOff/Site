@@ -27,9 +27,18 @@ export const YOUTUBE_REVALIDATE_SECONDS = 3600;
 export const SPRESENTER_URL = "https://spresenter.com/pt";
 export const SPRESENTER_COUPON = "CULTOEMOFF5";
 
+/**
+ * Miniaturas das telas das ferramentas recomendadas.
+ * TODO: salvar capturas oficiais em /public/images/ferramentas/ e preencher os caminhos.
+ * Enquanto vazias, o site mostra uma ilustração genérica marcada como "imagem ilustrativa".
+ */
+export const SPRESENTER_SCREEN_SRC = "";
+
 export const VOLUTS_URL = "https://voluts.com.br/igrejas/";
 // TODO: adicionar URL do trial de 14 dias do Voluts.
 export const VOLUTS_TRIAL_URL = "";
+// TODO: ver comentário de SPRESENTER_SCREEN_SRC.
+export const VOLUTS_SCREEN_SRC = "";
 
 /**
  * Redes sociais. Deixe a URL vazia para ocultar o link.
@@ -44,7 +53,7 @@ export const SOCIAL_LINKS: { label: string; href: string }[] = [
 export const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Formações", href: "/#formacoes" },
   { label: "Ecossistema", href: "/#ecossistema" },
-  { label: "Parceiros", href: "/#parceiros" },
+  { label: "Ferramentas", href: "/#parceiros" },
   { label: "Softwares", href: "/#softwares" },
   { label: "Sobre", href: "/#sobre" },
 ];

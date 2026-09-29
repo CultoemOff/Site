@@ -1,6 +1,6 @@
 import ArrowButton from "@/components/ui/ArrowButton";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { COURSE_PRICE_NOTE, COURSE_STATUS_LABEL, COURSES, MORE_COURSES_URL, type Course } from "@/config/courses";
+import { COURSE_STATUS_LABEL, COURSES, MORE_COURSES_URL, formatPrice, type Course } from "@/config/courses";
 import CourseDiagramView from "./CourseDiagrams";
 import "./courses.css";
 
@@ -21,7 +21,6 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
       <div className="course__body">
         <div className="course__meta">
           <span className="course__kind">{featured ? "Formação em destaque" : "Formação"}</span>
-          <span className="course__price">{COURSE_PRICE_NOTE}</span>
           {course.status && <span className={`course__status course__status--${course.status}`}>{COURSE_STATUS_LABEL[course.status]}</span>}
         </div>
 
@@ -48,6 +47,18 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
             </ul>
           </div>
         )}
+
+        <div className="course__offer">
+          <p className="course__price">
+            <span className="sr-only">Preço: </span>
+            {formatPrice(course.price)}
+          </p>
+          <ul className="course__format" aria-label="Formato">
+            <li>{course.format.mode}</li>
+            <li>{course.format.hours} horas</li>
+            <li>{course.format.access}</li>
+          </ul>
+        </div>
 
         <details className="course__topics">
           <summary>
@@ -89,7 +100,7 @@ export default function Courses({ showMoreButton = true }: { showMoreButton?: bo
         >
           <p>
             Um catálogo em construção, pensado para voluntários. Cada formação parte dos fundamentos e chega na
-            aplicação dentro da igreja, <strong>com preço acessível</strong>.
+            aplicação dentro da igreja, <strong>com preço acessível</strong>. Lançamento em breve.
           </p>
         </SectionHeader>
 

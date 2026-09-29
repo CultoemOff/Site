@@ -112,17 +112,6 @@
   text-transform: uppercase;
   color: #8fb6ff;
 }
-.course__price {
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: rgba(91, 208, 255, 0.12);
-  border: 1px solid rgba(91, 208, 255, 0.45);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.64rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #9fe4ff;
-}
 .course__status {
   padding: 3px 9px;
   border-radius: 999px;
@@ -133,8 +122,12 @@
   border: 1px solid rgba(160, 190, 255, 0.4);
   color: #cfe0ff;
 }
-.course__status--em-preparacao,
-.course__status--em-breve {
+.course__status--lancamento-em-breve {
+  border-color: rgba(91, 208, 255, 0.55);
+  background: rgba(91, 208, 255, 0.12);
+  color: #a6e8ff;
+}
+.course__status--em-preparacao {
   border-style: dashed;
   color: #b5c6ee;
 }
@@ -226,8 +219,44 @@
   color: #cfe0ff;
 }
 
-.course__topics {
+.course__offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
   margin-top: auto;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(59, 140, 255, 0.1);
+  border: 1px solid rgba(90, 150, 255, 0.28);
+}
+.course__price {
+  margin: 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.course__format {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.course__format li {
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 190, 255, 0.3);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: #cfe0ff;
+}
+.course__topics {
   border-top: 1px solid rgba(110, 150, 255, 0.16);
   padding-top: 14px;
 }

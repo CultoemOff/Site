@@ -1,15 +1,11 @@
 /**
  * Catálogo de formações da Escola Culto em Off.
  *
- * Nada aqui inventa preço, carga horária, certificado ou data.
- * - `status`: deixe `undefined` até existir uma informação oficial.
- *   Use "em-preparacao" para formações futuras.
+ * - `price` e `format`: valores provisórios definidos para o lançamento.
+ *   TODO: confirmar preços e cargas horárias finais.
+ * - `status`: "lancamento-em-breve" enquanto as formações não abrem.
  * - `href`: link de inscrição/lista de espera. Vazio = botão oculto.
- * - Todas as formações são apresentadas com "preço acessível" (sem valor definido aqui).
  */
-
-/** Selo exibido em todas as formações. */
-export const COURSE_PRICE_NOTE = "Preço acessível";
 
 /**
  * Botão "Mais formações" ao final da seção.
@@ -17,14 +13,27 @@ export const COURSE_PRICE_NOTE = "Preço acessível";
  */
 export const MORE_COURSES_URL = "/formacoes";
 
-export type CourseStatus = "disponivel" | "inscricoes-abertas" | "em-breve" | "em-preparacao";
+export type CourseStatus = "disponivel" | "inscricoes-abertas" | "lancamento-em-breve" | "em-preparacao";
 
 export const COURSE_STATUS_LABEL: Record<CourseStatus, string> = {
   disponivel: "Disponível",
   "inscricoes-abertas": "Inscrições abertas",
-  "em-breve": "Em breve",
+  "lancamento-em-breve": "Lançamento em breve",
   "em-preparacao": "Em preparação",
 };
+
+export type CourseFormat = {
+  /** ex.: "Online" */
+  mode: string;
+  /** carga horária em horas */
+  hours: number;
+  /** ex.: "Acesso por 1 ano" */
+  access: string;
+};
+
+/** Formata preço em reais: 49.9 → "R$ 49,90" */
+export const formatPrice = (value: number) =>
+  value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }).replace(/\u00a0/g, " ");
 
 export type CourseDiagram = "network" | "analog" | "live" | "companion" | "dmx";
 
@@ -42,9 +51,14 @@ export type Course = {
   appliedTo?: string[];
   diagram: CourseDiagram;
   status?: CourseStatus;
+  /** preço em reais */
+  price: number;
+  format: CourseFormat;
   href?: string;
   featured?: boolean;
 };
+
+const ONLINE_1_ANO = (hours: number): CourseFormat => ({ mode: "Online", hours, access: "Acesso por 1 ano" });
 
 export const COURSES: Course[] = [
   {
@@ -74,15 +88,18 @@ export const COURSES: Course[] = [
     ],
     appliedTo: ["NDI", "Dante", "Bitfocus Companion", "Câmeras PTZ", "Consoles digitais", "Controle de iluminação", "OBS", "Streaming"],
     diagram: "network",
+    price: 49.9,
+    format: ONLINE_1_ANO(8),
+    status: "lancamento-em-breve",
     featured: true,
     href: "",
   },
   {
     id: "audio-mesa-analogica",
-    title: "Áudio em Mesa Analógica",
+    title: "Fundamentos de Mixagem",
     tagline: "Os fundamentos continuam os mesmos.",
     summary:
-      "Muitas igrejas ainda usam mesas analógicas, e é nelas que os fundamentos ficam mais claros. Entenda o caminho do sinal e o que cada botão faz com ele.",
+      "Os fundamentos que valem para qualquer mesa, explicados numa mesa analógica, onde tudo fica à vista. Entenda o caminho do sinal e o que cada botão faz com ele.",
     topicsTitle: "Conteúdo",
     topics: [
       "Sinal e fluxo de sinal",
@@ -95,6 +112,9 @@ export const COURSES: Course[] = [
       "Prevenção de microfonia",
     ],
     diagram: "analog",
+    price: 39.9,
+    format: ONLINE_1_ANO(6),
+    status: "lancamento-em-breve",
     href: "",
   },
   {
@@ -115,6 +135,9 @@ export const COURSES: Course[] = [
       "Monitoramento da transmissão",
     ],
     diagram: "live",
+    price: 44.9,
+    format: ONLINE_1_ANO(5),
+    status: "lancamento-em-breve",
     href: "",
   },
   {
@@ -137,6 +160,9 @@ export const COURSES: Course[] = [
     ],
     appliedTo: ["OBS", "Câmeras PTZ", "Iluminação", "Áudio", "Projeção", "Streaming"],
     diagram: "companion",
+    price: 49.9,
+    format: ONLINE_1_ANO(6),
+    status: "lancamento-em-breve",
     href: "",
   },
   {
@@ -160,7 +186,9 @@ export const COURSES: Course[] = [
       "Conceitos de operação",
     ],
     diagram: "dmx",
-    status: "em-preparacao",
+    price: 59.9,
+    format: ONLINE_1_ANO(10),
+    status: "lancamento-em-breve",
     href: "",
   },
 ];
