@@ -50,12 +50,12 @@ const PROBLEMS: Problem[] = [
     visual: <DmxConflict />,
   },
   {
-    area: "Redes",
-    title: "“Está tudo conectado, mas não funciona.”",
+    area: "Redes e conexões",
+    title: "Um emaranhado de cabos segurando o culto.",
     items: [
-      "Cabos HDMI e USB com extensões que dão problema",
-      "Um cabo P2 levando o áudio para o PC da live",
-      "Nem saber o que são NDI, Dante e Companion, nem como eles podem ajudar",
+      "Extensões de HDMI e USB que falham justamente durante o culto",
+      "O áudio da live saindo da mesa por um cabo P2 improvisado",
+      "NDI, Dante e Companion parecem coisa de outro mundo, mas poderiam simplificar essas ligações",
     ],
     terms: ["HDMI", "USB", "P2", "NDI", "Dante", "Companion"],
     visual: <CableMess />,

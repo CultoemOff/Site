@@ -140,12 +140,13 @@ export const COURSES: Course[] = [
     href: "",
   },
   {
-    id: "iluminacao-dmx",
-    title: "Iluminação e DMX",
-    tagline: "Conceitos de iluminação, do canal ao universo.",
+    id: "iluminacao-dmx-grandma2",
+    title: "Iluminação e DMX com grandMA2",
+    tagline: "Do canal ao universo, operando na grandMA2.",
     summary:
-      "Uma formação futura para entender como a luz é controlada: canais, endereços, universos e aparelhos — inclusive iluminação sobre rede.",
+      "Uma formação futura focada na console grandMA2: entenda como a luz é controlada (canais, endereços, universos e aparelhos) e como tudo isso se organiza na operação da MA2.",
     topicsTitle: "Conteúdo previsto",
+    // TODO: revisar os tópicos específicos de grandMA2.
     topics: [
       "O que é DMX e DMX512",
       "Canais e endereçamento",
@@ -153,7 +154,8 @@ export const COURSES: Course[] = [
       "Fixtures, PAR LED e moving head",
       "Dimmer e cores",
       "Pan e tilt",
-      "Cenas e presets",
+      "Patch de fixtures na grandMA2",
+      "Grupos, presets e cues na grandMA2",
       "Art-Net e sACN",
       "Conceitos de operação",
     ],

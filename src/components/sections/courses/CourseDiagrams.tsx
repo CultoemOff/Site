@@ -174,7 +174,7 @@ function DmxDiagram() {
     <svg viewBox="0 0 350 200" className="cd-svg">
       <rect x={14} y={48} width={70} height={44} rx={6} className="cd-box-plain" />
       <text x={49} y={75} textAnchor="middle" className="cd-box__label">
-        CONSOLE
+        grandMA2
       </text>
       <path d={cable} className="cd-link" />
       <Packet path={cable} dur={2.4} tone="b" />
