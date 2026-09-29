@@ -1,0 +1,265 @@
+/* ==========================================================
+   CH 05 · Parceiros
+   ========================================================== */
+
+.partners {
+  background:
+    radial-gradient(ellipse 50% 40% at 10% 0%, rgba(59, 140, 255, 0.1), transparent 70%),
+    var(--paper);
+}
+
+.partners__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.partner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  padding: clamp(26px, 3.4vw, 38px);
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid #dbe3f2;
+  box-shadow: 0 1px 0 rgba(10, 30, 80, 0.04), 0 22px 44px -32px rgba(10, 30, 80, 0.4);
+  transition:
+    transform 0.45s var(--ease-out),
+    border-color 0.35s var(--ease-out),
+    box-shadow 0.45s var(--ease-out);
+}
+.partner:hover {
+  transform: translateY(-4px);
+  border-color: rgba(59, 140, 255, 0.5);
+  box-shadow: 0 1px 0 rgba(10, 30, 80, 0.04), 0 28px 54px -30px rgba(29, 78, 216, 0.5);
+}
+
+/* "nó" do ecossistema no topo do card */
+.partner__node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.partner__node-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--electric);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(59, 140, 255, 0.14);
+}
+.partner__node-line {
+  width: 36px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--electric) 0 4px, transparent 4px 8px);
+  background-size: 16px 2px;
+  animation: partner-flow 1s linear infinite;
+}
+@keyframes partner-flow {
+  to {
+    background-position: 16px 0;
+  }
+}
+.partner__node-area {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eef3ff;
+  border: 1px solid #d6e1fb;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #2a4aa8;
+}
+
+.partner__name {
+  margin: 6px 0 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.partner__text {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: #4a5570;
+  text-wrap: pretty;
+}
+.partner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+/* ---------- cupom (ticket) ---------- */
+.coupon {
+  --notch: 11px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px 20px;
+  margin: 6px 0 4px;
+  padding: 20px 22px;
+  border-radius: 14px;
+  color: #eaf1ff;
+  background:
+    radial-gradient(ellipse 80% 120% at 0% 0%, rgba(91, 208, 255, 0.25), transparent 60%),
+    linear-gradient(135deg, #1d4ed8, #0f2a8a);
+  -webkit-mask:
+    radial-gradient(circle var(--notch) at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--notch) at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+}
+.coupon__label {
+  margin: 0 0 4px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #b9d3ff;
+}
+.coupon__benefit {
+  margin: 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+.coupon__benefit strong {
+  display: block;
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.coupon__code-wrap {
+  display: grid;
+  justify-items: stretch;
+  gap: 8px;
+  padding-left: 20px;
+  border-left: 2px dashed rgba(200, 220, 255, 0.45);
+}
+.coupon__code {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(3, 10, 40, 0.45);
+  border: 1px solid rgba(200, 220, 255, 0.3);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-align: center;
+  color: #fff;
+  user-select: all;
+}
+.coupon__copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #1437a8;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s var(--ease-out),
+    background-color 0.25s var(--ease-out),
+    color 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out);
+}
+.coupon__copy svg {
+  width: 18px;
+  height: 18px;
+}
+.coupon__copy:hover {
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2), 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+}
+.coupon__copy:active {
+  transform: scale(0.96);
+}
+.coupon__copy.is-copied {
+  background: #5bd0ff;
+  color: #04173f;
+}
+
+/* ---------- trial ---------- */
+.partner__trial {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 6px 0 4px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px dashed #b9cbf2;
+  background: #f4f8ff;
+}
+.partner__trial p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #2d3a5c;
+}
+.partner__trial-badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3b8cff, #1d4ed8);
+  color: #fff;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1;
+  align-content: center;
+}
+.partner__trial-badge small {
+  display: block;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 860px) {
+  .partners__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .coupon {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .coupon__code-wrap {
+    padding-left: 0;
+    padding-top: 14px;
+    border-left: 0;
+    border-top: 2px dashed rgba(200, 220, 255, 0.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner,
+  .coupon__copy {
+    transition: none;
+  }
+  .partner__node-line {
+    animation: none;
+  }
+}

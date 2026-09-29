@@ -2,6 +2,8 @@ import ViewportFx from "@/components/fx/ViewportFx";
 import Hero from "@/components/hero/Hero";
 import Navbar from "@/components/layout/Navbar";
 import Courses from "@/components/sections/courses/Courses";
+import TechnologyEcosystem from "@/components/sections/ecosystem/TechnologyEcosystem";
+import Partners from "@/components/sections/partners/Partners";
 import Problems from "@/components/sections/problems/Problems";
 import Purpose from "@/components/sections/purpose/Purpose";
 
@@ -14,7 +16,9 @@ export default function Home() {
         <Problems />
         <Purpose />
         <Courses />
-        {/* Etapas 3–6: ecossistema, parceiros, palco, softwares, sobre, YouTube, manifesto, footer */}
+        <TechnologyEcosystem />
+        <Partners />
+        {/* Etapas 4–6: palco cinematográfico, softwares, sobre, YouTube, manifesto, footer */}
       </main>
       <ViewportFx />
     </>

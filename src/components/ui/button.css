@@ -71,3 +71,18 @@
     transition: none;
   }
 }
+
+/* ghost sobre fundo claro */
+.section--paper .btn--ghost {
+  color: var(--ink);
+  background: #fff;
+  border-color: #c9d6f2;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.section--paper .btn--ghost:hover {
+  color: var(--royal);
+  border-color: var(--electric);
+  background: #f4f8ff;
+  box-shadow: 0 10px 28px -12px rgba(29, 78, 216, 0.45);
+}
