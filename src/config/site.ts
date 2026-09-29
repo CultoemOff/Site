@@ -4,7 +4,7 @@
  */
 
 export const SITE_NAME = "Culto em Off";
-export const SITE_TAGLINE = "A escola de tecnologia para quem serve.";
+export const SITE_TAGLINE = "A escola de tecnologia para quem serve na Igreja.";
 export const SITE_DESCRIPTION =
   "Formação técnica para voluntários de igreja: áudio, vídeo, iluminação, redes, transmissão, projeção e automação — com linguagem simples, prática e acessível.";
 

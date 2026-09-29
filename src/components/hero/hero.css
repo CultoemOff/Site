@@ -303,7 +303,7 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 920px;
+  max-width: 1080px;
   padding: calc(var(--nav-h) + 40px) 20px 112px;
   text-align: center;
 }
@@ -345,7 +345,7 @@
   margin: 0.45em 0 0.4em;
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
-  font-size: clamp(2.4rem, 5.6vw, 4.7rem);
+  font-size: clamp(2.3rem, 5.2vw, 4.4rem);
   line-height: 1.02;
   letter-spacing: -0.035em;
   color: #f4f7ff;
@@ -399,7 +399,8 @@
   font-size: 0.68rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #8fa6d6;
+  color: #9fb4e0;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
 }
 .hero__pillars li {
   display: inline-flex;
