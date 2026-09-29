@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/* ==========================================================
+   Tokens de identidade — Culto em Off
+   ========================================================== */
+@theme {
+  --color-night: #050a18;
+  --color-abyss: #0a1633;
+  --color-graphite: #161b26;
+  --color-royal: #1d4ed8;
+  --color-electric: #3b8cff;
+  --color-signal: #5bd0ff;
+  --color-haze-violet: #6a5cff;
+  --color-paper: #f3f6fb;
+  --color-ink: #0b1224;
+}
+
+/* Fontes carregadas via next/font (variáveis definidas no <html>). */
+@theme inline {
+  --font-heading: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-code: var(--font-mono), ui-monospace, monospace;
+}
+
+:root {
+  --night: #050a18;
+  --abyss: #0a1633;
+  --graphite: #161b26;
+  --royal: #1d4ed8;
+  --electric: #3b8cff;
+  --signal: #5bd0ff;
+  --haze-violet: #6a5cff;
+  --paper: #f3f6fb;
+  --ink: #0b1224;
+  --text-on-dark: #eaf0ff;
+  --muted-on-dark: #a9b6d6;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius: 14px;
+  --nav-h: 72px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--text-on-dark);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--electric);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--electric);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s var(--ease-out);
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
