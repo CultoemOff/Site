@@ -82,22 +82,196 @@ function Cross() {
   );
 }
 
+/**
+ * Aquário de bateria em perspectiva (ponto de fuga no centro do palco):
+ * painel de fundo com espuma acústica, praticável, bateria, laterais e teto
+ * de acrílico, painel frontal com reflexos e montantes de alumínio.
+ */
 function DrumBooth() {
+  // cantos da frente (F) e do fundo (B)
+  const F = { l: 1300, r: 1560, t: 508, b: 752 };
+  const B = { l: 1244, r: 1470, t: 502, b: 718 };
+  const edge = "rgba(170,200,255,0.34)";
+  const edgeSoft = "rgba(150,180,255,0.16)";
   return (
     <g>
-      {/* cabine de acrílico */}
-      <path d="M1318 500 H1540 V702 H1318 Z" fill="rgba(120,150,255,0.035)" stroke="rgba(150,180,255,0.16)" strokeWidth={1.5} />
-      <path d="M1318 500 L1300 520 V706" fill="none" stroke="rgba(150,180,255,0.12)" strokeWidth={1.5} />
-      <line x1={1318} y1={506} x2={1540} y2={506} stroke="rgba(170,200,255,0.14)" strokeWidth={1} />
-      {/* bateria (silhuetas) */}
-      <circle cx={1430} cy={664} r={34} fill="#070b16" stroke="#1f2847" strokeWidth={2} />
-      <circle cx={1430} cy={664} r={10} fill="#0c1222" />
-      <ellipse cx={1382} cy={612} rx={20} ry={9} fill="#0a0f1d" stroke="#1f2847" strokeWidth={1.5} />
-      <ellipse cx={1476} cy={610} rx={22} ry={10} fill="#0a0f1d" stroke="#1f2847" strokeWidth={1.5} />
-      <line x1={1352} y1={560} x2={1352} y2={700} stroke="#1c2542" strokeWidth={2} />
-      <ellipse cx={1352} cy={560} rx={30} ry={4} fill="#28324f" />
-      <line x1={1510} y1={548} x2={1510} y2={700} stroke="#1c2542" strokeWidth={2} />
-      <ellipse cx={1510} cy={548} rx={34} ry={4.5} fill="#28324f" />
+      {/* sombra no piso */}
+      <ellipse cx={1405} cy={764} rx={170} ry={10} fill="#000" opacity={0.55} />
+
+      {/* painel do fundo com espuma acústica */}
+      <rect x={B.l} y={B.t} width={B.r - B.l} height={B.b - B.t} fill="url(#foam)" />
+      <rect x={B.l} y={B.t} width={B.r - B.l} height={B.b - B.t} fill="url(#boothInnerShade)" />
+
+      {/* praticável (piso interno) */}
+      <path d={`M${B.l} ${B.b} H${B.r} L${F.r} ${F.b} H${F.l} Z`} fill="#0b1124" />
+      <path d={`M${B.l} ${B.b} H${B.r}`} stroke="#1a2444" strokeWidth={1} />
+
+      {/* ---- bateria ---- */}
+      <g>
+        {/* banco */}
+        <line x1={1392} y1={700} x2={1392} y2={736} stroke="#141c33" strokeWidth={3} />
+        <ellipse cx={1392} cy={698} rx={13} ry={4} fill="#0e1528" stroke="#26325a" strokeWidth={1} />
+
+        {/* chimbal */}
+        <line x1={1322} y1={671} x2={1322} y2={742} stroke="#1c2645" strokeWidth={1.8} />
+        <path d="M1322 742 L1312 748 M1322 742 L1332 748" stroke="#1c2645" strokeWidth={1.5} />
+        <ellipse cx={1322} cy={670} rx={19} ry={2.6} fill="url(#cymbal)" />
+        <ellipse cx={1322} cy={675} rx={19} ry={2.6} fill="url(#cymbal)" opacity={0.8} />
+
+        {/* caixa */}
+        <path d="M1343 706 L1336 742 M1343 706 L1350 742" stroke="#1c2645" strokeWidth={1.4} />
+        <rect x={1329} y={696} width={30} height={13} fill="url(#shell)" />
+        <ellipse cx={1344} cy={709} rx={15} ry={3.6} fill="#0b1124" stroke="#2d3b6b" strokeWidth={1} />
+        <ellipse cx={1344} cy={696} rx={15} ry={4} fill="#3a4a78" stroke="#5a70ad" strokeWidth={0.8} />
+
+        {/* surdo */}
+        <path d="M1447 728 L1444 744 M1471 728 L1474 744" stroke="#1c2645" strokeWidth={1.6} />
+        <rect x={1440} y={684} width={38} height={46} fill="url(#shell)" />
+        <ellipse cx={1459} cy={730} rx={19} ry={4.5} fill="#0b1124" stroke="#2d3b6b" strokeWidth={1} />
+        <ellipse cx={1459} cy={684} rx={19} ry={5} fill="#34446f" stroke="#5a70ad" strokeWidth={0.8} />
+
+        {/* bumbo */}
+        <circle cx={1392} cy={713} r={27} fill="#0a1126" stroke="#34457a" strokeWidth={3} />
+        <circle cx={1392} cy={713} r={21} fill="#101a3a" />
+        <circle cx={1392} cy={713} r={21} fill="url(#kickHead)" />
+        <circle cx={1399} cy={722} r={4} fill="#050914" />
+        <path d="M1372 736 L1366 744 M1412 736 L1418 744" stroke="#1c2645" strokeWidth={2} />
+
+        {/* tons */}
+        <g transform="rotate(-12 1372 672)">
+          <rect x={1358} y={672} width={28} height={20} fill="url(#shell)" />
+          <ellipse cx={1372} cy={692} rx={14} ry={3.4} fill="#0b1124" stroke="#2d3b6b" strokeWidth={1} />
+          <ellipse cx={1372} cy={672} rx={14} ry={4} fill="#34446f" stroke="#5a70ad" strokeWidth={0.8} />
+        </g>
+        <g transform="rotate(12 1412 672)">
+          <rect x={1398} y={672} width={28} height={22} fill="url(#shell)" />
+          <ellipse cx={1412} cy={694} rx={14} ry={3.4} fill="#0b1124" stroke="#2d3b6b" strokeWidth={1} />
+          <ellipse cx={1412} cy={672} rx={14} ry={4} fill="#34446f" stroke="#5a70ad" strokeWidth={0.8} />
+        </g>
+
+        {/* ataque (crash) */}
+        <path d="M1336 744 L1336 660 L1344 628" fill="none" stroke="#1c2645" strokeWidth={1.8} />
+        <ellipse cx={1344} cy={627} rx={28} ry={4.6} fill="url(#cymbal)" transform="rotate(-9 1344 627)" />
+
+        {/* condução (ride) */}
+        <path d="M1486 744 L1486 668 L1474 640" fill="none" stroke="#1c2645" strokeWidth={1.8} />
+        <ellipse cx={1472} cy={639} rx={31} ry={5} fill="url(#cymbal)" transform="rotate(8 1472 639)" />
+      </g>
+
+      {/* aresta interna direita (vista através do acrílico) */}
+      <path d={`M${B.r} ${B.t} L${F.r} ${F.t} M${B.r} ${B.t} V${B.b}`} fill="none" stroke={edgeSoft} strokeWidth={1} />
+
+      {/* lateral esquerda de acrílico */}
+      <path
+        d={`M${F.l} ${F.t} L${B.l} ${B.t} V${B.b} L${F.l} ${F.b} Z`}
+        fill="url(#acrylicSide)"
+        stroke={edge}
+        strokeWidth={1}
+      />
+      {/* teto de acrílico */}
+      <path d={`M${F.l} ${F.t} H${F.r} L${B.r} ${B.t} H${B.l} Z`} fill="rgba(170,200,255,0.07)" stroke={edgeSoft} strokeWidth={1} />
+
+      {/* painel frontal */}
+      <rect x={F.l} y={F.t} width={F.r - F.l} height={F.b - F.t} fill="url(#acrylicFront)" />
+      {/* reflexos */}
+      <path d={`M${F.l + 30} ${F.t} h26 l-70 ${F.b - F.t} h-26 Z`} fill="#dce8ff" opacity={0.055} transform="translate(60 0)" />
+      <path d={`M${F.l + 150} ${F.t} h10 l-60 ${F.b - F.t} h-10 Z`} fill="#dce8ff" opacity={0.05} transform="translate(60 0)" />
+      <path d={`M${F.r - 40} ${F.t} h36 l-50 ${F.b - F.t} h-36 Z`} fill="#dce8ff" opacity={0.035} />
+      {/* emenda da porta */}
+      <line x1={1452} y1={F.t + 4} x2={1452} y2={F.b - 4} stroke={edgeSoft} strokeWidth={1} />
+      <rect x={1446} y={624} width={3} height={22} rx={1.5} fill="rgba(190,210,255,0.35)" />
+
+      {/* montantes de alumínio */}
+      <g fill="#131a2e">
+        <rect x={F.l - 2} y={F.t - 2} width={4} height={F.b - F.t + 4} />
+        <rect x={F.r - 2} y={F.t - 2} width={4} height={F.b - F.t + 4} />
+        <rect x={F.l - 2} y={F.t - 3} width={F.r - F.l + 4} height={4} />
+        <rect x={B.l - 1.5} y={B.t - 1.5} width={3} height={B.b - B.t + 3} />
+      </g>
+      <g stroke="rgba(190,215,255,0.45)" strokeWidth={0.8}>
+        <line x1={F.l - 1} y1={F.t} x2={F.l - 1} y2={F.b} />
+        <line x1={F.r + 1} y1={F.t} x2={F.r + 1} y2={F.b} />
+        <line x1={F.l} y1={F.t - 2.5} x2={F.r} y2={F.t - 2.5} />
+      </g>
+
+      {/* base do praticável */}
+      <rect x={F.l - 4} y={F.b} width={F.r - F.l + 8} height={9} fill="#0c1329" />
+      <rect x={F.l - 4} y={F.b} width={F.r - F.l + 8} height={1} fill="#3a4c86" opacity={0.7} />
+    </g>
+  );
+}
+
+/** Amplificador combo + guitarra no suporte (lado esquerdo, abaixo da cruz). */
+function GuitarRig() {
+  return (
+    <g>
+      {/* sombras */}
+      <ellipse cx={252} cy={764} rx={70} ry={6} fill="#000" opacity={0.55} />
+      <ellipse cx={356} cy={766} rx={34} ry={4} fill="#000" opacity={0.5} />
+
+      {/* amplificador combo */}
+      <g>
+        <path d="M232 684 C 232 674, 272 674, 272 684" fill="none" stroke="#1b2440" strokeWidth={4} strokeLinecap="round" />
+        <rect x={196} y={684} width={112} height={78} rx={5} fill="#090d18" stroke="#222c4a" strokeWidth={1.2} />
+        <rect x={200} y={688} width={104} height={14} rx={2} fill="#121a2e" />
+        {[212, 224, 236, 248, 260, 272].map((x) => (
+          <circle key={x} cx={x} cy={695} r={2.4} fill="#33416b" />
+        ))}
+        <circle cx={292} cy={695} r={1.8} fill="#5bd0ff" />
+        <circle cx={292} cy={695} r={4.5} fill="#5bd0ff" opacity={0.18} />
+        <rect x={202} y={706} width={100} height={50} rx={2} fill="url(#grilleCloth)" />
+        <rect x={202} y={706} width={100} height={50} rx={2} fill="url(#ampShade)" />
+        <rect x={238} y={710} width={28} height={6} rx={1.5} fill="#1e2848" />
+        {[
+          [196, 684],
+          [300, 684],
+          [196, 754],
+          [300, 754],
+        ].map(([x, y]) => (
+          <rect key={`${x}-${y}`} x={x} y={y} width={8} height={8} rx={2} fill="#161e36" />
+        ))}
+        <rect x={196} y={684} width={112} height={1} fill="#4a5f9e" opacity={0.5} />
+      </g>
+
+      {/* cabo e pedal */}
+      <path d="M357 750 C 352 776, 330 772, 322 764 C 314 756, 300 756, 296 748" fill="none" stroke="#161e36" strokeWidth={2} />
+      <rect x={314} y={758} width={20} height={9} rx={2} fill="#101830" stroke="#2a3657" strokeWidth={0.8} />
+      <circle cx={330} cy={761} r={1.3} fill="#5bd0ff" />
+
+      {/* guitarra no suporte */}
+      <g transform="translate(356 762) rotate(-9)">
+        {/* suporte */}
+        <path d="M-22 4 L0 -60 L22 4" fill="none" stroke="#1a2340" strokeWidth={2.4} />
+        <path d="M0 -60 V-128" stroke="#1a2340" strokeWidth={2} />
+        <path d="M-6 -128 H6" stroke="#1a2340" strokeWidth={3} strokeLinecap="round" />
+        {/* braço e mão */}
+        <rect x={-3.6} y={-168} width={7.2} height={108} rx={1.5} fill="#1a1f33" stroke="#2d3a66" strokeWidth={0.6} />
+        {[-150, -138, -126, -114, -102, -90, -80].map((y) => (
+          <line key={y} x1={-3.4} y1={y} x2={3.4} y2={y} stroke="#46578a" strokeWidth={0.5} />
+        ))}
+        <path d="M-5 -168 L-7 -190 C -7 -194, 6 -196, 8 -192 L5 -168 Z" fill="#141a2d" stroke="#2d3a66" strokeWidth={0.8} />
+        {/* corpo */}
+        <path
+          d="M0 0 C -26 0 -36 -10 -34 -28 C -33 -38 -26 -42 -24 -50 C -23 -58 -32 -66 -30 -78 C -28 -88 -18 -86 -14 -76 C -10 -68 -6 -66 0 -66 C 6 -66 10 -70 12 -80 C 15 -92 26 -90 26 -80 C 26 -70 22 -60 24 -50 C 26 -40 34 -36 34 -24 C 34 -8 22 0 0 0 Z"
+          fill="url(#guitarBody)"
+          stroke="#4a64b0"
+          strokeWidth={1}
+        />
+        <path
+          d="M-4 -6 C -22 -8 -26 -20 -22 -32 C -18 -44 -12 -48 -10 -60 C -6 -62 -2 -62 2 -62 L4 -40 C 12 -34 14 -18 8 -10 Z"
+          fill="#d6e0f5"
+          opacity={0.22}
+        />
+        {[-52, -40, -28].map((y) => (
+          <rect key={y} x={-7} y={y} width={14} height={4} rx={1.5} fill="#0b0f1c" stroke="#3a4a78" strokeWidth={0.5} />
+        ))}
+        <rect x={-8} y={-17} width={16} height={4} rx={1} fill="#6a7cb0" opacity={0.7} />
+        {[-1.6, 0, 1.6].map((x) => (
+          <line key={x} x1={x} y1={-15} x2={x * 0.8} y2={-168} stroke="#b9c8ee" strokeWidth={0.25} opacity={0.6} />
+        ))}
+        <circle cx={18} cy={-12} r={2} fill="#3a4a78" />
+        <circle cx={22} cy={-20} r={2} fill="#3a4a78" />
+      </g>
     </g>
   );
 }
@@ -221,6 +395,54 @@ export default function StageBackdrop() {
         <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="10" />
         </filter>
+        {/* aquário de bateria */}
+        <pattern id="foam" patternUnits="userSpaceOnUse" width="16" height="16">
+          <rect width="16" height="16" fill="#080c18" />
+          <path d="M0 16 L8 2 L16 16 Z" fill="#0c1222" />
+          <path d="M8 2 L16 16" stroke="#141c33" strokeWidth="0.8" />
+        </pattern>
+        <linearGradient id="boothInnerShade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#1d3c9e" stopOpacity="0.18" />
+          <stop offset="1" stopColor="#000" stopOpacity="0.45" />
+        </linearGradient>
+        <linearGradient id="acrylicFront" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#a8c4ff" stopOpacity="0.09" />
+          <stop offset="0.45" stopColor="#7fa2ff" stopOpacity="0.03" />
+          <stop offset="1" stopColor="#a8c4ff" stopOpacity="0.07" />
+        </linearGradient>
+        <linearGradient id="acrylicSide" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#b8ceff" stopOpacity="0.1" />
+          <stop offset="1" stopColor="#6f90ff" stopOpacity="0.04" />
+        </linearGradient>
+        <linearGradient id="shell" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#0a1022" />
+          <stop offset="0.35" stopColor="#1a2750" />
+          <stop offset="0.6" stopColor="#0e1630" />
+          <stop offset="1" stopColor="#070b18" />
+        </linearGradient>
+        <radialGradient id="kickHead" cx="0.4" cy="0.35" r="0.7">
+          <stop offset="0" stopColor="#3a58b0" stopOpacity="0.45" />
+          <stop offset="1" stopColor="#0a1126" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="cymbal" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#2a3765" />
+          <stop offset="0.5" stopColor="#7d93d6" />
+          <stop offset="1" stopColor="#2a3765" />
+        </linearGradient>
+        {/* amplificador e guitarra */}
+        <pattern id="grilleCloth" patternUnits="userSpaceOnUse" width="3" height="3">
+          <rect width="3" height="3" fill="#121829" />
+          <path d="M0 0 L3 3 M3 0 L0 3" stroke="#1d2640" strokeWidth="0.6" />
+        </pattern>
+        <linearGradient id="ampShade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#3b6bff" stopOpacity="0.1" />
+          <stop offset="1" stopColor="#000" stopOpacity="0.4" />
+        </linearGradient>
+        <radialGradient id="guitarBody" cx="0.45" cy="0.7" r="0.75">
+          <stop offset="0" stopColor="#2a4aa8" />
+          <stop offset="0.6" stopColor="#15245a" />
+          <stop offset="1" stopColor="#070c1e" />
+        </radialGradient>
       </defs>
 
       {/* teto */}
@@ -243,7 +465,6 @@ export default function StageBackdrop() {
       <rect x="90" y="220" width="330" height="420" fill="url(#crossWash)" />
 
       <Cross />
-      <DrumBooth />
 
       {/* painel central atrás do telão */}
       <rect x="460" y="176" width="680" height="530" fill="#050913" />
@@ -294,9 +515,11 @@ export default function StageBackdrop() {
       <rect y="702" width="1600" height="1.5" fill="#26345e" opacity="0.8" />
 
       <Pulpit />
+      <GuitarRig />
+      <DrumBooth />
 
       {/* pedestal de microfone e amplificador */}
-      <g>
+      <g transform="translate(-62 0)">
         <line x1="1196" y1="600" x2="1210" y2="760" stroke="#1f2945" strokeWidth={2.5} />
         <line x1="1196" y1="600" x2="1172" y2="592" stroke="#1f2945" strokeWidth={2.5} />
         <path d="M1194 760 L1210 748 L1226 760" fill="none" stroke="#1f2945" strokeWidth={2} />
