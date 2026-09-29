@@ -1,18 +1,12 @@
+import EcosystemMap from "@/components/sections/ecosystem/EcosystemMap";
 import SectionHeader from "@/components/ui/SectionHeader";
 import "./purpose.css";
 
 const PILLARS = [
-  { name: "Simples", text: "Conceitos explicados desde o começo, sem jargão desnecessário." },
-  { name: "Prático", text: "Exemplos tirados da operação real de um culto." },
-  { name: "Acessível", text: "Pensado para equipes pequenas e orçamento limitado." },
-  { name: "Aplicável", text: "O que você aprende hoje, usa no próximo culto." },
-];
-
-const REALITY = [
-  "Equipes pequenas",
-  "Orçamento limitado",
-  "Equipamentos de gerações diferentes",
-  "Uma mesma pessoa operando várias áreas",
+  { name: "Simples", text: "Sem jargão desnecessário." },
+  { name: "Prático", text: "Exemplos da operação real." },
+  { name: "Acessível", text: "Para equipes pequenas e orçamento limitado." },
+  { name: "Aplicável", text: "Aprendeu hoje, usa no próximo culto." },
 ];
 
 export default function Purpose() {
@@ -28,38 +22,30 @@ export default function Purpose() {
           >
             <p>
               O Culto em Off quer construir uma das principais referências em formação técnica para voluntários de
-              igreja: pegar o que parece complicado e explicar de um jeito simples, prático, acessível e aplicável.
+              igreja. Você não precisa virar engenheiro: precisa entender a tecnologia o suficiente para{" "}
+              <strong>operar melhor, diagnosticar problemas e servir com mais confiança</strong>.
             </p>
           </SectionHeader>
 
-          <p className="purpose__note" data-reveal style={{ "--i": 3 } as React.CSSProperties}>
-            Você não precisa virar engenheiro de áudio, administrador de redes ou especialista em broadcast. Precisa
-            entender a tecnologia o suficiente para <strong>operar melhor, diagnosticar problemas, tomar decisões</strong>{" "}
-            e servir com mais confiança.
-          </p>
+          <ul className="purpose__pillars" aria-label="Como ensinamos">
+            {PILLARS.map((p, i) => (
+              <li key={p.name} data-reveal style={{ "--i": i + 1 } as React.CSSProperties}>
+                <span className="purpose__pillar-name">{p.name}</span>
+                <span className="purpose__pillar-text">{p.text}</span>
+              </li>
+            ))}
+          </ul>
 
-          <div className="purpose__reality" data-reveal style={{ "--i": 4 } as React.CSSProperties}>
-            <p className="purpose__reality-title">Feito para a realidade da maioria das igrejas brasileiras</p>
-            <ul>
-              {REALITY.map((r) => (
-                <li key={r}>{r}</li>
-              ))}
-            </ul>
-          </div>
+          <p className="purpose__eco" data-reveal style={{ "--i": 5 } as React.CSSProperties}>
+            <span className="purpose__eco-label">Tudo conectado</span>
+            Hoje, áudio, vídeo, luz, câmeras e projeção conversam pela mesma rede. Entender uma área técnica
+            frequentemente exige compreender um pouco das outras, e é assim que ensinamos.
+          </p>
         </div>
 
-        <ol className="purpose__chain" aria-label="Como ensinamos" data-anim>
-          {PILLARS.map((p, i) => (
-            <li key={p.name} className="purpose__step" data-reveal style={{ "--i": i + 1 } as React.CSSProperties}>
-              <span className="purpose__jack" aria-hidden="true" />
-              <div>
-                <p className="purpose__step-name">{p.name}</p>
-                <p className="purpose__step-text">{p.text}</p>
-              </div>
-            </li>
-          ))}
-          <span className="purpose__signal fx-motion" aria-hidden="true" />
-        </ol>
+        <div className="purpose__map" data-reveal data-anim style={{ "--i": 2 } as React.CSSProperties}>
+          <EcosystemMap />
+        </div>
       </div>
 
       <p className="section__inner purpose__motto" data-reveal>

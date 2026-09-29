@@ -51,9 +51,9 @@ export const SOCIAL_LINKS: { label: string; href: string }[] = [
 
 /** Itens da navegação principal (âncoras da homepage). */
 export const NAV_LINKS: { label: string; href: string }[] = [
+  { label: "Propósito", href: "/#proposito" },
   { label: "Formações", href: "/#formacoes" },
-  { label: "Ecossistema", href: "/#ecossistema" },
-  { label: "Ferramentas", href: "/#parceiros" },
   { label: "Softwares", href: "/#softwares" },
+  { label: "Ferramentas", href: "/#parceiros" },
   { label: "Sobre", href: "/#sobre" },
-];
+]

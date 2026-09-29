@@ -56,7 +56,7 @@ export default function SoftwareSection() {
   return (
     <section id="softwares" className="section section--abyss softwares" aria-labelledby="softwares-title">
       <div className="section__inner">
-        <SectionHeader channel="CH 06 · Softwares Culto em Off" id="softwares-title" title="Ferramentas feitas para a operação da igreja.">
+        <SectionHeader channel="CH 04 · Softwares Culto em Off" id="softwares-title" title="Ferramentas feitas para a operação da igreja.">
           <p>
             Além das formações, o Culto em Off desenvolve softwares, gratuitos e comerciais, para simplificar a operação
             técnica de quem serve.

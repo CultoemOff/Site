@@ -4,8 +4,8 @@
 
 .softwares {
   background:
-    radial-gradient(ellipse 60% 50% at 80% 0%, rgba(59, 140, 255, 0.18), transparent 70%),
-    linear-gradient(180deg, #050a1c 0%, var(--abyss) 50%, #081230 100%);
+    radial-gradient(ellipse 50% 45% at 80% 10%, rgba(59, 140, 255, 0.14), transparent 70%),
+    linear-gradient(180deg, #0c1019 0%, var(--graphite) 50%, #10141d 100%);
 }
 
 .softwares__grid {
