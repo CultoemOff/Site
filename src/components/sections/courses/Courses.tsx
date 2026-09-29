@@ -1,7 +1,6 @@
 import ArrowButton from "@/components/ui/ArrowButton";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { COURSE_STATUS_LABEL, COURSES, type Course } from "@/config/courses";
-import { YOUTUBE_CHANNEL_URL } from "@/config/site";
+import { COURSE_PRICE_NOTE, COURSE_STATUS_LABEL, COURSES, MORE_COURSES_URL, type Course } from "@/config/courses";
 import CourseDiagramView from "./CourseDiagrams";
 import "./courses.css";
 
@@ -22,6 +21,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
       <div className="course__body">
         <div className="course__meta">
           <span className="course__kind">{featured ? "Formação em destaque" : "Formação"}</span>
+          <span className="course__price">{COURSE_PRICE_NOTE}</span>
           {course.status && <span className={`course__status course__status--${course.status}`}>{COURSE_STATUS_LABEL[course.status]}</span>}
         </div>
 
@@ -76,7 +76,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
   );
 }
 
-export default function Courses() {
+export default function Courses({ showMoreButton = true }: { showMoreButton?: boolean }) {
   const [featured, ...rest] = [...COURSES].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
   return (
     <section id="formacoes" className="section section--abyss courses" aria-labelledby="formacoes-title">
@@ -89,7 +89,7 @@ export default function Courses() {
         >
           <p>
             Um catálogo em construção, pensado para voluntários. Cada formação parte dos fundamentos e chega na
-            aplicação dentro da igreja.
+            aplicação dentro da igreja, <strong>com preço acessível</strong>.
           </p>
         </SectionHeader>
 
@@ -101,12 +101,11 @@ export default function Courses() {
           ))}
         </div>
 
-        <div className="courses__footer" data-reveal>
-          <p>Novas formações e turmas serão anunciadas no canal do Culto em Off.</p>
-          <ArrowButton href={YOUTUBE_CHANNEL_URL} variant="ghost" external>
-            Acompanhar no YouTube
-          </ArrowButton>
-        </div>
+        {showMoreButton && (
+          <div className="courses__more" data-reveal>
+            <ArrowButton href={MORE_COURSES_URL}>Ver mais formações</ArrowButton>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -82,3 +82,7 @@
 .mono {
   font-family: var(--font-mono), ui-monospace, monospace;
 }
+.section--abyss .section-head__intro strong {
+  color: #eaf1ff;
+  font-weight: 600;
+}

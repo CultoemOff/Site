@@ -36,15 +36,15 @@ export default function Navbar() {
 
         <nav aria-label="Principal" className="nav__links">
           {NAV_LINKS.map((l) => (
-            <a key={l.href} href={l.href}>
+            <Link key={l.href} href={l.href}>
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
-        <a href="#formacoes" className="nav__cta">
+        <Link href="/#formacoes" className="nav__cta">
           Explorar formações
-        </a>
+        </Link>
 
         <button
           type="button"
@@ -61,13 +61,13 @@ export default function Navbar() {
 
       <nav id="menu-mobile" aria-label="Menu" className={`nav__mobile${open ? " is-open" : ""}`} hidden={!open}>
         {NAV_LINKS.map((l) => (
-          <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
+          <Link key={l.href} href={l.href} onClick={() => setOpen(false)}>
             {l.label}
-          </a>
+          </Link>
         ))}
-        <a href="#formacoes" className="nav__mobile-cta" onClick={() => setOpen(false)}>
+        <Link href="/#formacoes" className="nav__mobile-cta" onClick={() => setOpen(false)}>
           Explorar formações
-        </a>
+        </Link>
       </nav>
     </header>
   );

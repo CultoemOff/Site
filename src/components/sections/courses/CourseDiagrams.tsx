@@ -50,25 +50,32 @@ function NetworkDiagram() {
   );
 }
 
-function Tf5Diagram() {
+function LiveDiagram() {
   const blocks = [
-    { x: 46, y: 60, l: "IN" },
-    { x: 130, y: 60, l: "HPF" },
-    { x: 214, y: 60, l: "GATE" },
-    { x: 298, y: 60, l: "COMP" },
-    { x: 298, y: 150, l: "EQ" },
-    { x: 196, y: 150, l: "MIX / AUX" },
-    { x: 80, y: 150, l: "OMNI OUT" },
+    { x: 50, y: 56, l: "MESA", tone: "hot" as const },
+    { x: 162, y: 56, l: "MIX LIVE" },
+    { x: 282, y: 56, l: "INTERFACE" },
+    { x: 282, y: 150, l: "PC · OBS" },
+    { x: 150, y: 150, l: "STREAMING", tone: "soft" as const },
   ];
-  const path = "M46 60 H298 C 340 60, 340 150, 298 150 H80";
+  const path = "M50 56 H282 C 336 56, 336 150, 282 150 H150";
   return (
     <svg viewBox="0 0 350 200" className="cd-svg">
       <path d={path} className="cd-link" />
-      <Packet path={path} dur={3.6} />
-      <Packet path={path} dur={3.6} begin="1.8s" />
-      {blocks.map((b, i) => (
-        <Box key={b.l} x={b.x} y={b.y} w={b.l.length > 5 ? 92 : 64} h={34} label={b.l} tone={i === 0 ? "hot" : i === blocks.length - 1 ? "soft" : "base"} />
+      <Packet path={path} dur={3.4} />
+      <Packet path={path} dur={3.4} begin="1.7s" />
+      {blocks.map((b) => (
+        <Box key={b.l} x={b.x} y={b.y} w={b.l.length > 6 ? 96 : 72} h={34} label={b.l} tone={b.tone ?? "base"} />
       ))}
+      {/* medidores da mix da live */}
+      <g transform="translate(24 116)">
+        {[0, 1, 2, 3].map((i) => (
+          <g key={i} transform={`translate(${i * 12} 0)`}>
+            <rect width={7} height={52} rx={2} className="cd-ch" />
+            <rect width={7} height={52} rx={2} className="cd-ch__lvl" style={{ "--i": i * 2 } as React.CSSProperties} />
+          </g>
+        ))}
+      </g>
     </svg>
   );
 }
@@ -198,7 +205,7 @@ export default function CourseDiagramView({ type }: { type: CourseDiagram }) {
   return (
     <div className={`cd cd--${type}`} aria-hidden="true">
       {type === "network" && <NetworkDiagram />}
-      {type === "tf5" && <Tf5Diagram />}
+      {type === "live" && <LiveDiagram />}
       {type === "analog" && <AnalogDiagram />}
       {type === "companion" && <CompanionDiagram />}
       {type === "dmx" && <DmxDiagram />}

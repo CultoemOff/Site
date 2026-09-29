@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { AudioMeters, DmxConflict, FrozenSlide, SubnetMismatch, SyncWaves } from "./ProblemVisuals";
+import { AudioMeters, CableMess, DmxConflict, FrozenSlide, SyncWaves } from "./ProblemVisuals";
 import "./problems.css";
 
 type Problem = {
@@ -29,7 +29,7 @@ const PROBLEMS: Problem[] = [
     items: [
       "Apresentação travando na hora do louvor",
       "PowerPoint usado no improviso",
-      "O louvor mudando a música em cima da hora",
+      "Falta gente para operar tudo, e o slide passa atrasado",
     ],
     visual: <FrozenSlide />,
   },
@@ -53,13 +53,12 @@ const PROBLEMS: Problem[] = [
     area: "Redes",
     title: "“Está tudo conectado, mas não funciona.”",
     items: [
-      "O NDI não encontra a câmera",
-      "O Dante não comunica",
-      "O Companion perde a conexão",
-      "Equipamentos no mesmo switch que não se encontram",
+      "Cabos HDMI e USB com extensões que dão problema",
+      "Um cabo P2 levando o áudio para o PC da live",
+      "Nem saber o que são NDI, Dante e Companion, nem como eles podem ajudar",
     ],
-    terms: ["IP", "DHCP", "DNS", "Subnet", "Switch", "Roteador", "Portas", "Multicast"],
-    visual: <SubnetMismatch />,
+    terms: ["HDMI", "USB", "P2", "NDI", "Dante", "Companion"],
+    visual: <CableMess />,
     wide: true,
   },
 ];
@@ -99,7 +98,7 @@ export default function Problems() {
                 </ul>
                 {p.terms && (
                   <p className="problem-card__terms">
-                    <span className="sr-only">Conceitos envolvidos: </span>
+                    <span className="sr-only">Termos envolvidos: </span>
                     {p.terms.map((t) => (
                       <span key={t}>{t}</span>
                     ))}

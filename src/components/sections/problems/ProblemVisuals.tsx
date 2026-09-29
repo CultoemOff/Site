@@ -115,61 +115,68 @@ export function DmxConflict() {
   );
 }
 
-/** Redes: mesmo switch, sub-redes diferentes — o pacote não chega. */
-export function SubnetMismatch() {
+/** Redes: extensões de HDMI/USB e P2 improvisado x sinal trafegando pela rede. */
+export function CableMess() {
+  const netPath = "M80 122 H250 H430";
   return (
     <div className="pv pv-net" aria-hidden="true">
-      <svg viewBox="0 0 520 150" className="pv-net__svg">
+      <svg viewBox="0 0 520 170" className="pv-net__svg">
         <defs>
-          <path id="pv-net-path" d="M92 75 H250 H410" />
+          <path id="pv-net-ok" d={netPath} />
         </defs>
-        {/* cabos */}
-        <line x1="92" y1="75" x2="228" y2="75" className="pv-net__cable" />
-        <line x1="272" y1="75" x2="410" y2="75" className="pv-net__cable" />
 
-        {/* computador */}
-        <g transform="translate(40 75)">
-          <rect x="-34" y="-24" width="68" height="42" rx="4" className="pv-net__node" />
-          <rect x="-26" y="-17" width="52" height="28" rx="2" className="pv-net__screen" />
-          <rect x="-40" y="18" width="80" height="6" rx="2" className="pv-net__node" />
+        {/* linha 1: hoje — HDMI com extensores até o telão */}
+        <text x="14" y="22" className="pv-net__row">HOJE</text>
+        <path d="M80 50 H150" className="pv-net__hdmi" />
+        <path d="M186 50 H256" className="pv-net__hdmi" />
+        <path d="M292 50 H340 l6 -8 l6 16 l6 -16 l6 8" className="pv-net__hdmi pv-net__hdmi--bad" />
+        <g transform="translate(50 50)">
+          <rect x="-30" y="-18" width="60" height="36" rx="4" className="pv-net__node" />
+          <text y="4" textAnchor="middle" className="pv-net__box">PC</text>
         </g>
-        <text x="40" y="126" className="pv-net__label" textAnchor="middle">OBS · NDI</text>
-        <text x="40" y="142" className="pv-net__ip" textAnchor="middle">192.168.0.10/24</text>
-
-        {/* switch */}
-        <g transform="translate(250 75)">
-          <rect x="-26" y="-14" width="52" height="28" rx="4" className="pv-net__node" />
-          {[-16, -8, 0, 8, 16].map((x) => (
+        {[168, 274].map((x) => (
+          <g key={x} transform={`translate(${x} 50)`}>
+            <rect x="-18" y="-9" width="36" height="18" rx="3" className="pv-net__ext" />
+            <text y="3.5" textAnchor="middle" className="pv-net__tiny">EXT</text>
+          </g>
+        ))}
+        <g transform="translate(430 50)">
+          <rect x="-44" y="-24" width="88" height="48" rx="3" className="pv-net__screen" />
+          <rect x="-44" y="-24" width="88" height="48" rx="3" className="pv-net__noise" />
+          <text y="4" textAnchor="middle" className="pv-net__nosignal">SEM SINAL</text>
+        </g>
+        <text x="206" y="40" textAnchor="middle" className="pv-net__tiny pv-net__tiny--dim">HDMI</text>
+        {/* linha 2: com rede — um cabo, um switch, NDI */}
+        <text x="14" y="90" className="pv-net__row pv-net__row--ok">COM REDE</text>
+        <path d={netPath} className="pv-net__cable" />
+        <g transform="translate(50 122)">
+          <rect x="-30" y="-18" width="60" height="36" rx="4" className="pv-net__node" />
+          <text y="4" textAnchor="middle" className="pv-net__box">MESA</text>
+        </g>
+        <g transform="translate(250 122)">
+          <rect x="-30" y="-13" width="60" height="26" rx="4" className="pv-net__node" />
+          {[-18, -9, 0, 9, 18].map((x) => (
             <rect key={x} x={x - 3} y="-3" width="6" height="6" rx="1" className="pv-net__port" />
           ))}
         </g>
-        <text x="250" y="126" className="pv-net__label" textAnchor="middle">SWITCH</text>
-
-        {/* câmera */}
-        <g transform="translate(456 75)">
-          <rect x="-30" y="-22" width="50" height="40" rx="6" className="pv-net__node" />
-          <circle cx="-5" cy="-2" r="12" className="pv-net__screen" />
-          <circle cx="-5" cy="-2" r="5" className="pv-net__lens" />
-          <path d="M20 -8 L36 -16 V12 L20 4 Z" className="pv-net__node" />
+        <g transform="translate(430 122)">
+          <rect x="-44" y="-20" width="88" height="40" rx="4" className="pv-net__node" />
+          <text y="4" textAnchor="middle" className="pv-net__box">PC DA LIVE</text>
         </g>
-        <text x="456" y="126" className="pv-net__label" textAnchor="middle">CÂMERA PTZ</text>
-        <text x="456" y="142" className="pv-net__ip pv-net__ip--bad" textAnchor="middle">192.168.1.20/24</text>
-
-        {/* pacote que não chega */}
+        <text x="165" y="114" textAnchor="middle" className="pv-net__tiny">DANTE</text>
+        <text x="340" y="114" textAnchor="middle" className="pv-net__tiny">NDI</text>
+        <text x="250" y="156" textAnchor="middle" className="pv-net__tiny pv-net__tiny--dim">SWITCH</text>
         <g className="fx-motion">
-          <circle r="5" className="pv-net__packet">
-            <animateMotion dur="3.2s" repeatCount="indefinite" keyPoints="0;0.75;0.75" keyTimes="0;0.55;1" calcMode="linear">
-              <mpath href="#pv-net-path" />
-            </animateMotion>
-            <animate attributeName="opacity" dur="3.2s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.55;0.65;1" />
-          </circle>
-        </g>
-        <g className="pv-net__x" transform="translate(342 75)">
-          <circle r="13" />
-          <path d="M-5 -5 L5 5 M5 -5 L-5 5" />
+          {[0, 1.1, 2.2].map((b) => (
+            <circle key={b} r="4" className="pv-net__packet">
+              <animateMotion dur="3.3s" begin={`${b}s`} repeatCount="indefinite">
+                <mpath href="#pv-net-ok" />
+              </animateMotion>
+            </circle>
+          ))}
         </g>
       </svg>
-      <span className="pv-tag pv-tag--alert">PING 192.168.1.20 · SEM RESPOSTA</span>
+      <span className="pv-tag pv-tag--alert">HDMI + EXTENSORES · SEM SINAL</span>
     </div>
   );
 }

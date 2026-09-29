@@ -42,9 +42,9 @@ export const SOCIAL_LINKS: { label: string; href: string }[] = [
 
 /** Itens da navegação principal (âncoras da homepage). */
 export const NAV_LINKS: { label: string; href: string }[] = [
-  { label: "Formações", href: "#formacoes" },
-  { label: "Ecossistema", href: "#ecossistema" },
-  { label: "Parceiros", href: "#parceiros" },
-  { label: "Softwares", href: "#softwares" },
-  { label: "Sobre", href: "#sobre" },
+  { label: "Formações", href: "/#formacoes" },
+  { label: "Ecossistema", href: "/#ecossistema" },
+  { label: "Parceiros", href: "/#parceiros" },
+  { label: "Softwares", href: "/#softwares" },
+  { label: "Sobre", href: "/#sobre" },
 ];

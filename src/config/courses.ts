@@ -5,7 +5,17 @@
  * - `status`: deixe `undefined` até existir uma informação oficial.
  *   Use "em-preparacao" para formações futuras.
  * - `href`: link de inscrição/lista de espera. Vazio = botão oculto.
+ * - Todas as formações são apresentadas com "preço acessível" (sem valor definido aqui).
  */
+
+/** Selo exibido em todas as formações. */
+export const COURSE_PRICE_NOTE = "Preço acessível";
+
+/**
+ * Botão "Mais formações" ao final da seção.
+ * TODO: apontar para a página/plataforma com o catálogo completo quando existir.
+ */
+export const MORE_COURSES_URL = "/formacoes";
 
 export type CourseStatus = "disponivel" | "inscricoes-abertas" | "em-breve" | "em-preparacao";
 
@@ -16,7 +26,7 @@ export const COURSE_STATUS_LABEL: Record<CourseStatus, string> = {
   "em-preparacao": "Em preparação",
 };
 
-export type CourseDiagram = "network" | "tf5" | "analog" | "companion" | "dmx";
+export type CourseDiagram = "network" | "analog" | "live" | "companion" | "dmx";
 
 export type Course = {
   id: string;
@@ -68,30 +78,6 @@ export const COURSES: Course[] = [
     href: "",
   },
   {
-    id: "yamaha-tf5",
-    title: "Yamaha TF5",
-    tagline: "Aprenda a entender a mesa, não apenas apertar botões.",
-    summary:
-      "Do fluxo de sinal ao monitoramento: como a TF5 organiza canais, processamento, mixes e saídas — para você operar com segurança e montar retornos que funcionam.",
-    topicsTitle: "Conteúdo",
-    topics: [
-      "Fluxo de sinal",
-      "Canais",
-      "Ganho e phantom power",
-      "HPF",
-      "Equalização",
-      "Compressor e gate",
-      "Auxiliares, buses e grupos",
-      "Efeitos",
-      "Cenas",
-      "Sends e retornos",
-      "Roteamento e Omni Outs",
-      "Monitoramento",
-    ],
-    diagram: "tf5",
-    href: "",
-  },
-  {
     id: "audio-mesa-analogica",
     title: "Áudio em Mesa Analógica",
     tagline: "Os fundamentos continuam os mesmos.",
@@ -109,6 +95,26 @@ export const COURSES: Course[] = [
       "Prevenção de microfonia",
     ],
     diagram: "analog",
+    href: "",
+  },
+  {
+    id: "audio-para-live",
+    title: "Áudio para Live",
+    tagline: "Quem assiste de casa também precisa ouvir bem.",
+    summary:
+      "O áudio da transmissão não é o mesmo da igreja. Entenda como levar o som da mesa até o PC da live com qualidade e sem improviso.",
+    topicsTitle: "Conteúdo previsto",
+    // TODO: revisar a lista de tópicos da formação Áudio para Live.
+    topics: [
+      "Por que o áudio da live é diferente do áudio da sala",
+      "Mix dedicado para a transmissão",
+      "Da mesa ao computador: P2, interface de áudio e rede",
+      "Níveis e ganho para streaming",
+      "Áudio no OBS",
+      "Sincronismo entre áudio e vídeo",
+      "Monitoramento da transmissão",
+    ],
+    diagram: "live",
     href: "",
   },
   {
