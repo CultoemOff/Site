@@ -30,6 +30,25 @@
   animation-play-state: paused !important;
 }
 
+/* brilho que acompanha o mouse */
+[data-glow] {
+  position: relative;
+}
+[data-glow]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(90, 150, 255, 0.14), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+}
+[data-glow]:hover::after {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .js-reveal [data-reveal],
   .js-reveal [data-reveal]:not(.is-visible) {

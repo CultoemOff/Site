@@ -24,5 +24,13 @@ await esbuild.build({
   nodePaths: [M],
   define: { "process.env.NODE_ENV": '"production"' },
   logLevel: "warning",
+  plugins: [
+    {
+      name: "preview-youtube",
+      setup(b) {
+        b.onResolve({ filter: /sections\/youtube\/YouTube$/ }, () => ({ path: path.join(root, "preview/shims/youtube.tsx") }));
+      },
+    },
+  ],
 });
 console.log("ok");

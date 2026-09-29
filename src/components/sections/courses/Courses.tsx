@@ -12,6 +12,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
       aria-labelledby={`curso-${course.id}`}
       data-reveal
       data-anim
+      data-glow
       style={{ "--i": index % 2 } as React.CSSProperties}
     >
       <div className="course__visual">

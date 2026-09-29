@@ -85,6 +85,7 @@ export default function Problems() {
               className={`problem-card${p.wide ? " problem-card--wide" : ""}`}
               data-reveal
               data-anim
+              data-glow
               style={{ "--i": i % 3 } as React.CSSProperties}
             >
               <div className="problem-card__display">{p.visual}</div>

@@ -125,6 +125,43 @@
   background: var(--electric);
   box-shadow: 0 0 8px var(--electric);
 }
+.soft__compat {
+  display: grid;
+  gap: 12px;
+  margin: 6px 0 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(59, 140, 255, 0.08);
+  border: 1px solid rgba(90, 150, 255, 0.22);
+}
+.soft__compat dt {
+  margin-bottom: 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8fa6d6;
+}
+.soft__compat dd {
+  margin: 0;
+}
+.soft__compat ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.soft__compat li {
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(160, 190, 255, 0.25);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #e3ebff;
+}
 .soft__actions {
   display: flex;
   flex-wrap: wrap;

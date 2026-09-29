@@ -17,9 +17,12 @@ export const LOGO_SRC = "/images/logo-culto-em-off.png";
  */
 export const STAGE_SCREEN_LOGO_SRC = "/images/logo-culto-em-off.png";
 
+/** Foto real do Jonas Silva (sem edição). */
+export const ABOUT_PHOTO_SRC = "/images/jonas.silva.jpeg";
+
 // YouTube
 export const YOUTUBE_CHANNEL_ID = "UCW6UK6AE4PyaJsH5PIAD7hw";
-export const YOUTUBE_CHANNEL_URL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}`;
+export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@CultoemOff";
 export const YOUTUBE_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`;
 export const YOUTUBE_REVALIDATE_SECONDS = 3600;
 

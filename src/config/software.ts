@@ -19,6 +19,10 @@ export type Software = {
   tagline: string;
   description: string;
   features: string[];
+  /** softwares/sistemas com os quais funciona */
+  worksWith?: string[];
+  /** sistemas operacionais */
+  platforms?: string[];
   status?: SoftwareStatus;
   learnMoreUrl: string;
   downloadUrl: string;
@@ -32,7 +36,7 @@ export const SOFTWARE: Software[] = [
     area: "Câmeras",
     tagline: "Controle de câmeras PTZ pensado para o culto.",
     description:
-      "Um projeto para facilitar a operação de câmeras PTZ em igrejas e transmissões, direto do navegador.",
+      "Facilita a operação de câmeras PTZ em igrejas e transmissões, direto do navegador. Compatível com OBS, vMix, SPresenter ou qualquer outro software de transmissão de cultos.",
     features: [
       "Pan, tilt, zoom e foco",
       "Presets",
@@ -41,6 +45,7 @@ export const SOFTWARE: Software[] = [
       "Integração com o Companion",
       "Diferentes protocolos de câmera",
     ],
+    worksWith: ["OBS", "vMix", "SPresenter", "Qualquer software de transmissão"],
     learnMoreUrl: "",
     downloadUrl: "",
     visual: "ptz",
@@ -49,10 +54,12 @@ export const SOFTWARE: Software[] = [
     id: "remote-iluminacao",
     name: "Remote de Iluminação",
     area: "Iluminação",
-    tagline: "Iluminação e automação ao alcance de quem opera.",
+    tagline: "Controle a luz sem precisar aprender a usar a MA2.",
     description:
-      "Um software de controle remoto para facilitar a operação de iluminação e automação em igrejas.",
+      "Um controle remoto de iluminação e automação para igrejas: os voluntários operam as cenas de luz de forma simples, sem precisar dominar a grandMA2.",
     features: [],
+    worksWith: ["grandMA2", "Bitfocus Companion"],
+    platforms: ["Windows", "Android", "iOS"],
     status: "em-desenvolvimento",
     learnMoreUrl: "",
     downloadUrl: "",

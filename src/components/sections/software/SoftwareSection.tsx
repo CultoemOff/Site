@@ -22,7 +22,7 @@ function Action({ href, label, primary = false }: { href: string; label: string;
 function SoftwareCard({ sw, index }: { sw: Software; index: number }) {
   const inDev = sw.status === "em-desenvolvimento";
   return (
-    <article className={`soft${inDev ? " soft--dev" : ""}`} aria-labelledby={`sw-${sw.id}`} data-reveal style={{ "--i": index } as React.CSSProperties}>
+    <article className={`soft${inDev ? " soft--dev" : ""}`} aria-labelledby={`sw-${sw.id}`} data-reveal data-glow style={{ "--i": index } as React.CSSProperties}>
       <div className="soft__visual">{sw.visual === "ptz" ? <PtzVisual /> : <LightRemoteVisual />}</div>
       <div className="soft__body">
         <div className="soft__meta">
@@ -40,6 +40,34 @@ function SoftwareCard({ sw, index }: { sw: Software; index: number }) {
               <li key={f}>{f}</li>
             ))}
           </ul>
+        )}
+        {(sw.worksWith || sw.platforms) && (
+          <dl className="soft__compat">
+            {sw.worksWith && (
+              <div>
+                <dt>Compatível com</dt>
+                <dd>
+                  <ul>
+                    {sw.worksWith.map((w) => (
+                      <li key={w}>{w}</li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            )}
+            {sw.platforms && (
+              <div>
+                <dt>Plataformas</dt>
+                <dd>
+                  <ul>
+                    {sw.platforms.map((w) => (
+                      <li key={w}>{w}</li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            )}
+          </dl>
         )}
         {!inDev && (
           <div className="soft__actions">
