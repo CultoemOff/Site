@@ -1,12 +1,11 @@
 import Image from "next/image";
 import ArrowButton from "@/components/ui/ArrowButton";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { YOUTUBE_CHANNEL_URL } from "@/config/site";
 import { formatVideoDate, type YouTubeVideo } from "@/lib/youtube";
 import "./youtube.css";
 
 /** Parte visual da seção do YouTube (recebe os vídeos já buscados no servidor). */
-export default function YouTubeView({ videos }: { videos: YouTubeVideo[] }) {
+export default function YouTubeView({ videos, channelUrl }: { videos: YouTubeVideo[]; channelUrl: string }) {
   return (
     <section id="conteudo-gratuito" className="section section--paper yt" aria-labelledby="yt-title">
       <div className="section__inner">
@@ -18,7 +17,7 @@ export default function YouTubeView({ videos }: { videos: YouTubeVideo[] }) {
             </p>
           </SectionHeader>
           <div className="yt__channel" data-reveal>
-            <ArrowButton href={YOUTUBE_CHANNEL_URL} external>
+            <ArrowButton href={channelUrl} external>
               Ver o canal no YouTube
             </ArrowButton>
           </div>
@@ -47,7 +46,7 @@ export default function YouTubeView({ videos }: { videos: YouTubeVideo[] }) {
             ))}
           </ul>
         ) : (
-          <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="yt__fallback" data-reveal>
+          <a href={channelUrl} target="_blank" rel="noopener noreferrer" className="yt__fallback" data-reveal>
             <span className="yt__fallback-play" aria-hidden="true">
               <svg viewBox="0 0 24 24" focusable="false">
                 <path d="M8 5.5v13l11-6.5z" fill="currentColor" />

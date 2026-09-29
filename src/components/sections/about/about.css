@@ -39,6 +39,7 @@
 }
 .about__img {
   object-fit: cover;
+  object-position: 42% 30%;
 }
 .about__beam {
   /* facho de luz atrás da moldura: a foto não recebe nenhum filtro */
@@ -49,7 +50,7 @@
   top: -22%;
   height: 75%;
   pointer-events: none;
-  background: radial-gradient(ellipse 45% 70% at 50% 0%, rgba(120, 170, 255, 0.4), rgba(59, 140, 255, 0.1) 55%, transparent 75%);
+  background: radial-gradient(ellipse 38% 55% at 50% 0%, rgba(120, 170, 255, 0.4), rgba(59, 140, 255, 0.1) 60%, transparent 100%);
 }
 .about__caption {
   display: grid;

@@ -1,6 +1,7 @@
 import ArrowButton from "@/components/ui/ArrowButton";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { COURSE_STATUS_LABEL, COURSES, MORE_COURSES_URL, formatPrice, type Course } from "@/config/courses";
+import Image from "next/image";
+import { COURSE_STATUS_LABEL, MORE_COURSES_URL, formatPrice, type Course } from "@/config/courses";
 import CourseDiagramView from "./CourseDiagrams";
 import "./courses.css";
 
@@ -15,8 +16,12 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
       data-glow
       style={{ "--i": index % 2 } as React.CSSProperties}
     >
-      <div className="course__visual">
-        <CourseDiagramView type={course.diagram} />
+      <div className={`course__visual${course.image ? " course__visual--image" : ""}`}>
+        {course.image ? (
+          <Image src={course.image.url} alt={course.image.alt} fill sizes="(max-width: 760px) 100vw, 600px" />
+        ) : (
+          <CourseDiagramView type={course.diagram} />
+        )}
       </div>
 
       <div className="course__body">
@@ -88,8 +93,8 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
   );
 }
 
-export default function Courses({ showMoreButton = true }: { showMoreButton?: boolean }) {
-  const [featured, ...rest] = [...COURSES].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
+export default function Courses({ courses, showMoreButton = true }: { courses: Course[]; showMoreButton?: boolean }) {
+  const [featured, ...rest] = [...courses].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
   return (
     <section id="formacoes" className="section section--abyss courses" aria-labelledby="formacoes-title">
       <div className="courses__glow" aria-hidden="true" />

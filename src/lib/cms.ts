@@ -1,0 +1,218 @@
+import { cache } from "react";
+import { COURSES, type Course, type CourseDiagram, type CourseStatus } from "@/config/courses";
+import { DEFAULT_SETTINGS, type SiteSettingsData } from "@/config/site";
+
+/**
+ * Camada de dados do site.
+ * Lê o conteúdo do admin (Payload) e, se o banco não estiver configurado ou
+ * estiver vazio, usa os valores padrão de src/config — o site nunca quebra.
+ */
+
+type Doc = Record<string, unknown>;
+
+const str = (v: unknown, fallback = "") => (typeof v === "string" ? v : fallback);
+const num = (v: unknown, fallback = 0) => (typeof v === "number" && Number.isFinite(v) ? v : fallback);
+const obj = (v: unknown): Doc => (v && typeof v === "object" ? (v as Doc) : {});
+
+/** Extrai a URL de um campo de upload populado. */
+export function mediaUrl(v: unknown, size: "card" | "wide" = "card"): string | undefined {
+  const m = obj(v);
+  const sized = obj(obj(m.sizes)[size]);
+  return str(sized.url) || str(m.url) || undefined;
+}
+export function mediaAlt(v: unknown) {
+  return str(obj(v).alt);
+}
+
+export const getPayloadClient = cache(async () => {
+  if (!process.env.DATABASE_URI || !process.env.PAYLOAD_SECRET) return null;
+  try {
+    const [{ getPayload }, { default: config }] = await Promise.all([import("payload"), import("@payload-config")]);
+    return await getPayload({ config });
+  } catch (err) {
+    console.error("[cms] Não foi possível conectar ao Payload:", err);
+    return null;
+  }
+});
+
+const DIAGRAMS: CourseDiagram[] = ["network", "analog", "live", "companion", "dmx"];
+const STATUSES: CourseStatus[] = ["disponivel", "inscricoes-abertas", "lancamento-em-breve", "em-preparacao"];
+
+function mapCourse(d: Doc): Course {
+  const format = obj(d.format);
+  const list = (v: unknown) =>
+    (Array.isArray(v) ? v : []).map((i) => str(obj(i).text)).filter(Boolean);
+  const diagram = str(d.diagram) as CourseDiagram;
+  const status = str(d.status) as CourseStatus;
+  const imageUrl = mediaUrl(d.image);
+  return {
+    id: str(d.slug) || str(d.id),
+    title: str(d.title),
+    tagline: str(d.tagline),
+    summary: str(d.summary),
+    question: str(d.question) || undefined,
+    topicsTitle: str(d.topicsTitle, "Conteúdo"),
+    topics: list(d.topics),
+    appliedTo: list(d.appliedTo).length ? list(d.appliedTo) : undefined,
+    diagram: DIAGRAMS.includes(diagram) ? diagram : "network",
+    status: STATUSES.includes(status) ? status : undefined,
+    price: num(d.price),
+    format: {
+      mode: str(format.mode, "Online"),
+      hours: num(format.hours, 0),
+      access: str(format.access, "Acesso por 1 ano"),
+    },
+    href: str(d.href) || undefined,
+    featured: Boolean(d.featured),
+    image: imageUrl ? { url: imageUrl, alt: mediaAlt(d.image) } : undefined,
+  };
+}
+
+/** Formações (admin → fallback para src/config/courses.ts). */
+export const getCourses = cache(async (): Promise<Course[]> => {
+  const payload = await getPayloadClient();
+  if (!payload) return COURSES;
+  try {
+    const res = await payload.find({ collection: "courses", sort: "order", limit: 50, depth: 1 });
+    const docs = res.docs as unknown as Doc[];
+    return docs.length ? docs.map(mapCourse) : COURSES;
+  } catch (err) {
+    console.error("[cms] Erro ao buscar formações:", err);
+    return COURSES;
+  }
+});
+
+/** Configurações do site (admin → fallback para DEFAULT_SETTINGS). */
+export const getSiteSettings = cache(async (): Promise<SiteSettingsData> => {
+  const payload = await getPayloadClient();
+  if (!payload) return DEFAULT_SETTINGS;
+  try {
+    const g = (await payload.findGlobal({ slug: "site-settings", depth: 1 })) as unknown as Doc;
+    const sp = obj(g.spresenter);
+    const vo = obj(g.voluts);
+    const dn = obj(g.dorn);
+    const d = DEFAULT_SETTINGS;
+    return {
+      social: {
+        youtube: str(g.youtube) || d.social.youtube,
+        instagram: str(g.instagram) || d.social.instagram,
+        tiktok: str(g.tiktok) || d.social.tiktok,
+      },
+      videosMode: str(g.videosMode) === "selected" ? "selected" : "latest",
+      selectedVideos: (Array.isArray(g.selectedVideos) ? g.selectedVideos : [])
+        .map((v) => ({ url: str(obj(v).url), title: str(obj(v).title) || undefined }))
+        .filter((v) => v.url),
+      spresenter: {
+        url: str(sp.url) || d.spresenter.url,
+        coupon: str(sp.coupon) || d.spresenter.coupon,
+        discount: str(sp.discount) || d.spresenter.discount,
+        screen: mediaUrl(sp.screen),
+      },
+      voluts: { url: str(vo.url) || d.voluts.url, screen: mediaUrl(vo.screen) },
+      dorn: { url: str(dn.url) || d.dorn.url, image: mediaUrl(dn.image) },
+      gaId: str(g.gaMeasurementId) || d.gaId,
+    };
+  } catch (err) {
+    console.error("[cms] Erro ao buscar configurações:", err);
+    return DEFAULT_SETTINGS;
+  }
+});
+
+/* ---------------------------- Blog ---------------------------- */
+
+export type PostSummary = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  publishedAt: string;
+  updatedAt: string;
+  tags: string[];
+  cover?: { url: string; alt: string };
+};
+
+export type PostFull = PostSummary & {
+  content: unknown;
+  authorName?: string;
+  seo: { title?: string; description?: string; image?: string };
+};
+
+function mapPost(d: Doc, size: "card" | "wide" = "card"): PostSummary {
+  const coverUrl = mediaUrl(d.coverImage, size);
+  return {
+    slug: str(d.slug),
+    title: str(d.title),
+    excerpt: str(d.excerpt),
+    publishedAt: str(d.publishedAt) || str(d.createdAt),
+    updatedAt: str(d.updatedAt),
+    tags: Array.isArray(d.tags) ? d.tags.filter((t): t is string => typeof t === "string") : [],
+    cover: coverUrl ? { url: coverUrl, alt: mediaAlt(d.coverImage) } : undefined,
+  };
+}
+
+export const POSTS_PER_PAGE = 9;
+
+export const getPosts = cache(async (page = 1): Promise<{ posts: PostSummary[]; totalPages: number }> => {
+  const payload = await getPayloadClient();
+  if (!payload) return { posts: [], totalPages: 0 };
+  try {
+    const res = await payload.find({
+      collection: "posts",
+      where: { _status: { equals: "published" } },
+      sort: "-publishedAt",
+      limit: POSTS_PER_PAGE,
+      page,
+      depth: 1,
+    });
+    return { posts: (res.docs as unknown as Doc[]).map((d) => mapPost(d)), totalPages: res.totalPages };
+  } catch (err) {
+    console.error("[cms] Erro ao buscar posts:", err);
+    return { posts: [], totalPages: 0 };
+  }
+});
+
+export const getPost = cache(async (slug: string): Promise<PostFull | null> => {
+  const payload = await getPayloadClient();
+  if (!payload) return null;
+  try {
+    const res = await payload.find({
+      collection: "posts",
+      where: { and: [{ slug: { equals: slug } }, { _status: { equals: "published" } }] },
+      limit: 1,
+      depth: 2,
+    });
+    const d = (res.docs as unknown as Doc[])[0];
+    if (!d) return null;
+    const seo = obj(d.seo);
+    return {
+      ...mapPost(d, "wide"),
+      content: d.content,
+      authorName: str(obj(d.author).name) || undefined,
+      seo: {
+        title: str(seo.metaTitle) || undefined,
+        description: str(seo.metaDescription) || undefined,
+        image: mediaUrl(seo.ogImage, "wide") || mediaUrl(d.coverImage, "wide"),
+      },
+    };
+  } catch (err) {
+    console.error("[cms] Erro ao buscar post:", err);
+    return null;
+  }
+});
+
+/** Slugs e datas para o sitemap. */
+export async function getAllPostSlugs(): Promise<{ slug: string; updatedAt: string }[]> {
+  const payload = await getPayloadClient();
+  if (!payload) return [];
+  try {
+    const res = await payload.find({
+      collection: "posts",
+      where: { _status: { equals: "published" } },
+      limit: 1000,
+      depth: 0,
+      select: { slug: true, updatedAt: true },
+    });
+    return (res.docs as unknown as Doc[]).map((d) => ({ slug: str(d.slug), updatedAt: str(d.updatedAt) }));
+  } catch {
+    return [];
+  }
+}

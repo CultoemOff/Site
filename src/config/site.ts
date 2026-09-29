@@ -20,43 +20,52 @@ export const STAGE_SCREEN_LOGO_SRC = "/images/logo-culto-em-off.png";
 /** Foto real do Jonas Silva (sem edição). */
 export const ABOUT_PHOTO_SRC = "/images/jonas.silva.jpeg";
 
+// Redes sociais (valores padrão; podem ser alterados no admin)
+export const SOCIAL_DEFAULTS = {
+  youtube: "https://www.youtube.com/@cultoemoff",
+  instagram: "https://www.instagram.com/cultoemoff",
+  tiktok: "https://www.tiktok.com/@cultoemoff",
+};
+
 // YouTube
 export const YOUTUBE_CHANNEL_ID = "UCW6UK6AE4PyaJsH5PIAD7hw";
-export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@CultoemOff";
+export const YOUTUBE_CHANNEL_URL = SOCIAL_DEFAULTS.youtube;
 export const YOUTUBE_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`;
 export const YOUTUBE_REVALIDATE_SECONDS = 3600;
 
-// Parceiros
+// Parceiros (valores padrão; podem ser alterados no admin)
 export const SPRESENTER_URL = "https://spresenter.com/pt";
 export const SPRESENTER_COUPON = "CULTOEMOFF5";
+export const VOLUTS_URL = "https://voluts.com.br/igrejas/?parceiro=cultoemoff";
+export const DORN_URL = "https://www.dornstore.com.br/?bg_ref=5bEbXB4NMt";
 
-/**
- * Miniaturas das telas das ferramentas recomendadas.
- * TODO: salvar capturas oficiais em /public/images/ferramentas/ e preencher os caminhos.
- * Enquanto vazias, o site mostra uma ilustração genérica marcada como "imagem ilustrativa".
- */
-export const SPRESENTER_SCREEN_SRC = "";
+/** Configurações que o site usa (vindas do admin, com estes valores como padrão). */
+export type SiteSettingsData = {
+  social: { youtube: string; instagram: string; tiktok: string };
+  videosMode: "latest" | "selected";
+  selectedVideos: { url: string; title?: string }[];
+  spresenter: { url: string; coupon: string; discount: string; screen?: string };
+  voluts: { url: string; screen?: string };
+  dorn: { url: string; image?: string };
+  gaId: string;
+};
 
-export const VOLUTS_URL = "https://voluts.com.br/igrejas/";
-// TODO: adicionar URL do trial de 14 dias do Voluts.
-export const VOLUTS_TRIAL_URL = "";
-// TODO: ver comentário de SPRESENTER_SCREEN_SRC.
-export const VOLUTS_SCREEN_SRC = "";
+export const DEFAULT_SETTINGS: SiteSettingsData = {
+  social: { ...SOCIAL_DEFAULTS },
+  videosMode: "latest",
+  selectedVideos: [],
+  spresenter: { url: SPRESENTER_URL, coupon: SPRESENTER_COUPON, discount: "5% de desconto no plano Pro" },
+  voluts: { url: VOLUTS_URL },
+  dorn: { url: DORN_URL },
+  gaId: process.env.NEXT_PUBLIC_GA_ID || "",
+};
 
-/**
- * Redes sociais. Deixe a URL vazia para ocultar o link.
- * TODO: preencher as URLs oficiais restantes.
- */
-export const SOCIAL_LINKS: { label: string; href: string }[] = [
-  { label: "YouTube", href: YOUTUBE_CHANNEL_URL },
-  { label: "Instagram", href: "" },
-];
-
-/** Itens da navegação principal (âncoras da homepage). */
+/** Itens da navegação principal. */
 export const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Propósito", href: "/#proposito" },
   { label: "Formações", href: "/#formacoes" },
   { label: "Softwares", href: "/#softwares" },
   { label: "Ferramentas", href: "/#parceiros" },
   { label: "Sobre", href: "/#sobre" },
-]
+  { label: "Blog", href: "/blog" },
+];

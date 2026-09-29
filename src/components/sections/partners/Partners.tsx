@@ -1,32 +1,41 @@
 import ArrowButton from "@/components/ui/ArrowButton";
 import SectionHeader from "@/components/ui/SectionHeader";
-import {
-  SPRESENTER_COUPON,
-  SPRESENTER_SCREEN_SRC,
-  SPRESENTER_URL,
-  VOLUTS_SCREEN_SRC,
-  VOLUTS_TRIAL_URL,
-  VOLUTS_URL,
-} from "@/config/site";
+import type { SiteSettingsData } from "@/config/site";
 import CopyCouponButton from "./CopyCouponButton";
-import { PresenterScreen, VolunteersScreen } from "./ToolScreens";
+import { PresenterScreen, StoreScreen, VolunteersScreen } from "./ToolScreens";
 import "./partners.css";
 
-export default function Partners() {
+/** "5% de desconto no plano Pro" → destaca "5% de desconto". */
+function CouponBenefit({ text }: { text: string }) {
+  const m = text.match(/^(.*?desconto)\s*(.*)$/i);
+  return (
+    <p className="coupon__benefit">
+      {m ? (
+        <>
+          <strong>{m[1]}</strong> {m[2]}
+        </>
+      ) : (
+        text
+      )}
+    </p>
+  );
+}
+
+export default function Partners({ settings }: { settings: SiteSettingsData }) {
+  const { spresenter, voluts, dorn } = settings;
   return (
     <section id="parceiros" className="section section--paper partners" aria-labelledby="parceiros-title">
       <div className="section__inner">
         <SectionHeader channel="CH 05 · Ferramentas" id="parceiros-title" title="Ferramentas que recomendamos.">
-          <p>Softwares que usamos e indicamos para facilitar o dia a dia de quem serve na igreja.</p>
+          <p>Softwares e lojas que usamos e indicamos para facilitar o dia a dia de quem serve na igreja.</p>
         </SectionHeader>
 
         <div className="partners__grid">
           {/* SPresenter */}
           <article className="partner partner--spresenter" aria-labelledby="parceiro-spresenter" data-reveal>
             <div className="partner__media">
-              <PresenterScreen src={SPRESENTER_SCREEN_SRC || undefined} />
+              <PresenterScreen src={spresenter.screen} />
             </div>
-
             <div className="partner__content">
               <p className="partner__area">Projeção</p>
               <h3 id="parceiro-spresenter" className="partner__name">
@@ -37,21 +46,21 @@ export default function Partners() {
                 Bíblia, vídeos e fundos em camadas independentes, com várias saídas ao mesmo tempo, inclusive por NDI.
               </p>
 
-              <div className="coupon" aria-label="Cupom Culto em Off">
-                <div className="coupon__info">
-                  <p className="coupon__label">Cupom Culto em Off</p>
-                  <p className="coupon__benefit">
-                    <strong>5% de desconto</strong> no plano Pro
-                  </p>
+              {spresenter.coupon && (
+                <div className="coupon" aria-label="Cupom Culto em Off">
+                  <div className="coupon__info">
+                    <p className="coupon__label">Cupom Culto em Off</p>
+                    <CouponBenefit text={spresenter.discount} />
+                  </div>
+                  <div className="coupon__code-wrap">
+                    <code className="coupon__code">{spresenter.coupon}</code>
+                    <CopyCouponButton code={spresenter.coupon} />
+                  </div>
                 </div>
-                <div className="coupon__code-wrap">
-                  <code className="coupon__code">{SPRESENTER_COUPON}</code>
-                  <CopyCouponButton code={SPRESENTER_COUPON} />
-                </div>
-              </div>
+              )}
 
               <div className="partner__actions">
-                <ArrowButton href={SPRESENTER_URL} variant="ghost" external>
+                <ArrowButton href={spresenter.url} variant="ghost" external>
                   Conhecer o SPresenter
                 </ArrowButton>
               </div>
@@ -66,9 +75,8 @@ export default function Partners() {
             style={{ "--i": 1 } as React.CSSProperties}
           >
             <div className="partner__media">
-              <VolunteersScreen src={VOLUTS_SCREEN_SRC || undefined} />
+              <VolunteersScreen src={voluts.screen} />
             </div>
-
             <div className="partner__content">
               <p className="partner__area">Voluntários</p>
               <h3 id="parceiro-voluts" className="partner__name">
@@ -94,14 +102,35 @@ export default function Partners() {
               </div>
 
               <div className="partner__actions">
-                {/* TODO: VOLUTS_TRIAL_URL — o botão aparece quando a URL do trial for configurada em src/config/site.ts */}
-                {VOLUTS_TRIAL_URL && (
-                  <ArrowButton href={VOLUTS_TRIAL_URL} external>
-                    Testar grátis por 14 dias
-                  </ArrowButton>
-                )}
-                <ArrowButton href={VOLUTS_URL} variant="ghost" external>
-                  Conhecer o Voluts
+                <ArrowButton href={voluts.url} external>
+                  Testar grátis por 14 dias
+                </ArrowButton>
+              </div>
+            </div>
+          </article>
+
+          {/* Loja da Dorn */}
+          <article
+            className="partner partner--dorn"
+            aria-labelledby="parceiro-dorn"
+            data-reveal
+            style={{ "--i": 2 } as React.CSSProperties}
+          >
+            <div className="partner__media">
+              <StoreScreen src={dorn.image} />
+            </div>
+            <div className="partner__content">
+              <p className="partner__area">Câmeras e transmissão</p>
+              <h3 id="parceiro-dorn" className="partner__name">
+                Loja da Dorn
+              </h3>
+              <p className="partner__text">
+                Loja de câmeras e produtos de transmissão para igrejas. Um bom lugar para montar ou ampliar a estrutura
+                de vídeo e live da sua equipe.
+              </p>
+              <div className="partner__actions">
+                <ArrowButton href={dorn.url} external>
+                  Visitar a Loja da Dorn
                 </ArrowButton>
               </div>
             </div>
@@ -109,8 +138,8 @@ export default function Partners() {
         </div>
 
         <p className="partners__disclaimer" data-reveal>
-          SPresenter e Voluts são produtos independentes, de suas próprias empresas, e não pertencem ao Culto em Off.
-          São ferramentas parceiras que recomendamos.
+          SPresenter, Voluts e Loja da Dorn são empresas independentes e não pertencem ao Culto em Off. São parceiros
+          que recomendamos.
         </p>
       </div>
     </section>

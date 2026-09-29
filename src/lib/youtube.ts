@@ -1,4 +1,7 @@
+import { youTubeId } from "./youtubeId";
 import { YOUTUBE_CHANNEL_ID, YOUTUBE_FEED_URL, YOUTUBE_REVALIDATE_SECONDS } from "@/config/site";
+
+export { youTubeId };
 
 export type YouTubeVideo = {
   id: string;
@@ -61,6 +64,36 @@ export async function getLatestVideos(limit = 4): Promise<YouTubeVideo[]> {
   } catch {
     return [];
   }
+}
+
+/** Vídeos escolhidos no admin (título via oEmbed quando não informado). */
+export async function getSelectedVideos(list: { url: string; title?: string }[]): Promise<YouTubeVideo[]> {
+  const items = list
+    .map((v) => ({ ...v, id: youTubeId(v.url) }))
+    .filter((v): v is { url: string; title?: string; id: string } => Boolean(v.id));
+  return Promise.all(
+    items.map(async (v) => {
+      let title = v.title ?? "";
+      if (!title) {
+        try {
+          const res = await fetch(
+            `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${v.id}`)}`,
+            { next: { revalidate: 86400 }, signal: AbortSignal.timeout(5000) },
+          );
+          if (res.ok) title = String(((await res.json()) as { title?: string }).title ?? "");
+        } catch {
+          /* sem título: usa o texto padrão abaixo */
+        }
+      }
+      return {
+        id: v.id,
+        title: title || "Assistir no YouTube",
+        url: `https://www.youtube.com/watch?v=${v.id}`,
+        thumbnail: `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`,
+        published: "",
+      };
+    }),
+  );
 }
 
 /** "2026-09-12T15:00:00+00:00" → "12 set. 2026" */

@@ -8,3 +8,7 @@ build
 .vercel
 preview/dist
 preview/pub
+
+# Payload
+/media
+.env

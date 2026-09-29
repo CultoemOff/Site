@@ -16,13 +16,15 @@ await esbuild.build({
   alias: {
     "next/image": path.join(root, "preview/shims/next-image.tsx"),
     "next/link": path.join(root, "preview/shims/next-link.tsx"),
+    "next/script": path.join(root, "preview/shims/next-script.tsx"),
+    "next/navigation": path.join(root, "preview/shims/next-navigation.ts"),
     "tailwindcss": path.join(root, "preview/shims/empty.css"),
     "@": path.join(root, "src"),
     "react": `${M}/react`,
     "react-dom": `${M}/react-dom`,
   },
   nodePaths: [M],
-  define: { "process.env.NODE_ENV": '"production"' },
+  define: { "process.env.NODE_ENV": '"production"', "process.env.NEXT_PUBLIC_GA_ID": '""', "process.env.NEXT_PUBLIC_SITE_URL": '""' },
   logLevel: "warning",
   plugins: [
     {

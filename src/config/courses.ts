@@ -56,6 +56,8 @@ export type Course = {
   format: CourseFormat;
   href?: string;
   featured?: boolean;
+  /** imagem enviada pelo admin (substitui o diagrama) */
+  image?: { url: string; alt: string };
 };
 
 const ONLINE_1_ANO = (hours: number): CourseFormat => ({ mode: "Online", hours, access: "Acesso por 1 ano" });

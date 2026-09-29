@@ -1,11 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LOGO_SRC, NAV_LINKS, SITE_NAME, SITE_TAGLINE, SOCIAL_LINKS } from "@/config/site";
+import SocialIcon from "@/components/ui/SocialIcon";
+import { LOGO_SRC, NAV_LINKS, SITE_NAME, SITE_TAGLINE, type SiteSettingsData } from "@/config/site";
+import ConsentLink from "@/components/analytics/ConsentLink";
+import { safeGaId } from "@/lib/seo";
 import "./footer.css";
 
-export default function Footer() {
-  const socials = SOCIAL_LINKS.filter((s) => s.href);
+export default function Footer({ settings }: { settings: SiteSettingsData }) {
+  const socials = (
+    [
+      { key: "youtube", label: "YouTube", href: settings.social.youtube },
+      { key: "instagram", label: "Instagram", href: settings.social.instagram },
+      { key: "tiktok", label: "TikTok", href: settings.social.tiktok },
+    ] as const
+  ).filter((s) => s.href);
   const year = new Date().getFullYear();
+
   return (
     <footer className="footer">
       <div className="footer__inner">
@@ -17,6 +27,17 @@ export default function Footer() {
             </span>
           </Link>
           <p>{SITE_TAGLINE}</p>
+          {socials.length > 0 && (
+            <ul className="footer__social" aria-label="Redes sociais">
+              {socials.map((s) => (
+                <li key={s.key}>
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`${s.label} (abre em nova aba)`}>
+                    <SocialIcon name={s.key} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <nav className="footer__col" aria-label="Rodapé">
@@ -38,7 +59,7 @@ export default function Footer() {
             <p className="footer__title">Acompanhe</p>
             <ul>
               {socials.map((s) => (
-                <li key={s.label}>
+                <li key={s.key}>
                   <a href={s.href} target="_blank" rel="noopener noreferrer">
                     {s.label}
                     <span className="sr-only"> (abre em nova aba)</span>
@@ -54,10 +75,13 @@ export default function Footer() {
         <p>
           © {year} {SITE_NAME}. Formação técnica para quem serve na igreja.
         </p>
-        <p className="footer__signal" aria-hidden="true">
-          <span />
-          SINAL OK
-        </p>
+        <div className="footer__legal">
+          {safeGaId(settings.gaId) && <ConsentLink />}
+          <p className="footer__signal" aria-hidden="true">
+            <span />
+            SINAL OK
+          </p>
+        </div>
       </div>
     </footer>
   );

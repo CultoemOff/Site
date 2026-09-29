@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import ViewportFx from "@/components/fx/ViewportFx";
 import Hero from "@/components/hero/Hero";
 import Footer from "@/components/layout/Footer";
@@ -9,12 +10,20 @@ import Partners from "@/components/sections/partners/Partners";
 import Problems from "@/components/sections/problems/Problems";
 import Purpose from "@/components/sections/purpose/Purpose";
 import SoftwareSection from "@/components/sections/software/SoftwareSection";
-import YouTube from "@/components/sections/youtube/YouTube";
+import type { Course } from "@/config/courses";
+import type { SiteSettingsData } from "@/config/site";
 
-// Revalida a página a cada 1 h (vídeos do YouTube).
-export const revalidate = 3600;
+type Props = {
+  courses: Course[];
+  settings: SiteSettingsData;
+  /** seção do YouTube (componente assíncrono no servidor) */
+  youtube: ReactNode;
+  /** últimos posts do blog (opcional) */
+  latestPosts?: ReactNode;
+};
 
-export default function Home() {
+/** Composição da homepage (sem busca de dados). */
+export default function HomeView({ courses, settings, youtube, latestPosts }: Props) {
   return (
     <>
       <Navbar />
@@ -22,14 +31,15 @@ export default function Home() {
         <Hero />
         <Problems />
         <Purpose />
-        <Courses />
+        <Courses courses={courses} />
         <SoftwareSection />
-        <Partners />
+        <Partners settings={settings} />
         <About />
-        <YouTube />
+        {youtube}
+        {latestPosts}
         <Manifesto />
       </main>
-      <Footer />
+      <Footer settings={settings} />
       <ViewportFx />
     </>
   );

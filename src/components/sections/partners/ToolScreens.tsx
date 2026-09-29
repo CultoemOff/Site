@@ -93,3 +93,38 @@ export function VolunteersScreen({ src }: { src?: string }) {
     </div>
   );
 }
+
+export function StoreScreen({ src }: { src?: string }) {
+  return (
+    <div className="tool-shot tool-shot--store">
+      <div className="tool-shot__window tool-shot__window--store" aria-hidden={src ? undefined : true}>
+        <div className="tool-shot__bar">
+          <i />
+          <i />
+          <i />
+        </div>
+        {src ? (
+          <Image src={src} alt="Loja da Dorn" fill sizes="(max-width: 860px) 90vw, 400px" className="tool-shot__img" />
+        ) : (
+          <div className="sm" data-anim>
+            {[
+              ["ptz", "Câmera PTZ"],
+              ["cam", "Filmadora"],
+              ["mixer", "Mesa de corte"],
+              ["encoder", "Placa de captura"],
+              ["tripod", "Tripé"],
+              ["cable", "Cabos e conversores"],
+            ].map(([kind, label], i) => (
+              <div key={kind} className="sm__item" style={{ "--i": i } as React.CSSProperties}>
+                <span className={`sm__icon sm__icon--${kind}`} />
+                <span className="sm__label">{label}</span>
+                <span className="sm__price" />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      {!src && <Caption />}
+    </div>
+  );
+}
