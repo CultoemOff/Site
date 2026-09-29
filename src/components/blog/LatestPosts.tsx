@@ -11,7 +11,7 @@ export default function LatestPosts({ posts }: { posts: PostSummary[] }) {
     <section className="section section--paper latest-posts" aria-labelledby="blog-home-title">
       <div className="section__inner">
         <SectionHeader channel="CH 08 · Blog" id="blog-home-title" title="Artigos para quem serve na técnica." />
-        <ul className="blog-grid">
+        <ul className="blog-grid blog-grid--home">
           {posts.slice(0, 3).map((p, i) => (
             <PostCard key={p.slug} post={p} index={i} />
           ))}

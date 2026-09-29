@@ -487,3 +487,9 @@
   justify-content: center;
   margin-top: 36px;
 }
+
+/* home: até 3 cards, centralizados quando houver menos */
+.blog-grid--home {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 380px));
+  justify-content: center;
+}

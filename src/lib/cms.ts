@@ -1,6 +1,8 @@
 import { cache } from "react";
 import { COURSES, type Course, type CourseDiagram, type CourseStatus } from "@/config/courses";
 import { DEFAULT_SETTINGS, type SiteSettingsData } from "@/config/site";
+import { toLexical, type SeedPost } from "@/content/lexical";
+import { SEED_POSTS } from "@/content/posts";
 
 /**
  * Camada de dados do site.
@@ -151,9 +153,29 @@ function mapPost(d: Doc, size: "card" | "wide" = "card"): PostSummary {
 
 export const POSTS_PER_PAGE = 9;
 
+/* Sem banco configurado, o blog mostra os artigos migrados (src/content/posts). */
+function staticSummary(p: SeedPost): PostSummary {
+  return {
+    slug: p.slug,
+    title: p.title,
+    excerpt: p.excerpt,
+    publishedAt: p.publishedAt,
+    updatedAt: p.publishedAt,
+    tags: p.tags,
+    cover: p.cover ? { url: p.cover.localPath, alt: p.cover.alt } : undefined,
+  };
+}
+const STATIC_POSTS = [...SEED_POSTS].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+
 export const getPosts = cache(async (page = 1): Promise<{ posts: PostSummary[]; totalPages: number }> => {
   const payload = await getPayloadClient();
-  if (!payload) return { posts: [], totalPages: 0 };
+  if (!payload) {
+    const start = (page - 1) * POSTS_PER_PAGE;
+    return {
+      posts: STATIC_POSTS.slice(start, start + POSTS_PER_PAGE).map(staticSummary),
+      totalPages: Math.ceil(STATIC_POSTS.length / POSTS_PER_PAGE),
+    };
+  }
   try {
     const res = await payload.find({
       collection: "posts",
@@ -172,7 +194,12 @@ export const getPosts = cache(async (page = 1): Promise<{ posts: PostSummary[]; 
 
 export const getPost = cache(async (slug: string): Promise<PostFull | null> => {
   const payload = await getPayloadClient();
-  if (!payload) return null;
+  if (!payload) {
+    const p = STATIC_POSTS.find((x) => x.slug === slug);
+    return p
+      ? { ...staticSummary(p), content: toLexical(p.blocks), authorName: "Jonas Silva", seo: { image: p.cover?.localPath } }
+      : null;
+  }
   try {
     const res = await payload.find({
       collection: "posts",
@@ -202,7 +229,7 @@ export const getPost = cache(async (slug: string): Promise<PostFull | null> => {
 /** Slugs e datas para o sitemap. */
 export async function getAllPostSlugs(): Promise<{ slug: string; updatedAt: string }[]> {
   const payload = await getPayloadClient();
-  if (!payload) return [];
+  if (!payload) return STATIC_POSTS.map((p) => ({ slug: p.slug, updatedAt: p.publishedAt }));
   try {
     const res = await payload.find({
       collection: "posts",
