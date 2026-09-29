@@ -15,7 +15,7 @@ export default function Hero() {
         </p>
 
         <h1 id="hero-title" className="hero__title">
-          A escola de tecnologia <span className="hero__title-accent">para quem serve na Igreja.</span>
+          A escola técnica para voluntários <span className="hero__title-accent">que servem na Igreja.</span>
         </h1>
 
         <p className="hero__lead">
