@@ -58,28 +58,34 @@ await payload.updateGlobal({
   },
 });
 
-/** Envia a capa para Mídias: baixa a imagem original; se não conseguir, usa o arquivo em /public. */
-async function uploadCover(cover: NonNullable<SeedPost["cover"]>) {
-  if (cover.sourceUrl) {
+/** Envia uma imagem para Mídias: baixa da URL de origem; se não conseguir, usa o arquivo em /public. */
+async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: string }) {
+  if (img.sourceUrl) {
     try {
-      const res = await fetch(cover.sourceUrl);
+      const res = await fetch(img.sourceUrl);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = Buffer.from(await res.arrayBuffer());
-      const name = cover.sourceUrl.split("/").pop() || "capa.png";
+      const name = img.sourceUrl.split("/").pop() || "imagem.png";
       return await payload.create({
         collection: "media",
-        data: { alt: cover.alt },
+        data: { alt: img.alt },
         file: { data, mimetype: res.headers.get("content-type") || "image/png", name, size: data.length },
       });
     } catch (err) {
-      payload.logger.warn(`Não consegui baixar a capa original (${cover.sourceUrl}): ${String(err)}. Usando public${cover.localPath}.`);
+      payload.logger.warn(`Não consegui baixar ${img.sourceUrl}: ${String(err)}`);
     }
   }
-  const local = path.resolve(process.cwd(), "public" + cover.localPath);
-  if (fs.existsSync(local)) {
-    return payload.create({ collection: "media", data: { alt: cover.alt }, filePath: local });
+  if (img.localPath) {
+    const local = path.resolve(process.cwd(), "public" + img.localPath);
+    if (fs.existsSync(local)) {
+      return payload.create({ collection: "media", data: { alt: img.alt }, filePath: local });
+    }
   }
   return null;
+}
+
+async function uploadCover(cover: NonNullable<SeedPost["cover"]>) {
+  return uploadImage(cover);
 }
 
 const firstUser = await payload.find({ collection: "users", limit: 1, depth: 0 });
@@ -90,6 +96,14 @@ for (const post of SEED_POSTS) {
   const exists = await payload.find({ collection: "posts", where: { slug: { equals: post.slug } }, limit: 1, draft: true });
   if (exists.totalDocs > 0) continue;
   const cover = post.cover ? await uploadCover(post.cover) : null;
+  // imagens dentro do texto
+  const images = new Map<string, string | number>();
+  for (const block of post.blocks) {
+    if ("img" in block && !images.has(block.img.sourceUrl)) {
+      const media = await uploadImage(block.img);
+      if (media) images.set(block.img.sourceUrl, media.id);
+    }
+  }
   await payload.create({
     collection: "posts",
     data: {
@@ -98,7 +112,11 @@ for (const post of SEED_POSTS) {
       excerpt: post.excerpt,
       publishedAt: post.publishedAt,
       tags: post.tags,
-      content: toLexical(post.blocks),
+      content: toLexical(
+        // imagens que não puderam ser enviadas ficam de fora do post
+        post.blocks.filter((b) => !("img" in b) || images.has(b.img.sourceUrl)),
+        images,
+      ),
       ...(cover ? { coverImage: cover.id } : {}),
       ...(authorId ? { author: authorId } : {}),
       _status: "published",
