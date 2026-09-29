@@ -1,0 +1,46 @@
+/* ==========================================================
+   Reveal (entrada de conteúdo) + pausa de animações fora da tela
+   ========================================================== */
+
+/* Antes de entrar na tela: escondido. Ao entrar: animação com fill "backwards",
+   que não prende o transform final (hover e outras transições continuam livres). */
+.js-reveal [data-reveal]:not(.is-visible) {
+  opacity: 0;
+}
+.js-reveal [data-reveal].is-visible {
+  animation: reveal-in 0.9s var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* animações decorativas pausam quando o bloco não está visível
+   (a animação de entrada do reveal nunca é pausada) */
+.reveal-live [data-anim]:not([data-inview]) *:not([data-reveal]) {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-reveal],
+  .js-reveal [data-reveal]:not(.is-visible) {
+    opacity: 1;
+    animation: none;
+  }
+  [data-anim] *,
+  [data-anim] {
+    animation: none !important;
+  }
+  [data-anim] .fx-motion {
+    display: none;
+  }
+}

@@ -1,0 +1,84 @@
+/* ==========================================================
+   Base das seções
+   ========================================================== */
+
+.section {
+  position: relative;
+  padding-block: clamp(80px, 11vw, 140px);
+  padding-inline: 20px;
+  overflow: hidden;
+}
+.section__inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section--paper {
+  background: var(--paper);
+  color: var(--ink);
+}
+.section--abyss {
+  background: var(--abyss);
+  color: var(--text-on-dark);
+}
+
+.section-head {
+  display: grid;
+  gap: 18px;
+  max-width: 760px;
+  margin-bottom: clamp(40px, 6vw, 64px);
+}
+.section-head--center {
+  margin-inline: auto;
+  text-align: center;
+  justify-items: center;
+}
+.section-head__channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--royal);
+}
+.section--abyss .section-head__channel,
+.section--royal .section-head__channel {
+  color: #8fb6ff;
+}
+.section-head__led {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--electric);
+  box-shadow: 0 0 10px var(--electric);
+}
+.section-head__title {
+  margin: 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2rem, 4.2vw, 3.3rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.section-head__intro {
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  line-height: 1.65;
+  color: #45506b;
+  text-wrap: pretty;
+}
+.section-head__intro p {
+  margin: 0;
+}
+.section--abyss .section-head__intro {
+  color: var(--muted-on-dark);
+}
+
+.mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
