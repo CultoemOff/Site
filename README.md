@@ -10,6 +10,7 @@ Acesse `https://SEU-SITE/admin` e faça login.
 | Menu do admin | O que dá para fazer |
 |---|---|
 | **Conteúdo → Blog** | Criar posts com texto, títulos, listas, citações, links, imagens, vídeos enviados e vídeos do YouTube (bloco “Vídeo do YouTube”). Rascunho/publicado, capa, tags, SEO por post. |
+| **Conteúdo → Equipamentos** | Equipamentos recomendados: nome, categoria, frase, link da loja, foto (opcional), ordem e se aparece na home (até 5). |
 | **Escola → Formações** | Nome, frase, descrição, preço, status, modalidade, carga horária, acesso, link de inscrição, imagem, tópicos, ordem e destaque. |
 | **Administração → Configurações do site** | YouTube/Instagram/TikTok, vídeos do YouTube (últimos automaticamente ou escolhidos à mão), links e cupom dos parceiros, capturas das telas, ID do Google Analytics. |
 | **Conteúdo → Mídias** | Biblioteca de imagens e vídeos. |
@@ -69,6 +70,7 @@ npm run generate:types      # (opcional) gera src/payload-types.ts
 |---|---|
 | Valores padrão (links, cupom, redes, menu) | `src/config/site.ts` |
 | Formações padrão (usadas sem banco e no seed) | `src/config/courses.ts` |
+| Equipamentos padrão | `src/config/equipment.ts` |
 | Softwares (PTZ Control Web, Remote de Iluminação) | `src/config/software.ts` |
 | Campos do admin | `src/collections/*`, `src/globals/SiteSettings.ts` |
 | Palco do hero (moving heads, cores, foco) | `src/components/hero/stageRig.ts` |
@@ -77,10 +79,10 @@ npm run generate:types      # (opcional) gera src/payload-types.ts
 
 ```
 src/
-  app/(frontend)/   site: home, /formacoes, /blog, /blog/[slug], 404
+  app/(frontend)/   site: home, /formacoes, /equipamentos, /blog, /blog/[slug], 404
   app/(payload)/    admin e API do Payload (arquivos padrão)
   app/sitemap.ts, robots.ts
-  collections/      Posts, Courses, Media, Users
+  collections/      Posts, Courses, Equipment, Media, Users
   globals/          SiteSettings
   lib/cms.ts        leitura do admin com fallback para src/config
   lib/youtube.ts    feed do canal (revalida a cada 1 h) e vídeos escolhidos
@@ -96,3 +98,4 @@ preview/            prévia fora do Next (não faz parte do build)
 - Links “Conhecer” e “Download” do PTZ Control Web (`src/config/software.ts`).
 - Links de inscrição das formações (admin → Formações).
 - Preços e cargas horárias atuais são provisórios.
+- Fotos dos equipamentos (admin → Equipamentos). Sem foto, o card mostra uma ilustração.

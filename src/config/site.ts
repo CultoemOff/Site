@@ -69,7 +69,8 @@ export const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Manifesto", href: "/#manifesto" },
   { label: "Formações", href: "/#formacoes" },
   { label: "Softwares", href: "/#softwares" },
-  { label: "Ferramentas", href: "/#parceiros" },
+  { label: "Parceiros", href: "/#parceiros" },
   { label: "Sobre", href: "/#sobre" },
   { label: "Blog", href: "/blog" },
+  { label: "Equipamentos", href: "/equipamentos" },
 ];

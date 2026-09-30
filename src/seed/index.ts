@@ -8,6 +8,7 @@ import path from "path";
 import { getPayload } from "payload";
 import config from "../payload.config";
 import { COURSES } from "../config/courses";
+import { EQUIPMENT } from "../config/equipment";
 import { DEFAULT_SETTINGS } from "../config/site";
 import { toLexical, type SeedPost } from "../content/lexical";
 import { SEED_POSTS } from "../content/posts";
@@ -39,6 +40,27 @@ for (const [i, c] of COURSES.entries()) {
     },
   });
   created++;
+}
+
+let equipmentCreated = 0;
+for (const [i, e] of EQUIPMENT.entries()) {
+  const exists = await payload.find({ collection: "equipment", where: { slug: { equals: e.id } }, limit: 1 });
+  if (exists.totalDocs > 0) continue;
+  await payload.create({
+    collection: "equipment",
+    data: {
+      name: e.name,
+      slug: e.id,
+      order: (i + 1) * 10,
+      category: e.category,
+      icon: e.icon,
+      note: e.note ?? "",
+      href: e.href,
+      store: e.store ?? "",
+      featured: e.featured,
+    },
+  });
+  equipmentCreated++;
 }
 
 await payload.updateGlobal({
@@ -126,6 +148,6 @@ for (const post of SEED_POSTS) {
 }
 
 payload.logger.info(
-  `Seed concluído: ${created} formação(ões) e ${postsCreated} post(s) criados; configurações atualizadas.`,
+  `Seed concluído: ${created} formação(ões), ${equipmentCreated} equipamento(s) e ${postsCreated} post(s) criados; configurações atualizadas.`,
 );
 process.exit(0);

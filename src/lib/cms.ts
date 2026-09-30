@@ -1,5 +1,13 @@
 import { cache } from "react";
 import { COURSES, type Course, type CourseDiagram, type CourseStatus } from "@/config/courses";
+import {
+  CATEGORY_ICON,
+  EQUIPMENT,
+  EQUIPMENT_CATEGORIES,
+  type Equipment,
+  type EquipmentCategory,
+  type EquipmentIcon,
+} from "@/config/equipment";
 import { DEFAULT_SETTINGS, type SiteSettingsData } from "@/config/site";
 import { toLexical, type SeedPost } from "@/content/lexical";
 import { SEED_POSTS } from "@/content/posts";
@@ -81,6 +89,40 @@ export const getCourses = cache(async (): Promise<Course[]> => {
   } catch (err) {
     console.error("[cms] Erro ao buscar formações:", err);
     return COURSES;
+  }
+});
+
+const ICONS: EquipmentIcon[] = ["mic", "rack", "switch", "power", "camera", "light", "cable"];
+
+function mapEquipment(d: Doc): Equipment {
+  const cat = str(d.category) as EquipmentCategory;
+  const category = cat in EQUIPMENT_CATEGORIES ? cat : "acessorios";
+  const icon = str(d.icon) as EquipmentIcon;
+  const imageUrl = mediaUrl(d.image);
+  return {
+    id: str(d.slug) || str(d.id),
+    name: str(d.name),
+    category,
+    icon: ICONS.includes(icon) ? icon : CATEGORY_ICON[category],
+    note: str(d.note) || undefined,
+    href: str(d.href),
+    store: str(d.store) || undefined,
+    image: imageUrl ? { url: imageUrl, alt: mediaAlt(d.image) } : undefined,
+    featured: Boolean(d.featured),
+  };
+}
+
+/** Equipamentos recomendados (admin → fallback para src/config/equipment.ts). */
+export const getEquipment = cache(async (): Promise<Equipment[]> => {
+  const payload = await getPayloadClient();
+  if (!payload) return EQUIPMENT;
+  try {
+    const res = await payload.find({ collection: "equipment", sort: "order", limit: 200, depth: 1 });
+    const docs = res.docs as unknown as Doc[];
+    return docs.length ? docs.map((d) => mapEquipment(d)).filter((e) => e.href) : EQUIPMENT;
+  } catch (err) {
+    console.error("[cms] Erro ao buscar equipamentos:", err);
+    return EQUIPMENT;
   }
 });
 

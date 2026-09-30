@@ -136,7 +136,7 @@
   display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .nav__links,
   .nav__cta {
     display: none;
@@ -165,5 +165,21 @@
     color: #fff !important;
     font-weight: 600;
     text-align: center;
+  }
+}
+
+/* marca, links e botão nunca quebram linha */
+.nav__brand,
+.nav__links a,
+.nav__cta {
+  white-space: nowrap;
+}
+@media (max-width: 1240px) {
+  .nav__links a {
+    padding-inline: 9px;
+  }
+  .nav__links a::after {
+    left: 9px;
+    right: 9px;
   }
 }

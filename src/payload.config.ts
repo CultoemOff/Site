@@ -8,6 +8,7 @@ import { buildConfig } from "payload";
 import sharp from "sharp";
 import { YouTubeBlock } from "./blocks/YouTube";
 import { Courses } from "./collections/Courses";
+import { Equipment } from "./collections/Equipment";
 import { Media } from "./collections/Media";
 import { Posts } from "./collections/Posts";
 import { Users } from "./collections/Users";
@@ -36,7 +37,7 @@ export default buildConfig({
     supportedLanguages: { pt },
     fallbackLanguage: "pt",
   },
-  collections: [Posts, Courses, Media, Users],
+  collections: [Posts, Courses, Equipment, Media, Users],
   globals: [SiteSettings],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
