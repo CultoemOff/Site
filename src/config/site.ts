@@ -47,6 +47,8 @@ export type SiteSettingsData = {
   spresenter: { url: string; coupon: string; discount: string; screen?: string };
   voluts: { url: string; screen?: string };
   dorn: { url: string; image?: string };
+  /** link de download do PTZ Control Web (vazio = usa o padrão de src/config/software.ts) */
+  ptzDownloadUrl: string;
   gaId: string;
   /** ID do Meta Pixel (opcional; só carrega após o consentimento) */
   metaPixelId: string;
@@ -61,16 +63,17 @@ export type FaqItem = { question: string; answer: string };
 
 /**
  * Números das redes em 29/09/2026.
+ * Visualizações somadas nas redes (informado por Jonas): mais de 1 milhão.
  * YouTube (YouTube Studio): 145 mil visualizações, 5,4 mil horas assistidas, 2,5 mil inscritos, 86 vídeos.
  * Instagram: 5.540 seguidores, 44 posts. TikTok: 1.625 seguidores, 8.840 curtidas, 46 vídeos.
  * Visualizações do Instagram e do TikTok não são públicas: atualize pelo admin.
  */
 export const AUDIENCE_DEFAULTS: SiteSettingsData["audience"] = {
   stats: [
-    { value: "145 mil+", label: "visualizações no YouTube" },
+    { value: "1 milhão+", label: "visualizações nas redes" },
     { value: "5,4 mil", label: "horas assistidas no YouTube" },
     { value: "9,6 mil", label: "seguidores no YouTube, Instagram e TikTok" },
-    { value: "170+", label: "vídeos e posts publicados" },
+    { value: "180+", label: "vídeos e posts publicados" },
   ],
   note: "Dados das redes em setembro de 2026.",
 };
@@ -124,6 +127,7 @@ export const DEFAULT_SETTINGS: SiteSettingsData = {
   dorn: { url: DORN_URL, image: "/partners/dorn.jpg" },
   gaId: process.env.NEXT_PUBLIC_GA_ID || "",
   metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || "",
+  ptzDownloadUrl: "",
   audience: AUDIENCE_DEFAULTS,
   faq: FAQ_DEFAULTS,
 };

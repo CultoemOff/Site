@@ -91,6 +91,20 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: "Softwares",
+          fields: [
+            {
+              name: "ptzDownloadUrl",
+              type: "text",
+              label: "Link de download do PTZ Control Web",
+              admin: {
+                description:
+                  "Liberado depois do cadastro na página do software. Se vazio, usa o link padrão (GitHub → releases/latest).",
+              },
+            },
+          ],
+        },
+        {
           label: "Números das redes",
           description: "Aparecem no CH 06 (Quem está por trás). Se a lista ficar vazia, usa os números padrão do código.",
           fields: [
@@ -160,7 +174,7 @@ export const SiteSettings: GlobalConfig = {
   hooks: {
     afterChange: [
       ({ doc }) => {
-        revalidate("/", "/blog", "/formacoes", "/equipamentos");
+        revalidate("/", "/blog", "/formacoes", "/equipamentos", "/softwares/ptz-control-web");
         return doc;
       },
     ],

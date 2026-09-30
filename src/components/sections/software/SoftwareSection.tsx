@@ -69,7 +69,12 @@ function SoftwareCard({ sw, index }: { sw: Software; index: number }) {
             )}
           </dl>
         )}
-        {!inDev && (
+        {!inDev && sw.pageUrl && (
+          <div className="soft__actions">
+            <ArrowButton href={sw.pageUrl}>Conheça e baixe</ArrowButton>
+          </div>
+        )}
+        {!inDev && !sw.pageUrl && (
           <div className="soft__actions">
             <Action href={sw.learnMoreUrl} label="Conhecer" />
             <Action href={sw.downloadUrl} label="Download" primary />

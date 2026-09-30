@@ -156,6 +156,7 @@ export const getSiteSettings = cache(async (): Promise<SiteSettingsData> => {
       dorn: { url: str(dn.url) || d.dorn.url, image: mediaUrl(dn.image) || d.dorn.image },
       gaId: str(g.gaMeasurementId) || d.gaId,
       metaPixelId: str(g.metaPixelId) || d.metaPixelId,
+      ptzDownloadUrl: str(g.ptzDownloadUrl),
       audience: (() => {
         const stats = (Array.isArray(g.audienceStats) ? g.audienceStats : [])
           .map((s) => ({ value: str(obj(s).value), label: str(obj(s).label) }))

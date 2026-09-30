@@ -60,7 +60,7 @@ export default function Partners({ settings }: { settings: SiteSettingsData }) {
               )}
 
               <div className="partner__actions">
-                <ArrowButton href={spresenter.url} variant="ghost" external track={{ event: "click_partner", label: "SPresenter" }}>
+                <ArrowButton href={spresenter.url} external track={{ event: "click_partner", label: "SPresenter" }}>
                   Conhecer o SPresenter
                 </ArrowButton>
               </div>

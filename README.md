@@ -13,6 +13,7 @@ Acesse `https://SEU-SITE/admin` e faça login.
 | **Conteúdo → Equipamentos** | Equipamentos recomendados: nome, categoria, frase, link da loja, foto (opcional), ordem e se aparece na home (até 5). |
 | **Escola → Formações** | Nome, frase, descrição, preço, status, modalidade, carga horária, acesso, link de inscrição, imagem, tópicos, ordem e destaque. |
 | **Administração → Configurações do site** | Números das redes (CH 06), perguntas frequentes, YouTube/Instagram/TikTok, vídeos do YouTube (últimos automaticamente ou escolhidos à mão), links e cupom dos parceiros, capturas das telas, ID do Google Analytics. |
+| **Contatos → Cadastros** | Nome, celular (com DDI) e e-mail de quem se cadastrou para baixar o PTZ Control Web, com o texto e a data do consentimento. |
 | **Conteúdo → Mídias** | Biblioteca de imagens e vídeos. |
 | **Administração → Usuários** | Quem pode entrar no admin. |
 
@@ -81,10 +82,10 @@ npm run generate:types      # (opcional) gera src/payload-types.ts
 
 ```
 src/
-  app/(frontend)/   site: home, /formacoes, /equipamentos, /blog, /blog/[slug], 404
+  app/(frontend)/   site: home, /formacoes, /softwares/ptz-control-web, /equipamentos, /blog, /blog/[slug], 404
   app/(payload)/    admin e API do Payload (arquivos padrão)
   app/sitemap.ts, robots.ts
-  collections/      Posts, Courses, Equipment, Media, Users
+  collections/      Posts, Courses, Equipment, Leads, Media, Users
   globals/          SiteSettings
   lib/cms.ts        leitura do admin com fallback para src/config
   lib/youtube.ts    feed do canal (revalida a cada 1 h) e vídeos escolhidos
@@ -97,7 +98,7 @@ preview/            prévia fora do Next (não faz parte do build)
 ## Pendências
 
 - Capturas dos parceiros ficam em `public/partners/` (padrão). Para trocar, envie outra em Configurações do site → Parceiros.
-- Links “Conhecer” e “Download” do PTZ Control Web (`src/config/software.ts`).
+- Link de download do PTZ Control Web: o padrão aponta para as releases do GitHub (o repositório precisa ser público) — ou troque em Configurações do site → Softwares.
 - Links de inscrição das formações (admin → Formações).
 - Preços e cargas horárias atuais são provisórios.
 - Fotos dos equipamentos (admin → Equipamentos). Sem foto, o card mostra uma ilustração.

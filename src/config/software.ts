@@ -2,6 +2,7 @@
  * Softwares do Culto em Off.
  * - `features`: somente funcionalidades confirmadas. TODO: revisar a lista do PTZ Control Web.
  * - `learnMoreUrl` / `downloadUrl`: vazios = o botão aparece como "em breve", sem link.
+ * - `pageUrl`: quando existe, o card da home mostra só o botão "Conheça e baixe" para essa página.
  */
 
 export type SoftwareStatus = "disponivel" | "em-desenvolvimento" | "beta";
@@ -26,6 +27,7 @@ export type Software = {
   status?: SoftwareStatus;
   learnMoreUrl: string;
   downloadUrl: string;
+  pageUrl?: string;
   visual: "ptz" | "light-remote";
 };
 
@@ -47,7 +49,9 @@ export const SOFTWARE: Software[] = [
     ],
     worksWith: ["OBS", "vMix", "SPresenter", "Qualquer software de transmissão"],
     learnMoreUrl: "",
-    downloadUrl: "",
+    // Link padrão do download (liberado após o cadastro). Pode ser trocado no admin → Configurações do site → Softwares.
+    downloadUrl: "https://github.com/CultoemOff/PTZ-Control-Web/releases/latest",
+    pageUrl: "/softwares/ptz-control-web",
     visual: "ptz",
   },
   {
