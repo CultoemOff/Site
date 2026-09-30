@@ -108,10 +108,10 @@ export const getSiteSettings = cache(async (): Promise<SiteSettingsData> => {
         url: str(sp.url) || d.spresenter.url,
         coupon: str(sp.coupon) || d.spresenter.coupon,
         discount: str(sp.discount) || d.spresenter.discount,
-        screen: mediaUrl(sp.screen),
+        screen: mediaUrl(sp.screen) || d.spresenter.screen,
       },
-      voluts: { url: str(vo.url) || d.voluts.url, screen: mediaUrl(vo.screen) },
-      dorn: { url: str(dn.url) || d.dorn.url, image: mediaUrl(dn.image) },
+      voluts: { url: str(vo.url) || d.voluts.url, screen: mediaUrl(vo.screen) || d.voluts.screen },
+      dorn: { url: str(dn.url) || d.dorn.url, image: mediaUrl(dn.image) || d.dorn.image },
       gaId: str(g.gaMeasurementId) || d.gaId,
     };
   } catch (err) {

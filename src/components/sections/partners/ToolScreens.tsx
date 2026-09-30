@@ -13,14 +13,16 @@ function Caption() {
 export function PresenterScreen({ src }: { src?: string }) {
   return (
     <div className="tool-shot tool-shot--presenter">
-      <div className="tool-shot__window" aria-hidden={src ? undefined : true}>
-        <div className="tool-shot__bar">
-          <i />
-          <i />
-          <i />
-        </div>
+      <div className={`tool-shot__window${src ? " tool-shot__window--bare" : ""}`} aria-hidden={src ? undefined : true}>
+        {!src && (
+          <div className="tool-shot__bar">
+            <i />
+            <i />
+            <i />
+          </div>
+        )}
         {src ? (
-          <Image src={src} alt="Tela do SPresenter" fill sizes="(max-width: 860px) 90vw, 560px" className="tool-shot__img" />
+          <Image src={src} alt="Tela do SPresenter com a letra de uma música no telão" fill sizes="(max-width: 860px) 90vw, 440px" className="tool-shot__img" />
         ) : (
           <div className="pm" data-anim>
             <aside className="pm__side">
@@ -56,9 +58,9 @@ export function PresenterScreen({ src }: { src?: string }) {
 export function VolunteersScreen({ src }: { src?: string }) {
   return (
     <div className="tool-shot tool-shot--volunteers">
-      <div className="tool-shot__phone" aria-hidden={src ? undefined : true}>
+      <div className={`tool-shot__phone${src ? " tool-shot__phone--real" : ""}`} aria-hidden={src ? undefined : true}>
         {src ? (
-          <Image src={src} alt="Tela do Voluts" fill sizes="220px" className="tool-shot__img" />
+          <Image src={src} alt="Tela de escala do aplicativo Voluts" fill sizes="180px" className="tool-shot__img" />
         ) : (
           <div className="vm" data-anim>
             <div className="vm__head">
@@ -104,7 +106,7 @@ export function StoreScreen({ src }: { src?: string }) {
           <i />
         </div>
         {src ? (
-          <Image src={src} alt="Loja da Dorn" fill sizes="(max-width: 860px) 90vw, 400px" className="tool-shot__img" />
+          <Image src={src} alt="Site da Loja da Dorn com câmera PTZ e controladora" fill sizes="(max-width: 860px) 90vw, 440px" className="tool-shot__img" />
         ) : (
           <div className="sm" data-anim>
             {[

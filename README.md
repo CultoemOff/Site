@@ -92,7 +92,7 @@ preview/            prévia fora do Next (não faz parte do build)
 
 ## Pendências
 
-- Capturas oficiais das telas do SPresenter e do Voluts e imagem da Loja da Dorn (enviar em Configurações do site → Parceiros). Até lá aparecem ilustrações marcadas como “imagem ilustrativa”.
+- Capturas dos parceiros ficam em `public/partners/` (padrão). Para trocar, envie outra em Configurações do site → Parceiros.
 - Links “Conhecer” e “Download” do PTZ Control Web (`src/config/software.ts`).
 - Links de inscrição das formações (admin → Formações).
 - Preços e cargas horárias atuais são provisórios.

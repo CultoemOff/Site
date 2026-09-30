@@ -54,9 +54,13 @@ export const DEFAULT_SETTINGS: SiteSettingsData = {
   social: { ...SOCIAL_DEFAULTS },
   videosMode: "latest",
   selectedVideos: [],
-  spresenter: { url: SPRESENTER_URL, coupon: SPRESENTER_COUPON, discount: "5% de desconto no plano Pro" },
-  voluts: { url: VOLUTS_URL },
-  dorn: { url: DORN_URL },
+  spresenter: {
+    url: SPRESENTER_URL,
+    coupon: SPRESENTER_COUPON, discount: "5% de desconto no plano Pro",
+    screen: "/partners/spresenter.jpg",
+  },
+  voluts: { url: VOLUTS_URL, screen: "/partners/voluts.jpg" },
+  dorn: { url: DORN_URL, image: "/partners/dorn.jpg" },
   gaId: process.env.NEXT_PUBLIC_GA_ID || "",
 };
 
