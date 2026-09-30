@@ -3,6 +3,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import Image from "next/image";
 import { COURSE_STATUS_LABEL, MORE_COURSES_URL, formatPrice, type Course } from "@/config/courses";
 import { getInstructor, INSTRUCTORS } from "@/config/instructors";
+import { hasSalesPage } from "@/config/salesPages";
 import { GUARANTEE_DAYS } from "@/config/site";
 import CourseDiagramView from "./CourseDiagrams";
 import "./courses.css";
@@ -124,11 +125,18 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
           </ul>
         </details>
 
-        {course.href && (
+        {(course.href || hasSalesPage(course.id)) && (
           <div className="course__cta">
-            <ArrowButton href={course.href} external track={{ event: "select_course", label: course.title }}>
-              Quero participar
-            </ArrowButton>
+            {hasSalesPage(course.id) && (
+              <ArrowButton href={`/formacoes/${course.id}`} variant={course.href ? "ghost" : "primary"}>
+                Ver detalhes da formação
+              </ArrowButton>
+            )}
+            {course.href && (
+              <ArrowButton href={course.href} external track={{ event: "select_course", label: course.title }}>
+                Quero participar
+              </ArrowButton>
+            )}
           </div>
         )}
       </div>

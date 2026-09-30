@@ -134,13 +134,13 @@ export const Courses: CollectionConfig = {
   hooks: {
     afterChange: [
       ({ doc }) => {
-        revalidate("/", "/formacoes");
+        revalidate("/", "/formacoes", `/formacoes/${doc.slug}`);
         return doc;
       },
     ],
     afterDelete: [
       ({ doc }) => {
-        revalidate("/", "/formacoes");
+        revalidate("/", "/formacoes", `/formacoes/${doc.slug}`);
         return doc;
       },
     ],

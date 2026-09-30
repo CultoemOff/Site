@@ -9,6 +9,7 @@
  *  - click_equipment clique em um equipamento recomendado           (label = nome do produto)
  *  - click_social    clique em YouTube / Instagram / TikTok         (label = rede)
  *  - generate_lead   cadastro concluído para liberar um download    (label = software)
+ *  - join_waitlist   inscrição na lista de espera de uma formação (label = formação)
  *  - download_software clique em "Baixar" depois do cadastro        (label = software)
  *
  * No GA4, marque select_course (e outros que quiser) como "evento principal" para virar conversão.
@@ -26,6 +27,7 @@ const META_EVENTS: Record<string, string> = {
   select_course: "InitiateCheckout",
   click_equipment: "ViewContent",
   generate_lead: "Lead",
+  join_waitlist: "Lead",
 };
 
 export function track(event: string, params: { label?: string; url?: string } = {}) {

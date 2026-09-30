@@ -6,7 +6,7 @@ import { LEAD_CONSENT_TEXT, onlyDigits, validateLead, type LeadErrors, type Lead
 
 export type LeadResult = { ok: true } | { ok: false; errors: LeadErrors };
 
-/** Recebe o cadastro, valida o formato e salva em admin → Contatos → Cadastros. */
+/** Recebe o cadastro (download ou lista de espera), valida o formato e salva em admin → Contatos → Cadastros. */
 export async function submitLead(input: LeadInput): Promise<LeadResult> {
   const country = COUNTRIES.find((c) => c.iso === input.countryIso);
   if (!country) return { ok: false, errors: { phone: "Escolha o país." } };

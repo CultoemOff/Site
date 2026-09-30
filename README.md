@@ -76,6 +76,7 @@ npm run generate:types      # (opcional) gera src/payload-types.ts
 | Equipamentos padrão | `src/config/equipment.ts` |
 | Softwares (PTZ Control Web, Remote de Iluminação) | `src/config/software.ts` |
 | Professores (fotos, bios, card "em breve") | `src/config/instructors.ts` |
+| Páginas de venda das formações (textos, módulos, exemplos, FAQ, vídeo) | `src/config/salesPages.ts` |
 | Campos do admin | `src/collections/*`, `src/globals/SiteSettings.ts` |
 | Palco do hero (moving heads, cores, foco) | `src/components/hero/stageRig.ts` |
 
@@ -83,7 +84,7 @@ npm run generate:types      # (opcional) gera src/payload-types.ts
 
 ```
 src/
-  app/(frontend)/   site: home, /formacoes, /softwares/ptz-control-web, /equipamentos, /blog, /blog/[slug], 404
+  app/(frontend)/   site: home, /formacoes, /formacoes/[slug] (página de venda), /softwares/ptz-control-web, /equipamentos, /blog, /blog/[slug], 404
   app/(payload)/    admin e API do Payload (arquivos padrão)
   app/sitemap.ts, robots.ts
   collections/      Posts, Courses, Equipment, Leads, Media, Users

@@ -11,15 +11,48 @@ type Props = {
   /** identificador salvo no cadastro, ex.: "ptz-control-web" */
   source: string;
   productName: string;
-  downloadUrl: string;
+  /** link liberado após o cadastro (modo download) */
+  downloadUrl?: string;
   /** server action que salva o cadastro */
   action: (input: LeadInput) => Promise<Result>;
+  /** "download" (padrão) libera um link; "waitlist" só confirma a inscrição na lista */
+  mode?: "download" | "waitlist";
+  /** textos opcionais */
+  copy?: Partial<{
+    title: string;
+    text: string;
+    submit: string;
+    doneTitle: string;
+    doneText: string;
+    fine: string;
+  }>;
 };
 
 const storageKey = (source: string) => `coe-download:${source}`;
 
 /** Cadastro rápido (nome, celular, e-mail + consentimento) que libera o link de download. */
-export default function DownloadGate({ source, productName, downloadUrl, action }: Props) {
+export default function DownloadGate({ source, productName, downloadUrl = "", action, mode = "download", copy = {} }: Props) {
+  const waitlist = mode === "waitlist";
+  const t = {
+    title: copy.title ?? (waitlist ? "Entre na lista de espera" : "Cadastre-se para baixar"),
+    text:
+      copy.text ??
+      (waitlist
+        ? "Seja avisado primeiro quando as inscrições abrirem."
+        : "É gratuito. Preencha os dados abaixo e o link de download aparece na hora."),
+    submit: copy.submit ?? (waitlist ? "Quero ser avisado" : "Liberar download"),
+    doneTitle: copy.doneTitle ?? (waitlist ? "Você está na lista." : "Download liberado."),
+    doneText:
+      copy.doneText ??
+      (waitlist
+        ? `Obrigado! Assim que o ${productName} abrir, você fica sabendo primeiro.`
+        : `Obrigado por se cadastrar! Clique abaixo para baixar o ${productName}.`),
+    fine:
+      copy.fine ??
+      (waitlist
+        ? "Seus dados ficam com o Culto em Off e não são vendidos a terceiros."
+        : "O cadastro é necessário para liberar o download. Seus dados ficam com o Culto em Off e não são vendidos a terceiros."),
+  };
   const uid = useId();
   const [unlocked, setUnlocked] = useState(false);
   const [sending, setSending] = useState(false);
@@ -63,7 +96,7 @@ export default function DownloadGate({ source, productName, downloadUrl, action 
         } catch {
           /* ok */
         }
-        track("generate_lead", { label: productName });
+        track(waitlist ? "join_waitlist" : "generate_lead", { label: productName });
         setUnlocked(true);
       } else {
         setErrors(res.errors);
@@ -83,9 +116,9 @@ export default function DownloadGate({ source, productName, downloadUrl, action 
             <path d="m6 12.5 4 4 8-9" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
-        <p className="gate__title">Download liberado.</p>
-        <p className="gate__text">Obrigado por se cadastrar! Clique abaixo para baixar o {productName}.</p>
-        {downloadUrl ? (
+        <p className="gate__title">{t.doneTitle}</p>
+        <p className="gate__text">{t.doneText}</p>
+        {waitlist ? null : downloadUrl ? (
           <a
             className="btn btn--primary gate__download"
             href={downloadUrl}
@@ -118,9 +151,9 @@ export default function DownloadGate({ source, productName, downloadUrl, action 
   return (
     <form className="gate" onSubmit={onSubmit} noValidate aria-labelledby={`${uid}-title`}>
       <p id={`${uid}-title`} className="gate__title">
-        Cadastre-se para baixar
+        {t.title}
       </p>
-      <p className="gate__text">É gratuito. Preencha os dados abaixo e o link de download aparece na hora.</p>
+      <p className="gate__text">{t.text}</p>
 
       <div className="gate__field">
         <label htmlFor={`${uid}-name`}>Nome</label>
@@ -213,12 +246,9 @@ export default function DownloadGate({ source, productName, downloadUrl, action 
       )}
 
       <button type="submit" className="btn btn--primary gate__submit" disabled={sending}>
-        <span>{sending ? "Enviando..." : "Liberar download"}</span>
+        <span>{sending ? "Enviando..." : t.submit}</span>
       </button>
-      <p className="gate__fine">
-        O cadastro é necessário para liberar o download. Seus dados ficam com o Culto em Off e não são vendidos a
-        terceiros.
-      </p>
+      <p className="gate__fine">{t.fine}</p>
     </form>
   );
 }

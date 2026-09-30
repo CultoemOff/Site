@@ -11,7 +11,7 @@ export const Leads: CollectionConfig = {
     useAsTitle: "email",
     group: "Contatos",
     defaultColumns: ["name", "email", "phoneFull", "source", "createdAt"],
-    description: "Pessoas que se cadastraram para baixar softwares. Todas aceitaram receber ofertas e novidades.",
+    description: "Pessoas que se cadastraram para baixar softwares ou entrar na lista de espera das formações. Todas aceitaram receber ofertas e novidades.",
   },
   defaultSort: "-createdAt",
   access: {

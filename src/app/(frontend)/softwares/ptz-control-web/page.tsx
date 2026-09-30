@@ -6,7 +6,7 @@ import PtzControlWebView from "@/components/software-page/PtzControlWebView";
 import { SOFTWARE } from "@/config/software";
 import { getSiteSettings } from "@/lib/cms";
 import { JsonLd, SITE_URL } from "@/lib/seo";
-import { submitLead } from "./actions";
+import { submitLead } from "@/lib/leadActions";
 
 export const revalidate = 3600;
 
