@@ -62,7 +62,7 @@ export const DEFAULT_SETTINGS: SiteSettingsData = {
 
 /** Itens da navegação principal. */
 export const NAV_LINKS: { label: string; href: string }[] = [
-  { label: "Propósito", href: "/#proposito" },
+  { label: "Manifesto", href: "/#manifesto" },
   { label: "Formações", href: "/#formacoes" },
   { label: "Softwares", href: "/#softwares" },
   { label: "Ferramentas", href: "/#parceiros" },

@@ -1,5 +1,5 @@
 /**
- * Mapa do ecossistema tecnológico (usado na seção Propósito).
+ * Mapa do ecossistema tecnológico (usado na seção Manifesto).
  * Coordenadas no viewBox 600 × 600 (centro em 300, 300).
  */
 

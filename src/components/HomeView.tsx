@@ -8,7 +8,6 @@ import Courses from "@/components/sections/courses/Courses";
 import Manifesto from "@/components/sections/manifesto/Manifesto";
 import Partners from "@/components/sections/partners/Partners";
 import Problems from "@/components/sections/problems/Problems";
-import Purpose from "@/components/sections/purpose/Purpose";
 import SoftwareSection from "@/components/sections/software/SoftwareSection";
 import type { Course } from "@/config/courses";
 import type { SiteSettingsData } from "@/config/site";
@@ -30,14 +29,13 @@ export default function HomeView({ courses, settings, youtube, latestPosts }: Pr
       <main id="conteudo" tabIndex={-1}>
         <Hero />
         <Problems />
-        <Purpose />
+        <Manifesto />
         <Courses courses={courses} />
         <SoftwareSection />
         <Partners settings={settings} />
         <About />
         {youtube}
         {latestPosts}
-        <Manifesto />
       </main>
       <Footer settings={settings} />
       <ViewportFx />

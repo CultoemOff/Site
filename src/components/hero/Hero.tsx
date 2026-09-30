@@ -30,7 +30,7 @@ export default function Hero() {
 
         <div className="hero__ctas">
           <ArrowButton href="#formacoes">Explorar formações</ArrowButton>
-          <ArrowButton href="#proposito" variant="ghost">
+          <ArrowButton href="#manifesto" variant="ghost">
             Conhecer o Culto em Off
           </ArrowButton>
         </div>

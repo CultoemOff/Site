@@ -82,8 +82,99 @@
   font-weight: 600;
   color: #9fe4ff;
 }
+/* grade: como ensinamos + mapa do ecossistema */
+.manifesto__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  max-width: 1200px;
+  margin: clamp(64px, 9vw, 110px) auto 0;
+  padding-top: clamp(48px, 7vw, 80px);
+  border-top: 1px solid rgba(210, 225, 255, 0.25);
+  text-align: left;
+}
+.manifesto__how {
+  display: grid;
+  gap: 18px;
+}
+.manifesto__how-title {
+  margin: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #cfe0ff;
+}
+.manifesto__pillars {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.manifesto__pillars li {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(210, 225, 255, 0.25);
+  background: rgba(6, 18, 64, 0.32);
+  transition:
+    background-color 0.3s var(--ease-out),
+    border-color 0.3s var(--ease-out),
+    transform 0.3s var(--ease-out);
+}
+.manifesto__pillars li:hover {
+  background: rgba(6, 18, 64, 0.55);
+  border-color: rgba(220, 232, 255, 0.6);
+  transform: translateY(-2px);
+}
+.manifesto__pillar-name {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.manifesto__pillar-text {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #d3e0ff;
+}
+.manifesto__eco {
+  margin: 8px 0 0;
+  padding-left: 16px;
+  border-left: 2px solid rgba(220, 232, 255, 0.5);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #e3ebff;
+}
+.manifesto__eco-label {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b9cdfb;
+}
+.manifesto__map {
+  min-width: 0;
+}
 .manifesto__cta {
   margin-top: 8px;
+}
+@media (max-width: 900px) {
+  .manifesto__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 420px) {
+  .manifesto__pillars {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .manifesto .btn--primary {
   background: #fff;

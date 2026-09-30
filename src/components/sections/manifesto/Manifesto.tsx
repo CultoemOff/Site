@@ -1,3 +1,4 @@
+import EcosystemMap from "@/components/sections/ecosystem/EcosystemMap";
 import ArrowButton from "@/components/ui/ArrowButton";
 import "./manifesto.css";
 
@@ -16,13 +17,20 @@ function Wave() {
   );
 }
 
+const PILLARS = [
+  { name: "Simples", text: "Sem jargão desnecessário: cada conceito explicado desde o começo." },
+  { name: "Prático", text: "Exemplos tirados da operação real de um culto." },
+  { name: "Acessível", text: "Pensado para equipes pequenas e orçamento limitado." },
+  { name: "Aplicável", text: "Aprendeu hoje, usa no próximo culto." },
+];
+
 export default function Manifesto() {
   return (
-    <section className="manifesto" aria-labelledby="manifesto-title" data-anim>
+    <section id="manifesto" className="manifesto" aria-labelledby="manifesto-title" data-anim>
       <Wave />
       <div className="manifesto__inner">
         <p className="manifesto__label" data-reveal>
-          Manifesto
+          CH 02 · Manifesto
         </p>
         <h2 id="manifesto-title" className="manifesto__title" data-reveal style={{ "--i": 1 } as React.CSSProperties}>
           Quem serve também merece acesso a conhecimento de qualidade.
@@ -34,8 +42,32 @@ export default function Manifesto() {
         <p className="manifesto__sign" data-reveal style={{ "--i": 3 } as React.CSSProperties}>
           Esse é o Culto em Off.
         </p>
-        <div className="manifesto__cta" data-reveal style={{ "--i": 4 } as React.CSSProperties}>
-          <ArrowButton href="/#formacoes">Explorar formações</ArrowButton>
+      </div>
+
+      <div className="manifesto__grid">
+        <div className="manifesto__how">
+          <p className="manifesto__how-title" data-reveal>
+            Como ensinamos
+          </p>
+          <ul className="manifesto__pillars" aria-label="Como ensinamos">
+            {PILLARS.map((p, i) => (
+              <li key={p.name} data-reveal style={{ "--i": i + 1 } as React.CSSProperties}>
+                <span className="manifesto__pillar-name">{p.name}</span>
+                <span className="manifesto__pillar-text">{p.text}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="manifesto__eco" data-reveal style={{ "--i": 5 } as React.CSSProperties}>
+            <span className="manifesto__eco-label">Tudo conectado</span>
+            Hoje, áudio, vídeo, luz, câmeras e projeção conversam pela mesma rede. Entender uma área técnica
+            frequentemente exige compreender um pouco das outras, e é assim que ensinamos.
+          </p>
+          <div className="manifesto__cta" data-reveal style={{ "--i": 6 } as React.CSSProperties}>
+            <ArrowButton href="/#formacoes">Explorar formações</ArrowButton>
+          </div>
+        </div>
+        <div className="manifesto__map" data-reveal style={{ "--i": 2 } as React.CSSProperties}>
+          <EcosystemMap />
         </div>
       </div>
     </section>

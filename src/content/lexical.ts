@@ -1,7 +1,7 @@
 /**
  * Conversor simples de conteúdo estruturado → formato do editor do Payload (Lexical).
  * Usado para migrar artigos antigos para o blog (seed) e como conteúdo padrão sem banco.
- * Suporta: títulos, parágrafos com **negrito** e [links](https://…), listas, citações,
+ * Suporta: títulos, parágrafos com **negrito**, `código` e [links](https://…), listas, citações,
  * imagens e linha horizontal.
  */
 
@@ -20,14 +20,15 @@ const base = { format: "", indent: 0, version: 1, direction: "ltr" as const };
 let uid = 0;
 const nodeId = () => `seed${(++uid).toString(36)}${Date.now().toString(36)}`;
 
-function textNode(text: string, bold: boolean) {
-  return { type: "text", text, format: bold ? 1 : 0, detail: 0, mode: "normal", style: "", version: 1 };
+/** format do Lexical: 1 = negrito, 16 = código */
+function textNode(text: string, format = 0) {
+  return { type: "text", text, format, detail: 0, mode: "normal", style: "", version: 1 };
 }
 
 function inline(text: string): object[] {
-  // divide em trechos normais, **negrito** e [link](url)
+  // divide em trechos normais, **negrito**, `código` e [link](url)
   return text
-    .split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g)
+    .split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g)
     .filter(Boolean)
     .map((part) => {
       const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
@@ -38,11 +39,12 @@ function inline(text: string): object[] {
           version: 3,
           id: nodeId(),
           fields: { linkType: "custom", url: link[2], newTab: /^https?:/.test(link[2]) },
-          children: [textNode(link[1], false)],
+          children: [textNode(link[1])],
         };
       }
+      if (part.length > 2 && part.startsWith("`") && part.endsWith("`")) return textNode(part.slice(1, -1), 16);
       const bold = part.startsWith("**") && part.endsWith("**");
-      return textNode(bold ? part.slice(2, -2) : part, bold);
+      return textNode(bold ? part.slice(2, -2) : part, bold ? 1 : 0);
     });
 }
 
