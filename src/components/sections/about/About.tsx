@@ -1,5 +1,6 @@
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { INSTRUCTORS, NEXT_INSTRUCTOR_SOON } from "@/config/instructors";
 import { ABOUT_PHOTO_SRC, type SiteSettingsData } from "@/config/site";
 import "./about.css";
 
@@ -8,7 +9,8 @@ const AREAS = ["Infraestrutura", "Cloud", "Cibersegurança", "Automação"];
 export default function About({ audience }: { audience: SiteSettingsData["audience"] }) {
   return (
     <section id="sobre" className="section section--abyss about" aria-labelledby="sobre-title">
-      <div className="section__inner about__layout">
+      <div className="section__inner">
+      <div className="about__layout">
         <figure className="about__photo" data-reveal>
           <span className="about__beam" aria-hidden="true" />
           <div className="about__frame">
@@ -22,7 +24,7 @@ export default function About({ audience }: { audience: SiteSettingsData["audien
           </div>
           <figcaption className="about__caption">
             <span className="about__name">Jonas Silva</span>
-            <span className="about__role">Criador do Culto em Off</span>
+            <span className="about__role">Idealizador e professor</span>
           </figcaption>
         </figure>
 
@@ -90,6 +92,47 @@ export default function About({ audience }: { audience: SiteSettingsData["audien
             </p>
           </blockquote>
         </div>
+      </div>
+
+      <div className="about__team" aria-labelledby="professores-title">
+        <div className="about__team-head" data-reveal>
+          <h3 id="professores-title">Professores</h3>
+          <p>
+            O Culto em Off foi idealizado por Jonas Silva, que também dá aulas. Cada formação é conduzida por um
+            especialista da área.
+          </p>
+        </div>
+        <ul className="about__team-list">
+          {INSTRUCTORS.map((t, i) => (
+            <li key={t.id} className="teacher" data-reveal style={{ "--i": i } as React.CSSProperties}>
+              <span className="teacher__photo">
+                <Image src={t.photo} alt={`Foto de ${t.name}`} fill sizes="72px" />
+              </span>
+              <div>
+                <p className="teacher__role">{t.role}</p>
+                <p className="teacher__name">{t.name}</p>
+                <p className="teacher__area">{t.area}</p>
+                <p className="teacher__bio">{t.bio}</p>
+              </div>
+            </li>
+          ))}
+          {NEXT_INSTRUCTOR_SOON && (
+            <li className="teacher teacher--soon" data-reveal style={{ "--i": INSTRUCTORS.length } as React.CSSProperties}>
+              <span className="teacher__photo teacher__photo--soon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                  <path d="M4.5 20a7.5 7.5 0 0 1 15 0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </span>
+              <div>
+                <p className="teacher__role">Em breve</p>
+                <p className="teacher__name">Novo professor</p>
+                <p className="teacher__bio">Mais um especialista vai se juntar à escola.</p>
+              </div>
+            </li>
+          )}
+        </ul>
+      </div>
       </div>
     </section>
   );

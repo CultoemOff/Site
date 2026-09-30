@@ -2,7 +2,8 @@ import ArrowButton from "@/components/ui/ArrowButton";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Image from "next/image";
 import { COURSE_STATUS_LABEL, MORE_COURSES_URL, formatPrice, type Course } from "@/config/courses";
-import { ABOUT_PHOTO_SRC, GUARANTEE_DAYS } from "@/config/site";
+import { getInstructor, INSTRUCTORS } from "@/config/instructors";
+import { GUARANTEE_DAYS } from "@/config/site";
 import CourseDiagramView from "./CourseDiagrams";
 import "./courses.css";
 
@@ -17,6 +18,7 @@ function ShieldIcon() {
 
 function CourseCard({ course, index }: { course: Course; index: number }) {
   const featured = course.featured;
+  const teacher = getInstructor(course.instructor);
   return (
     <article
       className={`course${featured ? " course--featured" : ""}`}
@@ -74,11 +76,38 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
             <li>{course.format.hours} horas</li>
             <li>{course.format.access}</li>
           </ul>
+          {course.includes && course.includes.length > 0 && (
+            <ul className="course__includes" aria-label="Inclui">
+              {course.includes.map((i) => (
+                <li key={i}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />
+                  </svg>
+                  <span>
+                    <strong>Inclui:</strong> {i}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
           <p className="course__guarantee">
             <ShieldIcon />
             {GUARANTEE_DAYS} dias de garantia
           </p>
         </div>
+
+        {teacher && (
+          <div className="course__teacher">
+            <span className="course__teacher-photo">
+              <Image src={teacher.photo} alt="" fill sizes="48px" />
+            </span>
+            <p>
+              <span className="course__teacher-label">Professor</span>
+              <strong>{teacher.name}</strong>
+              <span className="course__teacher-bio">{teacher.bio}</span>
+            </p>
+          </div>
+        )}
 
         <details className="course__topics">
           <summary>
@@ -108,7 +137,8 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
 }
 
 export default function Courses({ courses, showMoreButton = true }: { courses: Course[]; showMoreButton?: boolean }) {
-  const [featured, ...rest] = [...courses].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
+  const visible = showMoreButton ? courses.filter((c) => !c.hideOnHome) : courses;
+  const [featured, ...rest] = [...visible].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
   return (
     <section id="formacoes" className="section section--abyss courses" aria-labelledby="formacoes-title">
       <div className="courses__glow" aria-hidden="true" />
@@ -126,12 +156,16 @@ export default function Courses({ courses, showMoreButton = true }: { courses: C
 
         <ul className="courses__trust" aria-label="Por que confiar" data-reveal style={{ "--i": 3 } as React.CSSProperties}>
           <li>
-            <span className="courses__trust-avatar">
-              <Image src={ABOUT_PHOTO_SRC} alt="" fill sizes="44px" />
+            <span className="courses__trust-avatars" aria-hidden="true">
+              {INSTRUCTORS.map((t) => (
+                <span key={t.id} className="courses__trust-avatar">
+                  <Image src={t.photo} alt="" fill sizes="44px" />
+                </span>
+              ))}
             </span>
             <span>
-              <strong>Criado por Jonas Silva</strong>
-              15+ anos em equipes técnicas de igreja e 12+ anos em TI.
+              <strong>Professores que vivem a prática</strong>
+              Experiência real em igrejas, grandes bandas, shows e estádios.
             </span>
           </li>
           <li>

@@ -1,5 +1,6 @@
 import type { CollectionConfig, Field } from "payload";
 import { revalidate, slugify } from "../cms/hooks";
+import { INSTRUCTORS } from "../config/instructors";
 
 const lines = (name: string, label: string, itemLabel: string): Field => ({
   name,
@@ -95,6 +96,14 @@ export const Courses: CollectionConfig = {
         { label: "DMX / iluminação", value: "dmx" },
       ],
     },
+    {
+      name: "instructor",
+      type: "select",
+      label: "Professor",
+      options: INSTRUCTORS.map((i) => ({ label: i.name, value: i.id })),
+      admin: { description: "Aparece no card com foto e uma breve descrição." },
+    },
+    lines("includes", "Inclui (opcional)", "Item"),
     { name: "topicsTitle", type: "text", label: "Título da lista de tópicos", defaultValue: "Conteúdo" },
     lines("topics", "Tópicos", "Tópico"),
     lines("appliedTo", "Aplicado a (opcional)", "Tecnologia"),
@@ -103,6 +112,12 @@ export const Courses: CollectionConfig = {
       type: "checkbox",
       label: "Formação em destaque",
       admin: { position: "sidebar" },
+    },
+    {
+      name: "hideOnHome",
+      type: "checkbox",
+      label: "Não mostrar na home",
+      admin: { position: "sidebar", description: "Continua aparecendo em /formacoes." },
     },
     {
       name: "slug",

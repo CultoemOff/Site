@@ -58,6 +58,12 @@ export type Course = {
   featured?: boolean;
   /** imagem enviada pelo admin (substitui o diagrama) */
   image?: { url: string; alt: string };
+  /** id do professor (src/config/instructors.ts) */
+  instructor?: string;
+  /** o que vem junto, ex.: apostila para imprimir */
+  includes?: string[];
+  /** não aparece na home (continua em /formacoes) */
+  hideOnHome?: boolean;
 };
 
 const ONLINE_1_ANO = (hours: number): CourseFormat => ({ mode: "Online", hours, access: "Acesso por 1 ano" });
@@ -90,7 +96,9 @@ export const COURSES: Course[] = [
     ],
     appliedTo: ["NDI", "Dante", "Bitfocus Companion", "Câmeras PTZ", "Consoles digitais", "Controle de iluminação", "OBS", "Streaming"],
     diagram: "network",
-    price: 49.9,
+    price: 39.9,
+    instructor: "jonas-silva",
+    includes: ["Apostila de comandos e dicas rápidas para imprimir e consultar depois"],
     format: ONLINE_1_ANO(8),
     status: "lancamento-em-breve",
     featured: true,
@@ -115,6 +123,7 @@ export const COURSES: Course[] = [
     ],
     diagram: "analog",
     price: 39.9,
+    instructor: "chico-ferreira",
     format: ONLINE_1_ANO(6),
     status: "lancamento-em-breve",
     href: "",
@@ -140,6 +149,7 @@ export const COURSES: Course[] = [
     price: 44.9,
     format: ONLINE_1_ANO(5),
     status: "lancamento-em-breve",
+    hideOnHome: true,
     href: "",
   },
   {
@@ -162,7 +172,8 @@ export const COURSES: Course[] = [
     ],
     appliedTo: ["OBS", "Câmeras PTZ", "Iluminação", "Áudio", "Projeção", "Streaming"],
     diagram: "companion",
-    price: 49.9,
+    price: 77.9,
+    instructor: "jonas-silva",
     format: ONLINE_1_ANO(6),
     status: "lancamento-em-breve",
     href: "",
@@ -188,7 +199,8 @@ export const COURSES: Course[] = [
       "Conceitos de operação",
     ],
     diagram: "dmx",
-    price: 59.9,
+    price: 69.9,
+    instructor: "cesar-augusto",
     format: ONLINE_1_ANO(10),
     status: "lancamento-em-breve",
     href: "",

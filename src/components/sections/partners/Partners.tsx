@@ -128,6 +128,11 @@ export default function Partners({ settings }: { settings: SiteSettingsData }) {
                 Loja de câmeras e produtos de transmissão para igrejas. Um bom lugar para montar ou ampliar a estrutura
                 de vídeo e live da sua equipe.
               </p>
+              <ul className="partner__features partner__features--blue" aria-label="Destaques da Loja da Dorn">
+                <li>Câmeras Full HD e 4K</li>
+                <li>Zoom adequado para a distância da sua igreja</li>
+                <li>Controle PTZ físico</li>
+              </ul>
               <div className="partner__actions">
                 <ArrowButton href={dorn.url} external track={{ event: "click_partner", label: "Loja da Dorn" }}>
                   Visitar a Loja da Dorn

@@ -669,3 +669,104 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* professores sobrepostos na faixa de confiança */
+.courses__trust-avatars {
+  display: flex;
+  flex: none;
+}
+.courses__trust-avatars .courses__trust-avatar + .courses__trust-avatar {
+  margin-left: -14px;
+}
+.courses__trust-avatars .courses__trust-avatar {
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 0 0 2px #0c183c, 0 0 0 3px rgba(120, 170, 255, 0.5);
+}
+
+/* professor no card */
+.course__teacher {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(110, 150, 255, 0.2);
+  background: rgba(8, 18, 48, 0.5);
+}
+.course__teacher-photo {
+  position: relative;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(120, 170, 255, 0.5);
+}
+.course__teacher-photo img {
+  object-fit: cover;
+}
+.course__teacher p {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+.course__teacher-label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8fb6ff;
+}
+.course__teacher strong {
+  font-size: 0.95rem;
+  color: #f2f6ff;
+}
+.course__teacher-bio {
+  color: var(--muted-on-dark);
+}
+
+/* itens inclusos (ex.: apostila) */
+.course__includes {
+  flex-basis: 100%;
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.course__includes li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #dbe6ff;
+}
+.course__includes svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  color: var(--signal);
+}
+.course__includes strong {
+  color: #fff;
+}
+
+/* número ímpar de cards: o último ocupa a linha inteira, no layout horizontal */
+@media (min-width: 961px) {
+  .courses__grid > .course:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  }
+  .courses__grid > .course:last-child:nth-child(odd) .course__visual {
+    order: 2;
+    border-bottom: 0;
+    border-left: 1px solid rgba(110, 150, 255, 0.15);
+    min-height: 100%;
+  }
+}

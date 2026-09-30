@@ -706,3 +706,10 @@
     transition: none;
   }
 }
+
+/* tags azuis (Loja da Dorn) */
+.partner__features--blue li {
+  background: #eaf2ff;
+  border-color: #bcd4ff;
+  color: #123a8f;
+}

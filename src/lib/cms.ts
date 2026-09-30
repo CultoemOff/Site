@@ -75,6 +75,9 @@ function mapCourse(d: Doc): Course {
     href: str(d.href) || undefined,
     featured: Boolean(d.featured),
     image: imageUrl ? { url: imageUrl, alt: mediaAlt(d.image) } : undefined,
+    instructor: str(d.instructor) || undefined,
+    includes: list(d.includes).length ? list(d.includes) : undefined,
+    hideOnHome: Boolean(d.hideOnHome),
   };
 }
 

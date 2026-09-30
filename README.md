@@ -11,7 +11,7 @@ Acesse `https://SEU-SITE/admin` e faça login.
 |---|---|
 | **Conteúdo → Blog** | Criar posts com texto, títulos, listas, citações, links, imagens, vídeos enviados e vídeos do YouTube (bloco “Vídeo do YouTube”). Rascunho/publicado, capa, tags, SEO por post. |
 | **Conteúdo → Equipamentos** | Equipamentos recomendados: nome, categoria, frase, link da loja, foto (opcional), ordem e se aparece na home (até 5). |
-| **Escola → Formações** | Nome, frase, descrição, preço, status, modalidade, carga horária, acesso, link de inscrição, imagem, tópicos, ordem e destaque. |
+| **Escola → Formações** | Nome, frase, descrição, professor, itens inclusos, preço, status, modalidade, carga horária, acesso, link de inscrição, imagem, tópicos, ordem e destaque. |
 | **Administração → Configurações do site** | Números das redes (CH 06), perguntas frequentes, YouTube/Instagram/TikTok, vídeos do YouTube (últimos automaticamente ou escolhidos à mão), links e cupom dos parceiros, capturas das telas, ID do Google Analytics. |
 | **Contatos → Cadastros** | Nome, celular (com DDI) e e-mail de quem se cadastrou para baixar o PTZ Control Web, com o texto e a data do consentimento. |
 | **Conteúdo → Mídias** | Biblioteca de imagens e vídeos. |
@@ -75,6 +75,7 @@ npm run generate:types      # (opcional) gera src/payload-types.ts
 | Formações padrão (usadas sem banco e no seed) | `src/config/courses.ts` |
 | Equipamentos padrão | `src/config/equipment.ts` |
 | Softwares (PTZ Control Web, Remote de Iluminação) | `src/config/software.ts` |
+| Professores (fotos, bios, card "em breve") | `src/config/instructors.ts` |
 | Campos do admin | `src/collections/*`, `src/globals/SiteSettings.ts` |
 | Palco do hero (moving heads, cores, foco) | `src/components/hero/stageRig.ts` |
 

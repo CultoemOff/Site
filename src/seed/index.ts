@@ -37,6 +37,9 @@ for (const [i, c] of COURSES.entries()) {
       topics: c.topics.map((text) => ({ text })),
       appliedTo: (c.appliedTo ?? []).map((text) => ({ text })),
       featured: Boolean(c.featured),
+      instructor: c.instructor,
+      includes: (c.includes ?? []).map((text) => ({ text })),
+      hideOnHome: Boolean(c.hideOnHome),
     },
   });
   created++;
