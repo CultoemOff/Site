@@ -3,7 +3,7 @@ import Link from "next/link";
 import SocialIcon from "@/components/ui/SocialIcon";
 import { LOGO_SRC, NAV_LINKS, SITE_NAME, SITE_TAGLINE, type SiteSettingsData } from "@/config/site";
 import ConsentLink from "@/components/analytics/ConsentLink";
-import { safeGaId } from "@/lib/seo";
+import { safeGaId, safePixelId } from "@/lib/seo";
 import "./footer.css";
 
 export default function Footer({ settings }: { settings: SiteSettingsData }) {
@@ -31,7 +31,7 @@ export default function Footer({ settings }: { settings: SiteSettingsData }) {
             <ul className="footer__social" aria-label="Redes sociais">
               {socials.map((s) => (
                 <li key={s.key}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`${s.label} (abre em nova aba)`}>
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`${s.label} (abre em nova aba)`} data-track="click_social" data-track-label={s.label}>
                     <SocialIcon name={s.key} />
                   </a>
                 </li>
@@ -60,7 +60,7 @@ export default function Footer({ settings }: { settings: SiteSettingsData }) {
             <ul>
               {socials.map((s) => (
                 <li key={s.key}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer">
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" data-track="click_social" data-track-label={s.label}>
                     {s.label}
                     <span className="sr-only"> (abre em nova aba)</span>
                   </a>
@@ -76,7 +76,7 @@ export default function Footer({ settings }: { settings: SiteSettingsData }) {
           © {year} {SITE_NAME}. Formação técnica para quem serve na igreja.
         </p>
         <div className="footer__legal">
-          {safeGaId(settings.gaId) && <ConsentLink />}
+          {(safeGaId(settings.gaId) || safePixelId(settings.metaPixelId)) && <ConsentLink />}
           <p className="footer__signal" aria-hidden="true">
             <span />
             SINAL OK

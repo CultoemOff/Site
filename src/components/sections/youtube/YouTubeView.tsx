@@ -17,7 +17,7 @@ export default function YouTubeView({ videos, channelUrl }: { videos: YouTubeVid
             </p>
           </SectionHeader>
           <div className="yt__channel" data-reveal>
-            <ArrowButton href={channelUrl} external>
+            <ArrowButton href={channelUrl} external track={{ event: "click_social", label: "YouTube" }}>
               Ver o canal no YouTube
             </ArrowButton>
           </div>

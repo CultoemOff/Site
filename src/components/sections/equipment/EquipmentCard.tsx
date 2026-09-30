@@ -7,7 +7,14 @@ export default function EquipmentCard({ item, index = 0 }: { item: Equipment; in
   const store = storeName(item);
   return (
     <li className="eq-card" data-reveal data-glow style={{ "--i": index } as React.CSSProperties}>
-      <a className="eq-card__link" href={item.href} target="_blank" rel="noopener noreferrer">
+      <a
+        className="eq-card__link"
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-track="click_equipment"
+        data-track-label={item.name}
+      >
         <div className={`eq-card__media${item.image ? " eq-card__media--photo" : ""}`} data-anim>
           {item.image ? (
             <Image

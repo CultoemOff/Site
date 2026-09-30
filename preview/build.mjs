@@ -24,7 +24,7 @@ await esbuild.build({
     "react-dom": `${M}/react-dom`,
   },
   nodePaths: [M],
-  define: { "process.env.NODE_ENV": '"production"', "process.env.NEXT_PUBLIC_GA_ID": '""', "process.env.NEXT_PUBLIC_SITE_URL": '""' },
+  define: { "process.env.NODE_ENV": '"production"', "process.env.NEXT_PUBLIC_GA_ID": '""', "process.env.NEXT_PUBLIC_META_PIXEL_ID": '""', "process.env.NEXT_PUBLIC_SITE_URL": '""' },
   logLevel: "warning",
   plugins: [
     {

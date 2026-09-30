@@ -9,6 +9,7 @@ export const absoluteUrl = (path = "/") => (path.startsWith("http") ? path : `${
 
 /** Só aceita IDs do GA4 no formato G-XXXX (evita injeção no script). */
 export const safeGaId = (id: string) => (/^G-[A-Z0-9]{4,20}$/i.test(id.trim()) ? id.trim() : "");
+export const safePixelId = (id: string) => (/^\d{6,20}$/.test(id.trim()) ? id.trim() : "");
 
 export function organizationJsonLd(settings: SiteSettingsData) {
   return {
@@ -58,6 +59,19 @@ export function coursesJsonLd(courses: Course[]) {
 }
 
 /** Renderiza JSON-LD com segurança (escapa "<"). */
+/** Perguntas frequentes (FAQPage). */
+export function faqJsonLd(items: SiteSettingsData["faq"]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}
+
 export function JsonLd({ data }: { data: object }) {
   return (
     <script

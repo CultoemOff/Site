@@ -2,8 +2,18 @@ import ArrowButton from "@/components/ui/ArrowButton";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Image from "next/image";
 import { COURSE_STATUS_LABEL, MORE_COURSES_URL, formatPrice, type Course } from "@/config/courses";
+import { ABOUT_PHOTO_SRC, GUARANTEE_DAYS } from "@/config/site";
 import CourseDiagramView from "./CourseDiagrams";
 import "./courses.css";
+
+function ShieldIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+      <path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 function CourseCard({ course, index }: { course: Course; index: number }) {
   const featured = course.featured;
@@ -64,6 +74,10 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
             <li>{course.format.hours} horas</li>
             <li>{course.format.access}</li>
           </ul>
+          <p className="course__guarantee">
+            <ShieldIcon />
+            {GUARANTEE_DAYS} dias de garantia
+          </p>
         </div>
 
         <details className="course__topics">
@@ -83,7 +97,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
 
         {course.href && (
           <div className="course__cta">
-            <ArrowButton href={course.href} external>
+            <ArrowButton href={course.href} external track={{ event: "select_course", label: course.title }}>
               Quero participar
             </ArrowButton>
           </div>
@@ -109,6 +123,40 @@ export default function Courses({ courses, showMoreButton = true }: { courses: C
             aplicação dentro da igreja, <strong>com preço acessível</strong>. Lançamento em breve.
           </p>
         </SectionHeader>
+
+        <ul className="courses__trust" aria-label="Por que confiar" data-reveal style={{ "--i": 3 } as React.CSSProperties}>
+          <li>
+            <span className="courses__trust-avatar">
+              <Image src={ABOUT_PHOTO_SRC} alt="" fill sizes="44px" />
+            </span>
+            <span>
+              <strong>Criado por Jonas Silva</strong>
+              15+ anos em equipes técnicas de igreja e 12+ anos em TI.
+            </span>
+          </li>
+          <li>
+            <span className="courses__trust-icon">
+              <ShieldIcon />
+            </span>
+            <span>
+              <strong>Garantia de {GUARANTEE_DAYS} dias</strong>
+              Não era o que você esperava? Devolvemos 100% do valor.
+            </span>
+          </li>
+          <li>
+            <span className="courses__trust-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <rect x="3" y="5" width="18" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                <path d="M10.5 8.5v5l4-2.5z" fill="currentColor" />
+                <path d="M8 20h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </span>
+            <span>
+              <strong>100% online</strong>
+              No seu ritmo, pelo computador ou celular, com acesso por 1 ano.
+            </span>
+          </li>
+        </ul>
 
         {featured && <CourseCard course={featured} index={0} />}
 

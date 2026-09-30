@@ -155,6 +155,21 @@ export const getSiteSettings = cache(async (): Promise<SiteSettingsData> => {
       voluts: { url: str(vo.url) || d.voluts.url, screen: mediaUrl(vo.screen) || d.voluts.screen },
       dorn: { url: str(dn.url) || d.dorn.url, image: mediaUrl(dn.image) || d.dorn.image },
       gaId: str(g.gaMeasurementId) || d.gaId,
+      metaPixelId: str(g.metaPixelId) || d.metaPixelId,
+      audience: (() => {
+        const stats = (Array.isArray(g.audienceStats) ? g.audienceStats : [])
+          .map((s) => ({ value: str(obj(s).value), label: str(obj(s).label) }))
+          .filter((s) => s.value && s.label);
+        return stats.length
+          ? { stats, note: str(g.audienceNote) }
+          : { stats: d.audience.stats, note: str(g.audienceNote) || d.audience.note };
+      })(),
+      faq: (() => {
+        const items = (Array.isArray(g.faq) ? g.faq : [])
+          .map((f) => ({ question: str(obj(f).question), answer: str(obj(f).answer) }))
+          .filter((f) => f.question && f.answer);
+        return items.length ? items : d.faq;
+      })(),
     };
   } catch (err) {
     console.error("[cms] Erro ao buscar configurações:", err);

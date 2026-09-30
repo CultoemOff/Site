@@ -12,7 +12,7 @@ Acesse `https://SEU-SITE/admin` e faça login.
 | **Conteúdo → Blog** | Criar posts com texto, títulos, listas, citações, links, imagens, vídeos enviados e vídeos do YouTube (bloco “Vídeo do YouTube”). Rascunho/publicado, capa, tags, SEO por post. |
 | **Conteúdo → Equipamentos** | Equipamentos recomendados: nome, categoria, frase, link da loja, foto (opcional), ordem e se aparece na home (até 5). |
 | **Escola → Formações** | Nome, frase, descrição, preço, status, modalidade, carga horária, acesso, link de inscrição, imagem, tópicos, ordem e destaque. |
-| **Administração → Configurações do site** | YouTube/Instagram/TikTok, vídeos do YouTube (últimos automaticamente ou escolhidos à mão), links e cupom dos parceiros, capturas das telas, ID do Google Analytics. |
+| **Administração → Configurações do site** | Números das redes (CH 06), perguntas frequentes, YouTube/Instagram/TikTok, vídeos do YouTube (últimos automaticamente ou escolhidos à mão), links e cupom dos parceiros, capturas das telas, ID do Google Analytics. |
 | **Conteúdo → Mídias** | Biblioteca de imagens e vídeos. |
 | **Administração → Usuários** | Quem pode entrar no admin. |
 
@@ -62,6 +62,8 @@ npm run generate:types      # (opcional) gera src/payload-types.ts
 - Metadados, Open Graph e Twitter Card em todas as páginas; título/descrição/imagem próprios por post.
 - `sitemap.xml` (inclui os posts) e `robots.txt` (bloqueia `/admin` e `/api`).
 - Dados estruturados (JSON-LD): organização, formações (Course com preço em BRL) e posts (BlogPosting).
+- Eventos de conversão enviados ao GA4 (e ao Meta Pixel, se configurado): `select_course` (clique em "Quero participar"), `click_partner`, `copy_coupon`, `click_equipment` e `click_social`. No GA4, marque `select_course` como **evento principal** para acompanhar como conversão.
+- Meta Pixel opcional (admin → Configurações do site → Analytics, ou `NEXT_PUBLIC_META_PIXEL_ID`). Só carrega depois que o visitante aceita os cookies.
 - Google Analytics 4 com **Consent Mode v2**: nada é coletado até o visitante aceitar no banner (LGPD). O link “Preferências de cookies” no rodapé reabre a escolha.
 
 ## Onde editar no código

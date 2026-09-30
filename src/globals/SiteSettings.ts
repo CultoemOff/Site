@@ -91,6 +91,50 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: "Números das redes",
+          description: "Aparecem no CH 06 (Quem está por trás). Se a lista ficar vazia, usa os números padrão do código.",
+          fields: [
+            {
+              name: "audienceStats",
+              type: "array",
+              label: "Números",
+              labels: { singular: "Número", plural: "Números" },
+              maxRows: 4,
+              fields: [
+                {
+                  type: "row",
+                  fields: [
+                    { name: "value", type: "text", label: "Valor", required: true, admin: { description: "Ex.: 250 mil+" } },
+                    { name: "label", type: "text", label: "Legenda", required: true, admin: { description: "Ex.: visualizações nas redes" } },
+                  ],
+                },
+              ],
+            },
+            {
+              name: "audienceNote",
+              type: "text",
+              label: "Observação (fonte/data)",
+              admin: { description: "Ex.: Dados das redes em outubro de 2026." },
+            },
+          ],
+        },
+        {
+          label: "Perguntas frequentes",
+          description: "Aparecem na home (Perguntas frequentes). Se a lista ficar vazia, usa as perguntas padrão do código.",
+          fields: [
+            {
+              name: "faq",
+              type: "array",
+              label: "Perguntas",
+              labels: { singular: "Pergunta", plural: "Perguntas" },
+              fields: [
+                { name: "question", type: "text", label: "Pergunta", required: true },
+                { name: "answer", type: "textarea", label: "Resposta", required: true },
+              ],
+            },
+          ],
+        },
+        {
           label: "Analytics",
           fields: [
             {
@@ -98,6 +142,15 @@ export const SiteSettings: GlobalConfig = {
               type: "text",
               label: "ID do Google Analytics 4",
               admin: { description: "Formato G-XXXXXXXXXX. Se vazio, usa a variável NEXT_PUBLIC_GA_ID." },
+            },
+            {
+              name: "metaPixelId",
+              type: "text",
+              label: "ID do Meta Pixel (opcional)",
+              admin: {
+                description:
+                  "Só números. Carrega apenas depois que o visitante aceita os cookies. Se vazio, usa NEXT_PUBLIC_META_PIXEL_ID.",
+              },
             },
           ],
         },
@@ -107,7 +160,7 @@ export const SiteSettings: GlobalConfig = {
   hooks: {
     afterChange: [
       ({ doc }) => {
-        revalidate("/", "/blog", "/formacoes");
+        revalidate("/", "/blog", "/formacoes", "/equipamentos");
         return doc;
       },
     ],

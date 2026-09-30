@@ -7,11 +7,14 @@ type Props = {
   children: ReactNode;
   variant?: "primary" | "ghost";
   external?: boolean;
+  /** evento de analytics disparado no clique (ver components/analytics/Analytics.tsx) */
+  track?: { event: string; label?: string };
 };
 
 /** Link com aparência de botão e seta animada. Rotas internas ("/...") usam next/link. */
-export default function ArrowButton({ href, children, variant = "primary", external = false }: Props) {
+export default function ArrowButton({ href, children, variant = "primary", external = false, track }: Props) {
   const className = `btn btn--${variant}`;
+  const data = track ? { "data-track": track.event, "data-track-label": track.label } : {};
   const inner = (
     <>
       <span>{children}</span>
@@ -24,13 +27,13 @@ export default function ArrowButton({ href, children, variant = "primary", exter
 
   if (!external && href.startsWith("/")) {
     return (
-      <Link href={href} className={className}>
+      <Link href={href} className={className} {...data}>
         {inner}
       </Link>
     );
   }
   return (
-    <a href={href} className={className} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+    <a href={href} className={className} {...data} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
       {inner}
     </a>
   );

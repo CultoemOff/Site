@@ -1,11 +1,11 @@
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { ABOUT_PHOTO_SRC } from "@/config/site";
+import { ABOUT_PHOTO_SRC, type SiteSettingsData } from "@/config/site";
 import "./about.css";
 
 const AREAS = ["Infraestrutura", "Cloud", "Cibersegurança", "Automação"];
 
-export default function About() {
+export default function About({ audience }: { audience: SiteSettingsData["audience"] }) {
   return (
     <section id="sobre" className="section section--abyss about" aria-labelledby="sobre-title">
       <div className="section__inner about__layout">
@@ -45,6 +45,24 @@ export default function About() {
               <dd>15+</dd>
             </div>
           </dl>
+
+          {audience.stats.length > 0 && (
+            <div className="about__reach" data-reveal style={{ "--i": 4 } as React.CSSProperties}>
+              <p className="about__reach-title">
+                <span aria-hidden="true" />
+                Alcance nas redes
+              </p>
+              <dl className="about__reach-list">
+                {audience.stats.map((s) => (
+                  <div key={s.label}>
+                    <dt>{s.label}</dt>
+                    <dd>{s.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              {audience.note && <p className="about__reach-note">{audience.note}</p>}
+            </div>
+          )}
 
           <p className="about__body" data-reveal style={{ "--i": 4 } as React.CSSProperties}>
             Jonas Silva é especialista em tecnologia. Profissionalmente, atua com infraestrutura, cloud, cibersegurança e

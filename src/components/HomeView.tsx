@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import About from "@/components/sections/about/About";
 import Courses from "@/components/sections/courses/Courses";
 import Equipment from "@/components/sections/equipment/Equipment";
+import Faq from "@/components/sections/faq/Faq";
 import Manifesto from "@/components/sections/manifesto/Manifesto";
 import Partners from "@/components/sections/partners/Partners";
 import Problems from "@/components/sections/problems/Problems";
@@ -36,10 +37,11 @@ export default function HomeView({ courses, settings, equipment, youtube, latest
         <Courses courses={courses} />
         <SoftwareSection />
         <Partners settings={settings} />
-        <About />
+        <About audience={settings.audience} />
         {youtube}
         {latestPosts}
         <Equipment items={equipment} />
+        <Faq items={settings.faq} />
       </main>
       <Footer settings={settings} />
       <ViewportFx />

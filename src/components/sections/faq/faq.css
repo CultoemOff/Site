@@ -1,0 +1,86 @@
+/* ==========================================================
+   CH 10 · Perguntas frequentes
+   ========================================================== */
+
+.faq__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(32px, 6vw, 80px);
+  align-items: start;
+}
+.faq__intro {
+  position: sticky;
+  top: calc(var(--nav-h) + 32px);
+}
+.faq__intro .section-head {
+  margin-bottom: 24px;
+}
+.faq__list {
+  display: grid;
+  gap: 10px;
+}
+.faq__item {
+  border-radius: 14px;
+  border: 1px solid #dbe3f2;
+  background: #fff;
+  box-shadow: 0 10px 30px -24px rgba(11, 18, 36, 0.5);
+  transition: border-color 0.2s, box-shadow 0.3s var(--ease-out);
+}
+.faq__item[open] {
+  border-color: rgba(59, 140, 255, 0.55);
+  box-shadow: 0 16px 40px -26px rgba(29, 78, 216, 0.6);
+}
+.faq__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+  padding: 16px 20px;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.faq__item summary::-webkit-details-marker {
+  display: none;
+}
+.faq__item summary:focus-visible {
+  outline: 2px solid var(--electric);
+  outline-offset: 2px;
+  border-radius: 14px;
+}
+.faq__item summary svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--royal);
+  transition: transform 0.3s var(--ease-out);
+}
+.faq__item[open] summary svg {
+  transform: rotate(45deg);
+}
+.faq__item p {
+  margin: 0;
+  padding: 0 20px 18px;
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: #3a4660;
+}
+
+@media (max-width: 860px) {
+  .faq__layout {
+    grid-template-columns: 1fr;
+  }
+  .faq__intro {
+    position: static;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .faq__item,
+  .faq__item summary svg {
+    transition: none;
+  }
+}

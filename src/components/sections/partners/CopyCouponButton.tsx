@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { track } from "@/components/analytics/track";
 
 /** Copia o cupom para a área de transferência e mostra "Copiado!" (sem alert). */
 export default function CopyCouponButton({ code }: { code: string }) {
@@ -36,6 +37,7 @@ export default function CopyCouponButton({ code }: { code: string }) {
   };
 
   const onClick = async () => {
+    track("copy_coupon", { label: code });
     try {
       await navigator.clipboard.writeText(code);
       flash("copied");

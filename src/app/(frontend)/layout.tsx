@@ -3,7 +3,7 @@ import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import Analytics from "@/components/analytics/Analytics";
 import { LOGO_SRC, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/config/site";
 import { getSiteSettings } from "@/lib/cms";
-import { OG_IMAGE, SITE_URL, safeGaId } from "@/lib/seo";
+import { OG_IMAGE, SITE_URL, safeGaId, safePixelId } from "@/lib/seo";
 import "./globals.css";
 import "@/components/fx/fx.css";
 
@@ -58,6 +58,7 @@ export const viewport: Viewport = {
 export default async function FrontendLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const settings = await getSiteSettings();
   const gaId = safeGaId(settings.gaId);
+  const pixelId = safePixelId(settings.metaPixelId);
 
   return (
     <html lang="pt-BR" suppressHydrationWarning className={`${display.variable} ${sans.variable} ${mono.variable}`}>
@@ -73,7 +74,7 @@ export default async function FrontendLayout({ children }: Readonly<{ children: 
           Pular para o conteúdo
         </a>
         {children}
-        {gaId && <Analytics gaId={gaId} />}
+        {(gaId || pixelId) && <Analytics gaId={gaId} pixelId={pixelId} />}
       </body>
     </html>
   );

@@ -48,7 +48,67 @@ export type SiteSettingsData = {
   voluts: { url: string; screen?: string };
   dorn: { url: string; image?: string };
   gaId: string;
+  /** ID do Meta Pixel (opcional; só carrega após o consentimento) */
+  metaPixelId: string;
+  /** números das redes exibidos no CH 06 */
+  audience: { stats: AudienceStat[]; note: string };
+  /** perguntas frequentes da home */
+  faq: FaqItem[];
 };
+
+export type AudienceStat = { value: string; label: string };
+export type FaqItem = { question: string; answer: string };
+
+/**
+ * Números das redes em 29/09/2026.
+ * YouTube (YouTube Studio): 145 mil visualizações, 5,4 mil horas assistidas, 2,5 mil inscritos, 86 vídeos.
+ * Instagram: 5.540 seguidores, 44 posts. TikTok: 1.625 seguidores, 8.840 curtidas, 46 vídeos.
+ * Visualizações do Instagram e do TikTok não são públicas: atualize pelo admin.
+ */
+export const AUDIENCE_DEFAULTS: SiteSettingsData["audience"] = {
+  stats: [
+    { value: "145 mil+", label: "visualizações no YouTube" },
+    { value: "5,4 mil", label: "horas assistidas no YouTube" },
+    { value: "9,6 mil", label: "seguidores no YouTube, Instagram e TikTok" },
+    { value: "170+", label: "vídeos e posts publicados" },
+  ],
+  note: "Dados das redes em setembro de 2026.",
+};
+
+export const FAQ_DEFAULTS: FaqItem[] = [
+  {
+    question: "Preciso ter experiência para fazer as formações?",
+    answer:
+      "Não. As formações começam pelos fundamentos, com linguagem simples e exemplos tirados da operação real de um culto.",
+  },
+  {
+    question: "Minha igreja usa equipamentos diferentes. Serve para mim?",
+    answer:
+      "Sim. Os conceitos valem para qualquer marca. Quando uma formação é sobre um equipamento ou software específico, como a grandMA2 ou o Bitfocus Companion, isso está indicado no card da formação.",
+  },
+  {
+    question: "Como funciona o acesso?",
+    answer:
+      "As formações são online. Depois da compra, você recebe as instruções de acesso e pode assistir no seu ritmo, pelo computador ou celular, durante 1 ano.",
+  },
+  {
+    question: "E se eu não gostar?",
+    answer:
+      "Você tem 7 dias de garantia. Se a formação não for para você, basta pedir o reembolso dentro desse prazo e devolvemos 100% do valor.",
+  },
+  {
+    question: "Posso comprar para a equipe técnica da minha igreja?",
+    answer: "Sim. Fale com a gente pelo Instagram para combinar o acesso de vários voluntários.",
+  },
+  {
+    question: "Quando as formações serão lançadas?",
+    answer:
+      "Em breve. Acompanhe o canal no YouTube e o Instagram para saber primeiro quando cada formação abrir.",
+  },
+];
+
+/** Garantia exibida nas formações e na FAQ. */
+export const GUARANTEE_DAYS = 7;
 
 export const DEFAULT_SETTINGS: SiteSettingsData = {
   social: { ...SOCIAL_DEFAULTS },
@@ -56,12 +116,16 @@ export const DEFAULT_SETTINGS: SiteSettingsData = {
   selectedVideos: [],
   spresenter: {
     url: SPRESENTER_URL,
-    coupon: SPRESENTER_COUPON, discount: "5% de desconto no plano Pro",
+    coupon: SPRESENTER_COUPON,
+    discount: "5% de desconto no plano Pro",
     screen: "/partners/spresenter.jpg",
   },
   voluts: { url: VOLUTS_URL, screen: "/partners/voluts.jpg" },
   dorn: { url: DORN_URL, image: "/partners/dorn.jpg" },
   gaId: process.env.NEXT_PUBLIC_GA_ID || "",
+  metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || "",
+  audience: AUDIENCE_DEFAULTS,
+  faq: FAQ_DEFAULTS,
 };
 
 /** Itens da navegação principal. */

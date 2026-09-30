@@ -60,7 +60,7 @@ export default function Partners({ settings }: { settings: SiteSettingsData }) {
               )}
 
               <div className="partner__actions">
-                <ArrowButton href={spresenter.url} variant="ghost" external>
+                <ArrowButton href={spresenter.url} variant="ghost" external track={{ event: "click_partner", label: "SPresenter" }}>
                   Conhecer o SPresenter
                 </ArrowButton>
               </div>
@@ -102,7 +102,7 @@ export default function Partners({ settings }: { settings: SiteSettingsData }) {
               </div>
 
               <div className="partner__actions">
-                <ArrowButton href={voluts.url} external>
+                <ArrowButton href={voluts.url} external track={{ event: "click_partner", label: "Voluts" }}>
                   Testar grátis por 14 dias
                 </ArrowButton>
               </div>
@@ -129,7 +129,7 @@ export default function Partners({ settings }: { settings: SiteSettingsData }) {
                 de vídeo e live da sua equipe.
               </p>
               <div className="partner__actions">
-                <ArrowButton href={dorn.url} external>
+                <ArrowButton href={dorn.url} external track={{ event: "click_partner", label: "Loja da Dorn" }}>
                   Visitar a Loja da Dorn
                 </ArrowButton>
               </div>
