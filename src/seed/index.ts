@@ -15,11 +15,45 @@ import { SEED_POSTS } from "../content/posts";
 
 const payload = await getPayload({ config });
 
+/**
+ * Num banco novo, o MongoDB ainda está criando coleções e índices quando o primeiro registro é gravado,
+ * o que gera um erro passageiro ("WriteConflict"). Aqui garantimos que tudo exista antes e,
+ * se mesmo assim acontecer, tentamos de novo.
+ */
+type Model = { createCollection?: () => Promise<unknown>; init?: () => Promise<unknown> };
+const db = payload.db as unknown as { collections?: Record<string, Model>; versions?: Record<string, Model>; globals?: Model };
+for (const model of [...Object.values(db.collections ?? {}), ...Object.values(db.versions ?? {}), db.globals]) {
+  if (!model) continue;
+  try {
+    await model.createCollection?.();
+    await model.init?.();
+  } catch {
+    /* já existe */
+  }
+}
+
+async function retry<T>(fn: () => Promise<T>, tries = 6): Promise<T> {
+  for (let i = 1; ; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      const e = err as { code?: number; codeName?: string; errorLabelSet?: Set<string>; message?: string };
+      const transient =
+        e?.code === 112 ||
+        e?.codeName === "WriteConflict" ||
+        Boolean(e?.errorLabelSet?.has?.("TransientTransactionError")) ||
+        /catalog changes|WriteConflict/i.test(String(e?.message ?? ""));
+      if (!transient || i >= tries) throw err;
+      await new Promise((r) => setTimeout(r, 1500 * i));
+    }
+  }
+}
+
 let created = 0;
 for (const [i, c] of COURSES.entries()) {
   const exists = await payload.find({ collection: "courses", where: { slug: { equals: c.id } }, limit: 1 });
   if (exists.totalDocs > 0) continue;
-  await payload.create({
+  await retry(() => payload.create({
     collection: "courses",
     data: {
       title: c.title,
@@ -41,7 +75,7 @@ for (const [i, c] of COURSES.entries()) {
       includes: (c.includes ?? []).map((text) => ({ text })),
       hideOnHome: Boolean(c.hideOnHome),
     },
-  });
+  }));
   created++;
 }
 
@@ -49,7 +83,7 @@ let equipmentCreated = 0;
 for (const [i, e] of EQUIPMENT.entries()) {
   const exists = await payload.find({ collection: "equipment", where: { slug: { equals: e.id } }, limit: 1 });
   if (exists.totalDocs > 0) continue;
-  await payload.create({
+  await retry(() => payload.create({
     collection: "equipment",
     data: {
       name: e.name,
@@ -62,11 +96,11 @@ for (const [i, e] of EQUIPMENT.entries()) {
       store: e.store ?? "",
       featured: e.featured,
     },
-  });
+  }));
   equipmentCreated++;
 }
 
-await payload.updateGlobal({
+await retry(() => payload.updateGlobal({
   slug: "site-settings",
   data: {
     youtube: DEFAULT_SETTINGS.social.youtube,
@@ -81,7 +115,7 @@ await payload.updateGlobal({
     voluts: { url: DEFAULT_SETTINGS.voluts.url },
     dorn: { url: DEFAULT_SETTINGS.dorn.url },
   },
-});
+}));
 
 /** Envia uma imagem para Mídias: baixa da URL de origem; se não conseguir, usa o arquivo em /public. */
 async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: string }) {
@@ -91,11 +125,13 @@ async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: s
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = Buffer.from(await res.arrayBuffer());
       const name = img.sourceUrl.split("/").pop() || "imagem.png";
-      return await payload.create({
-        collection: "media",
-        data: { alt: img.alt },
-        file: { data, mimetype: res.headers.get("content-type") || "image/png", name, size: data.length },
-      });
+      return await retry(() =>
+        payload.create({
+          collection: "media",
+          data: { alt: img.alt },
+          file: { data, mimetype: res.headers.get("content-type") || "image/png", name, size: data.length },
+        }),
+      );
     } catch (err) {
       payload.logger.warn(`Não consegui baixar ${img.sourceUrl}: ${String(err)}`);
     }
@@ -103,7 +139,7 @@ async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: s
   if (img.localPath) {
     const local = path.resolve(process.cwd(), "public" + img.localPath);
     if (fs.existsSync(local)) {
-      return payload.create({ collection: "media", data: { alt: img.alt }, filePath: local });
+      return retry(() => payload.create({ collection: "media", data: { alt: img.alt }, filePath: local }));
     }
   }
   return null;
@@ -129,7 +165,7 @@ for (const post of SEED_POSTS) {
       if (media) images.set(block.img.sourceUrl, media.id);
     }
   }
-  await payload.create({
+  await retry(() => payload.create({
     collection: "posts",
     data: {
       title: post.title,
@@ -146,7 +182,7 @@ for (const post of SEED_POSTS) {
       ...(authorId ? { author: authorId } : {}),
       _status: "published",
     },
-  });
+  }));
   postsCreated++;
 }
 
