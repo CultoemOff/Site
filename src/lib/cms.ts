@@ -11,6 +11,7 @@ import {
 import { DEFAULT_SETTINGS, type SiteSettingsData } from "@/config/site";
 import { toLexical, type SeedPost } from "@/content/lexical";
 import { SEED_POSTS } from "@/content/posts";
+import { localMediaPath } from "@/lib/mediaPath";
 
 /**
  * Camada de dados do site.
@@ -28,7 +29,8 @@ const obj = (v: unknown): Doc => (v && typeof v === "object" ? (v as Doc) : {});
 export function mediaUrl(v: unknown, size: "card" | "wide" = "card"): string | undefined {
   const m = obj(v);
   const sized = obj(obj(m.sizes)[size]);
-  return str(sized.url) || str(m.url) || undefined;
+  const url = str(sized.url) || str(m.url);
+  return url ? localMediaPath(url) : undefined;
 }
 export function mediaAlt(v: unknown) {
   return str(obj(v).alt);

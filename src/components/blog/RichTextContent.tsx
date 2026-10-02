@@ -7,6 +7,7 @@ import type {
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
 import { LinkJSXConverter, RichText, type JSXConvertersFunction } from "@payloadcms/richtext-lexical/react";
 import YouTubeEmbed from "./YouTubeEmbed";
+import { localMediaPath } from "@/lib/mediaPath";
 
 type YouTubeFields = { url: string; caption?: string | null; blockType: "youtube" };
 type NodeTypes = DefaultNodeTypes | SerializedBlockNode<YouTubeFields>;
@@ -37,12 +38,12 @@ const converters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => 
     if (media.mimeType?.startsWith("video/")) {
       return (
         <figure className="post-media">
-          <video controls preload="metadata" src={media.url} />
+          <video controls preload="metadata" src={localMediaPath(media.url)} />
           {media.caption && <figcaption>{media.caption}</figcaption>}
         </figure>
       );
     }
-    const src = media.sizes?.wide?.url || media.url;
+    const src = localMediaPath(media.sizes?.wide?.url || media.url);
     const width = media.sizes?.wide?.width || media.width || 1600;
     const height = media.sizes?.wide?.height || media.height || 900;
     return (

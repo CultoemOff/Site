@@ -13,6 +13,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "i.ytimg.com" },
+      // arquivos do admin servidos pelo próprio site durante o desenvolvimento
+      { protocol: "http", hostname: "localhost" },
       // imagens de artigos migrados do site antigo (usadas só enquanto o banco não está configurado)
       { protocol: "https", hostname: "cultoemoff.com.br", pathname: "/wp-content/**" },
       // imagens enviadas pelo admin quando o armazenamento é o Vercel Blob
