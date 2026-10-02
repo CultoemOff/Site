@@ -79,7 +79,9 @@ for (const [i, c] of COURSES.entries()) {
   if (doc) {
     // já existe: só atualiza quando o conteúdo no código é mais novo (campo "rev" em src/config/courses.ts)
     if ((doc.contentRev ?? 0) < (c.rev ?? 0)) {
-      await retry(() => payload.update({ collection: "courses", id: doc.id, data }));
+      // link de inscrição: se o código não tem um, mantém o que foi colocado no painel
+      const { href, ...semLink } = data;
+      await retry(() => payload.update({ collection: "courses", id: doc.id, data: href ? data : semLink }));
       updated++;
     }
     continue;
