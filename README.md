@@ -24,7 +24,8 @@ Se o banco não estiver configurado, o site continua funcionando com os valores 
 Pré-requisitos: Node 20+ e um MongoDB (Atlas gratuito ou local).
 
 ```bash
-cp .env.example .env        # preencha DATABASE_URI e PAYLOAD_SECRET
+node scripts/configurar-env.mjs   # cria o .env: pede a connection string do Atlas e gera o PAYLOAD_SECRET
+# (ou: cp .env.example .env e preencha DATABASE_URI e PAYLOAD_SECRET à mão)
 npm install
 npm run dev                 # http://localhost:3000  e  http://localhost:3000/admin
 ```
