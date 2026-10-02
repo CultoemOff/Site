@@ -10,8 +10,18 @@ export type SalesPage = {
   subheadline: string;
   /** link do vídeo de vendas no YouTube; vazio = espaço reservado "vídeo em breve" */
   videoUrl: string;
+  /** três motivos pelos quais esta formação é diferente de um curso de redes comum */
+  pillars: { title: string; text: string }[];
   /** situações em que o aluno se reconhece */
   pains: string[];
+  /** antes × depois */
+  compare: { before: string; after: string }[];
+  /** o que o aluno consegue fazer na prática ao terminar */
+  practice: { title: string; text: string }[];
+  /** argumento de valor: quanto custa não saber */
+  value: { title: string; text: string; points: string[] };
+  /** objeções comuns, respondidas */
+  objections: { objection: string; answer: string }[];
   /** frase-ponte depois das dores */
   bridge: string;
   outcomesTitle: string;
@@ -36,6 +46,62 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     subheadline:
       "Entenda o que acontece entre a câmera, a mesa, o switch e o computador da live, e resolva os problemas de rede do culto com segurança, sem precisar virar técnico de TI.",
     videoUrl: "",
+    pillars: [
+      {
+        title: "Feita para a técnica da igreja",
+        text: "Nada de exemplos de escritório. Tudo é explicado com câmera, mesa, switch, projeção e o computador da live.",
+      },
+      {
+        title: "Do zero, sem jargão",
+        text: "Cada conceito começa do começo, em português claro. Você não precisa ser de TI para acompanhar.",
+      },
+      {
+        title: "Aprendeu hoje, usa no próximo culto",
+        text: "Cada módulo termina em algo prático: um comando, um teste ou um ajuste que você aplica na sua igreja.",
+      },
+    ],
+    compare: [
+      { before: "Desliga e liga tudo de novo, e torce.", after: "Segue um roteiro de diagnóstico e acha a causa." },
+      { before: "Depende de “alguém de TI” para qualquer problema.", after: "A própria equipe resolve o que aparece no culto." },
+      { before: "Ninguém sabe o IP de nada.", after: "A rede da técnica fica mapeada e documentada." },
+      { before: "Live no Wi-Fi, disputando com a igreja inteira.", after: "Cada equipamento no lugar certo: cabo, PoE ou Wi-Fi." },
+      { before: "Compra equipamento sem saber se vai funcionar.", after: "Entende o que cada switch, cabo e câmera faz antes de comprar." },
+    ],
+    practice: [
+      { title: "Mapear a rede da técnica", text: "Descobrir quem está na rede, com qual IP, e deixar tudo anotado." },
+      { title: "Colocar uma câmera PTZ na rede", text: "Ajustar o endereço da câmera e fazer o controle encontrar ela." },
+      { title: "Fazer o NDI aparecer", text: "Entender por que a fonte some e o que conferir para ela voltar." },
+      { title: "Usar o celular como câmera", text: "Configurar o Iriun com estabilidade para a hora do culto." },
+      { title: "Alimentar equipamentos por PoE", text: "Saber quando dá para levar energia e dados no mesmo cabo." },
+      { title: "Diagnosticar com poucos comandos", text: "Usar ping, ipconfig e arp para testar antes de mexer em tudo." },
+    ],
+    value: {
+      title: "Quanto custa não entender de rede?",
+      text: "Um culto com a transmissão fora do ar, uma câmera parada no meio da ministração ou uma visita técnica de emergência custam muito mais do que esta formação.",
+      points: [
+        "Custa menos do que uma pizza.",
+        "Você paga uma vez e a equipe toda aprende a pensar a rede.",
+        "O conhecimento fica: serve para o próximo equipamento que a igreja comprar.",
+      ],
+    },
+    objections: [
+      {
+        objection: "“Eu não sou de TI.”",
+        answer: "A formação foi pensada exatamente para você: voluntário que opera a técnica e nunca estudou redes.",
+      },
+      {
+        objection: "“Minha igreja é pequena.”",
+        answer: "Rede pequena também dá problema. Com um roteador, um switch e um computador você já aplica tudo.",
+      },
+      {
+        objection: "“Não tenho tempo.”",
+        answer: "São videoaulas gravadas. Você assiste no seu ritmo e tem 1 ano de acesso.",
+      },
+      {
+        objection: "“E se não for para mim?”",
+        answer: "Você tem 7 dias de garantia. Se não gostar, pede o reembolso e recebe 100% do valor de volta.",
+      },
+    ],
     pains: [
       "A fonte NDI não aparece no OBS e ninguém sabe por quê.",
       "A câmera PTZ “sumiu” da rede depois que alguém mexeu no roteador.",
@@ -147,6 +213,14 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         question: "O curso ensina Dante e Bitfocus Companion?",
         answer: "Os dois aparecem como exemplos de uso da rede. O Companion tem uma formação própria, e o Dante terá uma formação dedicada no futuro.",
+      },
+      {
+        question: "Preciso ter algum equipamento para acompanhar?",
+        answer: "Um computador e a rede que você já tem (em casa ou na igreja) são suficientes para praticar os comandos e testes.",
+      },
+      {
+        question: "Serve para igreja pequena?",
+        answer: "Sim. Os fundamentos são os mesmos para uma rede com um roteador e um computador ou para uma estrutura maior.",
       },
       {
         question: "E se eu não gostar?",

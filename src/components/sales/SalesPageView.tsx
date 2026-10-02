@@ -113,6 +113,25 @@ export default function SalesPageView({ course, page, audience, action }: Props)
         </ul>
       </div>
 
+      {/* ---------- por que é diferente ---------- */}
+      <section className="sp-section sp-section--tight" aria-labelledby="sp-pilares">
+        <div className="sp-section__inner">
+          <p className="swp-kicker">Por que esta formação</p>
+          <h2 id="sp-pilares" className="swp-title">
+            Muito mais que um curso de redes: é a rede explicada para quem serve na técnica.
+          </h2>
+          <ul className="sp-pillars">
+            {page.pillars.map((p, i) => (
+              <li key={p.title} data-reveal data-glow style={{ "--i": i } as React.CSSProperties}>
+                <span className="sp-pillars__num">{String(i + 1).padStart(2, "0")}</span>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* ---------- dores ---------- */}
       <section className="sp-section" aria-labelledby="sp-dores">
         <div className="sp-section__inner">
@@ -137,6 +156,34 @@ export default function SalesPageView({ course, page, audience, action }: Props)
               </>
             )}
           </p>
+        </div>
+      </section>
+
+      {/* ---------- antes × depois ---------- */}
+      <section className="sp-section" aria-labelledby="sp-compare">
+        <div className="sp-section__inner">
+          <p className="swp-kicker">Antes e depois</p>
+          <h2 id="sp-compare" className="swp-title">
+            O que muda na rotina da sua equipe.
+          </h2>
+          <div className="sp-compare" role="table" aria-label="Antes e depois da formação">
+            <div className="sp-compare__head" role="row">
+              <span role="columnheader">Sem a formação</span>
+              <span role="columnheader">Com a formação</span>
+            </div>
+            {page.compare.map((c) => (
+              <div key={c.before} className="sp-compare__row" role="row" data-reveal>
+                <p role="cell" className="sp-compare__before">
+                  <Cross />
+                  {c.before}
+                </p>
+                <p role="cell" className="sp-compare__after">
+                  <Check />
+                  {c.after}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -189,6 +236,28 @@ export default function SalesPageView({ course, page, audience, action }: Props)
         </div>
       </section>
 
+      {/* ---------- prática ---------- */}
+      <section className="sp-section sp-section--alt" aria-labelledby="sp-pratica">
+        <div className="sp-section__inner">
+          <p className="swp-kicker">Na teoria e na prática</p>
+          <h2 id="sp-pratica" className="swp-title">
+            Ao terminar, você vai conseguir:
+          </h2>
+          <ul className="sp-practice">
+            {page.practice.map((p, i) => (
+              <li key={p.title} data-reveal data-glow style={{ "--i": i % 3 } as React.CSSProperties}>
+                <span className="sp-practice__check" aria-hidden="true">
+                  <Check />
+                </span>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="sp-center-cta">{cta()}</div>
+        </div>
+      </section>
+
       {/* ---------- módulos ---------- */}
       <section id="modulos" className="sp-section sp-section--alt" aria-labelledby="sp-modulos">
         <div className="sp-section__inner">
@@ -196,6 +265,12 @@ export default function SalesPageView({ course, page, audience, action }: Props)
           <h2 id="sp-modulos" className="swp-title">
             {page.modules.length} módulos, do conceito à prática.
           </h2>
+          <ul className="sp-hero__facts sp-facts--modules" aria-label="Formato">
+            <li>{page.modules.length} módulos</li>
+            <li>{course.format.hours} horas de videoaulas gravadas</li>
+            <li>{course.format.access}</li>
+            {course.includes?.length ? <li>Apostila para imprimir</li> : null}
+          </ul>
           <ol className="sp-modules">
             {page.modules.map((m, i) => (
               <li key={m.title}>
@@ -305,6 +380,51 @@ export default function SalesPageView({ course, page, audience, action }: Props)
         </section>
       )}
 
+      {/* ---------- objeções ---------- */}
+      <section className="sp-section sp-section--alt" aria-labelledby="sp-objecoes">
+        <div className="sp-section__inner">
+          <p className="swp-kicker">Talvez você esteja pensando</p>
+          <h2 id="sp-objecoes" className="swp-title">
+            “Será que é para mim?”
+          </h2>
+          <ul className="sp-objections">
+            {page.objections.map((o, i) => (
+              <li key={o.objection} data-reveal style={{ "--i": i % 2 } as React.CSSProperties}>
+                <h3>{o.objection}</h3>
+                <p>{o.answer}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ---------- valor ---------- */}
+      <section className="sp-section" aria-labelledby="sp-valor">
+        <div className="sp-section__inner sp-split">
+          <div>
+            <p className="swp-kicker">Vale a pena?</p>
+            <h2 id="sp-valor" className="swp-title">
+              {page.value.title}
+            </h2>
+            <p className="swp-lead">{page.value.text}</p>
+          </div>
+          <div className="sp-value">
+            <p className="sp-value__price">
+              <span>Tudo isso por</span>
+              <strong>{formatPrice(course.price)}</strong>
+            </p>
+            <ul className="sp-checks">
+              {page.value.points.map((v) => (
+                <li key={v}>
+                  <Check />
+                  {v}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* ---------- oferta ---------- */}
       <section id="oferta" className="sp-section sp-offer" aria-labelledby="sp-oferta">
         <div className="sp-section__inner sp-offer__layout">
@@ -403,6 +523,15 @@ export default function SalesPageView({ course, page, audience, action }: Props)
           <div className="sp-final__cta">{cta()}</div>
         </div>
       </section>
+
+      {/* ---------- barra fixa (celular) ---------- */}
+      <div className="sp-sticky">
+        <p>
+          <strong>{formatPrice(course.price)}</strong>
+          <span>{GUARANTEE_DAYS} dias de garantia</span>
+        </p>
+        {cta()}
+      </div>
     </>
   );
 }
