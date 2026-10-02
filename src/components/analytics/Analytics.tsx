@@ -65,8 +65,10 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
       b.head.appendChild(t);
     })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
     /* eslint-enable */
-    window.fbq?.("init", pixelId);
-    window.fbq?.("track", "PageView");
+    // lido de novo pela janela: o TypeScript não sabe que o trecho acima acabou de criar o fbq
+    const fbq = (window as Window).fbq;
+    fbq?.("init", pixelId);
+    fbq?.("track", "PageView");
   }, [pixelId, consent]);
 
   // page_view a cada navegação (App Router não recarrega a página)
