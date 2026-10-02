@@ -71,19 +71,29 @@ export default function SalesPageView({ course, page, audience }: Props) {
 
   return (
     <>
+      {/* ---------- faixa da promoção: fixa no topo, acima do menu ---------- */}
+      {promoOn && (
+        <a
+          className="sp-promo"
+          href={ctaHref}
+          {...(hasLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          data-track="select_course"
+          data-track-label={`${course.title} (faixa do topo)`}
+        >
+          <span className="sp-promo__label">{page.promo!.label}</span>
+          <span className="sp-promo__text">
+            de <s>{formatPrice(priceFrom!)}</s> por <strong>{formatPrice(price)}</strong>
+          </span>
+          <span className="sp-promo__timer">
+            <span className="sp-promo__ends">termina em </span>
+            <Countdown endsAt={endsAt!} variant="inline" />
+          </span>
+          {hasLink && <span className="sr-only"> (abre em nova aba)</span>}
+        </a>
+      )}
+
       {/* ---------- topo ---------- */}
-      <header className="sp-hero">
-        {promoOn && (
-          <div className="sp-promo" role="note">
-            <span className="sp-promo__label">{page.promo!.label}</span>
-            <span className="sp-promo__text">
-              de <s>{formatPrice(priceFrom!)}</s> por <strong>{formatPrice(price)}</strong>
-            </span>
-            <span className="sp-promo__timer">
-              termina em <Countdown endsAt={endsAt!} variant="inline" />
-            </span>
-          </div>
-        )}
+      <header className={`sp-hero${promoOn ? " sp-hero--promo" : ""}`}>
         <div className="sp-hero__inner">
           <div className="sp-hero__text">
             <p className="swp-hero__channel">

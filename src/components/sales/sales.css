@@ -2152,3 +2152,90 @@
     opacity: 1;
   }
 }
+
+/* ==========================================================
+   Faixa da promoção fixa no topo: acompanha a rolagem junto com o menu,
+   sempre acima de tudo. O menu desce a altura da faixa.
+   ========================================================== */
+:root {
+  --promo-h: 40px;
+}
+.sp-promo {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  max-width: none;
+  height: var(--promo-h);
+  margin: 0;
+  padding: 0 14px;
+  flex-wrap: nowrap;
+  gap: 6px 16px;
+  border-radius: 0;
+  font-size: 0.88rem;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 0 6px 20px -10px rgba(0, 0, 0, 0.7);
+}
+.sp-promo:hover .sp-promo__text strong {
+  text-decoration: underline;
+}
+.sp-promo:focus-visible {
+  outline: 3px solid #0b0d12;
+  outline-offset: -4px;
+}
+/* o menu fica logo abaixo da faixa */
+body:has(.sp-promo) .nav {
+  top: var(--promo-h);
+}
+.sp-hero--promo {
+  padding-top: calc(var(--nav-h) + var(--promo-h) + clamp(36px, 5vw, 72px));
+}
+body:has(.sp-promo) .sp-offer {
+  scroll-margin-top: calc(var(--nav-h) + var(--promo-h));
+}
+@media (max-width: 760px) {
+  :root {
+    --promo-h: 36px;
+  }
+  .sp-promo {
+    gap: 10px;
+    font-size: 0.8rem;
+  }
+  .sp-promo__label,
+  .sp-promo__ends {
+    display: none;
+  }
+  .sp-promo__text strong {
+    font-size: 0.95rem;
+  }
+}
+
+/* telas estreitas: colunas não podem crescer além da tela */
+@media (max-width: 960px) {
+  .sp-hero__inner,
+  .sp-split,
+  .sp-offer__layout,
+  .sp-faq,
+  .sp-who,
+  .sp-capstone__layout,
+  .sp-prereq__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 400px) {
+  .cd-boxes {
+    gap: 6px;
+  }
+  .cd-boxes span {
+    flex: 1;
+    min-width: 0;
+  }
+  .cd-boxes strong {
+    font-size: 1.25rem;
+  }
+  .sp-promo {
+    gap: 8px;
+    font-size: 0.74rem;
+  }
+}
