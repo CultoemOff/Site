@@ -73,23 +73,24 @@ export default function SalesPageView({ course, page, audience }: Props) {
     <>
       {/* ---------- faixa da promoção: fixa no topo, acima do menu ---------- */}
       {promoOn && (
-        <a
-          className="sp-promo"
-          href={ctaHref}
-          {...(hasLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          data-track="select_course"
-          data-track-label={`${course.title} (faixa do topo)`}
-        >
+        <div className="sp-promo" role="note">
           <span className="sp-promo__label">{page.promo!.label}</span>
-          <span className="sp-promo__text">
-            de <s>{formatPrice(priceFrom!)}</s> por <strong>{formatPrice(price)}</strong>
-          </span>
+          <strong className="sp-promo__off">{off}% OFF</strong>
           <span className="sp-promo__timer">
             <span className="sp-promo__ends">termina em </span>
             <Countdown endsAt={endsAt!} variant="inline" />
           </span>
-          {hasLink && <span className="sr-only"> (abre em nova aba)</span>}
-        </a>
+          <a
+            className="sp-promo__btn"
+            href={ctaHref}
+            {...(hasLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            data-track="select_course"
+            data-track-label={`${course.title} (faixa do topo)`}
+          >
+            Comprar<span className="sp-promo__btn-more"> agora</span>
+            {hasLink && <span className="sr-only"> (abre em nova aba)</span>}
+          </a>
+        </div>
       )}
 
       {/* ---------- topo ---------- */}
@@ -144,12 +145,16 @@ export default function SalesPageView({ course, page, audience }: Props) {
       {/* ---------- prova / autoridade rápida ---------- */}
       <div className="sp-proof" aria-label="Números do Culto em Off">
         <ul className="sp-proof__list">
-          {audience.stats.slice(0, 3).map((s) => (
+          {audience.stats.slice(0, 2).map((s) => (
             <li key={s.label}>
               <strong>{s.value}</strong>
               <span>{s.label}</span>
             </li>
           ))}
+          <li>
+            <strong>{page.modules.length} módulos</strong>
+            <span>com aulas práticas e projeto final</span>
+          </li>
           <li>
             <strong>{GUARANTEE_DAYS} dias</strong>
             <span>de garantia incondicional</span>
@@ -230,6 +235,17 @@ export default function SalesPageView({ course, page, audience }: Props) {
           </div>
         </div>
       </section>
+
+      {/* ---------- versículo ---------- */}
+      {page.verse && (
+        <aside className="sp-verse" aria-label="Versículo">
+          <blockquote>
+            <p>“{page.verse.text}”</p>
+            <cite>{page.verse.ref}</cite>
+          </blockquote>
+          <p className="sp-verse__note">{page.verse.note}</p>
+        </aside>
+      )}
 
       {/* ---------- por dentro das aulas (ilustrações) ---------- */}
       {page.inside && (
@@ -622,6 +638,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
             {course.title} {priceFrom ? `de ${formatPrice(priceFrom)} por ${formatPrice(price)}` : `por ${formatPrice(price)}`}, com{" "}
             {GUARANTEE_DAYS} dias de garantia.
           </p>
+          {page.finalNote && <p className="sp-final__note">{page.finalNote}</p>}
           {promoOn && (
             <div className="sp-final__timer">
               <span>Preço de lançamento termina em</span>

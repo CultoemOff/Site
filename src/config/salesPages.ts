@@ -27,6 +27,10 @@ export type SalesPage = {
   outcomes: string[];
   /** título do chamado final */
   finalTitle: string;
+  /** frase curta acima do contador final */
+  finalNote?: string;
+  /** versículo em destaque (use poucos: a página não é um devocional) */
+  verse?: { text: string; ref: string; note: string };
   /** promoção com prazo real (o preço "de/por" vem da formação: priceFrom e price) */
   promo?: { label: string; endsAt: string };
   /** detalhe de cada módulo (mesma ordem de course.topics); tag opcional, ex.: "Aula prática" */
@@ -123,6 +127,12 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     bridge: "O problema quase nunca é o equipamento. É a rede que ninguém explicou para a equipe.",
     outcomesTitle: "Você passa a entender a rede, em vez de depender da sorte.",
     finalTitle: "O próximo culto pode começar sem susto na rede.",
+    finalNote: "Fazer o melhor para Deus também passa pela técnica.",
+    verse: {
+      text: "Tudo quanto fizerdes, fazei-o de todo o coração, como ao Senhor.",
+      ref: "Colossenses 3:23",
+      note: "Servir com excelência é também entender o que você opera.",
+    },
     outcomes: [
       "Saber o que é IP, máscara, gateway, DHCP e DNS, e por que isso importa no culto.",
       "Descobrir e testar qualquer equipamento da rede com poucos comandos.",
@@ -233,6 +243,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       "Quem opera NDI, câmeras PTZ, OBS ou mesa digital e quer entender o que está por trás.",
       "Líderes técnicos que precisam organizar a rede da igreja.",
       "Quem nunca estudou redes e quer começar do jeito certo.",
+      "Quem quer servir com excelência e ver tudo feito com decência e ordem (1 Coríntios 14:40).",
     ],
     notForWho: [
       "Quem quer se formar administrador de redes corporativas.",

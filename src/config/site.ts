@@ -71,8 +71,6 @@ export type FaqItem = { question: string; answer: string };
 export const AUDIENCE_DEFAULTS: SiteSettingsData["audience"] = {
   stats: [
     { value: "1 milhão+", label: "visualizações nas redes" },
-    { value: "5,4 mil", label: "horas assistidas no YouTube" },
-    { value: "9,6 mil", label: "seguidores no YouTube, Instagram e TikTok" },
     { value: "180+", label: "vídeos e posts publicados" },
   ],
   note: "Dados das redes em setembro de 2026.",
