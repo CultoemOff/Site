@@ -773,3 +773,26 @@
     min-height: 100%;
   }
 }
+
+/* preço promocional no card */
+.course__price-from {
+  display: block;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted-on-dark);
+}
+.course__price-off {
+  margin-left: 10px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #ffd43b;
+  color: #1a1400;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}

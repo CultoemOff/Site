@@ -42,6 +42,13 @@ export const Courses: CollectionConfig = {
       fields: [
         { name: "price", type: "number", label: "Preço (R$)", required: true, min: 0, admin: { step: 0.1 } },
         {
+          name: "priceFrom",
+          type: "number",
+          label: "Preço cheio (R$), para promoção",
+          min: 0,
+          admin: { step: 0.1, description: "Opcional. Se for maior que o preço, aparece riscado: “de X por Y”." },
+        },
+        {
           name: "status",
           type: "select",
           label: "Status",

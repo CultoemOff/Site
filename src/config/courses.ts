@@ -51,8 +51,10 @@ export type Course = {
   appliedTo?: string[];
   diagram: CourseDiagram;
   status?: CourseStatus;
-  /** preço em reais */
+  /** preço em reais (o que a pessoa paga hoje) */
   price: number;
+  /** preço cheio, exibido riscado quando há promoção ("de R$ 89,90 por R$ 58,90") */
+  priceFrom?: number;
   format: CourseFormat;
   href?: string;
   featured?: boolean;
@@ -79,7 +81,7 @@ export const COURSES: Course[] = [
     title: "Redes para Igrejas",
     tagline: "Entenda a infraestrutura por trás das tecnologias que você já usa.",
     summary:
-      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. Videoaulas gravadas em 9 módulos, do conceito à aula prática com OBS, NDI, PTZ e Companion funcionando juntos.",
+      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. Videoaulas gravadas em 9 módulos, do conceito ao projeto prático com OBS, NDI, PTZ e Companion funcionando juntos.",
     question: "Por que dois equipamentos ligados no mesmo switch não conseguem conversar?",
     topicsTitle: "9 módulos",
     // Módulos do Curso 1 (básico). Tópicos avançados (VLAN, QoS, IGMP) ficam para o Curso 2.
@@ -93,16 +95,20 @@ export const COURSES: Course[] = [
       "NDI na prática",
       "Câmeras PTZ e o celular como câmera (Iriun)",
       "Troubleshooting: encontrando o problema antes do culto",
-      "Aula prática: OBS, NDI, PTZ, rede e Companion funcionando juntos",
+      "Projeto prático: OBS, NDI, PTZ, rede e Companion funcionando juntos",
     ],
     appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
-    rev: 2,
+    rev: 3,
     diagram: "network",
-    price: 39.9,
+    price: 58.9,
+    priceFrom: 89.9,
     instructor: "jonas-silva",
-    includes: ["Apostila de comandos e dicas rápidas para imprimir e consultar depois"],
-    format: ONLINE_1_ANO(8),
-    status: "lancamento-em-breve",
+    includes: [
+      "Apostila de comandos e dicas rápidas para imprimir e consultar depois",
+      "Área de membros para tirar dúvidas e comunidade de alunos",
+    ],
+    format: { mode: "Online", hours: 8, access: "Acesso vitalício" },
+    status: "inscricoes-abertas",
     featured: true,
     href: "",
   },

@@ -69,8 +69,16 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
 
         <div className="course__offer">
           <p className="course__price">
+            {course.priceFrom && course.priceFrom > course.price && (
+              <span className="course__price-from">
+                de <s>{formatPrice(course.priceFrom)}</s> por
+              </span>
+            )}
             <span className="sr-only">Preço: </span>
             {formatPrice(course.price)}
+            {course.priceFrom && course.priceFrom > course.price && (
+              <em className="course__price-off">{Math.round((1 - course.price / course.priceFrom) * 100)}% OFF</em>
+            )}
           </p>
           <ul className="course__format" aria-label="Formato">
             <li>{course.format.mode}</li>
@@ -195,7 +203,7 @@ export default function Courses({ courses, showMoreButton = true }: { courses: C
             </span>
             <span>
               <strong>100% online</strong>
-              No seu ritmo, pelo computador ou celular, com acesso por 1 ano.
+              No seu ritmo, pelo computador ou celular.
             </span>
           </li>
         </ul>

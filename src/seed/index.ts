@@ -59,6 +59,7 @@ for (const [i, c] of COURSES.entries()) {
     summary: c.summary,
     question: c.question,
     price: c.price,
+    priceFrom: c.priceFrom ?? null,
     status: c.status ?? "lancamento-em-breve",
     format: c.format,
     href: c.href ?? "",

@@ -69,6 +69,7 @@ function mapCourse(d: Doc): Course {
     diagram: DIAGRAMS.includes(diagram) ? diagram : "network",
     status: STATUSES.includes(status) ? status : undefined,
     price: num(d.price),
+    priceFrom: num(d.priceFrom) > num(d.price) ? num(d.priceFrom) : undefined,
     format: {
       mode: str(format.mode, "Online"),
       hours: num(format.hours, 0),

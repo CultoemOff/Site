@@ -7,7 +7,6 @@ import SalesPageView from "@/components/sales/SalesPageView";
 import { getInstructor } from "@/config/instructors";
 import { SALES_PAGES } from "@/config/salesPages";
 import { getCourses, getSiteSettings } from "@/lib/cms";
-import { submitLead } from "@/lib/leadActions";
 import { JsonLd, SITE_URL } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -55,7 +54,14 @@ export default async function CourseSalesPage({ params }: Props) {
           url: `${SITE_URL}/formacoes/${slug}`,
           provider: { "@type": "Organization", name: "Culto em Off", url: SITE_URL },
           ...(teacher ? { instructor: { "@type": "Person", name: teacher.name } } : {}),
-          offers: { "@type": "Offer", price: course.price.toFixed(2), priceCurrency: "BRL", category: "Paid" },
+          offers: {
+            "@type": "Offer",
+            price: course.price.toFixed(2),
+            priceCurrency: "BRL",
+            category: "Paid",
+            ...(page.promo ? { priceValidUntil: page.promo.endsAt.slice(0, 10) } : {}),
+            ...(course.href ? { url: course.href, availability: "https://schema.org/InStock" } : {}),
+          },
           hasCourseInstance: { "@type": "CourseInstance", courseMode: "online" },
         }}
       />
@@ -72,7 +78,7 @@ export default async function CourseSalesPage({ params }: Props) {
       />
       <Navbar />
       <main id="conteudo" tabIndex={-1}>
-        <SalesPageView course={course} page={page} audience={settings.audience} action={submitLead} />
+        <SalesPageView course={course} page={page} audience={settings.audience} />
       </main>
       <Footer settings={settings} />
       <ViewportFx />

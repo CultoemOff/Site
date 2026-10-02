@@ -16,8 +16,6 @@ export type SalesPage = {
   pains: string[];
   /** antes × depois */
   compare: { before: string; after: string }[];
-  /** o que o aluno consegue fazer na prática ao terminar */
-  practice: { title: string; text: string }[];
   /** argumento de valor: quanto custa não saber */
   value: { title: string; text: string; points: string[] };
   /** objeções comuns, respondidas */
@@ -29,10 +27,10 @@ export type SalesPage = {
   outcomes: string[];
   /** título do chamado final */
   finalTitle: string;
-  /** exemplos práticos: sintoma → causa → o que fazer */
-  examples: { symptom: string; cause: string; fix: string }[];
-  /** detalhe de cada módulo (mesma ordem de course.topics) */
-  modules: { title: string; items: string[] }[];
+  /** promoção com prazo real (o preço "de/por" vem da formação: priceFrom e price) */
+  promo?: { label: string; endsAt: string };
+  /** detalhe de cada módulo (mesma ordem de course.topics); tag opcional, ex.: "Aula prática" */
+  modules: { title: string; items: string[]; tag?: string }[];
   /** módulo final em destaque (aula prática) */
   capstone?: {
     badge: string;
@@ -58,6 +56,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     subheadline:
       "Entenda o que acontece entre a câmera, a mesa, o switch e o computador da live, e resolva os problemas de rede do culto com segurança, sem precisar virar técnico de TI.",
     videoUrl: "",
+    // Promoção de lançamento + Black November. Quando o prazo passa, a página volta a mostrar o preço cheio.
+    promo: { label: "Lançamento + Black November", endsAt: "2026-11-30T23:59:59-03:00" },
     pillars: [
       {
         title: "Feita para a técnica da igreja",
@@ -66,6 +66,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         title: "Do zero, sem jargão",
         text: "Cada conceito começa do começo, em português claro. Você não precisa ser de TI para acompanhar.",
+      },
+      {
+        title: "Você não aprende sozinho",
+        text: "Área de membros para tirar dúvidas e uma comunidade de alunos que vivem os mesmos desafios na técnica.",
       },
       {
         title: "Aprendeu hoje, usa no próximo culto",
@@ -79,21 +83,14 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       { before: "Live no Wi-Fi, disputando com a igreja inteira.", after: "Cada equipamento no lugar certo: cabo, PoE ou Wi-Fi." },
       { before: "Compra equipamento sem saber se vai funcionar.", after: "Entende o que cada switch, cabo e câmera faz antes de comprar." },
     ],
-    practice: [
-      { title: "Mapear a rede da técnica", text: "Descobrir quem está na rede, com qual IP, e deixar tudo anotado." },
-      { title: "Colocar uma câmera PTZ na rede", text: "Ajustar o endereço da câmera e fazer o controle encontrar ela." },
-      { title: "Fazer o NDI aparecer", text: "Entender por que a fonte some e o que conferir para ela voltar." },
-      { title: "Usar o celular como câmera", text: "Configurar o Iriun com estabilidade para a hora do culto." },
-      { title: "Alimentar equipamentos por PoE", text: "Saber quando dá para levar energia e dados no mesmo cabo." },
-      { title: "Diagnosticar com poucos comandos", text: "Usar ping, ipconfig e arp para testar antes de mexer em tudo." },
-    ],
     value: {
       title: "Quanto custa não entender de rede?",
       text: "Um culto com a transmissão fora do ar, uma câmera parada no meio da ministração ou uma visita técnica de emergência custam muito mais do que esta formação.",
       points: [
-        "Custa menos do que uma pizza.",
+        "Custa menos do que um lanche para a equipe depois do culto.",
         "Você paga uma vez e a equipe toda aprende a pensar a rede.",
-        "O conhecimento fica: serve para o próximo equipamento que a igreja comprar.",
+        "Acesso vitalício: o conteúdo fica com você para rever quando precisar.",
+        "Área de membros para tirar dúvidas e comunidade de alunos.",
       ],
     },
     objections: [
@@ -107,7 +104,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         objection: "“Não tenho tempo.”",
-        answer: "São videoaulas gravadas. Você assiste no seu ritmo e tem 1 ano de acesso.",
+        answer: "São videoaulas gravadas e o acesso é vitalício. Você assiste no seu ritmo, quando puder.",
       },
       {
         objection: "“E se não for para mim?”",
@@ -121,6 +118,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       "Ninguém da equipe sabe qual é o IP de cada equipamento.",
       "O celular usado como câmera trava ou perde a conexão.",
       "A solução de sempre é desligar e ligar tudo de novo, e torcer.",
+      "Não sei o que é NDI, Bitfocus Companion ou Art-Net, nem como essas tecnologias podem ajudar.",
     ],
     bridge: "O problema quase nunca é o equipamento. É a rede que ninguém explicou para a equipe.",
     outcomesTitle: "Você passa a entender a rede, em vez de depender da sorte.",
@@ -133,23 +131,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       "Seguir um roteiro de diagnóstico quando algo falhar, em vez de adivinhar.",
       "Conversar com o pessoal de TI ou com o fornecedor falando a mesma língua.",
     ],
-    examples: [
-      {
-        symptom: "A câmera PTZ não responde ao controle.",
-        cause: "A câmera ficou com um IP de outra faixa da rede.",
-        fix: "Encontrar o IP com um comando, ajustar endereço e máscara e testar com ping.",
-      },
-      {
-        symptom: "A fonte NDI não aparece no computador da live.",
-        cause: "Os computadores estão em redes diferentes ou o firewall está bloqueando.",
-        fix: "Conferir a rede de cada máquina, liberar o NDI no firewall e validar a descoberta.",
-      },
-      {
-        symptom: "A live trava sempre no mesmo momento do culto.",
-        cause: "O computador da transmissão está no Wi-Fi, disputando espaço com a igreja inteira.",
-        fix: "Levar o computador da live para o cabo e separar o que precisa de estabilidade.",
-      },
-    ],
     modules: [
       {
         title: "Fundamentos: o que é uma rede, LAN, internet, switch e roteador",
@@ -161,30 +142,37 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         title: "Comandos de rede no Windows e no Linux",
+        tag: "Aula prática",
         items: ["Descobrir o próprio IP", "Testar se um equipamento responde", "Ver quem está na rede", "Guia rápido para imprimir"],
       },
       {
         title: "Cabos, switches e PoE",
+        tag: "Aula prática",
         items: ["Cabo de rede e conectores", "Switch gerenciável e não gerenciável", "PoE: energia pelo cabo", "Organizando a rede da técnica"],
       },
       {
         title: "Wi-Fi na igreja",
+        tag: "Aula prática",
         items: ["Quando usar Wi-Fi e quando usar cabo", "Rede da técnica x rede dos membros", "Cuidados com a transmissão"],
       },
       {
         title: "NDI na prática",
+        tag: "Aula prática",
         items: ["O que é NDI", "Por que a fonte não aparece", "NDI e OBS", "Boas práticas de rede para vídeo"],
       },
       {
         title: "Câmeras PTZ e o celular como câmera (Iriun)",
+        tag: "Aula prática",
         items: ["Colocando a câmera PTZ na rede", "Controle e descoberta", "Usando o celular como câmera com o Iriun", "Estabilidade na hora do culto"],
       },
       {
         title: "Troubleshooting: encontrando o problema antes do culto",
+        tag: "Aula prática",
         items: ["Roteiro de diagnóstico passo a passo", "Problemas mais comuns da técnica", "Checklist antes do culto"],
       },
       {
         title: "Tudo funcionando junto: OBS, NDI, PTZ, rede e Companion",
+        tag: "Projeto prático",
         items: [
           "A rede montada e conferida",
           "Câmera PTZ respondendo na rede",
@@ -210,12 +198,12 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       kicker: "Antes do Companion",
       title: "Não adianta querer aprender Bitfocus Companion sem saber os fundamentos de rede.",
       text: "O Companion conversa com o OBS, as câmeras PTZ, a mesa e a iluminação pela rede. Cada conexão pede um endereço IP e uma porta. Sem a base, cada botão vira tentativa e erro. Com ela, você entende por que a conexão não fecha e resolve.",
-      steps: ["Primeiro: fundamentos de rede", "Depois: Companion e automação", "Resultado: tudo conversando"],
+      steps: ["Primeiro: fundamentos de rede", "Depois: Companion e automação", "Resultado: um botão comanda tudo"],
     },
     capstone: {
-      badge: "Módulo 9 · Aula prática",
+      badge: "Módulo 9 · Projeto prático",
       title: "No final, você vê tudo funcionando junto.",
-      text: "O último módulo é uma aula prática: a rede, a câmera PTZ, o NDI, o OBS e o Companion montados e operando ao mesmo tempo, como em um culto de verdade.",
+      text: "O último módulo é um projeto prático: a rede, a câmera PTZ, o NDI, o OBS e o Companion montados e operando ao mesmo tempo, como em um culto de verdade.",
       points: [
         "Você acompanha a montagem do começo ao fim, passo a passo.",
         "Cada conceito dos módulos anteriores aparece em uso real.",
@@ -257,7 +245,11 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "Como são as aulas?",
-        answer: "Videoaulas gravadas, divididas em 9 módulos. O último é uma aula prática com tudo funcionando junto. Você assiste no seu ritmo, pelo computador ou celular, durante 1 ano.",
+        answer: "Videoaulas gravadas, divididas em 9 módulos. Seis deles têm aula prática e o último é um projeto prático com tudo funcionando junto. Você assiste no seu ritmo, pelo computador ou celular, com acesso vitalício.",
+      },
+      {
+        question: "E se eu tiver dúvidas durante as aulas?",
+        answer: "A formação tem uma área de membros com espaço para tirar dúvidas e uma comunidade de alunos, para você trocar experiências com quem serve na técnica de outras igrejas.",
       },
       {
         question: "Como é a apostila?",
@@ -269,7 +261,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "O curso ensina Dante e Bitfocus Companion?",
-        answer: "O Companion aparece na aula prática do módulo 9, em uso junto com OBS, NDI e PTZ, e tem uma formação própria para quem quiser se aprofundar. O Dante é citado como exemplo e terá uma formação dedicada no futuro.",
+        answer: "O Companion aparece no projeto prático do módulo 9, em uso junto com OBS, NDI e PTZ, e tem uma formação própria para quem quiser se aprofundar. O Dante é citado como exemplo e terá uma formação dedicada no futuro.",
       },
       {
         question: "Preciso ter algum equipamento para acompanhar?",

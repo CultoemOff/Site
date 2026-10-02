@@ -3,6 +3,7 @@
  *  - TopologyIllo: a cabine técnica com rack, câmeras, computadores e Wi-Fi
  *  - DhcpScreenIllo: tela de configuração de rede de um equipamento (DHCP × IP fixo)
  *  - TerminalIllo: prompt de comando com ipconfig e ping
+ *  - DeckIllo: painel de botões (controladora) disparando ações pela rede
  */
 
 type Node = { x: number; y: number; label: string; ip: string; kind: "ptz" | "pc" | "mixer" | "ap" | "phone" };
@@ -210,6 +211,67 @@ export function TerminalIllo() {
           C:\&gt; <i className="illo-term__cursor" />
         </span>
       </pre>
+    </div>
+  );
+}
+
+const DECK_KEYS: { label: string; macro?: number; tone?: "live" }[] = [
+  { label: "CAM 1" },
+  { label: "CAM 2" },
+  { label: "CAM 3" },
+  { label: "LOUVOR", macro: 0 },
+  { label: "PALAVRA", macro: 1 },
+  { label: "PTZ ←" },
+  { label: "PTZ →" },
+  { label: "ZOOM +" },
+  { label: "ZOOM −" },
+  { label: "OFERTA", macro: 2 },
+  { label: "LUZ 1" },
+  { label: "LUZ 2" },
+  { label: "GC" },
+  { label: "MUTE" },
+  { label: "LIVE", tone: "live" },
+];
+
+const DECK_MACROS: { name: string; actions: [string, string][] }[] = [
+  { name: "LOUVOR", actions: [["OBS", "cena Louvor"], ["PTZ", "preset 2 · plano aberto"], ["Luz", "cena Louvor"]] },
+  { name: "PALAVRA", actions: [["OBS", "cena Púlpito"], ["PTZ", "preset 1 · pregador"], ["Luz", "cena Palavra"]] },
+  { name: "OFERTA", actions: [["OBS", "cena GC + QR Code"], ["Projeção", "slide Oferta"], ["Áudio", "trilha de fundo"]] },
+];
+
+/** Painel de botões no estilo das controladoras usadas com o Companion: um botão dispara várias ações pela rede. */
+export function DeckIllo() {
+  return (
+    <div className="deck" aria-hidden="true">
+      <div className="deck__body">
+        <div className="deck__keys">
+          {DECK_KEYS.map((k) => (
+            <span
+              key={k.label}
+              className={`deck__key${k.macro !== undefined ? " deck__key--macro" : ""}${k.tone ? ` deck__key--${k.tone}` : ""}`}
+              style={k.macro !== undefined ? ({ "--m": k.macro } as React.CSSProperties) : undefined}
+            >
+              {k.label}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="deck__wire">
+        <i />
+        <span>pela rede · IP + porta</span>
+      </div>
+      <div className="deck__actions">
+        {DECK_MACROS.map((m, i) => (
+          <ul key={m.name} className="deck__group" style={{ "--m": i } as React.CSSProperties}>
+            {m.actions.map(([target, what], j) => (
+              <li key={target} style={{ "--j": j } as React.CSSProperties}>
+                <b>{target}</b>
+                <span>{what}</span>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
     </div>
   );
 }

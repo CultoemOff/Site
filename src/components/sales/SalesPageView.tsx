@@ -1,24 +1,23 @@
 import Image from "next/image";
 import YouTubeEmbed from "@/components/blog/YouTubeEmbed";
 import CourseDiagramView from "@/components/sections/courses/CourseDiagrams";
-import DownloadGate from "@/components/software-page/DownloadGate";
 import ArrowButton from "@/components/ui/ArrowButton";
 import { formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
 import type { SalesPage } from "@/config/salesPages";
 import { GUARANTEE_DAYS, type SiteSettingsData } from "@/config/site";
-import type { LeadErrors, LeadInput } from "@/lib/leads";
 import "@/components/blog/blog.css";
 import "@/components/sections/courses/courses.css";
 import "@/components/software-page/software-page.css";
-import { DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
+import Countdown from "./Countdown";
+import ExitPopup from "./ExitPopup";
+import { DeckIllo, DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
 import "./sales.css";
 
 type Props = {
   course: Course;
   page: SalesPage;
   audience: SiteSettingsData["audience"];
-  action: (input: LeadInput) => Promise<{ ok: true } | { ok: false; errors: LeadErrors }>;
 };
 
 const Check = () => (
@@ -32,32 +31,65 @@ const Cross = () => (
   </svg>
 );
 
-/** Página de venda de uma formação: promessa, vídeo, dores, exemplos, módulos, professor, oferta, garantia e FAQ. */
-export default function SalesPageView({ course, page, audience, action }: Props) {
+/** Página de venda de uma formação: promessa, vídeo, dores, módulos, professor, oferta com prazo, garantia e FAQ. */
+export default function SalesPageView({ course, page, audience }: Props) {
   const teacher = getInstructor(course.instructor);
-  const open = Boolean(course.href);
-  const ctaHref = open ? course.href! : "#oferta";
-  const ctaLabel = open ? "Quero participar" : "Entrar na lista de espera";
-  const cta = (variant: "primary" | "ghost" = "primary") => (
+
+  // Promoção: vale enquanto o prazo não passou. Depois disso a página mostra o preço cheio.
+  const full = course.priceFrom && course.priceFrom > course.price ? course.priceFrom : undefined;
+  const promoOn = Boolean(page.promo && full && Date.now() < Date.parse(page.promo.endsAt));
+  const price = promoOn || !full ? course.price : full;
+  const priceFrom = promoOn ? full : undefined;
+  const off = priceFrom ? Math.round((1 - price / priceFrom) * 100) : 0;
+  const endsAt = promoOn ? page.promo!.endsAt : undefined;
+
+  // Botão de compra: usa o link de inscrição da formação (Hotmart). Sem link ainda, leva até a oferta.
+  const hasLink = Boolean(course.href);
+  const ctaHref = hasLink ? course.href! : "#oferta";
+  const ctaLabel = promoOn ? "Comprar com desconto" : "Comprar agora";
+  const cta = (variant: "primary" | "ghost" = "primary", label = ctaLabel) => (
     <ArrowButton
       href={ctaHref}
       variant={variant}
-      external={open}
-      track={open ? { event: "select_course", label: course.title } : undefined}
+      external={hasLink}
+      track={{ event: "select_course", label: course.title }}
     >
-      {ctaLabel}
+      {label}
     </ArrowButton>
+  );
+  const priceTag = (className = "") => (
+    <p className={`sp-price ${className}`}>
+      {priceFrom && (
+        <span className="sp-price__from">
+          de <s>{formatPrice(priceFrom)}</s> por
+        </span>
+      )}
+      <strong>{formatPrice(price)}</strong>
+      {priceFrom && <em className="sp-price__off">{off}% OFF</em>}
+    </p>
   );
 
   return (
     <>
       {/* ---------- topo ---------- */}
       <header className="sp-hero">
+        {promoOn && (
+          <div className="sp-promo" role="note">
+            <span className="sp-promo__label">{page.promo!.label}</span>
+            <span className="sp-promo__text">
+              de <s>{formatPrice(priceFrom!)}</s> por <strong>{formatPrice(price)}</strong>
+            </span>
+            <span className="sp-promo__timer">
+              termina em <Countdown endsAt={endsAt!} variant="inline" />
+            </span>
+          </div>
+        )}
         <div className="sp-hero__inner">
           <div className="sp-hero__text">
             <p className="swp-hero__channel">
               <span aria-hidden="true" />
               Formação Culto em Off{course.status === "lancamento-em-breve" ? " · Lançamento em breve" : ""}
+              {course.status === "inscricoes-abertas" ? " · Inscrições abertas" : ""}
             </p>
             <p className="sp-hero__course">{course.title}</p>
             <h1 className="sp-hero__title">{page.headline}</h1>
@@ -66,14 +98,15 @@ export default function SalesPageView({ course, page, audience, action }: Props)
               <li>{page.modules.length} módulos em vídeo</li>
               <li>{course.format.hours} horas</li>
               <li>{course.format.access}</li>
-              {course.includes?.length ? <li>Apostila para imprimir</li> : null}
+              {course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
+              {course.includes?.some((x) => /comunidade|membros/i.test(x)) ? <li>Dúvidas e comunidade</li> : null}
             </ul>
             <div className="sp-hero__actions">
               {cta()}
-              <p className="sp-hero__price">
-                <strong>{formatPrice(course.price)}</strong>
-                <span>· {GUARANTEE_DAYS} dias de garantia</span>
-              </p>
+              <div className="sp-hero__price">
+                {priceTag()}
+                <span>{GUARANTEE_DAYS} dias de garantia</span>
+              </div>
             </div>
           </div>
 
@@ -241,56 +274,6 @@ export default function SalesPageView({ course, page, audience, action }: Props)
         </div>
       </section>
 
-      {/* ---------- exemplos ---------- */}
-      <section className="sp-section sp-section--graphite" aria-labelledby="sp-exemplos">
-        <div className="sp-section__inner">
-          <p className="swp-kicker">Exemplos reais</p>
-          <h2 id="sp-exemplos" className="swp-title">
-            Do sintoma à solução: é assim que as aulas funcionam.
-          </h2>
-          <ul className="sp-examples">
-            {page.examples.map((e, i) => (
-              <li key={e.symptom} className="sp-example" data-reveal data-glow style={{ "--i": i } as React.CSSProperties}>
-                <p className="sp-example__step sp-example__step--symptom">
-                  <span>Sintoma</span>
-                  {e.symptom}
-                </p>
-                <p className="sp-example__step">
-                  <span>Causa</span>
-                  {e.cause}
-                </p>
-                <p className="sp-example__step sp-example__step--fix">
-                  <span>O que fazer</span>
-                  {e.fix}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ---------- prática ---------- */}
-      <section className="sp-section sp-section--paper" aria-labelledby="sp-pratica">
-        <div className="sp-section__inner">
-          <p className="swp-kicker">Na teoria e na prática</p>
-          <h2 id="sp-pratica" className="swp-title">
-            Ao terminar, você vai conseguir:
-          </h2>
-          <ul className="sp-practice">
-            {page.practice.map((p, i) => (
-              <li key={p.title} data-reveal data-glow style={{ "--i": i % 3 } as React.CSSProperties}>
-                <span className="sp-practice__check" aria-hidden="true">
-                  <Check />
-                </span>
-                <h3>{p.title}</h3>
-                <p>{p.text}</p>
-              </li>
-            ))}
-          </ul>
-          <div className="sp-center-cta">{cta()}</div>
-        </div>
-      </section>
-
       {/* ---------- pré-requisito: rede antes do Companion ---------- */}
       {page.prereq && (
         <section className="sp-section sp-section--graphite sp-prereq" aria-labelledby="sp-prereq">
@@ -301,15 +284,18 @@ export default function SalesPageView({ course, page, audience, action }: Props)
                 {page.prereq.title}
               </h2>
               <p className="swp-lead">{page.prereq.text}</p>
+              <ol className="sp-prereq__steps">
+                {page.prereq.steps.map((st, k) => (
+                  <li key={st} data-reveal style={{ "--i": k } as React.CSSProperties}>
+                    <span>{k + 1}</span>
+                    {st}
+                  </li>
+                ))}
+              </ol>
             </div>
-            <ol className="sp-prereq__steps">
-              {page.prereq.steps.map((st, k) => (
-                <li key={st} data-reveal style={{ "--i": k } as React.CSSProperties}>
-                  <span>{k + 1}</span>
-                  {st}
-                </li>
-              ))}
-            </ol>
+            <div className="sp-prereq__deck" data-anim>
+              <DeckIllo />
+            </div>
           </div>
         </section>
       )}
@@ -325,7 +311,8 @@ export default function SalesPageView({ course, page, audience, action }: Props)
             <li>{page.modules.length} módulos</li>
             <li>{course.format.hours} horas de videoaulas gravadas</li>
             <li>{course.format.access}</li>
-            {course.includes?.length ? <li>Apostila para imprimir</li> : null}
+            {course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
+            {course.includes?.some((x) => /comunidade|membros/i.test(x)) ? <li>Dúvidas e comunidade</li> : null}
           </ul>
           <ol className="sp-modules">
             {page.modules.map((m, i) => (
@@ -335,7 +322,9 @@ export default function SalesPageView({ course, page, audience, action }: Props)
                     <span className="sp-module__num">{String(i + 1).padStart(2, "0")}</span>
                     <span className="sp-module__title">
                       {m.title}
-                      {page.capstone && i === page.modules.length - 1 && <em className="sp-module__tag">Aula prática</em>}
+                      {m.tag && (
+                        <em className={`sp-module__tag${m.tag.startsWith("Projeto") ? " sp-module__tag--project" : ""}`}>{m.tag}</em>
+                      )}
                     </span>
                     <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                       <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -503,10 +492,10 @@ export default function SalesPageView({ course, page, audience, action }: Props)
             <p className="swp-lead">{page.value.text}</p>
           </div>
           <div className="sp-value">
-            <p className="sp-value__price">
+            <div className="sp-value__price">
               <span>Tudo isso por</span>
-              <strong>{formatPrice(course.price)}</strong>
-            </p>
+              {priceTag("sp-price--big")}
+            </div>
             <ul className="sp-checks">
               {page.value.points.map((v) => (
                 <li key={v}>
@@ -523,7 +512,7 @@ export default function SalesPageView({ course, page, audience, action }: Props)
       <section id="oferta" className="sp-section sp-offer" aria-labelledby="sp-oferta">
         <div className="sp-section__inner sp-offer__layout">
           <div className="sp-offer__box">
-            <p className="swp-kicker">Oferta</p>
+            <p className="swp-kicker">O que você leva</p>
             <h2 id="sp-oferta" className="sp-offer__title">
               {course.title}
             </h2>
@@ -532,6 +521,12 @@ export default function SalesPageView({ course, page, audience, action }: Props)
                 <Check />
                 {page.modules.length} módulos em videoaulas gravadas ({course.format.hours} horas)
               </li>
+              {page.modules.some((m) => m.tag) && (
+                <li>
+                  <Check />
+                  Aulas práticas e um projeto final com tudo funcionando junto
+                </li>
+              )}
               {course.includes?.map((i) => (
                 <li key={i}>
                   <Check />
@@ -547,12 +542,6 @@ export default function SalesPageView({ course, page, audience, action }: Props)
                 Garantia incondicional de {GUARANTEE_DAYS} dias
               </li>
             </ul>
-            <p className="sp-offer__price">
-              <span>Investimento</span>
-              <strong>{formatPrice(course.price)}</strong>
-              <small>pagamento único</small>
-            </p>
-            {open && <div className="sp-offer__cta">{cta()}</div>}
             <div className="sp-guarantee">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
@@ -565,18 +554,26 @@ export default function SalesPageView({ course, page, audience, action }: Props)
             </div>
           </div>
 
-          {!open && (
-            <DownloadGate
-              source={`lista-${course.id}`}
-              productName={`formação ${course.title}`}
-              action={action}
-              mode="waitlist"
-              copy={{
-                title: "Entre na lista de espera",
-                text: "As inscrições abrem em breve. Quem está na lista fica sabendo primeiro.",
-              }}
-            />
-          )}
+          <div className={`sp-buy${promoOn ? " sp-buy--promo" : ""}`}>
+            {promoOn && <p className="sp-buy__label">{page.promo!.label}</p>}
+            <p className="sp-buy__title">{promoOn ? "Preço promocional por tempo limitado" : "Investimento"}</p>
+            {priceTag("sp-price--big")}
+            <p className="sp-buy__note">pagamento único · acesso imediato</p>
+            {promoOn && (
+              <div className="sp-buy__timer">
+                <span>A promoção termina em</span>
+                <Countdown endsAt={endsAt!} />
+                <small>
+                  Quando o contador zerar, o preço volta para <strong>{formatPrice(priceFrom!)}</strong>.
+                </small>
+              </div>
+            )}
+            <div className="sp-buy__cta">{cta()}</div>
+            <p className="sp-buy__safe">
+              <Check />
+              Compra segura pela Hotmart · {GUARANTEE_DAYS} dias de garantia
+            </p>
+          </div>
         </div>
       </section>
 
@@ -612,8 +609,15 @@ export default function SalesPageView({ course, page, audience, action }: Props)
             {page.finalTitle}
           </h2>
           <p className="swp-lead">
-            {course.title} por {formatPrice(course.price)}, com {GUARANTEE_DAYS} dias de garantia.
+            {course.title} {priceFrom ? `de ${formatPrice(priceFrom)} por ${formatPrice(price)}` : `por ${formatPrice(price)}`}, com{" "}
+            {GUARANTEE_DAYS} dias de garantia.
           </p>
+          {promoOn && (
+            <div className="sp-final__timer">
+              <span>Preço de lançamento termina em</span>
+              <Countdown endsAt={endsAt!} />
+            </div>
+          )}
           <div className="sp-final__cta">{cta()}</div>
         </div>
       </section>
@@ -621,11 +625,30 @@ export default function SalesPageView({ course, page, audience, action }: Props)
       {/* ---------- barra fixa (celular) ---------- */}
       <div className="sp-sticky">
         <p>
-          <strong>{formatPrice(course.price)}</strong>
-          <span>{GUARANTEE_DAYS} dias de garantia</span>
+          <strong>
+            {priceFrom && <s>{formatPrice(priceFrom)}</s>} {formatPrice(price)}
+          </strong>
+          <span>{promoOn ? <>acaba em <Countdown endsAt={endsAt!} variant="inline" /></> : `${GUARANTEE_DAYS} dias de garantia`}</span>
         </p>
-        {cta()}
+        {cta("primary", "Comprar")}
       </div>
+
+      {/* ---------- aviso ao sair da página ---------- */}
+      {promoOn && (
+        <ExitPopup
+          id={course.id}
+          productName={course.title}
+          badge={page.promo!.label}
+          title="Espere! O preço de lançamento não vai durar."
+          text={`Você está a um passo de entender a rede da sua igreja. Garanta agora ${off}% de desconto antes que o prazo acabe.`}
+          priceFrom={formatPrice(priceFrom!)}
+          price={formatPrice(price)}
+          endsAt={endsAt}
+          ctaHref={ctaHref}
+          ctaLabel="Quero aproveitar o desconto"
+          external={hasLink}
+        />
+      )}
     </>
   );
 }

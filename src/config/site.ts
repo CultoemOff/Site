@@ -92,7 +92,7 @@ export const FAQ_DEFAULTS: FaqItem[] = [
   {
     question: "Como funciona o acesso?",
     answer:
-      "As formações são online. Depois da compra, você recebe as instruções de acesso e pode assistir no seu ritmo, pelo computador ou celular, durante 1 ano.",
+      "As formações são online. Depois da compra, você recebe as instruções de acesso e pode assistir no seu ritmo, pelo computador ou celular. O tempo de acesso está indicado em cada formação.",
   },
   {
     question: "E se eu não gostar?",
