@@ -104,7 +104,7 @@ export const FAQ_DEFAULTS: FaqItem[] = [
   {
     question: "Quando as formações serão lançadas?",
     answer:
-      "Em breve. Acompanhe o canal no YouTube e o Instagram para saber primeiro quando cada formação abrir.",
+      "A formação Redes para Igrejas já está com inscrições abertas. As demais serão lançadas em breve: acompanhe o canal no YouTube e o Instagram para saber primeiro.",
   },
 ];
 

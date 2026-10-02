@@ -1,0 +1,137 @@
+/* ==========================================================
+   Faixa da promoção: fixa no topo, acima do menu, sempre visível.
+   O menu desce a altura da faixa.
+   ========================================================== */
+:root {
+  --promo-h: 40px;
+}
+.promo-bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 16px;
+  height: var(--promo-h);
+  padding: 0 14px;
+  background: #ffd43b;
+  color: #1a1400;
+  font-size: 0.88rem;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px -10px rgba(0, 0, 0, 0.7);
+}
+.promo-bar__label {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #0b0d12;
+  color: #ffd43b;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.promo-bar__product {
+  font-weight: 600;
+}
+.promo-bar__off {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.promo-bar__timer {
+  font-weight: 600;
+}
+.cd-inline {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.promo-bar__btn {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #0b0d12;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s var(--ease-out);
+}
+.promo-bar__btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+.promo-bar__btn:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}
+.promo-bar__cta-short {
+  display: none;
+}
+
+/* o menu fica logo abaixo da faixa */
+body:has(.promo-bar) .nav {
+  top: var(--promo-h);
+}
+
+@media (max-width: 900px) {
+  .promo-bar__product {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  :root {
+    --promo-h: 36px;
+  }
+  .promo-bar {
+    gap: 10px;
+    font-size: 0.8rem;
+  }
+  .promo-bar__label,
+  .promo-bar__ends {
+    display: none;
+  }
+  .promo-bar__off {
+    font-size: 1rem;
+  }
+  .promo-bar__btn {
+    height: 26px;
+    padding: 0 12px;
+  }
+  .promo-bar__cta-full {
+    display: none;
+  }
+  .promo-bar__cta-short {
+    display: inline;
+  }
+}
+@media (max-width: 400px) {
+  .promo-bar {
+    gap: 8px;
+    font-size: 0.74rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .promo-bar__btn {
+    transition: none;
+  }
+}
+
+/* páginas com a faixa: o conteúdo do topo desce a altura dela */
+body:has(.promo-bar) .hero__content {
+  padding-top: calc(var(--nav-h) + var(--promo-h) + 40px);
+}
+body:has(.promo-bar) .faq__intro {
+  top: calc(var(--nav-h) + var(--promo-h) + 32px);
+}
+@media (max-width: 760px) {
+  body:has(.promo-bar) .hero__content {
+    padding-top: calc(var(--nav-h) + var(--promo-h) + 28px);
+  }
+}

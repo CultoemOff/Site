@@ -1631,43 +1631,6 @@
 /* ==========================================================
    Promoção, urgência e compra
    ========================================================== */
-.sp-promo {
-  max-width: 1200px;
-  margin: 0 auto clamp(24px, 4vw, 40px);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 8px 18px;
-  padding: 10px 18px;
-  border-radius: 14px;
-  background: #ffd43b;
-  color: #1a1400;
-  font-size: 0.92rem;
-  text-align: center;
-}
-.sp-promo__label {
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: #0b0d12;
-  color: #ffd43b;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.sp-promo__text strong {
-  font-size: 1.05rem;
-}
-.sp-promo__timer {
-  font-weight: 600;
-}
-.cd-inline {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
 
 .sp-price {
   display: flex;
@@ -2157,58 +2120,9 @@
    Faixa da promoção fixa no topo: acompanha a rolagem junto com o menu,
    sempre acima de tudo. O menu desce a altura da faixa.
    ========================================================== */
-:root {
-  --promo-h: 40px;
-}
-.sp-promo {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 60;
-  max-width: none;
-  height: var(--promo-h);
-  margin: 0;
-  padding: 0 14px;
-  flex-wrap: nowrap;
-  gap: 6px 16px;
-  border-radius: 0;
-  font-size: 0.88rem;
-  line-height: 1;
-  white-space: nowrap;
-  text-decoration: none;
-  box-shadow: 0 6px 20px -10px rgba(0, 0, 0, 0.7);
-}
-.sp-promo:hover .sp-promo__text strong {
-  text-decoration: underline;
-}
-.sp-promo:focus-visible {
-  outline: 3px solid #0b0d12;
-  outline-offset: -4px;
-}
 /* o menu fica logo abaixo da faixa */
-body:has(.sp-promo) .nav {
-  top: var(--promo-h);
-}
 .sp-hero--promo {
   padding-top: calc(var(--nav-h) + var(--promo-h) + clamp(36px, 5vw, 72px));
-}
-body:has(.sp-promo) .sp-offer {
-  scroll-margin-top: calc(var(--nav-h) + var(--promo-h));
-}
-@media (max-width: 760px) {
-  :root {
-    --promo-h: 36px;
-  }
-  .sp-promo {
-    gap: 10px;
-    font-size: 0.8rem;
-  }
-  .sp-promo__label,
-  .sp-promo__ends {
-    display: none;
-  }
-  .sp-promo__text strong {
-    font-size: 0.95rem;
-  }
 }
 
 /* telas estreitas: colunas não podem crescer além da tela */
@@ -2234,55 +2148,9 @@ body:has(.sp-promo) .sp-offer {
   .cd-boxes strong {
     font-size: 1.25rem;
   }
-  .sp-promo {
-    gap: 8px;
-    font-size: 0.74rem;
-  }
 }
 
 /* faixa do topo: só o desconto, o prazo e o botão de compra */
-.sp-promo {
-  cursor: default;
-}
-.sp-promo__off {
-  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-}
-.sp-promo__btn {
-  display: inline-flex;
-  align-items: center;
-  height: 28px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: #0b0d12;
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: background-color 0.2s, transform 0.2s var(--ease-out);
-}
-.sp-promo__btn:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
-}
-.sp-promo__btn:focus-visible {
-  outline: 3px solid #1d4ed8;
-  outline-offset: 2px;
-}
-@media (max-width: 760px) {
-  .sp-promo__off {
-    font-size: 1rem;
-  }
-  .sp-promo__btn {
-    height: 26px;
-    padding: 0 12px;
-  }
-  .sp-promo__btn-more {
-    display: none;
-  }
-}
 
 /* versículo */
 .sp-verse {
@@ -2326,6 +2194,8 @@ body:has(.sp-promo) .sp-offer {
   font-weight: 600;
   color: #dbe6ff;
 }
-.sp-promo__btn-more {
-  margin-left: 0.3em;
+
+/* âncora da oferta abaixo da faixa da promoção e do menu */
+body:has(.promo-bar) .sp-offer {
+  scroll-margin-top: calc(var(--nav-h) + var(--promo-h));
 }

@@ -6,11 +6,13 @@ import { formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
 import type { SalesPage } from "@/config/salesPages";
 import { GUARANTEE_DAYS, type SiteSettingsData } from "@/config/site";
+import { resolvePrice } from "@/lib/pricing";
 import "@/components/blog/blog.css";
 import "@/components/sections/courses/courses.css";
 import "@/components/software-page/software-page.css";
 import Countdown from "./Countdown";
 import ExitPopup from "./ExitPopup";
+import PromoBar from "./PromoBar";
 import { DeckIllo, DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
 import "./sales.css";
 
@@ -36,12 +38,9 @@ export default function SalesPageView({ course, page, audience }: Props) {
   const teacher = getInstructor(course.instructor);
 
   // Promoção: vale enquanto o prazo não passou. Depois disso a página mostra o preço cheio.
-  const full = course.priceFrom && course.priceFrom > course.price ? course.priceFrom : undefined;
-  const promoOn = Boolean(page.promo && full && Date.now() < Date.parse(page.promo.endsAt));
-  const price = promoOn || !full ? course.price : full;
-  const priceFrom = promoOn ? full : undefined;
-  const off = priceFrom ? Math.round((1 - price / priceFrom) * 100) : 0;
-  const endsAt = promoOn ? page.promo!.endsAt : undefined;
+  const { price, priceFrom, off, promo } = resolvePrice(course);
+  const promoOn = Boolean(promo);
+  const endsAt = promo?.endsAt;
 
   // Botão de compra: usa o link de inscrição da formação (Hotmart). Sem link ainda, leva até a oferta.
   const hasLink = Boolean(course.href);
@@ -73,24 +72,16 @@ export default function SalesPageView({ course, page, audience }: Props) {
     <>
       {/* ---------- faixa da promoção: fixa no topo, acima do menu ---------- */}
       {promoOn && (
-        <div className="sp-promo" role="note">
-          <span className="sp-promo__label">{page.promo!.label}</span>
-          <strong className="sp-promo__off">{off}% OFF</strong>
-          <span className="sp-promo__timer">
-            <span className="sp-promo__ends">termina em </span>
-            <Countdown endsAt={endsAt!} variant="inline" />
-          </span>
-          <a
-            className="sp-promo__btn"
-            href={ctaHref}
-            {...(hasLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            data-track="select_course"
-            data-track-label={`${course.title} (faixa do topo)`}
-          >
-            Comprar<span className="sp-promo__btn-more"> agora</span>
-            {hasLink && <span className="sr-only"> (abre em nova aba)</span>}
-          </a>
-        </div>
+        <PromoBar
+          label={page.promo!.label}
+          off={off}
+          endsAt={endsAt!}
+          href={ctaHref}
+          cta="Comprar agora"
+          ctaShort="Comprar"
+          external={hasLink}
+          trackLabel={`${course.title} (faixa do topo)`}
+        />
       )}
 
       {/* ---------- topo ---------- */}

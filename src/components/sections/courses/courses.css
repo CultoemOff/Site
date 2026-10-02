@@ -796,3 +796,23 @@
   letter-spacing: 0.06em;
   vertical-align: middle;
 }
+
+/* promoção com prazo no card */
+.course__promo {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ffd43b;
+  color: #1a1400;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.course__deadline {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #ffe9a3;
+}

@@ -4,6 +4,8 @@ import Image from "next/image";
 import { COURSE_STATUS_LABEL, MORE_COURSES_URL, formatPrice, type Course } from "@/config/courses";
 import { getInstructor, INSTRUCTORS } from "@/config/instructors";
 import { hasSalesPage } from "@/config/salesPages";
+import Countdown from "@/components/sales/Countdown";
+import { resolvePrice } from "@/lib/pricing";
 import { GUARANTEE_DAYS } from "@/config/site";
 import CourseDiagramView from "./CourseDiagrams";
 import "./courses.css";
@@ -20,6 +22,7 @@ function ShieldIcon() {
 function CourseCard({ course, index }: { course: Course; index: number }) {
   const featured = course.featured;
   const teacher = getInstructor(course.instructor);
+  const { price, priceFrom, off, promo } = resolvePrice(course);
   return (
     <article
       className={`course${featured ? " course--featured" : ""}`}
@@ -41,6 +44,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
         <div className="course__meta">
           <span className="course__kind">{featured ? "Formação em destaque" : "Formação"}</span>
           {course.status && <span className={`course__status course__status--${course.status}`}>{COURSE_STATUS_LABEL[course.status]}</span>}
+          {promo && <span className="course__promo">{promo.label}</span>}
         </div>
 
         <h3 id={`curso-${course.id}`} className="course__title">
@@ -69,16 +73,14 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
 
         <div className="course__offer">
           <p className="course__price">
-            {course.priceFrom && course.priceFrom > course.price && (
+            {priceFrom && (
               <span className="course__price-from">
-                de <s>{formatPrice(course.priceFrom)}</s> por
+                de <s>{formatPrice(priceFrom)}</s> por
               </span>
             )}
             <span className="sr-only">Preço: </span>
-            {formatPrice(course.price)}
-            {course.priceFrom && course.priceFrom > course.price && (
-              <em className="course__price-off">{Math.round((1 - course.price / course.priceFrom) * 100)}% OFF</em>
-            )}
+            {formatPrice(price)}
+            {priceFrom && <em className="course__price-off">{off}% OFF</em>}
           </p>
           <ul className="course__format" aria-label="Formato">
             <li>{course.format.mode}</li>
@@ -98,6 +100,11 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
                 </li>
               ))}
             </ul>
+          )}
+          {promo && (
+            <p className="course__deadline">
+              Promoção termina em <Countdown endsAt={promo.endsAt} variant="inline" />
+            </p>
           )}
           <p className="course__guarantee">
             <ShieldIcon />
@@ -121,7 +128,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
         <details className="course__topics">
           <summary>
             <span>{course.topicsTitle}</span>
-            <span className="course__topics-count">{course.topics.length} tópicos</span>
+            {!/^\d/.test(course.topicsTitle) && <span className="course__topics-count">{course.topics.length} tópicos</span>}
             <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -137,12 +144,12 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
           <div className="course__cta">
             {hasSalesPage(course.id) && (
               <ArrowButton href={`/formacoes/${course.id}`} variant={course.href ? "ghost" : "primary"}>
-                Ver detalhes da formação
+                {promo && !course.href ? "Ver a oferta de lançamento" : "Ver detalhes da formação"}
               </ArrowButton>
             )}
             {course.href && (
               <ArrowButton href={course.href} external track={{ event: "select_course", label: course.title }}>
-                Quero participar
+                {promo ? "Comprar com desconto" : "Quero participar"}
               </ArrowButton>
             )}
           </div>
@@ -165,8 +172,11 @@ export default function Courses({ courses, showMoreButton = true }: { courses: C
           title="Formações para entender, não só apertar botões."
         >
           <p>
-            Um catálogo em construção, pensado para voluntários. Cada formação parte dos fundamentos e chega na
-            aplicação dentro da igreja, <strong>com preço acessível</strong>. Lançamento em breve.
+            Formações pensadas para voluntários: cada uma parte dos fundamentos e chega na aplicação dentro da igreja,{" "}
+            <strong>com preço acessível</strong>.{" "}
+            {visible.some((c) => c.status === "inscricoes-abertas" || c.status === "disponivel")
+              ? "A primeira já está com inscrições abertas."
+              : "Lançamento em breve."}
           </p>
         </SectionHeader>
 

@@ -1,0 +1,32 @@
+import type { Course } from "@/config/courses";
+import { SALES_PAGES } from "@/config/salesPages";
+
+export type ResolvedPrice = {
+  /** preço que a pessoa paga agora */
+  price: number;
+  /** preço cheio riscado ("de"), quando há desconto valendo */
+  priceFrom?: number;
+  /** desconto em % (0 quando não há) */
+  off: number;
+  /** promoção com prazo, enquanto estiver valendo */
+  promo?: { label: string; endsAt: string };
+};
+
+/**
+ * Preço de uma formação considerando a promoção.
+ * - Formação com promoção datada (src/config/salesPages.ts): o desconto vale até o prazo;
+ *   depois disso, o preço exibido volta a ser o cheio.
+ * - Formação só com "preço cheio" (sem prazo): mostra "de/por" enquanto o campo estiver preenchido.
+ */
+export function resolvePrice(course: Pick<Course, "id" | "price" | "priceFrom">, now = Date.now()): ResolvedPrice {
+  const full = course.priceFrom && course.priceFrom > course.price ? course.priceFrom : undefined;
+  if (!full) return { price: course.price, off: 0 };
+  const promo = SALES_PAGES[course.id]?.promo;
+  if (promo && now >= Date.parse(promo.endsAt)) return { price: full, off: 0 };
+  return {
+    price: course.price,
+    priceFrom: full,
+    off: Math.round((1 - course.price / full) * 100),
+    promo: promo ? { label: promo.label, endsAt: promo.endsAt } : undefined,
+  };
+}

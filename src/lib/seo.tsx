@@ -1,5 +1,6 @@
 import type { Course } from "@/config/courses";
 import { LOGO_SRC, SITE_DESCRIPTION, SITE_NAME, type SiteSettingsData } from "@/config/site";
+import { resolvePrice } from "@/lib/pricing";
 
 /** URL pública do site (defina NEXT_PUBLIC_SITE_URL no ambiente de produção). */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
@@ -44,7 +45,7 @@ export function coursesJsonLd(courses: Course[]) {
         },
         offers: {
           "@type": "Offer",
-          price: c.price.toFixed(2),
+          price: resolvePrice(c).price.toFixed(2),
           priceCurrency: "BRL",
           category: "Paid",
           availability:

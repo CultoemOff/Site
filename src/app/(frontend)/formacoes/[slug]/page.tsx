@@ -7,6 +7,7 @@ import SalesPageView from "@/components/sales/SalesPageView";
 import { getInstructor } from "@/config/instructors";
 import { SALES_PAGES } from "@/config/salesPages";
 import { getCourses, getSiteSettings } from "@/lib/cms";
+import { resolvePrice } from "@/lib/pricing";
 import { JsonLd, SITE_URL } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -56,7 +57,7 @@ export default async function CourseSalesPage({ params }: Props) {
           ...(teacher ? { instructor: { "@type": "Person", name: teacher.name } } : {}),
           offers: {
             "@type": "Offer",
-            price: course.price.toFixed(2),
+            price: resolvePrice(course).price.toFixed(2),
             priceCurrency: "BRL",
             category: "Paid",
             ...(page.promo ? { priceValidUntil: page.promo.endsAt.slice(0, 10) } : {}),
