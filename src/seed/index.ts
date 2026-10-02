@@ -9,6 +9,7 @@ import { getPayload } from "payload";
 import config from "../payload.config";
 import { COURSES } from "../config/courses";
 import { EQUIPMENT } from "../config/equipment";
+import type { InstructorId } from "../config/instructors";
 import { DEFAULT_SETTINGS } from "../config/site";
 import { toLexical, type SeedPost } from "../content/lexical";
 import { SEED_POSTS } from "../content/posts";
@@ -68,7 +69,7 @@ for (const [i, c] of COURSES.entries()) {
     topics: c.topics.map((text) => ({ text })),
     appliedTo: (c.appliedTo ?? []).map((text) => ({ text })),
     featured: Boolean(c.featured),
-    instructor: c.instructor,
+    instructor: c.instructor as InstructorId | undefined,
     includes: (c.includes ?? []).map((text) => ({ text })),
     hideOnHome: Boolean(c.hideOnHome),
     contentRev: c.rev ?? 0,

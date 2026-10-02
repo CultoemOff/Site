@@ -15,7 +15,7 @@ export type ContentBlock =
   | { hr: true }
   | { img: { sourceUrl: string; alt: string } };
 
-const base = { format: "", indent: 0, version: 1, direction: "ltr" as const };
+const base = { format: "" as const, indent: 0, version: 1, direction: "ltr" as const };
 
 let uid = 0;
 const nodeId = () => `seed${(++uid).toString(36)}${Date.now().toString(36)}`;

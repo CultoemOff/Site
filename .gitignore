@@ -11,4 +11,6 @@ preview/pub
 
 # Payload
 /media
+# tipos gerados a cada build (payload generate:types)
+/src/payload-types.ts
 .env

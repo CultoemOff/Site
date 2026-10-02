@@ -15,7 +15,7 @@ export type Instructor = {
   photo: string;
 };
 
-export const INSTRUCTORS: Instructor[] = [
+const LIST = [
   {
     id: "jonas-silva",
     name: "Jonas Silva",
@@ -40,7 +40,12 @@ export const INSTRUCTORS: Instructor[] = [
     bio: "Especialista em iluminação, com grandes projetos para igrejas, shows em estádios e Lollapalooza.",
     photo: "/images/cesar-augusto.jpg",
   },
-];
+] as const satisfies readonly Instructor[];
+
+/** ids válidos de professor (os mesmos do campo "Professor" no painel) */
+export type InstructorId = (typeof LIST)[number]["id"];
+
+export const INSTRUCTORS: readonly Instructor[] = LIST;
 
 /** Card de vaga para o próximo professor (some quando for false). */
 export const NEXT_INSTRUCTOR_SOON = true;
