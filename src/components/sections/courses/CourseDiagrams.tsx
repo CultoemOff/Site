@@ -1,4 +1,5 @@
 import type { CourseDiagram } from "@/config/courses";
+import { Glyph } from "@/components/sales/NetworkIllustrations";
 
 /**
  * Diagramas animados das formações (SVG + CSS/SMIL, decorativos).
@@ -46,6 +47,102 @@ function NetworkDiagram() {
       <Box x={330} y={196} w={80} h={36} label="NDI" />
       <Box x={470} y={64} w={80} h={36} label="ÁUDIO" tone="soft" />
       <Box x={470} y={196} w={80} h={36} label="VÍDEO" tone="soft" />
+    </svg>
+  );
+}
+
+/** Cabine técnica enxuta: internet, live, rack (roteador + switch) e os equipamentos ligados a ele. */
+const RACK_NODES: { x: number; y: number; label: string; kind: "ptz" | "pc" | "mixer" | "ap" }[] = [
+  { x: 70, y: 160, label: "Câmera PTZ 1", kind: "ptz" },
+  { x: 70, y: 270, label: "Câmera PTZ 2", kind: "ptz" },
+  { x: 70, y: 380, label: "Mesa digital", kind: "mixer" },
+  { x: 530, y: 160, label: "PC da live", kind: "pc" },
+  { x: 530, y: 270, label: "PC da projeção", kind: "pc" },
+  { x: 530, y: 380, label: "Wi-Fi da técnica", kind: "ap" },
+];
+
+function RackDiagram() {
+  const rack = { x: 235, y: 150, w: 130, h: 150 };
+  const cx = rack.x + rack.w / 2;
+  const switchY = rack.y + 97;
+  return (
+    <svg viewBox="0 0 600 450" className="cd-svg cd-rack">
+      {/* internet → roteador, e a live saindo para o YouTube */}
+      <path d={`M${cx} 78 V${rack.y}`} className="cd-rack__cable" />
+      <path d={`M${cx} ${rack.y} V78`} className="cd-rack__flow cd-rack__flow--up" />
+      <path d={`M${cx + 34} 52 H422`} className="cd-rack__cable" />
+      <path d={`M${cx + 34} 52 H422`} className="cd-rack__flow cd-rack__flow--live" />
+      <g transform={`translate(${cx} 52)`}>
+        <path d="M-22 14h44a13 13 0 0 0 2-25.8A19 19 0 0 0-12-17 15 15 0 0 0-22 14z" className="cd-rack__cloud" />
+        <text x="-38" y="4" textAnchor="end" className="cd-rack__label">
+          Internet
+        </text>
+      </g>
+      <g transform="translate(450 52)">
+        <rect x="-28" y="-19" width="56" height="38" rx="9" className="cd-rack__live" />
+        <path d="M-6 -9v18l15-9z" className="cd-rack__play" />
+        <circle cx="19" cy="-11" r="3" className="cd-rack__dot" />
+        <text x="38" y="4" className="cd-rack__label">
+          Live da igreja
+        </text>
+      </g>
+
+      {/* cabos: cada equipamento até o switch */}
+      {RACK_NODES.map((n, i) => {
+        const left = n.x < rack.x;
+        const d = `M${n.x + (left ? 30 : -30)} ${n.y} H${left ? 150 : 450} V${switchY} H${left ? rack.x : rack.x + rack.w}`;
+        return (
+          <g key={n.label}>
+            <path d={d} className="cd-rack__cable" />
+            <path d={d} className="cd-rack__flow" style={{ "--l": i } as React.CSSProperties} />
+          </g>
+        );
+      })}
+
+      {/* Wi-Fi → tablet que controla a mesa */}
+      <path d="M500 392 C450 424 392 424 328 404" className="cd-rack__wifi" />
+
+      {/* rack */}
+      <rect x={rack.x} y={rack.y} width={rack.w} height={rack.h} rx="10" className="cd-rack__body" />
+      <text x={cx} y={rack.y + 20} textAnchor="middle" className="cd-rack__label">
+        RACK
+      </text>
+      <rect x={rack.x + 12} y={rack.y + 32} width={rack.w - 24} height="28" rx="4" className="cd-rack__unit" />
+      <text x={rack.x + 21} y={rack.y + 50} className="cd-rack__unit-text">
+        ROTEADOR
+      </text>
+      <circle cx={rack.x + rack.w - 23} cy={rack.y + 46} r="3" className="cd-rack__led" />
+      <rect x={rack.x + 12} y={rack.y + 72} width={rack.w - 24} height="50" rx="4" className="cd-rack__unit cd-rack__unit--hot" />
+      <text x={rack.x + 21} y={rack.y + 88} className="cd-rack__unit-text">
+        SWITCH PoE
+      </text>
+      {Array.from({ length: 7 }, (_, i) => (
+        <g key={i}>
+          <rect x={rack.x + 21 + i * 13} y={rack.y + 95} width="9" height="8" rx="1.5" className="cd-rack__port" />
+          <circle cx={rack.x + 25.5 + i * 13} cy={rack.y + 111} r="1.8" className="cd-rack__led" style={{ "--l": i } as React.CSSProperties} />
+        </g>
+      ))}
+
+      {/* equipamentos */}
+      {RACK_NODES.map((n) => (
+        <g key={n.label} transform={`translate(${n.x} ${n.y})`}>
+          <circle r="30" className="cd-rack__node" />
+          <g className="cd-rack__glyph" transform="scale(0.9)">
+            <Glyph kind={n.kind} />
+          </g>
+          <text y="48" textAnchor="middle" className="cd-rack__label">
+            {n.label}
+          </text>
+        </g>
+      ))}
+      <g transform="translate(300 398)">
+        <g className="cd-rack__glyph">
+          <Glyph kind="tablet" />
+        </g>
+        <text y="34" textAnchor="middle" className="cd-rack__label">
+          Tablet da mesa
+        </text>
+      </g>
     </svg>
   );
 }
@@ -201,10 +298,12 @@ function DmxDiagram() {
   );
 }
 
-export default function CourseDiagramView({ type }: { type: CourseDiagram }) {
+/** `variant="simple"` mantém o diagrama de fluxo (usado como fundo do espaço do vídeo). */
+export default function CourseDiagramView({ type, variant = "card" }: { type: CourseDiagram; variant?: "card" | "simple" }) {
+  const rack = type === "network" && variant === "card";
   return (
-    <div className={`cd cd--${type}`} aria-hidden="true">
-      {type === "network" && <NetworkDiagram />}
+    <div className={`cd cd--${type}${rack ? " cd--rack" : ""}`} aria-hidden="true">
+      {type === "network" && (rack ? <RackDiagram /> : <NetworkDiagram />)}
       {type === "live" && <LiveDiagram />}
       {type === "analog" && <AnalogDiagram />}
       {type === "companion" && <CompanionDiagram />}

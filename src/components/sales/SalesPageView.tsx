@@ -119,7 +119,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
             ) : (
               <div className="sp-video__placeholder" role="img" aria-label="Vídeo de apresentação em breve">
                 <div className="sp-video__diagram" aria-hidden="true">
-                  <CourseDiagramView type={course.diagram} />
+                  <CourseDiagramView type={course.diagram} variant="simple" />
                 </div>
                 <span className="sp-video__play" aria-hidden="true">
                   <svg viewBox="0 0 24 24">

@@ -20,7 +20,7 @@ const NODES: Node[] = [
   { x: 640, y: 420, label: "Wi-Fi da técnica", ip: ".2", kind: "ap" },
 ];
 
-function Glyph({ kind }: { kind: Node["kind"] | "phone" | "tablet" }) {
+export function Glyph({ kind }: { kind: Node["kind"] | "phone" | "tablet" }) {
   switch (kind) {
     case "ptz":
       return (
