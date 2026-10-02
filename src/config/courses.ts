@@ -64,6 +64,11 @@ export type Course = {
   includes?: string[];
   /** não aparece na home (continua em /formacoes) */
   hideOnHome?: boolean;
+  /**
+   * Versão do conteúdo no código. Ao rodar `npm run seed`, a formação já existente no banco só é
+   * atualizada quando este número é maior que o gravado lá (assim as edições do admin não são perdidas).
+   */
+  rev?: number;
 };
 
 const ONLINE_1_ANO = (hours: number): CourseFormat => ({ mode: "Online", hours, access: "Acesso por 1 ano" });
@@ -74,9 +79,9 @@ export const COURSES: Course[] = [
     title: "Redes para Igrejas",
     tagline: "Entenda a infraestrutura por trás das tecnologias que você já usa.",
     summary:
-      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. Videoaulas gravadas em 8 módulos, do conceito à prática.",
+      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. Videoaulas gravadas em 9 módulos, do conceito à aula prática com OBS, NDI, PTZ e Companion funcionando juntos.",
     question: "Por que dois equipamentos ligados no mesmo switch não conseguem conversar?",
-    topicsTitle: "8 módulos",
+    topicsTitle: "9 módulos",
     // Módulos do Curso 1 (básico). Tópicos avançados (VLAN, QoS, IGMP) ficam para o Curso 2.
     // TODO: conferir os títulos com o roteiro final das aulas.
     topics: [
@@ -88,8 +93,10 @@ export const COURSES: Course[] = [
       "NDI na prática",
       "Câmeras PTZ e o celular como câmera (Iriun)",
       "Troubleshooting: encontrando o problema antes do culto",
+      "Aula prática: OBS, NDI, PTZ, rede e Companion funcionando juntos",
     ],
-    appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Streaming"],
+    appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
+    rev: 2,
     diagram: "network",
     price: 39.9,
     instructor: "jonas-silva",

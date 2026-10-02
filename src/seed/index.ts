@@ -50,32 +50,39 @@ async function retry<T>(fn: () => Promise<T>, tries = 6): Promise<T> {
 }
 
 let created = 0;
+let updated = 0;
 for (const [i, c] of COURSES.entries()) {
-  const exists = await payload.find({ collection: "courses", where: { slug: { equals: c.id } }, limit: 1 });
-  if (exists.totalDocs > 0) continue;
-  await retry(() => payload.create({
-    collection: "courses",
-    data: {
-      title: c.title,
-      slug: c.id,
-      order: (i + 1) * 10,
-      tagline: c.tagline,
-      summary: c.summary,
-      question: c.question,
-      price: c.price,
-      status: c.status ?? "lancamento-em-breve",
-      format: c.format,
-      href: c.href ?? "",
-      diagram: c.diagram,
-      topicsTitle: c.topicsTitle,
-      topics: c.topics.map((text) => ({ text })),
-      appliedTo: (c.appliedTo ?? []).map((text) => ({ text })),
-      featured: Boolean(c.featured),
-      instructor: c.instructor,
-      includes: (c.includes ?? []).map((text) => ({ text })),
-      hideOnHome: Boolean(c.hideOnHome),
-    },
-  }));
+  const data = {
+    title: c.title,
+    slug: c.id,
+    tagline: c.tagline,
+    summary: c.summary,
+    question: c.question,
+    price: c.price,
+    status: c.status ?? "lancamento-em-breve",
+    format: c.format,
+    href: c.href ?? "",
+    diagram: c.diagram,
+    topicsTitle: c.topicsTitle,
+    topics: c.topics.map((text) => ({ text })),
+    appliedTo: (c.appliedTo ?? []).map((text) => ({ text })),
+    featured: Boolean(c.featured),
+    instructor: c.instructor,
+    includes: (c.includes ?? []).map((text) => ({ text })),
+    hideOnHome: Boolean(c.hideOnHome),
+    contentRev: c.rev ?? 0,
+  };
+  const exists = await payload.find({ collection: "courses", where: { slug: { equals: c.id } }, limit: 1, depth: 0 });
+  const doc = exists.docs[0] as unknown as { id: string | number; contentRev?: number } | undefined;
+  if (doc) {
+    // já existe: só atualiza quando o conteúdo no código é mais novo (campo "rev" em src/config/courses.ts)
+    if ((doc.contentRev ?? 0) < (c.rev ?? 0)) {
+      await retry(() => payload.update({ collection: "courses", id: doc.id, data }));
+      updated++;
+    }
+    continue;
+  }
+  await retry(() => payload.create({ collection: "courses", data: { ...data, order: (i + 1) * 10 } }));
   created++;
 }
 
@@ -100,22 +107,29 @@ for (const [i, e] of EQUIPMENT.entries()) {
   equipmentCreated++;
 }
 
-await retry(() => payload.updateGlobal({
-  slug: "site-settings",
-  data: {
-    youtube: DEFAULT_SETTINGS.social.youtube,
-    instagram: DEFAULT_SETTINGS.social.instagram,
-    tiktok: DEFAULT_SETTINGS.social.tiktok,
-    videosMode: "latest",
-    spresenter: {
-      url: DEFAULT_SETTINGS.spresenter.url,
-      coupon: DEFAULT_SETTINGS.spresenter.coupon,
-      discount: DEFAULT_SETTINGS.spresenter.discount,
+// Configurações do site: só preenche na primeira vez (não sobrescreve o que foi editado no admin)
+const currentSettings = (await payload.findGlobal({ slug: "site-settings", depth: 0 })) as unknown as { youtube?: string; updatedAt?: string };
+let settingsSeeded = false;
+if (!currentSettings?.updatedAt) {
+  await retry(() => payload.updateGlobal({
+    slug: "site-settings",
+    data: {
+      youtube: DEFAULT_SETTINGS.social.youtube,
+      instagram: DEFAULT_SETTINGS.social.instagram,
+      tiktok: DEFAULT_SETTINGS.social.tiktok,
+      videosMode: "latest",
+      spresenter: {
+        url: DEFAULT_SETTINGS.spresenter.url,
+        coupon: DEFAULT_SETTINGS.spresenter.coupon,
+        discount: DEFAULT_SETTINGS.spresenter.discount,
+      },
+      voluts: { url: DEFAULT_SETTINGS.voluts.url },
+      dorn: { url: DEFAULT_SETTINGS.dorn.url },
     },
-    voluts: { url: DEFAULT_SETTINGS.voluts.url },
-    dorn: { url: DEFAULT_SETTINGS.dorn.url },
-  },
-}));
+  }));
+  settingsSeeded = true;
+}
+
 
 /** Envia uma imagem para Mídias: baixa da URL de origem; se não conseguir, usa o arquivo em /public. */
 async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: string }) {
@@ -187,6 +201,6 @@ for (const post of SEED_POSTS) {
 }
 
 payload.logger.info(
-  `Seed concluído: ${created} formação(ões), ${equipmentCreated} equipamento(s) e ${postsCreated} post(s) criados; configurações atualizadas.`,
+  `Seed concluído: ${created} formação(ões) criada(s) e ${updated} atualizada(s), ${equipmentCreated} equipamento(s) e ${postsCreated} post(s) criados${settingsSeeded ? "; configurações iniciais gravadas" : ""}.`,
 );
 process.exit(0);

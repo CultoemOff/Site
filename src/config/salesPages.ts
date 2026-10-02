@@ -33,6 +33,14 @@ export type SalesPage = {
   examples: { symptom: string; cause: string; fix: string }[];
   /** detalhe de cada módulo (mesma ordem de course.topics) */
   modules: { title: string; items: string[] }[];
+  /** módulo final em destaque (aula prática) */
+  capstone?: {
+    badge: string;
+    title: string;
+    text: string;
+    points: string[];
+    chain: { name: string; what: string }[];
+  };
   /** amostra da apostila */
   cheatsheet?: { title: string; label: string; rows: { cmd: string; what: string }[] };
   forWho: string[];
@@ -171,7 +179,33 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         title: "Troubleshooting: encontrando o problema antes do culto",
         items: ["Roteiro de diagnóstico passo a passo", "Problemas mais comuns da técnica", "Checklist antes do culto"],
       },
+      {
+        title: "Tudo funcionando junto: OBS, NDI, PTZ, rede e Companion",
+        items: [
+          "A rede montada e conferida",
+          "Câmera PTZ respondendo na rede",
+          "Vídeo chegando por NDI no OBS",
+          "Companion disparando as ações com um botão",
+        ],
+      },
     ],
+    capstone: {
+      badge: "Módulo 9 · Aula prática",
+      title: "No final, você vê tudo funcionando junto.",
+      text: "O último módulo é uma aula prática: a rede, a câmera PTZ, o NDI, o OBS e o Companion montados e operando ao mesmo tempo, como em um culto de verdade.",
+      points: [
+        "Você acompanha a montagem do começo ao fim, passo a passo.",
+        "Cada conceito dos módulos anteriores aparece em uso real.",
+        "É o roteiro para repetir na sua igreja.",
+      ],
+      chain: [
+        { name: "Rede", what: "IPs, switch e cabos conferidos" },
+        { name: "Câmera PTZ", what: "encontrada e controlada pela rede" },
+        { name: "NDI", what: "vídeo trafegando entre os equipamentos" },
+        { name: "OBS", what: "recebendo as fontes e transmitindo" },
+        { name: "Companion", what: "um botão comandando tudo" },
+      ],
+    },
     cheatsheet: {
       title: "Apostila de comandos e dicas rápidas",
       label: "Redes · guia rápido",
@@ -200,7 +234,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "Como são as aulas?",
-        answer: "Videoaulas gravadas, divididas em 8 módulos. Você assiste no seu ritmo, pelo computador ou celular, durante 1 ano.",
+        answer: "Videoaulas gravadas, divididas em 9 módulos. O último é uma aula prática com tudo funcionando junto. Você assiste no seu ritmo, pelo computador ou celular, durante 1 ano.",
       },
       {
         question: "Como é a apostila?",
@@ -212,7 +246,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "O curso ensina Dante e Bitfocus Companion?",
-        answer: "Os dois aparecem como exemplos de uso da rede. O Companion tem uma formação própria, e o Dante terá uma formação dedicada no futuro.",
+        answer: "O Companion aparece na aula prática do módulo 9, em uso junto com OBS, NDI e PTZ, e tem uma formação própria para quem quiser se aprofundar. O Dante é citado como exemplo e terá uma formação dedicada no futuro.",
       },
       {
         question: "Preciso ter algum equipamento para acompanhar?",

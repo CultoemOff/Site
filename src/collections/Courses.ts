@@ -114,6 +114,12 @@ export const Courses: CollectionConfig = {
       admin: { position: "sidebar" },
     },
     {
+      name: "contentRev",
+      type: "number",
+      defaultValue: 0,
+      admin: { hidden: true },
+    },
+    {
       name: "hideOnHome",
       type: "checkbox",
       label: "Não mostrar na home",
