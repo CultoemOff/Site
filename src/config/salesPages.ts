@@ -41,6 +41,10 @@ export type SalesPage = {
     points: string[];
     chain: { name: string; what: string }[];
   };
+  /** aviso de pré-requisito (ex.: rede antes do Companion) */
+  prereq?: { kicker: string; title: string; text: string; steps: string[] };
+  /** seção ilustrada "por dentro das aulas" */
+  inside?: { title: string; topology: string; dhcp: { title: string; text: string }; terminal: { title: string; text: string } };
   /** amostra da apostila */
   cheatsheet?: { title: string; label: string; rows: { cmd: string; what: string }[] };
   forWho: string[];
@@ -189,6 +193,25 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         ],
       },
     ],
+    inside: {
+      title: "Por dentro das aulas: você enxerga a rede da sua técnica.",
+      topology:
+        "A cabine como ela é: rack com roteador e switch, câmeras PTZ, mesa digital, computadores da live e da projeção, Wi-Fi e o celular como câmera. Cada equipamento com o seu endereço.",
+      dhcp: {
+        title: "DHCP ou IP fixo, direto no equipamento",
+        text: "Você aprende a abrir a tela de rede de uma câmera ou mesa, entender cada campo e decidir quando o endereço deve ser fixo.",
+      },
+      terminal: {
+        title: "Os comandos que resolvem",
+        text: "ipconfig, ping e arp, mostrados na tela e explicados linha por linha: o que digitar e como ler a resposta.",
+      },
+    },
+    prereq: {
+      kicker: "Antes do Companion",
+      title: "Não adianta querer aprender Bitfocus Companion sem saber os fundamentos de rede.",
+      text: "O Companion conversa com o OBS, as câmeras PTZ, a mesa e a iluminação pela rede. Cada conexão pede um endereço IP e uma porta. Sem a base, cada botão vira tentativa e erro. Com ela, você entende por que a conexão não fecha e resolve.",
+      steps: ["Primeiro: fundamentos de rede", "Depois: Companion e automação", "Resultado: tudo conversando"],
+    },
     capstone: {
       badge: "Módulo 9 · Aula prática",
       title: "No final, você vê tudo funcionando junto.",

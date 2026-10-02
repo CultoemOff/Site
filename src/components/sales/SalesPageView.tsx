@@ -11,6 +11,7 @@ import type { LeadErrors, LeadInput } from "@/lib/leads";
 import "@/components/blog/blog.css";
 import "@/components/sections/courses/courses.css";
 import "@/components/software-page/software-page.css";
+import { DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
 import "./sales.css";
 
 type Props = {
@@ -187,8 +188,40 @@ export default function SalesPageView({ course, page, audience, action }: Props)
         </div>
       </section>
 
+      {/* ---------- por dentro das aulas (ilustrações) ---------- */}
+      {page.inside && (
+        <section className="sp-section sp-section--ink" aria-labelledby="sp-inside">
+          <div className="sp-section__inner">
+            <p className="swp-kicker">Por dentro das aulas</p>
+            <h2 id="sp-inside" className="swp-title">
+              {page.inside.title}
+            </h2>
+            <figure className="sp-inside__topo" data-anim>
+              <TopologyIllo />
+              <figcaption>{page.inside.topology}</figcaption>
+            </figure>
+            <div className="sp-inside__grid">
+              <figure className="sp-inside__card" data-reveal data-anim>
+                <DhcpScreenIllo />
+                <figcaption>
+                  <strong>{page.inside.dhcp.title}</strong>
+                  {page.inside.dhcp.text}
+                </figcaption>
+              </figure>
+              <figure className="sp-inside__card" data-reveal data-anim style={{ "--i": 1 } as React.CSSProperties}>
+                <TerminalIllo />
+                <figcaption>
+                  <strong>{page.inside.terminal.title}</strong>
+                  {page.inside.terminal.text}
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ---------- transformação ---------- */}
-      <section className="sp-section sp-section--ink" aria-labelledby="sp-depois">
+      <section className="sp-section sp-section--mist" aria-labelledby="sp-depois">
         <div className="sp-section__inner sp-split">
           <div>
             <p className="swp-kicker">Depois da formação</p>
@@ -257,6 +290,29 @@ export default function SalesPageView({ course, page, audience, action }: Props)
           <div className="sp-center-cta">{cta()}</div>
         </div>
       </section>
+
+      {/* ---------- pré-requisito: rede antes do Companion ---------- */}
+      {page.prereq && (
+        <section className="sp-section sp-section--graphite sp-prereq" aria-labelledby="sp-prereq">
+          <div className="sp-section__inner sp-prereq__layout">
+            <div>
+              <p className="swp-kicker">{page.prereq.kicker}</p>
+              <h2 id="sp-prereq" className="swp-title">
+                {page.prereq.title}
+              </h2>
+              <p className="swp-lead">{page.prereq.text}</p>
+            </div>
+            <ol className="sp-prereq__steps">
+              {page.prereq.steps.map((st, k) => (
+                <li key={st} data-reveal style={{ "--i": k } as React.CSSProperties}>
+                  <span>{k + 1}</span>
+                  {st}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
 
       {/* ---------- módulos ---------- */}
       <section id="modulos" className="sp-section sp-section--mist" aria-labelledby="sp-modulos">
