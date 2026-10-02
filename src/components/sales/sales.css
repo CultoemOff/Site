@@ -2199,3 +2199,57 @@
 body:has(.promo-bar) .sp-offer {
   scroll-margin-top: calc(var(--nav-h) + var(--promo-h));
 }
+
+/* nuvem (internet), live e tablet no diagrama da cabine */
+.illo-cloud {
+  fill: #14171d;
+  stroke: #e6e8ee;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.illo-live {
+  fill: #14171d;
+  stroke: #ff6b6f;
+  stroke-width: 2;
+}
+.illo-live__play {
+  fill: #ff6b6f;
+}
+.illo-live__dot {
+  fill: #ff6b6f;
+  animation: illo-led 1.2s ease-in-out infinite;
+}
+.illo-flow--up {
+  stroke: #7ee2b0;
+  filter: drop-shadow(0 0 4px #7ee2b0);
+}
+.illo-flow--live {
+  stroke: #ff8a8f;
+  filter: drop-shadow(0 0 4px #ff8a8f);
+  animation-duration: 2.2s;
+}
+.illo-control {
+  fill: none;
+  stroke: #b79cff;
+  stroke-width: 1.8;
+  stroke-dasharray: 7 6;
+  stroke-linejoin: round;
+  animation: illo-control 1.2s linear infinite;
+}
+@keyframes illo-control {
+  to {
+    stroke-dashoffset: -26;
+  }
+}
+.illo-control__label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  fill: #cbb9ff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .illo-control,
+  .illo-live__dot {
+    animation: none;
+  }
+}

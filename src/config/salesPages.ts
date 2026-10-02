@@ -194,7 +194,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     inside: {
       title: "Por dentro das aulas: você enxerga a rede da sua técnica.",
       topology:
-        "A cabine como ela é: rack com roteador e switch, câmeras PTZ, mesa digital, computadores da live e da projeção, Wi-Fi e o celular como câmera. Cada equipamento com o seu endereço.",
+        "A cabine como ela é: a internet chega ao roteador e leva a live para o YouTube; o switch liga câmeras PTZ, mesa digital e os computadores da live e da projeção; no Wi-Fi da técnica ficam o celular como câmera e o tablet que controla a mesa de som. Cada equipamento com o seu endereço.",
       dhcp: {
         title: "DHCP ou IP fixo, direto no equipamento",
         text: "Você aprende a abrir a tela de rede de uma câmera ou mesa, entender cada campo e decidir quando o endereço deve ser fixo.",

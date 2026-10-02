@@ -1,26 +1,26 @@
 /**
  * Ilustrações da página de venda de Redes (decorativas, sem marcas):
- *  - TopologyIllo: a cabine técnica com rack, câmeras, computadores e Wi-Fi
+ *  - TopologyIllo: a cabine técnica com rack, internet, live, câmeras, computadores, Wi-Fi, celular e tablet
  *  - DhcpScreenIllo: tela de configuração de rede de um equipamento (DHCP × IP fixo)
  *  - TerminalIllo: prompt de comando com ipconfig e ping
  *  - DeckIllo: painel de botões (controladora) disparando ações pela rede
  */
 
-type Node = { x: number; y: number; label: string; ip: string; kind: "ptz" | "pc" | "mixer" | "ap" | "phone" };
+type Node = { x: number; y: number; label: string; ip: string; kind: "ptz" | "pc" | "mixer" | "ap" };
 
-const RACK = { x: 300, y: 150, w: 150, h: 190 };
+const RACK = { x: 300, y: 240, w: 150, h: 190 };
 const SWITCH_Y = RACK.y + 78;
 
 const NODES: Node[] = [
-  { x: 96, y: 70, label: "Câmera PTZ 1", ip: ".51", kind: "ptz" },
-  { x: 96, y: 200, label: "Câmera PTZ 2", ip: ".52", kind: "ptz" },
-  { x: 96, y: 330, label: "Mesa digital", ip: ".30", kind: "mixer" },
-  { x: 640, y: 70, label: "PC da live", ip: ".10", kind: "pc" },
-  { x: 640, y: 200, label: "PC da projeção", ip: ".11", kind: "pc" },
-  { x: 640, y: 330, label: "Wi-Fi da técnica", ip: ".2", kind: "ap" },
+  { x: 96, y: 160, label: "Câmera PTZ 1", ip: ".51", kind: "ptz" },
+  { x: 96, y: 290, label: "Câmera PTZ 2", ip: ".52", kind: "ptz" },
+  { x: 96, y: 420, label: "Mesa digital", ip: ".30", kind: "mixer" },
+  { x: 640, y: 160, label: "PC da live", ip: ".10", kind: "pc" },
+  { x: 640, y: 290, label: "PC da projeção", ip: ".11", kind: "pc" },
+  { x: 640, y: 420, label: "Wi-Fi da técnica", ip: ".2", kind: "ap" },
 ];
 
-function Glyph({ kind }: { kind: Node["kind"] }) {
+function Glyph({ kind }: { kind: Node["kind"] | "phone" | "tablet" }) {
   switch (kind) {
     case "ptz":
       return (
@@ -51,6 +51,15 @@ function Glyph({ kind }: { kind: Node["kind"] }) {
           <path d="M-9 -4a12 12 0 0 1 18 0M-14 -10a20 20 0 0 1 28 0" className="illo-wave" />
         </g>
       );
+    case "tablet":
+      return (
+        <g>
+          <rect x="-20" y="-14" width="40" height="28" rx="4" />
+          {/* faders do aplicativo da mesa */}
+          <path d="M-11 -7v14M-3 -7v14M5 -7v14M13 -7v14" className="illo-thin" />
+          <path d="M-13 2h4M-5 -3h4M3 4h4M11 -1h4" />
+        </g>
+      );
     default:
       return (
         <g>
@@ -62,8 +71,43 @@ function Glyph({ kind }: { kind: Node["kind"] }) {
 }
 
 export function TopologyIllo() {
+  const cx = RACK.x + RACK.w / 2;
   return (
-    <svg className="illo illo-topo" viewBox="0 0 740 440" role="img" aria-label="Diagrama da cabine técnica: rack com roteador e switch ligado por cabo às câmeras PTZ, à mesa digital, aos computadores da live e da projeção e ao Wi-Fi, que atende o celular usado como câmera.">
+    <svg
+      className="illo illo-topo"
+      viewBox="0 0 740 590"
+      role="img"
+      aria-label="Diagrama da cabine técnica: a internet chega ao roteador do rack e leva a live da igreja para o YouTube. O switch liga por cabo as câmeras PTZ, a mesa digital e os computadores da live e da projeção. No Wi-Fi da técnica estão o celular usado como câmera e um tablet que controla a mesa de som."
+    >
+      {/* internet (nuvem) → roteador, e a live saindo para o YouTube */}
+      <path d={`M${cx} 86 V${RACK.y - 30}`} className="illo-cable" />
+      <path d={`M${cx} ${RACK.y - 30} V86`} className="illo-flow illo-flow--up" />
+      <path d={`M${cx + 34} 60 H490`} className="illo-cable" />
+      <path d={`M${cx + 34} 60 H490`} className="illo-flow illo-flow--live" />
+      <g transform={`translate(${cx} 60)`}>
+        <path
+          d="M-22 14h44a13 13 0 0 0 2-25.8A19 19 0 0 0-12-17 15 15 0 0 0-22 14z"
+          className="illo-cloud"
+        />
+        <text x="-40" y="-2" textAnchor="end" className="illo-label">
+          Internet
+        </text>
+        <text x="-40" y="12" textAnchor="end" className="illo-ip">
+          provedor
+        </text>
+      </g>
+      <g transform="translate(520 60)">
+        <rect x="-28" y="-19" width="56" height="38" rx="9" className="illo-live" />
+        <path d="M-6 -9v18l15-9z" className="illo-live__play" />
+        <circle cx="19" cy="-11" r="3" className="illo-live__dot" />
+        <text x="40" y="-2" className="illo-label">
+          Live da igreja
+        </text>
+        <text x="40" y="12" className="illo-ip">
+          YouTube · ao vivo
+        </text>
+      </g>
+
       {/* cabos: cada equipamento até o switch */}
       {NODES.map((n, i) => {
         const left = n.x < RACK.x;
@@ -77,13 +121,20 @@ export function TopologyIllo() {
           </g>
         );
       })}
-      {/* Wi-Fi → celular */}
-      <path d="M614 352 C596 382 566 400 524 406" className="illo-wifi" />
+
+      {/* Wi-Fi → celular e tablet */}
+      <path d="M607 430 C580 442 560 470 544 494" className="illo-wifi" />
+      <path d="M668 440 C704 470 704 512 668 532" className="illo-wifi" />
+      {/* tablet controlando a mesa de som */}
+      <path d="M616 540 H40 V420 H62" className="illo-control" />
+      <text x="300" y="533" textAnchor="middle" className="illo-control__label">
+        tablet controla a mesa de som pela rede
+      </text>
 
       {/* rack */}
       <g className="illo-rack">
         <rect x={RACK.x} y={RACK.y - 30} width={RACK.w} height={RACK.h + 40} rx="10" className="illo-rack__body" />
-        <text x={RACK.x + RACK.w / 2} y={RACK.y - 10} textAnchor="middle" className="illo-label">
+        <text x={cx} y={RACK.y - 10} textAnchor="middle" className="illo-label">
           RACK
         </text>
         {/* roteador */}
@@ -110,7 +161,7 @@ export function TopologyIllo() {
         </text>
         <rect x={RACK.x + 12} y={RACK.y + 150} width={RACK.w - 24} height="34" rx="4" className="illo-unit" />
         <path d={`M${RACK.x + 55} ${RACK.y + 167}h40`} className="illo-thin" />
-        <text x={RACK.x + RACK.w / 2} y={RACK.y + RACK.h + 28} textAnchor="middle" className="illo-ip">
+        <text x={cx} y={RACK.y + RACK.h + 28} textAnchor="middle" className="illo-ip">
           192.168.10.1
         </text>
       </g>
@@ -132,15 +183,28 @@ export function TopologyIllo() {
       ))}
 
       {/* celular como câmera */}
-      <g transform="translate(504 410)">
+      <g transform="translate(522 506)">
         <g className="illo-glyph">
           <Glyph kind="phone" />
         </g>
-        <text x="-22" y="-2" textAnchor="end" className="illo-label">
+        <text x="-22" y="-6" textAnchor="end" className="illo-label">
           Celular como câmera
         </text>
-        <text x="-22" y="12" textAnchor="end" className="illo-ip">
+        <text x="-22" y="8" textAnchor="end" className="illo-ip">
           192.168.10.60 · Wi-Fi
+        </text>
+      </g>
+
+      {/* tablet no Wi-Fi da técnica */}
+      <g transform="translate(640 540)">
+        <g className="illo-glyph">
+          <Glyph kind="tablet" />
+        </g>
+        <text y="30" textAnchor="middle" className="illo-label">
+          Tablet da mesa
+        </text>
+        <text y="44" textAnchor="middle" className="illo-ip">
+          192.168.10.61 · Wi-Fi
         </text>
       </g>
     </svg>
