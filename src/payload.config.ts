@@ -14,6 +14,7 @@ import { Media } from "./collections/Media";
 import { Offers } from "./collections/Offers";
 import { Posts } from "./collections/Posts";
 import { Users } from "./collections/Users";
+import { SeedState } from "./globals/SeedState";
 import { SiteSettings } from "./globals/SiteSettings";
 import { YouTubeCache } from "./globals/YouTubeCache";
 
@@ -41,7 +42,7 @@ export default buildConfig({
     fallbackLanguage: "pt",
   },
   collections: [Posts, Courses, Equipment, Offers, Leads, Media, Users],
-  globals: [SiteSettings, YouTubeCache],
+  globals: [SiteSettings, YouTubeCache, SeedState],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,

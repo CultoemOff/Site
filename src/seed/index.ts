@@ -93,8 +93,25 @@ for (const [i, c] of COURSES.entries()) {
   created++;
 }
 
+/**
+ * Itens iniciais de equipamentos, ofertas e posts entram UMA vez só.
+ * Depois disso, quem manda é o painel: o seed não recria o que foi apagado, não apaga nada
+ * e não mexe no que foi adicionado ou editado. Se a lista já tem itens (banco que já estava em uso),
+ * só marca como concluído, sem criar nada.
+ */
+type SeedKey = "offers" | "equipment" | "posts";
+const seedState = (await payload.findGlobal({ slug: "seed-state", depth: 0 })) as unknown as Partial<Record<SeedKey, boolean>>;
+async function firstTime(key: SeedKey): Promise<boolean> {
+  if (seedState?.[key]) return false;
+  const existing = await payload.count({ collection: key });
+  const done = key === "offers" ? { offers: true } : key === "equipment" ? { equipment: true } : { posts: true };
+  await retry(() => payload.updateGlobal({ slug: "seed-state", data: done }));
+  return existing.totalDocs === 0;
+}
+
 let equipmentCreated = 0;
-for (const [i, e] of EQUIPMENT.entries()) {
+const seedEquipment = await firstTime("equipment");
+for (const [i, e] of seedEquipment ? EQUIPMENT.entries() : []) {
   const exists = await payload.find({ collection: "equipment", where: { slug: { equals: e.id } }, limit: 1 });
   if (exists.totalDocs > 0) continue;
   await retry(() => payload.create({
@@ -114,9 +131,10 @@ for (const [i, e] of EQUIPMENT.entries()) {
   equipmentCreated++;
 }
 
-// Ofertas (página /ofertas): cria as que ainda não existem. Foto e preço são preenchidos depois, no painel.
+// Ofertas (página /ofertas): só na primeira vez. Foto e preço são preenchidos depois, no painel.
 let offersCreated = 0;
-for (const [i, o] of OFFERS.entries()) {
+const seedOffers = await firstTime("offers");
+for (const [i, o] of seedOffers ? OFFERS.entries() : []) {
   const exists = await payload.find({ collection: "offers", where: { slug: { equals: o.id } }, limit: 1, depth: 0 });
   if (exists.totalDocs > 0) continue;
   await retry(() => payload.create({
@@ -197,7 +215,8 @@ const firstUser = await payload.find({ collection: "users", limit: 1, depth: 0 }
 const authorId = firstUser.docs[0]?.id;
 
 let postsCreated = 0;
-for (const post of SEED_POSTS) {
+const seedPosts = await firstTime("posts");
+for (const post of seedPosts ? SEED_POSTS : []) {
   const exists = await payload.find({ collection: "posts", where: { slug: { equals: post.slug } }, limit: 1, draft: true });
   if (exists.totalDocs > 0) continue;
   const cover = post.cover ? await uploadCover(post.cover) : null;
