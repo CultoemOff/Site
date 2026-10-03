@@ -154,3 +154,11 @@
 .offers .nav--solid {
   background: rgba(5, 10, 24, 0.96);
 }
+
+/* com a faixa amarela da promoção no topo, o conteúdo e os filtros descem a altura dela */
+body:has(.promo-bar) .offers__main {
+  padding-top: calc(var(--nav-h) + var(--promo-h) + clamp(16px, 3vw, 36px));
+}
+body:has(.promo-bar) .offers__filters {
+  top: calc(var(--nav-h) + var(--promo-h));
+}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import OffersView from "@/components/offers/OffersView";
-import { getOffers } from "@/lib/cms";
+import { getCourses, getOffers } from "@/lib/cms";
 import { SITE_URL } from "@/lib/seo";
 
 // Preços e produtos mudam: a página é refeita a cada 1 h (e na hora quando algo é salvo no admin).
@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 
 /** Página de ofertas (também atende em ofertas.<domínio>, ver next.config.mjs). */
 export default async function OfertasPage() {
-  const offers = await getOffers();
+  const [offers, courses] = await Promise.all([getOffers(), getCourses()]);
   // sem domínio configurado ainda, o link para o site principal fica relativo
   const homeUrl = SITE_URL.includes("localhost") ? "/" : SITE_URL;
-  return <OffersView offers={offers} homeUrl={homeUrl} />;
+  return <OffersView offers={offers} homeUrl={homeUrl} courses={courses} />;
 }

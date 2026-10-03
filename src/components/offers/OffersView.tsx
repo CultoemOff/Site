@@ -1,4 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
+import PromoBar from "@/components/sales/PromoBar";
+import type { Course } from "@/config/courses";
+import { resolvePrice } from "@/lib/pricing";
 import { SITE_NAME } from "@/config/site";
 import type { Offer } from "@/config/offers";
 import OffersGrid from "./OffersGrid";
@@ -6,11 +9,26 @@ import "./offers.css";
 
 /**
  * Página de ofertas: leve de propósito (sem palco animado), com o menu do site,
- * fundo azul-escuro e cards brancos. `homeUrl` leva ao site principal.
+ * fundo azul-escuro e cards brancos. `homeUrl` leva ao site principal; `courses` serve só para a faixa da promoção.
  */
-export default function OffersView({ offers, homeUrl }: { offers: Offer[]; homeUrl: string }) {
+export default function OffersView({ offers, homeUrl, courses = [] }: { offers: Offer[]; homeUrl: string; courses?: Course[] }) {
+  // Formação em promoção: a mesma faixa amarela da home, levando à página da oferta no site principal.
+  const promoCourse = courses.map((c) => ({ c, p: resolvePrice(c) })).find(({ p }) => p.promo);
+  const prefix = homeUrl === "/" ? "" : homeUrl.replace(/\/$/, "");
   return (
     <div className="offers">
+      {promoCourse && (
+        <PromoBar
+          label={promoCourse.p.promo!.label}
+          product={`Curso de ${promoCourse.c.title}`}
+          off={promoCourse.p.off}
+          endsAt={promoCourse.p.promo!.endsAt}
+          href={`${prefix}/formacoes/${promoCourse.c.id}`}
+          cta="Ver a oferta"
+          ctaShort="Ver oferta"
+          trackLabel={`${promoCourse.c.title} (faixa das ofertas)`}
+        />
+      )}
       <Navbar base={homeUrl} />
 
       <main id="conteudo" tabIndex={-1} className="offers__main">
