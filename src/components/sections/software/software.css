@@ -1,5 +1,5 @@
 /* ==========================================================
-   CH 06 · Softwares Culto em Off
+   CH 05 · Softwares Culto em Off
    ========================================================== */
 
 .softwares {
@@ -534,5 +534,55 @@
 @media (prefers-reduced-motion: reduce) {
   .soft {
     transition: none;
+  }
+}
+
+/* ---------- seção enxuta na home (menos destaque) ---------- */
+.softwares.section {
+  padding-block: clamp(48px, 6vw, 76px);
+}
+.softwares .section-head {
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.softwares .section-head__title {
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  line-height: 1.15;
+}
+.softwares .section-head__intro {
+  font-size: 0.98rem;
+}
+.softwares .softwares__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.softwares .soft {
+  border-radius: 16px;
+}
+.softwares .soft__body {
+  gap: 8px;
+  padding: 20px 22px;
+}
+.softwares .soft__name {
+  font-size: 1.25rem;
+}
+.softwares .soft__tagline {
+  font-size: 0.95rem;
+}
+.softwares .soft__text {
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.softwares .soft__actions {
+  padding-top: 8px;
+}
+.softwares .soft__actions .btn {
+  min-height: 42px;
+  padding-inline: 18px;
+  font-size: 0.9rem;
+}
+@media (max-width: 900px) {
+  .softwares .softwares__grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

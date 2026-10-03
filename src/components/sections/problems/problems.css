@@ -569,3 +569,10 @@
     transition: none;
   }
 }
+
+/* três cards: no tablet, o último ocupa a linha inteira */
+@media (min-width: 681px) and (max-width: 1000px) {
+  .problems__grid > .problem-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}

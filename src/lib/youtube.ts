@@ -48,22 +48,36 @@ export function parseYouTubeFeed(xml: string, limit = 4): YouTubeVideo[] {
   return videos;
 }
 
-/**
- * Busca os vídeos mais recentes do canal (server-side, com cache de 1 h).
- * Nunca lança erro: se o YouTube estiver indisponível, retorna [].
- */
-export async function getLatestVideos(limit = 4): Promise<YouTubeVideo[]> {
-  if (!YOUTUBE_CHANNEL_ID) return [];
+/** Uma tentativa em um dos endereços do feed. Retorna [] se falhar. */
+async function fetchFeed(url: string, limit: number): Promise<YouTubeVideo[]> {
   try {
-    const res = await fetch(YOUTUBE_FEED_URL, {
+    const res = await fetch(url, {
       next: { revalidate: YOUTUBE_REVALIDATE_SECONDS },
-      signal: AbortSignal.timeout(6000),
+      signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return [];
     return parseYouTubeFeed(await res.text(), limit);
   } catch {
     return [];
   }
+}
+
+/**
+ * Busca os vídeos mais recentes do canal (server-side, com cache de 1 h).
+ * O feed do YouTube falha de tempos em tempos, então tenta de novo e alterna entre
+ * o feed do canal e o da lista de envios (são endereços diferentes, com o mesmo conteúdo).
+ * Nunca lança erro: se nada responder, retorna [].
+ */
+export async function getLatestVideos(limit = 4): Promise<YouTubeVideo[]> {
+  if (!YOUTUBE_CHANNEL_ID) return [];
+  const uploads = YOUTUBE_CHANNEL_ID.startsWith("UC")
+    ? `https://www.youtube.com/feeds/videos.xml?playlist_id=UU${YOUTUBE_CHANNEL_ID.slice(2)}`
+    : YOUTUBE_FEED_URL;
+  for (const url of [YOUTUBE_FEED_URL, uploads, YOUTUBE_FEED_URL]) {
+    const videos = await fetchFeed(url, limit);
+    if (videos.length > 0) return videos;
+  }
+  return [];
 }
 
 /** Vídeos escolhidos no admin (título via oEmbed quando não informado). */

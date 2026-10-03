@@ -26,7 +26,7 @@ export default function Partners({ settings }: { settings: SiteSettingsData }) {
   return (
     <section id="parceiros" className="section section--paper partners" aria-labelledby="parceiros-title">
       <div className="section__inner">
-        <SectionHeader channel="CH 05 · Parceiros" id="parceiros-title" title="Parceiros que recomendamos.">
+        <SectionHeader channel="CH 06 · Parceiros" id="parceiros-title" title="Parceiros que recomendamos.">
           <p>Softwares e lojas que usamos e indicamos para facilitar o dia a dia de quem serve na igreja.</p>
         </SectionHeader>
 

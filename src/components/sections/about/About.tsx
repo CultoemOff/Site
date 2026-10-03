@@ -3,12 +3,12 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { INSTRUCTORS, NEXT_INSTRUCTOR_SOON } from "@/config/instructors";
 import "./about.css";
 
-/** CH 06: professores da escola (cards grandes). */
+/** CH 04: professores da escola (cards grandes). */
 export default function About() {
   return (
     <section id="sobre" className="section section--abyss about" aria-labelledby="sobre-title">
       <div className="section__inner">
-        <SectionHeader channel="CH 06 · Quem ensina" id="sobre-title" title="Professores">
+        <SectionHeader channel="CH 04 · Quem ensina" id="sobre-title" title="Professores">
           <p>Cada formação é conduzida por um especialista da área.</p>
         </SectionHeader>
 

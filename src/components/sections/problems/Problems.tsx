@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { AudioMeters, CableMess, DmxConflict, FrozenSlide, SyncWaves } from "./ProblemVisuals";
+import { AudioMeters, CableMess, SyncWaves } from "./ProblemVisuals";
 import "./problems.css";
 
 type Problem = {
@@ -24,30 +24,10 @@ const PROBLEMS: Problem[] = [
     visual: <AudioMeters />,
   },
   {
-    area: "Projeção",
-    title: "A letra errada no telão.",
-    items: [
-      "Apresentação travando na hora do louvor",
-      "PowerPoint usado no improviso",
-      "Falta gente para operar tudo, e o slide passa atrasado",
-    ],
-    visual: <FrozenSlide />,
-  },
-  {
     area: "Transmissão",
     title: "O áudio da live não é o que a igreja ouve.",
     items: ["OBS, cenas e câmeras para administrar", "Áudio e vídeo fora de sincronia", "Conexões que caem durante o culto"],
     visual: <SyncWaves />,
-  },
-  {
-    area: "Iluminação",
-    title: "A cena não acende o refletor certo.",
-    items: [
-      "DMX, universos e endereçamento",
-      "Fixtures e moving heads com dezenas de canais",
-      "Operação manual complicada",
-    ],
-    visual: <DmxConflict />,
   },
   {
     area: "Redes e conexões",
@@ -59,7 +39,6 @@ const PROBLEMS: Problem[] = [
     ],
     terms: ["HDMI", "USB", "P2", "NDI", "Dante", "Companion"],
     visual: <CableMess />,
-    wide: true,
   },
 ];
 

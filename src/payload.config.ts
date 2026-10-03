@@ -14,6 +14,7 @@ import { Media } from "./collections/Media";
 import { Posts } from "./collections/Posts";
 import { Users } from "./collections/Users";
 import { SiteSettings } from "./globals/SiteSettings";
+import { YouTubeCache } from "./globals/YouTubeCache";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -39,7 +40,7 @@ export default buildConfig({
     fallbackLanguage: "pt",
   },
   collections: [Posts, Courses, Equipment, Leads, Media, Users],
-  globals: [SiteSettings],
+  globals: [SiteSettings, YouTubeCache],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,

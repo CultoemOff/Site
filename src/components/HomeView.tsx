@@ -52,9 +52,9 @@ export default function HomeView({ courses, settings, equipment, youtube, latest
         <Problems />
         <Manifesto />
         <Courses courses={courses} />
+        <About />
         <SoftwareSection />
         <Partners settings={settings} />
-        <About />
         {youtube}
         {latestPosts}
         <Equipment items={equipment} />

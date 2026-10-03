@@ -29,7 +29,8 @@ export default function YouTubeView({ videos, channelUrl }: { videos: YouTubeVid
               <li key={v.id} data-reveal style={{ "--i": i } as React.CSSProperties}>
                 <a href={v.url} target="_blank" rel="noopener noreferrer" className="yt__card">
                   <span className="yt__thumb">
-                    <Image src={v.thumbnail} alt="" fill sizes="(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 280px" />
+                    {/* direto do YouTube (sem passar pelo otimizador do site): carrega sempre e não gasta a cota de imagens */}
+                    <Image src={v.thumbnail} alt="" fill unoptimized sizes="(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 280px" />
                     <span className="yt__play" aria-hidden="true">
                       <svg viewBox="0 0 24 24" focusable="false">
                         <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
