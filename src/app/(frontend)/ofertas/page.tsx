@@ -9,7 +9,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Ofertas para a técnica da sua igreja",
   description:
-    "Produtos recomendados pelo Culto em Off para te ajudar na igreja: áudio, vídeo, acessórios e hardware, com link direto para a loja.",
+    "Produtos recomendados pelo Culto em Off para te ajudar na igreja: áudio, vídeo, iluminação, automação, acessórios e hardware, com link direto para a loja.",
   alternates: { canonical: "/ofertas" },
 };
 

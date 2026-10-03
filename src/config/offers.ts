@@ -5,16 +5,18 @@
  * Depois do seed, tudo se edita no admin → Conteúdo → Ofertas.
  */
 
-export type OfferTag = "audio" | "video" | "acessorios" | "hardware";
+export type OfferTag = "audio" | "video" | "iluminacao" | "automacao" | "acessorios" | "hardware";
 
 export const OFFER_TAGS: Record<OfferTag, string> = {
   audio: "Áudio",
   video: "Vídeo",
+  iluminacao: "Iluminação",
+  automacao: "Automação",
   acessorios: "Acessórios",
   hardware: "Hardware",
 };
 
-export const OFFER_TAG_ORDER: OfferTag[] = ["audio", "video", "acessorios", "hardware"];
+export const OFFER_TAG_ORDER: OfferTag[] = ["audio", "video", "iluminacao", "automacao", "acessorios", "hardware"];
 
 /** Limite de produtos na página. */
 export const OFFERS_LIMIT = 100;

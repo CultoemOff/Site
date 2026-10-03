@@ -50,6 +50,8 @@ export const Offers: CollectionConfig = {
       options: [
         { label: "Áudio", value: "audio" },
         { label: "Vídeo", value: "video" },
+        { label: "Iluminação", value: "iluminacao" },
+        { label: "Automação", value: "automacao" },
         { label: "Acessórios", value: "acessorios" },
         { label: "Hardware", value: "hardware" },
       ],

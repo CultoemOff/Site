@@ -5,7 +5,7 @@ import { OFFERS, type Offer, type OfferTag } from "../src/config/offers";
 
 // Prévia: fotos e preços de exemplo só para conferir o layout (no site real vêm do painel/links).
 const pics = ["/partners/dorn.jpg", "/images/cesar-augusto.jpg", "/partners/voluts.jpg", "/blog/volume-na-igreja.png", ""];
-const tags: OfferTag[][] = [["audio"], ["video"], ["acessorios"], ["hardware"], ["audio", "acessorios"]];
+const tags: OfferTag[][] = [["audio"], ["video"], ["iluminacao"], ["automacao"], ["acessorios"], ["hardware"], ["audio", "acessorios"]];
 const many: Offer[] = Array.from({ length: 31 }, (_, i) => {
   const base = OFFERS[i % OFFERS.length];
   return {
