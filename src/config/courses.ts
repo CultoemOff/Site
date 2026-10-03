@@ -1,8 +1,9 @@
 /**
  * Catálogo de formações da Escola Culto em Off.
  *
- * - `price` e `format`: valores provisórios definidos para o lançamento.
- *   TODO: confirmar preços e cargas horárias finais.
+ * - `price`: só a formação de Redes tem preço. As demais ficam com 0 (sem preço) até o lançamento:
+ *   o site não mostra valor nenhum para elas.
+ * - `format`: cargas horárias provisórias. TODO: confirmar as finais.
  * - `status`: "lancamento-em-breve" enquanto as formações não abrem.
  * - `href`: link de inscrição/lista de espera. Vazio = botão oculto.
  */
@@ -54,7 +55,7 @@ export type Course = {
   appliedTo?: string[];
   diagram: CourseDiagram;
   status?: CourseStatus;
-  /** preço em reais (o que a pessoa paga hoje) */
+  /** preço em reais (o que a pessoa paga hoje). 0 = sem preço definido: o site não mostra valor */
   price: number;
   /** preço cheio, exibido riscado quando há promoção ("de R$ 138,80 por R$ 59,00") */
   priceFrom?: number;
@@ -76,7 +77,15 @@ export type Course = {
    * atualizada quando este número é maior que o gravado lá (assim as edições do admin não são perdidas).
    */
   rev?: number;
+  /**
+   * O que a mudança de `rev` altera no banco. "price" = só preço, parcelas e status
+   * (textos e demais campos editados no admin ficam como estão). Sem este campo, atualiza tudo.
+   */
+  revScope?: "price";
 };
+
+/** A formação tem preço para mostrar? (0 ou vazio = sem preço, como nas que ainda vão lançar) */
+export const hasPrice = (course: Pick<Course, "price">) => course.price > 0;
 
 const ONLINE_1_ANO = (hours: number): CourseFormat => ({ mode: "Online", hours, access: "Acesso por 1 ano" });
 
@@ -139,7 +148,10 @@ export const COURSES: Course[] = [
       "Prevenção de microfonia",
     ],
     diagram: "analog",
-    price: 39.9,
+    // sem preço até o lançamento (0 = o site não mostra preço)
+    price: 0,
+    rev: 1,
+    revScope: "price",
     instructor: "chico-ferreira",
     format: ONLINE_1_ANO(6),
     status: "lancamento-em-breve",
@@ -163,7 +175,10 @@ export const COURSES: Course[] = [
       "Monitoramento da transmissão",
     ],
     diagram: "live",
-    price: 44.9,
+    // sem preço até o lançamento (0 = o site não mostra preço)
+    price: 0,
+    rev: 1,
+    revScope: "price",
     format: ONLINE_1_ANO(5),
     status: "lancamento-em-breve",
     hideOnHome: true,
@@ -189,7 +204,10 @@ export const COURSES: Course[] = [
     ],
     appliedTo: ["OBS", "Câmeras PTZ", "Iluminação", "Áudio", "Projeção", "Streaming"],
     diagram: "companion",
-    price: 77.9,
+    // sem preço até o lançamento (0 = o site não mostra preço)
+    price: 0,
+    rev: 1,
+    revScope: "price",
     instructor: "jonas-silva",
     format: ONLINE_1_ANO(6),
     status: "lancamento-em-breve",
@@ -216,7 +234,10 @@ export const COURSES: Course[] = [
       "Conceitos de operação",
     ],
     diagram: "dmx",
-    price: 69.9,
+    // sem preço até o lançamento (0 = o site não mostra preço)
+    price: 0,
+    rev: 1,
+    revScope: "price",
     instructor: "cesar-augusto",
     format: ONLINE_1_ANO(10),
     status: "lancamento-em-breve",

@@ -3,14 +3,14 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import type { FaqItem } from "@/config/site";
 import "./faq.css";
 
-/** CH 10 · Perguntas frequentes (editáveis no admin → Configurações do site). */
+/** CH 09 · Perguntas frequentes (editáveis no admin → Configurações do site). */
 export default function Faq({ items }: { items: FaqItem[] }) {
   if (items.length === 0) return null;
   return (
     <section id="duvidas" className="section section--paper faq" aria-labelledby="duvidas-title">
       <div className="section__inner faq__layout">
         <div className="faq__intro">
-          <SectionHeader channel="CH 10 · Dúvidas" id="duvidas-title" title="Perguntas frequentes.">
+          <SectionHeader channel="CH 09 · Dúvidas" id="duvidas-title" title="Perguntas frequentes.">
             <p>O que costumam perguntar antes de começar uma formação.</p>
           </SectionHeader>
           <div data-reveal style={{ "--i": 3 } as React.CSSProperties}>

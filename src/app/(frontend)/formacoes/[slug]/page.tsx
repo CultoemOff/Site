@@ -55,14 +55,18 @@ export default async function CourseSalesPage({ params }: Props) {
           url: `${SITE_URL}/formacoes/${slug}`,
           provider: { "@type": "Organization", name: "Culto em Off", url: SITE_URL },
           ...(teacher ? { instructor: { "@type": "Person", name: teacher.name } } : {}),
-          offers: {
-            "@type": "Offer",
-            price: resolvePrice(course).price.toFixed(2),
-            priceCurrency: "BRL",
-            category: "Paid",
-            ...(page.promo?.endsAt ? { priceValidUntil: page.promo.endsAt.slice(0, 10) } : {}),
-            ...(course.href ? { url: course.href, availability: "https://schema.org/InStock" } : {}),
-          },
+          ...(course.price > 0
+            ? {
+                offers: {
+                  "@type": "Offer",
+                  price: resolvePrice(course).price.toFixed(2),
+                  priceCurrency: "BRL",
+                  category: "Paid",
+                  ...(page.promo?.endsAt ? { priceValidUntil: page.promo.endsAt.slice(0, 10) } : {}),
+                  ...(course.href ? { url: course.href, availability: "https://schema.org/InStock" } : {}),
+                },
+              }
+            : {}),
           hasCourseInstance: { "@type": "CourseInstance", courseMode: "online" },
         }}
       />

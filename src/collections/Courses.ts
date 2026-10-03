@@ -44,9 +44,12 @@ export const Courses: CollectionConfig = {
           name: "price",
           type: "number",
           label: "Preço (R$)",
-          required: true,
           min: 0,
-          admin: { step: 0.1, components: { Cell: "/components/admin/PriceCell" } },
+          admin: {
+            step: 0.1,
+            description: "Vazio = o site não mostra preço (formação que ainda vai lançar).",
+            components: { Cell: "/components/admin/PriceCell" },
+          },
         },
         {
           name: "priceFrom",

@@ -54,12 +54,12 @@ export default function HomeView({ courses, settings, offers, youtube, latestPos
         <Manifesto />
         <Courses courses={courses} />
         <About />
-        <SoftwareSection />
-        <Partners settings={settings} />
-        {youtube}
-        {latestPosts}
         <OffersHome offers={offers} />
+        <SoftwareSection />
+        {youtube}
+        <Partners settings={settings} />
         <Faq items={settings.faq} />
+        {latestPosts}
       </main>
       <Footer settings={settings} />
       <ViewportFx />

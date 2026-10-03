@@ -24,6 +24,8 @@ export function resolvePrice(
   course: Pick<Course, "id" | "price" | "priceFrom" | "installments">,
   now = Date.now(),
 ): ResolvedPrice {
+  // sem preço definido (formação que ainda vai lançar): nada de promoção nem parcelas
+  if (!(course.price > 0)) return { price: 0, off: 0 };
   const full = course.priceFrom && course.priceFrom > course.price ? course.priceFrom : undefined;
   const installments =
     course.installments && course.installments.count > 1 && course.installments.value > 0 ? course.installments : undefined;

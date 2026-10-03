@@ -43,17 +43,22 @@ export function coursesJsonLd(courses: Course[]) {
           courseMode: "Online",
           courseWorkload: c.format.hours ? `PT${c.format.hours}H` : undefined,
         },
-        offers: {
-          "@type": "Offer",
-          price: resolvePrice(c).price.toFixed(2),
-          priceCurrency: "BRL",
-          category: "Paid",
-          availability:
-            c.status === "disponivel" || c.status === "inscricoes-abertas"
-              ? "https://schema.org/InStock"
-              : "https://schema.org/PreOrder",
-          ...(c.href ? { url: c.href } : {}),
-        },
+        // formação sem preço definido (ainda vai lançar) não entra com oferta
+        ...(c.price > 0
+          ? {
+              offers: {
+                "@type": "Offer",
+                price: resolvePrice(c).price.toFixed(2),
+                priceCurrency: "BRL",
+                category: "Paid",
+                availability:
+                  c.status === "disponivel" || c.status === "inscricoes-abertas"
+                    ? "https://schema.org/InStock"
+                    : "https://schema.org/PreOrder",
+                ...(c.href ? { url: c.href } : {}),
+              },
+            }
+          : {}),
       },
     })),
   };

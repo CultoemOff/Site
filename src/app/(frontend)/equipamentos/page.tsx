@@ -33,7 +33,7 @@ export default async function EquipamentosPage() {
           <div className="blog-hero__inner">
             <p className="blog-hero__channel">
               <span aria-hidden="true" />
-              CH 09 · Equipamentos
+              CH 05 · Equipamentos
             </p>
             <h1 className="blog-hero__title">Equipamentos que recomendamos.</h1>
             <p className="blog-hero__text">

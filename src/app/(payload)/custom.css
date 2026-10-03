@@ -527,6 +527,17 @@ a.ceo-cell:hover .ceo-cell__title {
   color: #6ee7b7;
 }
 
+.ceo-pill--review {
+  background: rgba(255, 212, 59, 0.16);
+  color: var(--ceo-yellow);
+  text-decoration: none;
+}
+
+.ceo-pill--review:hover {
+  background: var(--ceo-yellow);
+  color: #1a1400;
+}
+
 .ceo-pill--no {
   background: var(--theme-elevation-100);
   color: var(--theme-elevation-500);

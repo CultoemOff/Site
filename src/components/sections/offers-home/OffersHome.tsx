@@ -5,7 +5,7 @@ import OffersCarousel from "./OffersCarousel";
 import "./offers-home.css";
 
 /**
- * CH 09 · Produtos que recomendamos: carrossel com até 10 ofertas cadastradas no painel
+ * CH 05 · Produtos que recomendamos: carrossel com até 10 ofertas cadastradas no painel
  * (as marcadas com "Mostrar na home") e botão para a página completa.
  */
 export default function OffersHome({ offers }: { offers: Offer[] }) {
@@ -16,7 +16,7 @@ export default function OffersHome({ offers }: { offers: Offer[] }) {
     <section id="equipamentos" className="section section--abyss offers-home" aria-labelledby="equipamentos-title">
       <div className="offers-home__grid-bg" aria-hidden="true" />
       <div className="section__inner">
-        <SectionHeader channel="CH 09 · Equipamentos" id="equipamentos-title" title="Equipamentos que recomendamos.">
+        <SectionHeader channel="CH 05 · Equipamentos" id="equipamentos-title" title="Equipamentos que recomendamos.">
           <p>Produtos recomendados pelo Culto em Off para te ajudar na igreja.</p>
         </SectionHeader>
 

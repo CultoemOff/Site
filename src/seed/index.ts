@@ -60,7 +60,7 @@ for (const [i, c] of COURSES.entries()) {
     tagline: c.tagline,
     summary: c.summary,
     question: c.question,
-    price: c.price,
+    price: c.price > 0 ? c.price : null,
     priceFrom: c.priceFrom ?? null,
     installmentCount: c.installments?.count ?? null,
     installmentValue: c.installments?.value ?? null,
@@ -82,9 +82,21 @@ for (const [i, c] of COURSES.entries()) {
   if (doc) {
     // já existe: só atualiza quando o conteúdo no código é mais novo (campo "rev" em src/config/courses.ts)
     if ((doc.contentRev ?? 0) < (c.rev ?? 0)) {
-      // link de inscrição: se o código não tem um, mantém o que foi colocado no painel
-      const { href, ...semLink } = data;
-      await retry(() => payload.update({ collection: "courses", id: doc.id, data: href ? data : semLink }));
+      if (c.revScope === "price") {
+        // mudança só de preço: mexe em preço, parcelas e status; textos e demais campos do painel ficam como estão
+        const { price, priceFrom, installmentCount, installmentValue, status, contentRev } = data;
+        await retry(() =>
+          payload.update({
+            collection: "courses",
+            id: doc.id,
+            data: { price, priceFrom, installmentCount, installmentValue, status, contentRev },
+          }),
+        );
+      } else {
+        // link de inscrição: se o código não tem um, mantém o que foi colocado no painel
+        const { href, ...semLink } = data;
+        await retry(() => payload.update({ collection: "courses", id: doc.id, data: href ? data : semLink }));
+      }
       updated++;
     }
     continue;

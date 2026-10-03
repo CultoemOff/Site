@@ -17,7 +17,7 @@ export const Offers: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     group: "Loja",
-    defaultColumns: ["title", "price", "tags", "home", "active", "order"],
+    defaultColumns: ["title", "price", "tags", "reviewUrl", "home", "active", "order"],
     description: "Preencha o link, o nome, o link da imagem, as categorias e o preço. A página mostra até 100 ofertas.",
   },
   defaultSort: "order",
@@ -117,7 +117,11 @@ export const Offers: CollectionConfig = {
       name: "reviewUrl",
       type: "text",
       label: "Link de review (opcional)",
-      admin: { description: "Link de um vídeo de review do produto (YouTube, por exemplo). Se preenchido, o card ganha o botão “Assistir review”." },
+      admin: {
+        description: "Link de um vídeo de review do produto (YouTube, por exemplo). Se preenchido, o card ganha o botão “Assistir review”.",
+        // na lista: mostra se o produto tem review
+        components: { Cell: "/components/admin/ReviewCell" },
+      },
       validate: (value: unknown) =>
         !value || /^https?:\/\/\S+$/i.test(String(value).trim()) ? true : "Cole o link completo, começando com https://",
     },

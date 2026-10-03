@@ -1,7 +1,7 @@
 import ArrowButton from "@/components/ui/ArrowButton";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Image from "next/image";
-import { COURSE_STATUS_LABEL, MORE_COURSES_URL, formatInstallments, formatPrice, type Course } from "@/config/courses";
+import { COURSE_STATUS_LABEL, MORE_COURSES_URL, formatInstallments, formatPrice, hasPrice, type Course } from "@/config/courses";
 import { getInstructor, INSTRUCTORS } from "@/config/instructors";
 import { hasSalesPage } from "@/config/salesPages";
 import Countdown from "@/components/sales/Countdown";
@@ -72,17 +72,20 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
         )}
 
         <div className="course__offer">
-          <p className="course__price">
-            {priceFrom && (
-              <span className="course__price-from">
-                de <s>{formatPrice(priceFrom)}</s> por
-              </span>
-            )}
-            <span className="sr-only">Preço: </span>
-            {formatPrice(price)}
-            {priceFrom && <em className="course__price-off">{off}% OFF</em>}
-            {installments && <span className="course__price-parcel">ou {formatInstallments(installments)} no cartão</span>}
-          </p>
+          {/* formação sem preço definido (ainda vai lançar): não mostra valor */}
+          {hasPrice(course) && (
+            <p className="course__price">
+              {priceFrom && (
+                <span className="course__price-from">
+                  de <s>{formatPrice(priceFrom)}</s> por
+                </span>
+              )}
+              <span className="sr-only">Preço: </span>
+              {formatPrice(price)}
+              {priceFrom && <em className="course__price-off">{off}% OFF</em>}
+              {installments && <span className="course__price-parcel">ou {formatInstallments(installments)} no cartão</span>}
+            </p>
+          )}
           <ul className="course__format" aria-label="Formato">
             <li>{course.format.mode}</li>
             <li>{course.format.hours} horas</li>

@@ -36,15 +36,14 @@ export default function OffersView({ offers, homeUrl, courses = [] }: { offers: 
         <div className="offers__head">
           <h1>Ofertas para a técnica da sua igreja</h1>
           <p>Produtos recomendados pelo Culto em Off para te ajudar na igreja.</p>
+          <p className="offers__legal">
+            Os links desta página são de afiliado: se você comprar por eles, o Culto em Off pode receber uma comissão,
+            sem custo extra para você. Preço e disponibilidade são definidos pela loja e podem mudar a qualquer momento;
+            vale o valor mostrado na página da loja.
+          </p>
         </div>
 
         <OffersGrid offers={offers} />
-
-        <p className="offers__legal">
-          Os links desta página são de afiliado: se você comprar por eles, o Culto em Off pode receber uma comissão, sem
-          custo extra para você. Preço e disponibilidade são definidos pela loja e podem mudar a qualquer momento; vale
-          o valor mostrado na página da loja.
-        </p>
       </main>
 
       <footer className="offers__footer">
