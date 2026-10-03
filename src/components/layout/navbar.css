@@ -136,7 +136,7 @@
   display: none;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1240px) {
   .nav__links,
   .nav__cta {
     display: none;
@@ -174,12 +174,17 @@
 .nav__cta {
   white-space: nowrap;
 }
-@media (max-width: 1240px) {
-  .nav__links a {
-    padding-inline: 9px;
-  }
-  .nav__links a::after {
-    left: 9px;
-    right: 9px;
-  }
+/* com oito itens no menu, os links ficam um pouco mais juntos para caber ao lado do botão */
+.nav__inner {
+  gap: 18px;
+}
+.nav__links {
+  gap: 0;
+}
+.nav__links a {
+  padding-inline: 9px;
+}
+.nav__links a::after {
+  left: 9px;
+  right: 9px;
 }
