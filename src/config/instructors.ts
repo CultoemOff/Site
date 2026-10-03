@@ -14,6 +14,8 @@ export type Instructor = {
   /** texto curto: aparece nos cards das formações */
   bio: string;
   photo: string;
+  /** foto com enquadramento mais aberto para o card grande de professores (se vazio, usa `photo`) */
+  photoLarge?: string;
   /** texto completo: aparece no card grande da seção "Quem está por trás" (se vazio, usa `bio`) */
   details?: string;
   /** números em destaque, ex.: { value: "30+", label: "anos de experiência" } */
@@ -31,6 +33,7 @@ const LIST = [
     area: "Redes, automação e Companion",
     bio: "Dono do canal Culto em Off. Especialista em tecnologia, com mais de 12 anos em TI e 15 anos servindo em equipes técnicas de igreja.",
     photo: "/images/jonas-silva.jpg",
+    photoLarge: "/images/jonas-silva-professor.jpg",
     details:
       "Dono do canal Culto em Off e especialista em tecnologia. Profissionalmente, atua com infraestrutura, cloud, cibersegurança e automação. Na igreja, vive na prática os desafios das equipes técnicas e dos voluntários.",
     stats: [

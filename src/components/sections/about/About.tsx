@@ -17,7 +17,7 @@ export default function About() {
             {INSTRUCTORS.map((t, i) => (
               <li key={t.id} className="teacher" data-reveal style={{ "--i": i % 2 } as React.CSSProperties}>
                 <span className="teacher__photo">
-                  <Image src={t.photo} alt={`Foto de ${t.name}`} fill sizes="(max-width: 560px) 96px, 132px" />
+                  <Image src={t.photoLarge ?? t.photo} alt={`Foto de ${t.name}`} fill sizes="(max-width: 560px) 96px, 132px" />
                 </span>
                 <div className="teacher__head">
                   <p className="teacher__role">{t.role}</p>
