@@ -15,7 +15,10 @@ export const LOGO_SRC = "/images/logo-culto-em-off.png";
  * Imagem exibida (de forma discreta) no telão do palco do hero.
  * Pode ser trocada por outra arte sem alterar componentes.
  */
-export const STAGE_SCREEN_LOGO_SRC = "/images/logo-culto-em-off.png";
+export const STAGE_SCREEN_LOGO_SRC = "/images/logo-stage.webp";
+/** ícones do navegador (versões pequenas da logo) */
+export const ICON_SRC = "/images/icon-96.png";
+export const APPLE_ICON_SRC = "/images/apple-icon-180.png";
 
 /** Foto real do Jonas Silva (sem edição). */
 export const ABOUT_PHOTO_SRC = "/images/jonas.silva.jpeg";

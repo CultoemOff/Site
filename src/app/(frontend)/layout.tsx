@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import Analytics from "@/components/analytics/Analytics";
-import { LOGO_SRC, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/config/site";
+import { APPLE_ICON_SRC, ICON_SRC, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/config/site";
 import { getSiteSettings } from "@/lib/cms";
 import { OG_IMAGE, SITE_URL, safeGaId, safePixelId } from "@/lib/seo";
 import "./globals.css";
@@ -9,7 +9,8 @@ import "@/components/fx/fx.css";
 
 const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", display: "swap" });
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
+// fonte dos rótulos pequenos: fora do carregamento inicial (não atrasa o primeiro desenho no celular)
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     "transmissão de culto",
     "mesa de som",
   ],
-  icons: { icon: LOGO_SRC, apple: LOGO_SRC },
+  icons: { icon: ICON_SRC, apple: APPLE_ICON_SRC },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",

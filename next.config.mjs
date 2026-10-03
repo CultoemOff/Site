@@ -11,6 +11,8 @@ const nextConfig = {
     ];
   },
   images: {
+    // AVIF primeiro (menor), WebP como alternativa
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       { protocol: "https", hostname: "i.ytimg.com" },
       // arquivos do admin servidos pelo próprio site durante o desenvolvimento
