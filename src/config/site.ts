@@ -20,8 +20,6 @@ export const STAGE_SCREEN_LOGO_SRC = "/images/logo-stage.webp";
 export const ICON_SRC = "/images/icon-96.png";
 export const APPLE_ICON_SRC = "/images/apple-icon-180.png";
 
-/** Foto real do Jonas Silva (sem edição). */
-export const ABOUT_PHOTO_SRC = "/images/jonas-silva-sobre.jpg";
 
 // Redes sociais (valores padrão; podem ser alterados no admin)
 export const SOCIAL_DEFAULTS = {
@@ -137,7 +135,7 @@ export const DEFAULT_SETTINGS: SiteSettingsData = {
 export const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Manifesto", href: "/#manifesto" },
   { label: "Formações", href: "/#formacoes" },
-  { label: "Softwares", href: "/#softwares" },
+  { label: "Downloads gratuitos", href: "/#softwares" },
   { label: "Parceiros", href: "/#parceiros" },
   { label: "Sobre", href: "/#sobre" },
   { label: "Blog", href: "/blog" },
