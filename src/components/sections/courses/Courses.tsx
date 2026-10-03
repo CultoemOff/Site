@@ -146,14 +146,15 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
 
         {(course.href || hasSalesPage(course.id)) && (
           <div className="course__cta">
-            {course.href && (
-              <ArrowButton href={course.href} external track={{ event: "select_course", label: course.title }}>
-                {promo ? "Comprar com desconto" : "Quero participar"}
+            {hasSalesPage(course.id) ? (
+              // Formação com página própria: o card só leva até ela. O botão de compra (Hotmart) fica só nessa página.
+              <ArrowButton href={`/formacoes/${course.id}`}>
+                Ver detalhes da formação
               </ArrowButton>
-            )}
-            {hasSalesPage(course.id) && (
-              <ArrowButton href={`/formacoes/${course.id}`} variant={course.href ? "ghost" : "primary"}>
-                {promo && !course.href ? "Ver a oferta de lançamento" : "Ver detalhes da formação"}
+            ) : (
+              // Sem página própria: o link de inscrição é o único caminho, então fica no card.
+              <ArrowButton href={course.href!} external track={{ event: "select_course", label: course.title }}>
+                Quero participar
               </ArrowButton>
             )}
           </div>
