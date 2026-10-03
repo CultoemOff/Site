@@ -137,7 +137,7 @@ export const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Formações", href: "/#formacoes" },
   { label: "Downloads gratuitos", href: "/#softwares" },
   { label: "Parceiros", href: "/#parceiros" },
-  { label: "Sobre", href: "/#sobre" },
+  { label: "Professores", href: "/#sobre" },
   { label: "Blog", href: "/blog" },
   { label: "Equipamentos", href: "/equipamentos" },
 ];

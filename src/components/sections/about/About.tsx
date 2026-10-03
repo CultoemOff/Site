@@ -1,54 +1,21 @@
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { INSTRUCTORS, NEXT_INSTRUCTOR_SOON } from "@/config/instructors";
-import type { SiteSettingsData } from "@/config/site";
 import "./about.css";
 
-export default function About({ audience }: { audience: SiteSettingsData["audience"] }) {
+/** CH 06: professores da escola (cards grandes). */
+export default function About() {
   return (
     <section id="sobre" className="section section--abyss about" aria-labelledby="sobre-title">
       <div className="section__inner">
-        <div className="about__layout">
-          <div className="about__text">
-            <SectionHeader channel="CH 06 · Quem está por trás" id="sobre-title" title="Quem está por trás do Culto em Off">
-              <p className="about__headline">Tecnologia, experiência prática e igreja.</p>
-            </SectionHeader>
+        <SectionHeader channel="CH 06 · Quem ensina" id="sobre-title" title="Professores">
+          <p>
+            O Culto em Off foi idealizado por Jonas Silva, que também dá aulas. Cada formação é conduzida por um
+            especialista da área.
+          </p>
+        </SectionHeader>
 
-            <blockquote className="about__quote" data-reveal style={{ "--i": 3 } as React.CSSProperties}>
-              <p>
-                O Culto em Off nasceu da união de duas experiências: tecnologia profissional aplicada à realidade de quem
-                serve na igreja.
-              </p>
-            </blockquote>
-          </div>
-
-          {audience.stats.length > 0 && (
-            <div className="about__reach" data-reveal style={{ "--i": 4 } as React.CSSProperties}>
-              <p className="about__reach-title">
-                <span aria-hidden="true" />
-                Alcance nas redes
-              </p>
-              <dl className="about__reach-list">
-                {audience.stats.map((s) => (
-                  <div key={s.label}>
-                    <dt>{s.label}</dt>
-                    <dd>{s.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              {audience.note && <p className="about__reach-note">{audience.note}</p>}
-            </div>
-          )}
-        </div>
-
-        <div className="about__team" aria-labelledby="professores-title">
-          <div className="about__team-head" data-reveal>
-            <h3 id="professores-title">Professores</h3>
-            <p>
-              O Culto em Off foi idealizado por Jonas Silva, que também dá aulas. Cada formação é conduzida por um
-              especialista da área.
-            </p>
-          </div>
+        <div className="about__team">
           <ul className="about__team-list">
             {INSTRUCTORS.map((t, i) => (
               <li key={t.id} className="teacher" data-reveal style={{ "--i": i % 2 } as React.CSSProperties}>

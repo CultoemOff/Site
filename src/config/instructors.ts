@@ -29,10 +29,10 @@ const LIST = [
     name: "Jonas Silva",
     role: "Idealizador e professor",
     area: "Redes, automação e Companion",
-    bio: "Especialista em tecnologia, com mais de 12 anos em TI e 15 anos servindo em equipes técnicas de igreja.",
+    bio: "Dono do canal Culto em Off. Especialista em tecnologia, com mais de 12 anos em TI e 15 anos servindo em equipes técnicas de igreja.",
     photo: "/images/jonas-silva.jpg",
     details:
-      "Especialista em tecnologia. Profissionalmente, atua com infraestrutura, cloud, cibersegurança e automação. Na igreja, vive na prática os desafios das equipes técnicas e dos voluntários.",
+      "Dono do canal Culto em Off e especialista em tecnologia. Profissionalmente, atua com infraestrutura, cloud, cibersegurança e automação. Na igreja, vive na prática os desafios das equipes técnicas e dos voluntários.",
     stats: [
       { value: "12+", label: "anos de experiência profissional em TI" },
       { value: "15+", label: "anos servindo em igrejas" },

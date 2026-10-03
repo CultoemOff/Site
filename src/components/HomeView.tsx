@@ -54,7 +54,7 @@ export default function HomeView({ courses, settings, equipment, youtube, latest
         <Courses courses={courses} />
         <SoftwareSection />
         <Partners settings={settings} />
-        <About audience={settings.audience} />
+        <About />
         {youtube}
         {latestPosts}
         <Equipment items={equipment} />
