@@ -22,7 +22,7 @@ const LIST = [
     role: "Idealizador e professor",
     area: "Redes, automação e Companion",
     bio: "Especialista em tecnologia, com mais de 12 anos em TI e 15 anos servindo em equipes técnicas de igreja.",
-    photo: "/images/jonas.silva.jpeg",
+    photo: "/images/jonas-silva.jpg",
   },
   {
     id: "chico-ferreira",

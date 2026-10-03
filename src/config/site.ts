@@ -21,7 +21,7 @@ export const ICON_SRC = "/images/icon-96.png";
 export const APPLE_ICON_SRC = "/images/apple-icon-180.png";
 
 /** Foto real do Jonas Silva (sem edição). */
-export const ABOUT_PHOTO_SRC = "/images/jonas.silva.jpeg";
+export const ABOUT_PHOTO_SRC = "/images/jonas-silva-sobre.jpg";
 
 // Redes sociais (valores padrão; podem ser alterados no admin)
 export const SOCIAL_DEFAULTS = {
