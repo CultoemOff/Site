@@ -103,7 +103,7 @@ export const COURSES: Course[] = [
       "Projeto prático: OBS, NDI, PTZ, rede e Companion funcionando juntos",
     ],
     appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
-    rev: 5,
+    rev: 6,
     diagram: "network",
     // Os valores precisam ser iguais aos do checkout da Hotmart.
     // Parcela calculada com a mesma taxa do print do Jonas (R$ 69,00 → 8x de R$ 10,03); confirmar na Hotmart.
@@ -118,7 +118,8 @@ export const COURSES: Course[] = [
     format: { mode: "Online", hours: 8, access: "Acesso vitalício" },
     status: "inscricoes-abertas",
     featured: true,
-    href: "",
+    // página de pagamento da Hotmart (todos os botões de compra usam este link)
+    href: "https://pay.hotmart.com/W107866343I?checkoutMode=10",
   },
   {
     id: "audio-mesa-analogica",

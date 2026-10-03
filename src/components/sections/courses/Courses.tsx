@@ -143,14 +143,14 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
 
         {(course.href || hasSalesPage(course.id)) && (
           <div className="course__cta">
-            {hasSalesPage(course.id) && (
-              <ArrowButton href={`/formacoes/${course.id}`} variant={course.href ? "ghost" : "primary"}>
-                {promo && !course.href ? "Ver a oferta de lançamento" : "Ver detalhes da formação"}
-              </ArrowButton>
-            )}
             {course.href && (
               <ArrowButton href={course.href} external track={{ event: "select_course", label: course.title }}>
                 {promo ? "Comprar com desconto" : "Quero participar"}
+              </ArrowButton>
+            )}
+            {hasSalesPage(course.id) && (
+              <ArrowButton href={`/formacoes/${course.id}`} variant={course.href ? "ghost" : "primary"}>
+                {promo && !course.href ? "Ver a oferta de lançamento" : "Ver detalhes da formação"}
               </ArrowButton>
             )}
           </div>
