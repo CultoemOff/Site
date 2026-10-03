@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { track } from "@/components/analytics/track";
 import Countdown from "./Countdown";
+import "@/components/ui/button.css";
+import "./exit-popup.css";
 
 type Props = {
   /** identificador (uma vez por visita) */

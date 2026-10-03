@@ -1,8 +1,9 @@
 import Navbar from "@/components/layout/Navbar";
+import ExitPopup from "@/components/sales/ExitPopup";
 import PromoBar from "@/components/sales/PromoBar";
-import type { Course } from "@/config/courses";
+import { formatPrice, type Course } from "@/config/courses";
 import { resolvePrice } from "@/lib/pricing";
-import { SITE_NAME } from "@/config/site";
+import { GUARANTEE_DAYS, SITE_NAME } from "@/config/site";
 import type { Offer } from "@/config/offers";
 import OffersGrid from "./OffersGrid";
 import "./offers.css";
@@ -50,6 +51,22 @@ export default function OffersView({ offers, homeUrl, courses = [] }: { offers: 
         <a href={homeUrl}>{SITE_NAME}</a>
         <span>Formação técnica para voluntários de igreja</span>
       </footer>
+
+      {/* aviso ao sair: apresenta o curso em promoção a quem veio só pelas ofertas (uma vez por visita) */}
+      {promoCourse && (
+        <ExitPopup
+          id={`ofertas-${promoCourse.c.id}`}
+          productName={`${promoCourse.c.title} (página de ofertas)`}
+          badge={promoCourse.p.promo!.label}
+          title={`Antes de sair: ${promoCourse.p.off}% de desconto no Curso de ${promoCourse.c.title}`}
+          text={`${promoCourse.c.tagline} São ${promoCourse.c.topics.length} módulos em vídeo, com ${promoCourse.c.format.access.toLowerCase()} e ${GUARANTEE_DAYS} dias de garantia.`}
+          priceFrom={promoCourse.p.priceFrom ? formatPrice(promoCourse.p.priceFrom) : undefined}
+          price={formatPrice(promoCourse.p.price)}
+          endsAt={promoCourse.p.promo!.endsAt}
+          ctaHref={`${prefix}/formacoes/${promoCourse.c.id}`}
+          ctaLabel="Conhecer o curso"
+        />
+      )}
     </div>
   );
 }
