@@ -5,22 +5,23 @@ import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import About from "@/components/sections/about/About";
 import Courses from "@/components/sections/courses/Courses";
-import Equipment from "@/components/sections/equipment/Equipment";
 import Faq from "@/components/sections/faq/Faq";
 import Manifesto from "@/components/sections/manifesto/Manifesto";
+import OffersHome from "@/components/sections/offers-home/OffersHome";
 import Partners from "@/components/sections/partners/Partners";
 import Problems from "@/components/sections/problems/Problems";
 import SoftwareSection from "@/components/sections/software/SoftwareSection";
 import PromoBar from "@/components/sales/PromoBar";
 import type { Course } from "@/config/courses";
-import type { Equipment as EquipmentItem } from "@/config/equipment";
+import type { Offer } from "@/config/offers";
 import type { SiteSettingsData } from "@/config/site";
 import { resolvePrice } from "@/lib/pricing";
 
 type Props = {
   courses: Course[];
   settings: SiteSettingsData;
-  equipment: EquipmentItem[];
+  /** ofertas cadastradas no painel (a seção de equipamentos mostra as marcadas para a home) */
+  offers: Offer[];
   /** seção do YouTube (componente assíncrono no servidor) */
   youtube: ReactNode;
   /** últimos posts do blog (opcional) */
@@ -28,7 +29,7 @@ type Props = {
 };
 
 /** Composição da homepage (sem busca de dados). */
-export default function HomeView({ courses, settings, equipment, youtube, latestPosts }: Props) {
+export default function HomeView({ courses, settings, offers, youtube, latestPosts }: Props) {
   // Formação em promoção: a faixa amarela aparece também na home e leva à página da oferta.
   const promoCourse = courses.map((c) => ({ c, p: resolvePrice(c) })).find(({ p }) => p.promo);
 
@@ -57,7 +58,7 @@ export default function HomeView({ courses, settings, equipment, youtube, latest
         <Partners settings={settings} />
         {youtube}
         {latestPosts}
-        <Equipment items={equipment} />
+        <OffersHome offers={offers} />
         <Faq items={settings.faq} />
       </main>
       <Footer settings={settings} />

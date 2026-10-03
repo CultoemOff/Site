@@ -17,7 +17,7 @@ export const Offers: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     group: "Conteúdo",
-    defaultColumns: ["title", "price", "tags", "active", "order"],
+    defaultColumns: ["title", "price", "tags", "home", "active", "order"],
     description: "Preencha o link, o nome, o link da imagem, as categorias e o preço. A página mostra até 100 ofertas.",
   },
   defaultSort: "order",
@@ -107,6 +107,16 @@ export const Offers: CollectionConfig = {
       admin: { position: "sidebar" },
     },
     {
+      name: "home",
+      type: "checkbox",
+      label: "Mostrar na home (carrossel)",
+      defaultValue: false,
+      admin: {
+        position: "sidebar",
+        description: "A home passa até 10 produtos marcados, na ordem abaixo. Se nenhum estiver marcado, passam os 10 primeiros.",
+      },
+    },
+    {
       name: "order",
       type: "number",
       label: "Ordem",
@@ -157,13 +167,13 @@ export const Offers: CollectionConfig = {
     ],
     afterChange: [
       ({ doc }) => {
-        revalidate("/ofertas");
+        revalidate("/ofertas", "/");
         return doc;
       },
     ],
     afterDelete: [
       ({ doc }) => {
-        revalidate("/ofertas");
+        revalidate("/ofertas", "/");
         return doc;
       },
     ],

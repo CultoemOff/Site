@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload";
 import { revalidate, slugify } from "../cms/hooks";
 
-/** Equipamentos recomendados (CH 09 da home e página /equipamentos). */
+/** Equipamentos recomendados (página /equipamentos). A seção da home usa a coleção Ofertas. */
 export const Equipment: CollectionConfig = {
   slug: "equipment",
   labels: { singular: "Equipamento", plural: "Equipamentos" },
@@ -85,9 +85,9 @@ export const Equipment: CollectionConfig = {
     {
       name: "featured",
       type: "checkbox",
-      label: "Mostrar na homepage",
+      label: "Destaque (não é mais usado na home)",
       defaultValue: true,
-      admin: { position: "sidebar", description: "A home mostra até 5 equipamentos marcados." },
+      admin: { position: "sidebar", description: "A home agora mostra as Ofertas marcadas com “Mostrar na home”. Esta lista aparece só na página /equipamentos." },
     },
     {
       name: "slug",

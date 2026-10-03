@@ -5,7 +5,7 @@ import HomeView from "../src/components/HomeView";
 import YouTubeView from "../src/components/sections/youtube/YouTubeView";
 import { COURSES } from "../src/config/courses";
 import { DEFAULT_SETTINGS } from "../src/config/site";
-import { EQUIPMENT } from "../src/config/equipment";
+import { SAMPLE_OFFERS } from "./sample-offers";
 import LatestPosts from "../src/components/blog/LatestPosts";
 import { SEED_POSTS } from "../src/content/posts";
 
@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!).render(
   <HomeView
     courses={COURSES}
     settings={DEFAULT_SETTINGS}
-    equipment={EQUIPMENT}
+    offers={SAMPLE_OFFERS}
     youtube={<YouTubeView videos={[]} channelUrl={DEFAULT_SETTINGS.social.youtube} />}
     latestPosts={
       <LatestPosts

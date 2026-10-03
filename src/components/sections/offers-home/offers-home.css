@@ -1,0 +1,120 @@
+/* ==========================================================
+   CH 09 · Equipamentos que recomendamos (carrossel de ofertas na home)
+   ========================================================== */
+
+.offers-home {
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(59, 140, 255, 0.16), transparent 70%),
+    var(--abyss);
+}
+/* grade técnica sutil ao fundo */
+.offers-home__grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(120, 160, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 160, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 80%);
+  pointer-events: none;
+}
+
+/* ---------- carrossel ---------- */
+.oc {
+  position: relative;
+}
+.oc__track {
+  display: grid;
+  grid-auto-flow: column;
+  /* 5 produtos por vez no computador; o tamanho de cada um acompanha a largura da tela */
+  grid-auto-columns: calc((100% - 4 * 16px) / 5);
+  column-gap: 16px;
+  margin: 0;
+  /* folga para a sombra e o destaque do card não serem cortados */
+  padding: 8px 2px 22px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.oc__track::-webkit-scrollbar {
+  display: none;
+}
+.oc__track > .offer {
+  scroll-snap-align: start;
+}
+.oc__nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+.oc__btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(160, 190, 255, 0.4);
+  background: rgba(12, 24, 60, 0.7);
+  color: #eaf0ff;
+  cursor: pointer;
+  transition:
+    border-color 0.2s var(--ease-out),
+    background 0.2s var(--ease-out);
+}
+.oc__btn svg {
+  width: 20px;
+  height: 20px;
+}
+.oc__btn:hover:not(:disabled) {
+  border-color: #7fb0ff;
+  background: rgba(29, 78, 216, 0.5);
+}
+.oc__btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.oc__btn:focus-visible {
+  outline: 2px solid #5bd0ff;
+  outline-offset: 2px;
+}
+
+.offers-home__footer {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+  margin-top: clamp(20px, 3vw, 32px);
+}
+.offers-home__disclaimer {
+  max-width: 720px;
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: rgba(169, 182, 214, 0.85);
+}
+
+@media (max-width: 1100px) {
+  .oc__track {
+    grid-auto-columns: calc((100% - 3 * 16px) / 4);
+  }
+}
+@media (max-width: 860px) {
+  .oc__track {
+    grid-auto-columns: calc((100% - 2 * 14px) / 3);
+    column-gap: 14px;
+  }
+}
+@media (max-width: 620px) {
+  .oc__track {
+    /* no celular aparece um pedaço do próximo card, para mostrar que dá para arrastar */
+    grid-auto-columns: 58%;
+    column-gap: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .oc__btn {
+    transition: none;
+  }
+}
