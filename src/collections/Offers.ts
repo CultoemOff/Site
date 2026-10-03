@@ -58,6 +58,7 @@ export const Offers: CollectionConfig = {
         { label: "Vídeo", value: "video" },
         { label: "Iluminação", value: "iluminacao" },
         { label: "Automação", value: "automacao" },
+        { label: "Cabeamento", value: "cabeamento" },
         { label: "Acessórios", value: "acessorios" },
         { label: "Hardware", value: "hardware" },
       ],

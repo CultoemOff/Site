@@ -38,7 +38,7 @@ export default function HomeView({ courses, settings, offers, youtube, latestPos
       {promoCourse && (
         <PromoBar
           label={promoCourse.p.promo!.label}
-          product={promoCourse.c.title}
+          product={`Curso de ${promoCourse.c.title}`}
           off={promoCourse.p.off}
           endsAt={promoCourse.p.promo!.endsAt}
           href={`/formacoes/${promoCourse.c.id}`}

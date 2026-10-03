@@ -79,6 +79,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
       {promoOn && (
         <PromoBar
           label={page.promo!.label}
+          product={`Curso de ${course.title}`}
           off={off}
           endsAt={endsAt}
           href={ctaHref}

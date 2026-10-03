@@ -33,8 +33,12 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+/* nome do curso: aparece sempre, inclusive no celular */
 .promo-bar__product {
-  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 700;
 }
 .promo-bar__off {
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
@@ -80,11 +84,6 @@ body:has(.promo-bar) .nav {
   top: var(--promo-h);
 }
 
-@media (max-width: 900px) {
-  .promo-bar__product {
-    display: none;
-  }
-}
 @media (max-width: 760px) {
   :root {
     --promo-h: 36px;
@@ -113,8 +112,31 @@ body:has(.promo-bar) .nav {
 }
 @media (max-width: 400px) {
   .promo-bar {
-    gap: 8px;
-    font-size: 0.74rem;
+    gap: 6px;
+    padding: 0 8px;
+    font-size: 0.7rem;
+  }
+  .promo-bar__off {
+    font-size: 0.84rem;
+  }
+  .promo-bar__btn {
+    height: 24px;
+    padding: 0 9px;
+    font-size: 0.7rem;
+  }
+}
+@media (max-width: 340px) {
+  .promo-bar {
+    gap: 5px;
+    padding: 0 6px;
+    font-size: 0.62rem;
+  }
+  .promo-bar__off {
+    font-size: 0.76rem;
+  }
+  .promo-bar__btn {
+    padding: 0 7px;
+    font-size: 0.64rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
