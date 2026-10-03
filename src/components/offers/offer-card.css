@@ -42,7 +42,7 @@
   justify-content: center;
   gap: 6px;
   min-height: 40px;
-  margin: -6px 14px 14px;
+  margin: 0 14px 8px;
   border-radius: 10px;
   border: 1px solid #c9d6f2;
   font-size: 0.86rem;
@@ -97,7 +97,7 @@
   flex-direction: column;
   flex: 1;
   gap: 6px;
-  padding: 14px 14px 16px;
+  padding: 14px 14px 10px;
 }
 .offer__tags {
   display: flex;
@@ -160,23 +160,25 @@
   color: #56617a;
 }
 .offer__cta {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   min-height: 42px;
-  margin-top: 8px;
+  margin: 0 14px 14px;
   border-radius: 10px;
   background: #1d4ed8;
   font-size: 0.9rem;
   font-weight: 700;
   color: #fff;
+  text-decoration: none;
 }
 .offer__cta svg {
   width: 14px;
   height: 14px;
 }
-.offer__link:hover .offer__cta {
+.offer__cta:hover,
+.offer__link:hover ~ .offer__cta {
   background: #1740b5;
 }
 
@@ -187,7 +189,7 @@
     height: calc(100% - 20px);
   }
   .offer__body {
-    padding: 10px 10px 12px;
+    padding: 10px 10px 8px;
   }
   .offer__title {
     font-size: 0.86rem;
@@ -200,10 +202,11 @@
   }
   .offer__cta {
     min-height: 40px;
+    margin: 0 10px 10px;
     font-size: 0.82rem;
   }
   .offer__review {
-    margin: -4px 10px 10px;
+    margin: 0 10px 6px;
     font-size: 0.8rem;
   }
 }

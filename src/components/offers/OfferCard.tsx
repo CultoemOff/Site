@@ -57,6 +57,7 @@ export default function OfferCard({ offer }: { offer: Offer }) {
             ))}
           </span>
           <span className="offer__title">{offer.title}</span>
+          <span className="sr-only"> (ver oferta, abre em nova aba)</span>
           {offer.note && <span className="offer__note">{offer.note}</span>}
           <span className="offer__price">
             {offer.price ? (
@@ -70,13 +71,6 @@ export default function OfferCard({ offer }: { offer: Offer }) {
             )}
           </span>
           <span className="offer__store">no {store}</span>
-          <span className="offer__cta">
-            Ver oferta
-            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span className="sr-only"> (abre em nova aba)</span>
-          </span>
         </span>
       </a>
       {offer.reviewUrl && (
@@ -95,6 +89,22 @@ export default function OfferCard({ offer }: { offer: Offer }) {
           <span className="sr-only"> de {offer.title} (abre em nova aba)</span>
         </a>
       )}
+      {/* mesmo destino do link acima; fica fora da navegação por teclado para não repetir o produto */}
+      <a
+        className="offer__cta"
+        href={offer.href}
+        target="_blank"
+        rel="sponsored noopener noreferrer"
+        tabIndex={-1}
+        aria-hidden="true"
+        data-track="click_offer"
+        data-track-label={offer.title}
+      >
+        Ver oferta
+        <svg viewBox="0 0 16 16" focusable="false">
+          <path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </a>
       </div>
     </li>
   );
