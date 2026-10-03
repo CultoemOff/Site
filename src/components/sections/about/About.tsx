@@ -9,10 +9,7 @@ export default function About() {
     <section id="sobre" className="section section--abyss about" aria-labelledby="sobre-title">
       <div className="section__inner">
         <SectionHeader channel="CH 06 · Quem ensina" id="sobre-title" title="Professores">
-          <p>
-            O Culto em Off foi idealizado por Jonas Silva, que também dá aulas. Cada formação é conduzida por um
-            especialista da área.
-          </p>
+          <p>Cada formação é conduzida por um especialista da área.</p>
         </SectionHeader>
 
         <div className="about__team">
