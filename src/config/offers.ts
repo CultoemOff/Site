@@ -4,7 +4,7 @@
  * Tudo se cadastra e edita no admin → Loja → Ofertas.
  */
 
-export type OfferTag = "audio" | "video" | "iluminacao" | "automacao" | "cabeamento" | "acessorios" | "hardware";
+export type OfferTag = "audio" | "video" | "iluminacao" | "automacao" | "cabeamento" | "acessorios" | "hardware" | "ferramentas";
 
 export const OFFER_TAGS: Record<OfferTag, string> = {
   audio: "Áudio",
@@ -14,9 +14,10 @@ export const OFFER_TAGS: Record<OfferTag, string> = {
   cabeamento: "Cabeamento",
   acessorios: "Acessórios",
   hardware: "Hardware",
+  ferramentas: "Ferramentas",
 };
 
-export const OFFER_TAG_ORDER: OfferTag[] = ["audio", "video", "iluminacao", "automacao", "cabeamento", "acessorios", "hardware"];
+export const OFFER_TAG_ORDER: OfferTag[] = ["audio", "video", "iluminacao", "automacao", "cabeamento", "acessorios", "hardware", "ferramentas"];
 
 /** Limite de produtos na página. */
 export const OFFERS_LIMIT = 100;

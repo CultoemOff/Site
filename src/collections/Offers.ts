@@ -74,6 +74,7 @@ export const Offers: CollectionConfig = {
         { label: "Cabeamento", value: "cabeamento" },
         { label: "Acessórios", value: "acessorios" },
         { label: "Hardware", value: "hardware" },
+        { label: "Ferramentas", value: "ferramentas" },
       ],
       admin: {
         description: "São os filtros que o visitante escolhe no topo da página. Pode marcar mais de uma.",
