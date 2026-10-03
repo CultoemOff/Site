@@ -102,7 +102,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
               ))}
             </ul>
           )}
-          {promo && (
+          {promo?.endsAt && (
             <p className="course__deadline">
               Promoção termina em <Countdown endsAt={promo.endsAt} variant="inline" />
             </p>

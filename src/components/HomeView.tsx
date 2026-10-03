@@ -29,7 +29,7 @@ type Props = {
 
 /** Composição da homepage (sem busca de dados). */
 export default function HomeView({ courses, settings, equipment, youtube, latestPosts }: Props) {
-  // Formação em promoção com prazo: a faixa amarela aparece também na home e leva à página da oferta.
+  // Formação em promoção: a faixa amarela aparece também na home e leva à página da oferta.
   const promoCourse = courses.map((c) => ({ c, p: resolvePrice(c) })).find(({ p }) => p.promo);
 
   return (

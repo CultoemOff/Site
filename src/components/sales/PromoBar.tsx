@@ -5,7 +5,8 @@ import "./promo-bar.css";
 type Props = {
   label: string;
   off: number;
-  endsAt: string;
+  /** prazo da promoção (opcional): com data, mostra a contagem regressiva */
+  endsAt?: string;
   /** texto curto antes do desconto, ex.: nome da formação (opcional) */
   product?: string;
   href: string;
@@ -16,7 +17,7 @@ type Props = {
   trackLabel: string;
 };
 
-/** Faixa amarela da promoção: fixa no topo, acima do menu, com o desconto, o prazo e o botão. */
+/** Faixa amarela da promoção: fixa no topo, acima do menu, com o desconto, o prazo (se houver) e o botão. */
 export default function PromoBar({ label, off, endsAt, product, href, cta, ctaShort, external, trackLabel }: Props) {
   const inner = (
     <>
@@ -31,10 +32,12 @@ export default function PromoBar({ label, off, endsAt, product, href, cta, ctaSh
       <span className="promo-bar__label">{label}</span>
       {product && <span className="promo-bar__product">{product}</span>}
       <strong className="promo-bar__off">{off}% OFF</strong>
-      <span className="promo-bar__timer">
-        <span className="promo-bar__ends">termina em </span>
-        <Countdown endsAt={endsAt} variant="inline" />
-      </span>
+      {endsAt && (
+        <span className="promo-bar__timer">
+          <span className="promo-bar__ends">termina em </span>
+          <Countdown endsAt={endsAt} variant="inline" />
+        </span>
+      )}
       {!external && href.startsWith("/") ? (
         <Link className="promo-bar__btn" href={href} {...track}>
           {inner}

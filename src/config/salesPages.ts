@@ -27,12 +27,16 @@ export type SalesPage = {
   outcomes: string[];
   /** título do chamado final */
   finalTitle: string;
-  /** frase curta acima do contador final */
+  /** frase curta acima do botão final */
   finalNote?: string;
   /** versículo em destaque (use poucos: a página não é um devocional) */
   verse?: { text: string; ref: string; note: string };
-  /** promoção com prazo real (o preço "de/por" vem da formação: priceFrom e price) */
-  promo?: { label: string; endsAt: string };
+  /**
+   * Promoção (o preço "de/por" vem da formação: priceFrom e price).
+   * `endsAt` é opcional: com data, o site mostra a contagem regressiva e volta ao preço cheio no fim do prazo;
+   * sem data, mostra só o selo e o desconto, sem contagem.
+   */
+  promo?: { label: string; endsAt?: string };
   /** detalhe de cada módulo (mesma ordem de course.topics); tag opcional, ex.: "Aula prática" */
   modules: { title: string; items: string[]; tag?: string }[];
   /** módulo final em destaque (aula prática) */
@@ -60,8 +64,9 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     subheadline:
       "Entenda o que acontece entre a câmera, a mesa, o switch e o computador da live, e resolva os problemas de rede do culto com segurança, sem precisar virar técnico de TI.",
     videoUrl: "",
-    // Promoção de lançamento + Black November. Quando o prazo passa, a página volta a mostrar o preço cheio.
-    promo: { label: "Lançamento + Black November", endsAt: "2026-11-30T23:59:59-03:00" },
+    // Promoção de lançamento + Black November, sem contagem regressiva.
+    // Para voltar a ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
+    promo: { label: "Lançamento + Black November" },
     pillars: [
       {
         title: "Feita para a técnica da igreja",

@@ -80,7 +80,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
         <PromoBar
           label={page.promo!.label}
           off={off}
-          endsAt={endsAt!}
+          endsAt={endsAt}
           href={ctaHref}
           cta="Comprar agora"
           ctaShort="Comprar"
@@ -578,13 +578,13 @@ export default function SalesPageView({ course, page, audience }: Props) {
 
           <div className={`sp-buy${promoOn ? " sp-buy--promo" : ""}`}>
             {promoOn && <p className="sp-buy__label">{page.promo!.label}</p>}
-            <p className="sp-buy__title">{promoOn ? "Preço promocional por tempo limitado" : "Investimento"}</p>
+            <p className="sp-buy__title">{promoOn ? (endsAt ? "Preço promocional por tempo limitado" : "Preço promocional de lançamento") : "Investimento"}</p>
             {priceTag("sp-price--big")}
             <p className="sp-buy__note">{installments ? "acesso imediato após a confirmação do pagamento" : "pagamento único · acesso imediato"}</p>
-            {promoOn && (
+            {endsAt && (
               <div className="sp-buy__timer">
                 <span>A promoção termina em</span>
-                <Countdown endsAt={endsAt!} />
+                <Countdown endsAt={endsAt} />
                 <small>
                   Quando o contador zerar, o preço volta para <strong>{formatPrice(priceFrom!)}</strong>.
                 </small>
@@ -635,10 +635,10 @@ export default function SalesPageView({ course, page, audience }: Props) {
             {GUARANTEE_DAYS} dias de garantia.
           </p>
           {page.finalNote && <p className="sp-final__note">{page.finalNote}</p>}
-          {promoOn && (
+          {endsAt && (
             <div className="sp-final__timer">
               <span>Preço de lançamento termina em</span>
-              <Countdown endsAt={endsAt!} />
+              <Countdown endsAt={endsAt} />
             </div>
           )}
           <div className="sp-final__cta">{cta()}</div>
@@ -651,7 +651,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
           <strong>
             {priceFrom && <s>{formatPrice(priceFrom)}</s>} {formatPrice(price)}
           </strong>
-          <span>{promoOn ? <>acaba em <Countdown endsAt={endsAt!} variant="inline" /></> : `${GUARANTEE_DAYS} dias de garantia`}</span>
+          <span>{endsAt ? <>acaba em <Countdown endsAt={endsAt} variant="inline" /></> : `${GUARANTEE_DAYS} dias de garantia`}</span>
         </p>
         {cta("primary", "Comprar")}
       </div>
@@ -662,8 +662,12 @@ export default function SalesPageView({ course, page, audience }: Props) {
           id={course.id}
           productName={course.title}
           badge={page.promo!.label}
-          title="Espere! O preço de lançamento não vai durar."
-          text={`Você está a um passo de entender a rede da sua igreja. Garanta agora ${off}% de desconto antes que o prazo acabe.`}
+          title={endsAt ? "Espere! O preço de lançamento não vai durar." : `Espere! Você ainda tem ${off}% de desconto.`}
+          text={
+            endsAt
+              ? `Você está a um passo de entender a rede da sua igreja. Garanta agora ${off}% de desconto antes que o prazo acabe.`
+              : "Você está a um passo de entender a rede da sua igreja. Garanta agora o preço de lançamento, com 7 dias de garantia."
+          }
           priceFrom={formatPrice(priceFrom!)}
           price={formatPrice(price)}
           endsAt={endsAt}

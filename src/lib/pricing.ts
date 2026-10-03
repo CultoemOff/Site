@@ -8,8 +8,8 @@ export type ResolvedPrice = {
   priceFrom?: number;
   /** desconto em % (0 quando não há) */
   off: number;
-  /** promoção com prazo, enquanto estiver valendo */
-  promo?: { label: string; endsAt: string };
+  /** promoção valendo (com ou sem prazo) */
+  promo?: { label: string; endsAt?: string };
   /** parcelamento do preço atual (some quando a promoção acaba, pois as parcelas são do preço promocional) */
   installments?: { count: number; value: number };
 };
@@ -29,7 +29,7 @@ export function resolvePrice(
     course.installments && course.installments.count > 1 && course.installments.value > 0 ? course.installments : undefined;
   if (!full) return { price: course.price, off: 0, installments };
   const promo = SALES_PAGES[course.id]?.promo;
-  if (promo && now >= Date.parse(promo.endsAt)) return { price: full, off: 0 };
+  if (promo?.endsAt && now >= Date.parse(promo.endsAt)) return { price: full, off: 0 };
   return {
     price: course.price,
     priceFrom: full,

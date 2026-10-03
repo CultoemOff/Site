@@ -60,7 +60,7 @@ export default async function CourseSalesPage({ params }: Props) {
             price: resolvePrice(course).price.toFixed(2),
             priceCurrency: "BRL",
             category: "Paid",
-            ...(page.promo ? { priceValidUntil: page.promo.endsAt.slice(0, 10) } : {}),
+            ...(page.promo?.endsAt ? { priceValidUntil: page.promo.endsAt.slice(0, 10) } : {}),
             ...(course.href ? { url: course.href, availability: "https://schema.org/InStock" } : {}),
           },
           hasCourseInstance: { "@type": "CourseInstance", courseMode: "online" },

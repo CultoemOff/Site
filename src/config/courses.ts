@@ -56,7 +56,7 @@ export type Course = {
   status?: CourseStatus;
   /** preço em reais (o que a pessoa paga hoje) */
   price: number;
-  /** preço cheio, exibido riscado quando há promoção ("de R$ 138,80 por R$ 69,00") */
+  /** preço cheio, exibido riscado quando há promoção ("de R$ 138,80 por R$ 59,00") */
   priceFrom?: number;
   /** parcelamento no cartão, como configurado no checkout (ex.: 8x de R$ 10,03) */
   installments?: { count: number; value: number };
@@ -103,12 +103,13 @@ export const COURSES: Course[] = [
       "Projeto prático: OBS, NDI, PTZ, rede e Companion funcionando juntos",
     ],
     appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
-    rev: 4,
+    rev: 5,
     diagram: "network",
-    // valores iguais aos do checkout da Hotmart (oferta Black November)
-    price: 69,
+    // Os valores precisam ser iguais aos do checkout da Hotmart.
+    // Parcela calculada com a mesma taxa do print do Jonas (R$ 69,00 → 8x de R$ 10,03); confirmar na Hotmart.
+    price: 59,
     priceFrom: 138.8,
-    installments: { count: 8, value: 10.03 },
+    installments: { count: 8, value: 8.58 },
     instructor: "jonas-silva",
     includes: [
       "Apostila de comandos e dicas rápidas para imprimir e consultar depois",
