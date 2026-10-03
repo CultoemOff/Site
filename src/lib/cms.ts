@@ -152,6 +152,7 @@ function mapOffer(d: Doc): Offer {
     tags,
     note: str(d.note) || undefined,
     priceCheckedAt: str(d.priceCheckedAt) || undefined,
+    reviewUrl: /^https?:\/\//i.test(str(d.reviewUrl).trim()) ? str(d.reviewUrl).trim() : undefined,
     home: d.home === true,
   };
 }

@@ -20,6 +20,7 @@ export default function OfferCard({ offer }: { offer: Offer }) {
   const date = checkedOn(offer.priceCheckedAt);
   return (
     <li className="offer">
+      <div className="offer__card">
       <a
         className="offer__link"
         href={offer.href}
@@ -78,6 +79,23 @@ export default function OfferCard({ offer }: { offer: Offer }) {
           </span>
         </span>
       </a>
+      {offer.reviewUrl && (
+        <a
+          className="offer__review"
+          href={offer.reviewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-track="click_review"
+          data-track-label={offer.title}
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M5 3.5v9l7.5-4.5z" fill="currentColor" />
+          </svg>
+          Assistir review
+          <span className="sr-only"> de {offer.title} (abre em nova aba)</span>
+        </a>
+      )}
+      </div>
     </li>
   );
 }

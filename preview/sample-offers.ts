@@ -15,4 +15,5 @@ export const SAMPLE_OFFERS: Offer[] = Array.from({ length: 31 }, (_, i) => ({
   priceFrom: i % 3 === 0 ? (89.9 + i * 37.35) * 1.25 : undefined,
   priceCheckedAt: "2026-10-03T09:00:00-03:00",
   home: i % 2 === 0,
+  reviewUrl: i % 4 === 0 ? "https://www.youtube.com/@cultoemoff" : undefined,
 }));

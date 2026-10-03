@@ -92,6 +92,14 @@ export const Offers: CollectionConfig = {
           "Desligado: vale o preço que você digitou. Ligado: ao salvar, o site tenta ler o preço na página do produto; muitas lojas recusam essa leitura, e aí o preço digitado continua valendo.",
       },
     },
+    {
+      name: "reviewUrl",
+      type: "text",
+      label: "Link de review (opcional)",
+      admin: { description: "Link de um vídeo de review do produto (YouTube, por exemplo). Se preenchido, o card ganha o botão “Assistir review”." },
+      validate: (value: unknown) =>
+        !value || /^https?:\/\/\S+$/i.test(String(value).trim()) ? true : "Cole o link completo, começando com https://",
+    },
     { name: "note", type: "text", label: "Frase curta (opcional)", admin: { description: "Ex.: 16 portas Gigabit com PoE." } },
     {
       name: "store",

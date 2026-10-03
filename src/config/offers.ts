@@ -37,6 +37,8 @@ export type Offer = {
   note?: string;
   /** quando o preço foi conferido pela última vez (ISO) */
   priceCheckedAt?: string;
+  /** link de um vídeo de review do produto (opcional): vira o botão "Assistir review" */
+  reviewUrl?: string;
   /** marcado no painel para aparecer no carrossel da home */
   home?: boolean;
 };

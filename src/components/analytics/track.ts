@@ -8,6 +8,7 @@
  *  - copy_coupon     cupom do SPresenter copiado                    (label = código)
  *  - click_equipment clique em um equipamento recomendado           (label = nome do produto)
  *  - click_offer     clique em um produto da página de ofertas      (label = nome do produto)
+ *  - click_review    clique em "Assistir review" de uma oferta      (label = nome do produto)
  *  - click_social    clique em YouTube / Instagram / TikTok         (label = rede)
  *  - generate_lead   cadastro concluído para liberar um download    (label = software)
  *  - join_waitlist   inscrição na lista de espera de uma formação (label = formação)
