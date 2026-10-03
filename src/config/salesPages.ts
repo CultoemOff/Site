@@ -283,6 +283,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         answer: "Sim. Os fundamentos são os mesmos para uma rede com um roteador e um computador ou para uma estrutura maior.",
       },
       {
+        question: "Posso parcelar?",
+        answer: "Sim. No cartão de crédito dá para parcelar, e as opções aparecem na página de pagamento da Hotmart. Quem preferir pode pagar à vista.",
+      },
+      {
         question: "E se eu não gostar?",
         answer: "Você tem 7 dias de garantia. Se a formação não for para você, basta pedir o reembolso dentro desse prazo e devolvemos 100% do valor.",
       },

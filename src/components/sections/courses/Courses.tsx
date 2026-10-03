@@ -1,7 +1,7 @@
 import ArrowButton from "@/components/ui/ArrowButton";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Image from "next/image";
-import { COURSE_STATUS_LABEL, MORE_COURSES_URL, formatPrice, type Course } from "@/config/courses";
+import { COURSE_STATUS_LABEL, MORE_COURSES_URL, formatInstallments, formatPrice, type Course } from "@/config/courses";
 import { getInstructor, INSTRUCTORS } from "@/config/instructors";
 import { hasSalesPage } from "@/config/salesPages";
 import Countdown from "@/components/sales/Countdown";
@@ -22,7 +22,7 @@ function ShieldIcon() {
 function CourseCard({ course, index }: { course: Course; index: number }) {
   const featured = course.featured;
   const teacher = getInstructor(course.instructor);
-  const { price, priceFrom, off, promo } = resolvePrice(course);
+  const { price, priceFrom, off, promo, installments } = resolvePrice(course);
   return (
     <article
       className={`course${featured ? " course--featured" : ""}`}
@@ -81,6 +81,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
             <span className="sr-only">Preço: </span>
             {formatPrice(price)}
             {priceFrom && <em className="course__price-off">{off}% OFF</em>}
+            {installments && <span className="course__price-parcel">ou {formatInstallments(installments)} no cartão</span>}
           </p>
           <ul className="course__format" aria-label="Formato">
             <li>{course.format.mode}</li>

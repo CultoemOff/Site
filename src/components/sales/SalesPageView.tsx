@@ -2,7 +2,7 @@ import Image from "next/image";
 import YouTubeEmbed from "@/components/blog/YouTubeEmbed";
 import CourseDiagramView from "@/components/sections/courses/CourseDiagrams";
 import ArrowButton from "@/components/ui/ArrowButton";
-import { formatPrice, type Course } from "@/config/courses";
+import { formatInstallments, formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
 import type { SalesPage } from "@/config/salesPages";
 import { GUARANTEE_DAYS, type SiteSettingsData } from "@/config/site";
@@ -38,7 +38,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
   const teacher = getInstructor(course.instructor);
 
   // Promoção: vale enquanto o prazo não passou. Depois disso a página mostra o preço cheio.
-  const { price, priceFrom, off, promo } = resolvePrice(course);
+  const { price, priceFrom, off, promo, installments } = resolvePrice(course);
   const promoOn = Boolean(promo);
   const endsAt = promo?.endsAt;
 
@@ -65,6 +65,11 @@ export default function SalesPageView({ course, page, audience }: Props) {
       )}
       <strong>{formatPrice(price)}</strong>
       {priceFrom && <em className="sp-price__off">{off}% OFF</em>}
+      {installments && (
+        <span className="sp-price__parcel">
+          à vista ou <b>{formatInstallments(installments)}</b> no cartão
+        </span>
+      )}
     </p>
   );
 
@@ -575,7 +580,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
             {promoOn && <p className="sp-buy__label">{page.promo!.label}</p>}
             <p className="sp-buy__title">{promoOn ? "Preço promocional por tempo limitado" : "Investimento"}</p>
             {priceTag("sp-price--big")}
-            <p className="sp-buy__note">pagamento único · acesso imediato</p>
+            <p className="sp-buy__note">{installments ? "acesso imediato após a confirmação do pagamento" : "pagamento único · acesso imediato"}</p>
             {promoOn && (
               <div className="sp-buy__timer">
                 <span>A promoção termina em</span>

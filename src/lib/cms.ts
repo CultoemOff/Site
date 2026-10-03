@@ -70,6 +70,10 @@ function mapCourse(d: Doc): Course {
     status: STATUSES.includes(status) ? status : undefined,
     price: num(d.price),
     priceFrom: num(d.priceFrom) > num(d.price) ? num(d.priceFrom) : undefined,
+    installments:
+      num(d.installmentCount) > 1 && num(d.installmentValue) > 0
+        ? { count: num(d.installmentCount), value: num(d.installmentValue) }
+        : undefined,
     format: {
       mode: str(format.mode, "Online"),
       hours: num(format.hours, 0),

@@ -63,6 +63,26 @@ export const Courses: CollectionConfig = {
       ],
     },
     {
+      type: "row",
+      fields: [
+        {
+          name: "installmentCount",
+          type: "number",
+          label: "Parcelas (quantidade)",
+          min: 1,
+          max: 12,
+          admin: { step: 1, description: "Opcional. Ex.: 8. Use os mesmos números do checkout da Hotmart." },
+        },
+        {
+          name: "installmentValue",
+          type: "number",
+          label: "Valor de cada parcela (R$)",
+          min: 0,
+          admin: { step: 0.01, description: "Ex.: 10,03. Aparece como “ou 8x de R$ 10,03”." },
+        },
+      ],
+    },
+    {
       name: "format",
       type: "group",
       label: "Formato",

@@ -950,3 +950,14 @@
     opacity: 0.35;
   }
 }
+
+/* parcelamento no card */
+.course__price-parcel {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #cfe0ff;
+}

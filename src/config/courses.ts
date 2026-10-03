@@ -35,6 +35,9 @@ export type CourseFormat = {
 export const formatPrice = (value: number) =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }).replace(/\u00a0/g, " ");
 
+/** Parcelamento: { count: 8, value: 10.03 } → "8x de R$ 10,03" */
+export const formatInstallments = (i: { count: number; value: number }) => `${i.count}x de ${formatPrice(i.value)}`;
+
 export type CourseDiagram = "network" | "analog" | "live" | "companion" | "dmx";
 
 export type Course = {
@@ -53,8 +56,10 @@ export type Course = {
   status?: CourseStatus;
   /** preço em reais (o que a pessoa paga hoje) */
   price: number;
-  /** preço cheio, exibido riscado quando há promoção ("de R$ 89,90 por R$ 58,90") */
+  /** preço cheio, exibido riscado quando há promoção ("de R$ 138,80 por R$ 69,00") */
   priceFrom?: number;
+  /** parcelamento no cartão, como configurado no checkout (ex.: 8x de R$ 10,03) */
+  installments?: { count: number; value: number };
   format: CourseFormat;
   href?: string;
   featured?: boolean;
@@ -98,10 +103,12 @@ export const COURSES: Course[] = [
       "Projeto prático: OBS, NDI, PTZ, rede e Companion funcionando juntos",
     ],
     appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
-    rev: 3,
+    rev: 4,
     diagram: "network",
-    price: 58.9,
-    priceFrom: 89.9,
+    // valores iguais aos do checkout da Hotmart (oferta Black November)
+    price: 69,
+    priceFrom: 138.8,
+    installments: { count: 8, value: 10.03 },
     instructor: "jonas-silva",
     includes: [
       "Apostila de comandos e dicas rápidas para imprimir e consultar depois",
