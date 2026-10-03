@@ -8,6 +8,7 @@ import {
   type EquipmentCategory,
   type EquipmentIcon,
 } from "@/config/equipment";
+import { OFFERS, OFFERS_LIMIT, OFFER_TAGS, type Offer, type OfferTag } from "@/config/offers";
 import { DEFAULT_SETTINGS, type SiteSettingsData } from "@/config/site";
 import { toLexical, type SeedPost } from "@/content/lexical";
 import { SEED_POSTS } from "@/content/posts";
@@ -133,6 +134,44 @@ export const getEquipment = cache(async (): Promise<Equipment[]> => {
   } catch (err) {
     console.error("[cms] Erro ao buscar equipamentos:", err);
     return EQUIPMENT;
+  }
+});
+
+function mapOffer(d: Doc): Offer {
+  const tags = (Array.isArray(d.tags) ? d.tags : []).filter((t): t is OfferTag => typeof t === "string" && t in OFFER_TAGS);
+  const price = num(d.price);
+  const priceFrom = num(d.priceFrom);
+  return {
+    id: str(d.slug) || String(d.id ?? ""),
+    title: str(d.title),
+    href: str(d.href),
+    store: str(d.store) || undefined,
+    imageUrl: /^https?:\/\//.test(str(d.imageUrl)) ? str(d.imageUrl) : undefined,
+    price: price > 0 ? price : undefined,
+    priceFrom: price > 0 && priceFrom > price ? priceFrom : undefined,
+    tags,
+    note: str(d.note) || undefined,
+    priceCheckedAt: str(d.priceCheckedAt) || undefined,
+  };
+}
+
+/** Ofertas da página /ofertas (admin → fallback para src/config/offers.ts). */
+export const getOffers = cache(async (): Promise<Offer[]> => {
+  const payload = await getPayloadClient();
+  if (!payload) return OFFERS;
+  try {
+    const res = await payload.find({
+      collection: "offers",
+      where: { active: { not_equals: false } },
+      sort: "order",
+      limit: OFFERS_LIMIT,
+      depth: 0,
+    });
+    const docs = res.docs as unknown as Doc[];
+    return docs.length ? docs.map((d) => mapOffer(d)).filter((o) => o.href && o.title) : OFFERS;
+  } catch (err) {
+    console.error("[cms] Erro ao buscar ofertas:", err);
+    return OFFERS;
   }
 });
 

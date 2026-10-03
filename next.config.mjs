@@ -10,6 +10,12 @@ const nextConfig = {
       { source: "/tag/:path*", destination: "/blog", permanent: true },
     ];
   },
+  // ofertas.<domínio> abre direto a página de ofertas (o subdomínio aponta para este mesmo projeto na Vercel)
+  async rewrites() {
+    return {
+      beforeFiles: [{ source: "/", has: [{ type: "host", value: "ofertas\\..+" }], destination: "/ofertas" }],
+    };
+  },
   images: {
     // AVIF primeiro (menor), WebP como alternativa
     formats: ["image/avif", "image/webp"],

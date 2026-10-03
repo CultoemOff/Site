@@ -1,0 +1,3 @@
+{
+  "crons": [{ "path": "/ofertas/atualizar-precos", "schedule": "0 9 * * *" }]
+}

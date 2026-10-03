@@ -9,6 +9,7 @@ import { getPayload } from "payload";
 import config from "../payload.config";
 import { COURSES } from "../config/courses";
 import { EQUIPMENT } from "../config/equipment";
+import { OFFERS } from "../config/offers";
 import type { InstructorId } from "../config/instructors";
 import { DEFAULT_SETTINGS } from "../config/site";
 import { toLexical, type SeedPost } from "../content/lexical";
@@ -113,6 +114,29 @@ for (const [i, e] of EQUIPMENT.entries()) {
   equipmentCreated++;
 }
 
+// Ofertas (página /ofertas): cria as que ainda não existem. Ao criar, o site lê foto e preço do link.
+let offersCreated = 0;
+for (const [i, o] of OFFERS.entries()) {
+  const exists = await payload.find({ collection: "offers", where: { slug: { equals: o.id } }, limit: 1, depth: 0 });
+  if (exists.totalDocs > 0) continue;
+  await retry(() => payload.create({
+    collection: "offers",
+    data: {
+      title: o.title,
+      slug: o.id,
+      href: o.href,
+      tags: o.tags,
+      note: o.note ?? "",
+      imageUrl: o.imageUrl ?? "",
+      price: o.price ?? null,
+      autoPrice: true,
+      active: true,
+      order: (i + 1) * 10,
+    },
+  }));
+  offersCreated++;
+}
+
 // Configurações do site: só preenche na primeira vez (não sobrescreve o que foi editado no admin)
 const currentSettings = (await payload.findGlobal({ slug: "site-settings", depth: 0 })) as unknown as { youtube?: string; updatedAt?: string };
 let settingsSeeded = false;
@@ -207,6 +231,6 @@ for (const post of SEED_POSTS) {
 }
 
 payload.logger.info(
-  `Seed concluído: ${created} formação(ões) criada(s) e ${updated} atualizada(s), ${equipmentCreated} equipamento(s) e ${postsCreated} post(s) criados${settingsSeeded ? "; configurações iniciais gravadas" : ""}.`,
+  `Seed concluído: ${created} formação(ões) criada(s) e ${updated} atualizada(s), ${equipmentCreated} equipamento(s), ${offersCreated} oferta(s) e ${postsCreated} post(s) criados${settingsSeeded ? "; configurações iniciais gravadas" : ""}.`,
 );
 process.exit(0);

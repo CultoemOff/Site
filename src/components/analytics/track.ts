@@ -7,6 +7,7 @@
  *  - click_partner   clique no link de um parceiro                  (label = SPresenter / Voluts / Loja da Dorn)
  *  - copy_coupon     cupom do SPresenter copiado                    (label = código)
  *  - click_equipment clique em um equipamento recomendado           (label = nome do produto)
+ *  - click_offer     clique em um produto da página de ofertas      (label = nome do produto)
  *  - click_social    clique em YouTube / Instagram / TikTok         (label = rede)
  *  - generate_lead   cadastro concluído para liberar um download    (label = software)
  *  - join_waitlist   inscrição na lista de espera de uma formação (label = formação)
@@ -26,6 +27,7 @@ declare global {
 const META_EVENTS: Record<string, string> = {
   select_course: "InitiateCheckout",
   click_equipment: "ViewContent",
+  click_offer: "ViewContent",
   generate_lead: "Lead",
   join_waitlist: "Lead",
 };
