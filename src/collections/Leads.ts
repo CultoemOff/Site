@@ -9,7 +9,7 @@ export const Leads: CollectionConfig = {
   labels: { singular: "Cadastro", plural: "Cadastros" },
   admin: {
     useAsTitle: "email",
-    group: "Contatos",
+    group: "Site",
     defaultColumns: ["name", "email", "phoneFull", "source", "createdAt"],
     description: "Pessoas que se cadastraram para baixar softwares ou entrar na lista de espera das formações. Todas aceitaram receber ofertas e novidades.",
   },

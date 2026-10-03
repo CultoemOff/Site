@@ -1,6 +1,8 @@
 /* Arquivo padrão do Payload (admin). Normalmente não precisa ser editado. */
 import config from "@payload-config";
 import "@payloadcms/next/css";
+// cores e componentes visuais do painel (tema do Culto em Off); precisa vir depois do CSS do Payload
+import "./custom.css";
 import type { ServerFunctionClient } from "payload";
 import { handleServerFunctions, RootLayout } from "@payloadcms/next/layouts";
 import React from "react";

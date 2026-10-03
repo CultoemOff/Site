@@ -26,11 +26,17 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
+    // painel sempre no tema escuro, com as cores do site (src/app/(payload)/custom.css)
+    theme: "dark",
     components: {
       graphics: {
         Logo: "/components/admin/Logo",
         Icon: "/components/admin/Icon",
       },
+      // resumo com números e atalhos no topo da tela inicial
+      beforeDashboard: ["/components/admin/DashboardSummary"],
+      // atalhos para abrir o site, no fim do menu lateral
+      afterNavLinks: ["/components/admin/NavSiteLinks"],
     },
     meta: {
       titleSuffix: " — Culto em Off",
@@ -41,7 +47,8 @@ export default buildConfig({
     supportedLanguages: { pt },
     fallbackLanguage: "pt",
   },
-  collections: [Posts, Courses, Equipment, Offers, Leads, Media, Users],
+  // A ordem aqui é a ordem do menu lateral. Grupos: Loja, Conteúdo, Site, Sistema.
+  collections: [Offers, Equipment, Courses, Posts, Media, Leads, Users],
   globals: [SiteSettings, YouTubeCache, SeedState],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [

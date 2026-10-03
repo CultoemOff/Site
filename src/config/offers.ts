@@ -1,7 +1,7 @@
 /**
  * Ofertas (página /ofertas, que também responde em ofertas.<domínio>).
  * Produtos com link de afiliado recomendados pelo Culto em Off.
- * Tudo se cadastra e edita no admin → Conteúdo → Ofertas.
+ * Tudo se cadastra e edita no admin → Loja → Ofertas.
  */
 
 export type OfferTag = "audio" | "video" | "iluminacao" | "automacao" | "cabeamento" | "acessorios" | "hardware";
@@ -48,7 +48,7 @@ export type Offer = {
 export const HOME_OFFERS_LIMIT = 10;
 
 /**
- * Sem produtos iniciais no código: as ofertas vivem só no painel (Conteúdo → Ofertas).
+ * Sem produtos iniciais no código: as ofertas vivem só no painel (Loja → Ofertas).
  * Assim uma nova publicação nunca cria, altera nem apaga produto nenhum.
  */
 export const OFFERS: Offer[] = [];

@@ -3,7 +3,7 @@ import { revalidate, slugify } from "../cms/hooks";
 
 export const Posts: CollectionConfig = {
   slug: "posts",
-  labels: { singular: "Post", plural: "Blog" },
+  labels: { singular: "Post", plural: "Posts do blog" },
   admin: {
     useAsTitle: "title",
     group: "Conteúdo",

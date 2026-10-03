@@ -4,10 +4,10 @@ import { revalidate, slugify } from "../cms/hooks";
 /** Equipamentos recomendados (página /equipamentos). A seção da home usa a coleção Ofertas. */
 export const Equipment: CollectionConfig = {
   slug: "equipment",
-  labels: { singular: "Equipamento", plural: "Equipamentos" },
+  labels: { singular: "Equipamento", plural: "Equipamentos (página antiga)" },
   admin: {
     useAsTitle: "name",
-    group: "Conteúdo",
+    group: "Loja",
     defaultColumns: ["name", "category", "featured", "order"],
   },
   defaultSort: "order",

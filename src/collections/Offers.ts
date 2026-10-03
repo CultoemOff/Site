@@ -16,7 +16,7 @@ export const Offers: CollectionConfig = {
   labels: { singular: "Oferta", plural: "Ofertas" },
   admin: {
     useAsTitle: "title",
-    group: "Conteúdo",
+    group: "Loja",
     defaultColumns: ["title", "price", "tags", "home", "active", "order"],
     description: "Preencha o link, o nome, o link da imagem, as categorias e o preço. A página mostra até 100 ofertas.",
   },
@@ -36,7 +36,14 @@ export const Offers: CollectionConfig = {
       required: true,
       admin: { description: "É para onde o botão “Ver oferta” leva. Cole o link de afiliado completo." },
     },
-    { name: "title", type: "text", label: "Nome do produto", required: true },
+    {
+      name: "title",
+      type: "text",
+      label: "Nome do produto",
+      required: true,
+      // na lista: miniatura da foto + nome + loja
+      admin: { components: { Cell: "/components/admin/OfferTitleCell" } },
+    },
     {
       name: "imageUrl",
       type: "text",
@@ -45,6 +52,12 @@ export const Offers: CollectionConfig = {
         description:
           "Endereço da foto: na página do produto, clique com o botão direito na foto → “Copiar endereço da imagem” e cole aqui. O card ajusta o enquadramento sozinho.",
       },
+    },
+    {
+      // prévia da foto, logo abaixo do campo do link
+      name: "imagePreview",
+      type: "ui",
+      admin: { components: { Field: "/components/admin/OfferImagePreview" } },
     },
     {
       name: "tags",
@@ -62,7 +75,10 @@ export const Offers: CollectionConfig = {
         { label: "Acessórios", value: "acessorios" },
         { label: "Hardware", value: "hardware" },
       ],
-      admin: { description: "São os filtros que o visitante escolhe no topo da página. Pode marcar mais de uma." },
+      admin: {
+        description: "São os filtros que o visitante escolhe no topo da página. Pode marcar mais de uma.",
+        components: { Cell: "/components/admin/OfferTagsCell" },
+      },
     },
     {
       type: "row",
@@ -72,7 +88,11 @@ export const Offers: CollectionConfig = {
           type: "number",
           label: "Preço (R$)",
           min: 0,
-          admin: { step: 0.01, description: "Digite o preço de hoje. Vazio = o card mostra “Ver preço na loja”." },
+          admin: {
+            step: 0.01,
+            description: "Digite o preço de hoje. Vazio = o card mostra “Ver preço na loja”.",
+            components: { Cell: "/components/admin/PriceCell" },
+          },
         },
         {
           name: "priceFrom",
@@ -113,7 +133,7 @@ export const Offers: CollectionConfig = {
       type: "checkbox",
       label: "Mostrar na página",
       defaultValue: true,
-      admin: { position: "sidebar" },
+      admin: { position: "sidebar", components: { Cell: "/components/admin/YesNoCell" } },
     },
     {
       name: "home",
@@ -123,6 +143,7 @@ export const Offers: CollectionConfig = {
       admin: {
         position: "sidebar",
         description: "A home passa até 10 produtos marcados, na ordem abaixo. Se nenhum estiver marcado, passam os 10 primeiros.",
+        components: { Cell: "/components/admin/YesNoCell" },
       },
     },
     {

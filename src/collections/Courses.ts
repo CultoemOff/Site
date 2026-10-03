@@ -12,10 +12,10 @@ const lines = (name: string, label: string, itemLabel: string): Field => ({
 
 export const Courses: CollectionConfig = {
   slug: "courses",
-  labels: { singular: "Formação", plural: "Formações" },
+  labels: { singular: "Formação", plural: "Formações (cursos)" },
   admin: {
     useAsTitle: "title",
-    group: "Escola",
+    group: "Conteúdo",
     defaultColumns: ["title", "price", "status", "order"],
   },
   defaultSort: "order",
@@ -40,7 +40,14 @@ export const Courses: CollectionConfig = {
     {
       type: "row",
       fields: [
-        { name: "price", type: "number", label: "Preço (R$)", required: true, min: 0, admin: { step: 0.1 } },
+        {
+          name: "price",
+          type: "number",
+          label: "Preço (R$)",
+          required: true,
+          min: 0,
+          admin: { step: 0.1, components: { Cell: "/components/admin/PriceCell" } },
+        },
         {
           name: "priceFrom",
           type: "number",

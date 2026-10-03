@@ -12,7 +12,7 @@ import {
 export const SiteSettings: GlobalConfig = {
   slug: "site-settings",
   label: "Configurações do site",
-  admin: { group: "Administração" },
+  admin: { group: "Site" },
   access: { read: () => true },
   fields: [
     {

@@ -9,13 +9,17 @@ Acesse `https://SEU-SITE/admin` e faça login.
 
 | Menu do admin | O que dá para fazer |
 |---|---|
-| **Conteúdo → Blog** | Criar posts com texto, títulos, listas, citações, links, imagens, vídeos enviados e vídeos do YouTube (bloco “Vídeo do YouTube”). Rascunho/publicado, capa, tags, SEO por post. |
-| **Conteúdo → Equipamentos** | Equipamentos recomendados: nome, categoria, frase, link da loja, foto (opcional), ordem e se aparece na home (até 5). |
-| **Escola → Formações** | Nome, frase, descrição, professor, itens inclusos, preço, status, modalidade, carga horária, acesso, link de inscrição, imagem, tópicos, ordem e destaque. |
-| **Administração → Configurações do site** | Números das redes (CH 06), perguntas frequentes, YouTube/Instagram/TikTok, vídeos do YouTube (últimos automaticamente ou escolhidos à mão), links e cupom dos parceiros, capturas das telas, ID do Google Analytics. |
-| **Contatos → Cadastros** | Nome, celular (com DDI) e e-mail de quem se cadastrou para baixar o PTZ Control Web, com o texto e a data do consentimento. |
-| **Conteúdo → Mídias** | Biblioteca de imagens e vídeos. |
-| **Administração → Usuários** | Quem pode entrar no admin. |
+| **Tela inicial** | Resumo com números (ofertas, formações, posts, cadastros), atalhos “Adicionar oferta”, “Novo post” e “Ver site”, e as últimas ofertas editadas. |
+| **Loja → Ofertas** | Produtos com link de afiliado da página `/ofertas`: link, nome, link da foto (com prévia), categorias, preço, link de review, se aparece na página e no carrossel da home. A lista mostra a foto e o preço. |
+| **Loja → Equipamentos (página antiga)** | Itens da página `/equipamentos`. A home usa as Ofertas. |
+| **Conteúdo → Formações (cursos)** | Nome, frase, descrição, professor, itens inclusos, preço, parcelamento, status, modalidade, carga horária, acesso, link de inscrição, imagem, tópicos, ordem e destaque. |
+| **Conteúdo → Posts do blog** | Criar posts com texto, títulos, listas, citações, links, imagens, vídeos enviados e vídeos do YouTube (bloco “Vídeo do YouTube”). Rascunho/publicado, capa, tags, SEO por post. |
+| **Conteúdo → Imagens e vídeos** | Biblioteca de imagens e vídeos. |
+| **Site → Cadastros** | Nome, celular (com DDI) e e-mail de quem se cadastrou para baixar o PTZ Control Web, com o texto e a data do consentimento. |
+| **Site → Configurações do site** | Números das redes, perguntas frequentes, YouTube/Instagram/TikTok, vídeos do YouTube (últimos automaticamente ou escolhidos à mão), links e cupom dos parceiros, capturas das telas, ID do Google Analytics. |
+| **Sistema → Usuários do painel** | Quem pode entrar no admin. |
+
+O visual do painel (cores, tela inicial, miniaturas) fica em `src/app/(payload)/custom.css` e `src/components/admin/`.
 
 Se o banco não estiver configurado, o site continua funcionando com os valores padrão de `src/config/`.
 
