@@ -1,28 +1,17 @@
-import Image from "next/image";
-import { LOGO_SRC, SITE_NAME } from "@/config/site";
+import Navbar from "@/components/layout/Navbar";
+import { SITE_NAME } from "@/config/site";
 import type { Offer } from "@/config/offers";
 import OffersGrid from "./OffersGrid";
 import "./offers.css";
 
 /**
- * Página de ofertas: leve de propósito (sem palco animado nem menu completo),
- * com fundo azul-escuro e cards brancos. `homeUrl` leva ao site principal.
+ * Página de ofertas: leve de propósito (sem palco animado), com o menu do site,
+ * fundo azul-escuro e cards brancos. `homeUrl` leva ao site principal.
  */
 export default function OffersView({ offers, homeUrl }: { offers: Offer[]; homeUrl: string }) {
   return (
     <div className="offers">
-      <header className="offers__bar">
-        <a className="offers__brand" href={homeUrl}>
-          <Image src={LOGO_SRC} alt="" width={36} height={36} priority />
-          <span>
-            {SITE_NAME} <b>Ofertas</b>
-          </span>
-        </a>
-        <a className="offers__site" href={homeUrl}>
-          <span className="offers__site-long">Conhecer as formações</span>
-          <span className="offers__site-short">Formações</span>
-        </a>
-      </header>
+      <Navbar base={homeUrl} />
 
       <main id="conteudo" tabIndex={-1} className="offers__main">
         <div className="offers__head">

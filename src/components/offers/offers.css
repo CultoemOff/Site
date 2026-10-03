@@ -12,57 +12,13 @@
   color: var(--text-on-dark);
 }
 
-.offers__bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 16px 20px;
-}
-.offers__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: #eaf0ff;
-  text-decoration: none;
-}
-.offers__brand img {
-  border-radius: 50%;
-}
-.offers__brand b {
-  color: #ffd43b;
-  font-weight: 700;
-}
-.offers__site {
-  flex: none;
-  padding: 9px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(160, 190, 255, 0.4);
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: #dce7ff;
-  text-decoration: none;
-}
-.offers__site-short {
-  display: none;
-}
-.offers__site:hover {
-  border-color: #7fb0ff;
-  color: #fff;
-}
-
 .offers__main {
   flex: 1;
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
-  padding: clamp(20px, 4vw, 44px) 20px clamp(48px, 7vw, 80px);
+  /* o menu do site fica fixo no topo: o conteúdo começa abaixo dele */
+  padding: calc(var(--nav-h) + clamp(16px, 3vw, 36px)) 20px clamp(48px, 7vw, 80px);
   outline: none;
 }
 .offers__head {
@@ -91,7 +47,8 @@
 /* ---------- filtros ---------- */
 .offers__filters {
   position: sticky;
-  top: 0;
+  /* gruda logo abaixo do menu */
+  top: var(--nav-h);
   z-index: 5;
   display: flex;
   gap: 8px;
@@ -186,23 +143,14 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
-  .offers__brand {
-    font-size: 0.95rem;
-    white-space: nowrap;
-  }
-  .offers__site-long {
-    display: none;
-  }
-  .offers__site {
-    padding: 8px 12px;
-    font-size: 0.78rem;
-  }
-  .offers__site-short {
-    display: inline;
-  }
 }
 @media (max-width: 340px) {
   .offers__grid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* aqui o menu passa por cima de cards brancos: fica quase opaco para o texto não vazar por baixo */
+.offers .nav--solid {
+  background: rgba(5, 10, 24, 0.96);
 }

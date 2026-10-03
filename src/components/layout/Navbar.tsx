@@ -6,7 +6,13 @@ import { useEffect, useState } from "react";
 import { LOGO_SRC, NAV_LINKS, SITE_NAME } from "@/config/site";
 import "./navbar.css";
 
-export default function Navbar() {
+/**
+ * Menu principal. `base` só é usado quando a página está em outro endereço (ex.: ofertas.<domínio>):
+ * aí os links apontam para o site principal em vez do endereço atual.
+ */
+export default function Navbar({ base }: { base?: string } = {}) {
+  const prefix = base && base !== "/" ? base.replace(/\/$/, "") : "";
+  const to = (href: string) => `${prefix}${href}`;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -27,7 +33,7 @@ export default function Navbar() {
   return (
     <header className={`nav${scrolled || open ? " nav--solid" : ""}`}>
       <div className="nav__inner">
-        <Link href="/" className="nav__brand" aria-label={`${SITE_NAME} — início`}>
+        <Link href={to("/")} className="nav__brand" aria-label={`${SITE_NAME} — início`}>
           <Image src={LOGO_SRC} alt="" width={40} height={40} priority />
           <span className="nav__wordmark">
             Culto em <strong>Off</strong>
@@ -36,13 +42,13 @@ export default function Navbar() {
 
         <nav aria-label="Principal" className="nav__links">
           {NAV_LINKS.map((l) => (
-            <Link key={l.href} href={l.href}>
+            <Link key={l.href} href={to(l.href)}>
               {l.label}
             </Link>
           ))}
         </nav>
 
-        <Link href="/#formacoes" className="nav__cta">
+        <Link href={to("/#formacoes")} className="nav__cta">
           Explorar formações
         </Link>
 
@@ -61,11 +67,11 @@ export default function Navbar() {
 
       <nav id="menu-mobile" aria-label="Menu" className={`nav__mobile${open ? " is-open" : ""}`} hidden={!open}>
         {NAV_LINKS.map((l) => (
-          <Link key={l.href} href={l.href} onClick={() => setOpen(false)}>
+          <Link key={l.href} href={to(l.href)} onClick={() => setOpen(false)}>
             {l.label}
           </Link>
         ))}
-        <Link href="/#formacoes" className="nav__mobile-cta" onClick={() => setOpen(false)}>
+        <Link href={to("/#formacoes")} className="nav__mobile-cta" onClick={() => setOpen(false)}>
           Explorar formações
         </Link>
       </nav>
