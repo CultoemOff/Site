@@ -139,5 +139,5 @@ export const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Downloads gratuitos", href: "/#softwares" },
   { label: "Parceiros", href: "/#parceiros" },
   { label: "Blog", href: "/blog" },
-  { label: "Ofertas", href: "/ofertas" },
+  { label: "Produtos em oferta", href: "/ofertas" },
 ];
