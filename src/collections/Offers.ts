@@ -1,4 +1,4 @@
-import { APIError, type CollectionConfig } from "payload";
+import type { CollectionConfig } from "payload";
 import { revalidate, slugify } from "../cms/hooks";
 import { readProductLink } from "../lib/productLink";
 
@@ -7,8 +7,9 @@ const stamp = () =>
 
 /**
  * Ofertas: produtos com link de afiliado (página /ofertas).
- * Ao salvar, o site abre o link e tenta preencher sozinho o título, a foto e o preço.
- * O que não conseguir ler fica para preencher à mão.
+ * O cadastro é manual: link, nome, link da imagem, categorias e preço.
+ * A leitura automática pelo link existe como opção por produto (desligada por padrão),
+ * porque as lojas costumam recusar esse tipo de leitura.
  */
 export const Offers: CollectionConfig = {
   slug: "offers",
@@ -17,7 +18,7 @@ export const Offers: CollectionConfig = {
     useAsTitle: "title",
     group: "Conteúdo",
     defaultColumns: ["title", "price", "tags", "active", "order"],
-    description: "Cole o link do produto e salve: o site tenta ler o título, a foto e o preço. A página mostra até 100 ofertas.",
+    description: "Preencha o link, o nome, o link da imagem, as categorias e o preço. A página mostra até 100 ofertas.",
   },
   defaultSort: "order",
   access: { read: () => true },
@@ -29,19 +30,14 @@ export const Offers: CollectionConfig = {
       required: true,
       admin: { description: "É para onde o botão “Ver oferta” leva. Cole o link de afiliado completo." },
     },
-    {
-      name: "title",
-      type: "text",
-      label: "Nome do produto",
-      admin: { description: "Pode deixar vazio ao criar: o site tenta ler do link. Se não conseguir, ele avisa para preencher." },
-    },
+    { name: "title", type: "text", label: "Nome do produto", required: true },
     {
       name: "imageUrl",
       type: "text",
       label: "Link da imagem do produto",
       admin: {
         description:
-          "Endereço da foto (clique com o botão direito na foto do produto → “Copiar endereço da imagem”). Vazio = o site tenta pegar a foto do link. O card ajusta o enquadramento sozinho.",
+          "Endereço da foto: na página do produto, clique com o botão direito na foto → “Copiar endereço da imagem” e cole aqui. O card ajusta o enquadramento sozinho.",
       },
     },
     {
@@ -67,7 +63,7 @@ export const Offers: CollectionConfig = {
           type: "number",
           label: "Preço (R$)",
           min: 0,
-          admin: { step: 0.01, description: "Preenchido sozinho quando o site consegue ler do link. Vazio = “Ver preço na loja”." },
+          admin: { step: 0.01, description: "Digite o preço de hoje. Vazio = o card mostra “Ver preço na loja”." },
         },
         {
           name: "priceFrom",
@@ -79,11 +75,14 @@ export const Offers: CollectionConfig = {
       ],
     },
     {
-      name: "autoPrice",
+      name: "readPrice",
       type: "checkbox",
-      label: "Atualizar o preço automaticamente pelo link",
-      defaultValue: true,
-      admin: { description: "Ligado: o preço é lido ao salvar e uma vez por dia. Desligue para manter o preço que você digitou." },
+      label: "Tentar ler o preço pelo link (experimental)",
+      defaultValue: false,
+      admin: {
+        description:
+          "Desligado: vale o preço que você digitou. Ligado: ao salvar, o site tenta ler o preço na página do produto; muitas lojas recusam essa leitura, e aí o preço digitado continua valendo.",
+      },
     },
     { name: "note", type: "text", label: "Frase curta (opcional)", admin: { description: "Ex.: 16 portas Gigabit com PoE." } },
     {
@@ -110,7 +109,7 @@ export const Offers: CollectionConfig = {
       name: "priceInfo",
       type: "text",
       label: "Leitura do link",
-      admin: { position: "sidebar", readOnly: true, description: "O que o site conseguiu ler na última tentativa." },
+      admin: { position: "sidebar", readOnly: true, description: "Só é usado quando a leitura automática está ligada." },
     },
     { name: "priceCheckedAt", type: "date", label: "Preço conferido em", admin: { position: "sidebar", readOnly: true } },
     {
@@ -130,35 +129,21 @@ export const Offers: CollectionConfig = {
       async ({ data, originalDoc, context }) => {
         if (!data || context?.skipLinkRead) return data;
         const href = String(data.href ?? originalDoc?.href ?? "").trim();
-        if (!href) return data;
-        data.href = href;
+        if (href) data.href = href;
+        // preço do dia: registra quando foi informado, para o card mostrar "preço em dd/mm"
+        if (typeof data.price === "number" && data.price !== originalDoc?.price) data.priceCheckedAt = new Date().toISOString();
 
-        const title = String(data.title ?? originalDoc?.title ?? "").trim();
-        const imageUrl = String(data.imageUrl ?? originalDoc?.imageUrl ?? "").trim();
-        const auto = (data.autoPrice ?? originalDoc?.autoPrice ?? true) !== false;
-        if (title && imageUrl && !auto) return data;
+        const wantsRead = (data.readPrice ?? originalDoc?.readPrice ?? false) === true;
+        if (!href || !wantsRead) return data;
 
         const info = await readProductLink(href);
-        const read: string[] = [];
-        if (!title && info?.title) {
-          data.title = info.title;
-          read.push("nome");
-        }
-        if (!imageUrl && info?.image) {
-          data.imageUrl = info.image;
-          read.push("foto");
-        }
-        if (auto && info?.price) {
+        if (info?.price) {
           data.price = info.price;
           data.priceCheckedAt = new Date().toISOString();
-          read.push("preço");
+          data.priceInfo = `${stamp()}: preço lido do link.`;
+        } else {
+          data.priceInfo = `${stamp()}: a loja não deixou ler o preço. Vale o valor digitado.`;
         }
-        if (!String(data.title ?? title).trim()) {
-          throw new APIError("Não consegui ler o nome do produto neste link. Preencha o campo “Nome do produto” e salve de novo.", 400);
-        }
-        if (!info) data.priceInfo = `${stamp()}: a loja não respondeu ou bloqueou a leitura. Preencha à mão.`;
-        else if (auto && !info.price) data.priceInfo = `${stamp()}: não encontrei o preço neste link. Preencha à mão.`;
-        else if (read.length) data.priceInfo = `${stamp()}: li ${read.join(", ")}.`;
         return data;
       },
     ],

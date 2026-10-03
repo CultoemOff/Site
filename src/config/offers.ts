@@ -38,7 +38,7 @@ export type Offer = {
   priceCheckedAt?: string;
 };
 
-/** Produtos iniciais: os mesmos equipamentos da home. Foto e preço são lidos do link no seed. */
+/** Produtos iniciais: os mesmos equipamentos da home. Foto e preço são preenchidos no painel. */
 export const OFFERS: Offer[] = [
   {
     id: "microfone-sem-fio-kadosh-k502m",

@@ -3,9 +3,9 @@ import { getPayloadClient } from "@/lib/cms";
 import { readProductLink } from "@/lib/productLink";
 
 /**
- * Confere de novo o preço das ofertas (as que estão com "atualizar automaticamente" ligado).
- * É chamada uma vez por dia pela Vercel (vercel.json → crons). Cada chamada confere as 40 ofertas
- * há mais tempo sem conferência, então 100 ofertas são percorridas em poucos dias.
+ * Confere de novo o preço das ofertas marcadas com "Tentar ler o preço pelo link" (opção por produto,
+ * desligada por padrão). Não há agendamento: o cadastro de preços é manual. Para voltar a conferir
+ * todos os dias, crie um vercel.json com crons apontando para este endereço.
  * Se a variável CRON_SECRET existir na Vercel, só a própria Vercel consegue chamar.
  */
 export const dynamic = "force-dynamic";
@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 
   const res = await payload.find({
     collection: "offers",
-    where: { and: [{ active: { not_equals: false } }, { autoPrice: { not_equals: false } }] },
+    where: { and: [{ active: { not_equals: false } }, { readPrice: { equals: true } }] },
     sort: "priceCheckedAt",
     limit: PER_RUN,
     depth: 0,

@@ -114,7 +114,7 @@ for (const [i, e] of EQUIPMENT.entries()) {
   equipmentCreated++;
 }
 
-// Ofertas (página /ofertas): cria as que ainda não existem. Ao criar, o site lê foto e preço do link.
+// Ofertas (página /ofertas): cria as que ainda não existem. Foto e preço são preenchidos depois, no painel.
 let offersCreated = 0;
 for (const [i, o] of OFFERS.entries()) {
   const exists = await payload.find({ collection: "offers", where: { slug: { equals: o.id } }, limit: 1, depth: 0 });
@@ -129,7 +129,7 @@ for (const [i, o] of OFFERS.entries()) {
       note: o.note ?? "",
       imageUrl: o.imageUrl ?? "",
       price: o.price ?? null,
-      autoPrice: true,
+      readPrice: false,
       active: true,
       order: (i + 1) * 10,
     },
