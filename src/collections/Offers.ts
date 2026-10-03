@@ -24,6 +24,12 @@ export const Offers: CollectionConfig = {
   access: { read: () => true },
   fields: [
     {
+      // atalho no topo da tela: aparece depois de salvar, para cadastrar o próximo produto
+      name: "addNew",
+      type: "ui",
+      admin: { components: { Field: "/components/admin/AddOfferButton" } },
+    },
+    {
       name: "href",
       type: "text",
       label: "Link do produto (afiliado)",
