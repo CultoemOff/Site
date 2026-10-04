@@ -58,17 +58,13 @@
   background: linear-gradient(180deg, rgba(6, 12, 30, 0.96), rgba(6, 12, 30, 0.86));
   border-block: 1px solid rgba(110, 150, 255, 0.14);
 }
-/* as categorias rolam para o lado quando não cabem; a ordenação fica sempre visível à direita */
+/* todas as categorias ficam à vista: quando não cabem numa linha, quebram para a de baixo */
 .offers__chips {
   display: flex;
   flex: 1;
+  flex-wrap: wrap;
   gap: 8px;
   min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.offers__chips::-webkit-scrollbar {
-  display: none;
 }
 .offers__sort {
   position: relative;
@@ -178,12 +174,44 @@
 }
 
 /* celular: dois cards por linha, mais compactos */
-@media (max-width: 560px) {
+@media (max-width: 640px) {
+  /* filtros: categorias menores em 2 ou 3 linhas, ordenação na linha de baixo.
+     Aqui a barra não acompanha a rolagem, para não tomar a tela do celular. */
+  .offers__filters {
+    position: static;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding-block: 12px;
+  }
+  .offers__chips {
+    flex: none;
+    gap: 5px;
+  }
+  .offers__chips .offers__chip {
+    gap: 4px;
+    min-height: 34px;
+    padding: 0 9px;
+    font-size: 0.76rem;
+  }
+  .offers__chips .offers__chip span {
+    font-size: 0.64rem;
+  }
+  .offers__sort {
+    align-self: flex-start;
+  }
+  .offers__sort svg {
+    left: 10px;
+    width: 14px;
+    height: 14px;
+  }
   .offers__sort select {
-    max-width: 158px;
-    padding: 0 6px 0 32px;
+    min-height: 34px;
+    padding: 0 10px 0 30px;
     font-size: 0.8rem;
   }
+}
+@media (max-width: 560px) {
   .offers__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
