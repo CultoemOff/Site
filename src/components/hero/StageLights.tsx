@@ -83,8 +83,14 @@ export default function StageLights() {
     const hazeLayers = Array.from(hero.querySelectorAll<HTMLElement>("[data-haze-depth]"));
     const hazeGlow = hero.querySelector<HTMLElement>("[data-haze-glow]");
 
+    // "Reduzir movimento" ligado no sistema (no Windows: "Efeitos de animação" desligados, comum em notebooks):
+    // a luz não fica parada. Entra o modo suave: varredura lenta e curta, a 30 quadros por segundo,
+    // sem seguir o mouse e sem a paralaxe da fumaça. O tamanho da tela não entra nessa conta.
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduceMotion.matches) return; // mantém a pose estática renderizada no servidor
+    let gentle = reduceMotion.matches;
+    const onMotionChange = () => {
+      gentle = reduceMotion.matches;
+    };
 
     const state = MOVING_HEADS.map((h) => ({ x: STAGE_FOCUS.x + h.spread, y: STAGE_FOCUS.y }));
     const aim = { x: STAGE_FOCUS.x, y: STAGE_FOCUS.y };
@@ -93,6 +99,7 @@ export default function StageLights() {
 
     let raf = 0;
     let running = false;
+    let lastPaint = 0;
     const start = performance.now();
 
     const onPointerMove = (e: PointerEvent) => {
@@ -106,8 +113,15 @@ export default function StageLights() {
     };
 
     const frame = (now: number) => {
-      const t = (now - start) / 1000;
-      const active = now - pointer.last < 4000;
+      // modo suave: metade dos quadros, metade da velocidade
+      if (gentle && now - lastPaint < 32) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+      lastPaint = now;
+      const t = ((now - start) / 1000) * (gentle ? 0.5 : 1);
+      const reach = gentle ? 0.6 : 1;
+      const active = !gentle && now - pointer.last < 4000;
 
       // ponto de foco: segue o mouse (amortecido) ou faz uma varredura lenta
       let goalX: number;
@@ -116,8 +130,8 @@ export default function StageLights() {
         goalX = STAGE_FOCUS.x + (pointer.x - STAGE_FOCUS.x) * 0.7;
         goalY = STAGE_FOCUS.y + (pointer.y - STAGE_FOCUS.y) * 0.7;
       } else {
-        goalX = STAGE_FOCUS.x + Math.sin((t * TAU) / 16) * 150;
-        goalY = STAGE_FOCUS.y + Math.sin((t * TAU) / 11) * 40 - 20;
+        goalX = STAGE_FOCUS.x + Math.sin((t * TAU) / 16) * 150 * reach;
+        goalY = STAGE_FOCUS.y + Math.sin((t * TAU) / 11) * 40 * reach - 20;
       }
       goalX = clamp(goalX, FOCUS_BOUNDS.minX, FOCUS_BOUNDS.maxX);
       goalY = clamp(goalY, FOCUS_BOUNDS.minY, FOCUS_BOUNDS.maxY);
@@ -125,7 +139,7 @@ export default function StageLights() {
       aim.y += (goalY - aim.y) * 0.06;
 
       MOVING_HEADS.forEach((h, i) => {
-        const amp = h.kind === "spot" ? 0.35 : 1;
+        const amp = (h.kind === "spot" ? 0.35 : 1) * reach;
         const wobbleX = Math.sin((t * TAU) / h.period + h.phase) * 36 * amp;
         const wobbleY = Math.cos((t * TAU) / (h.period * 1.3) + h.phase) * 16 * amp;
         const tx = aim.x + h.spread + wobbleX;
@@ -143,7 +157,7 @@ export default function StageLights() {
       });
 
       // fumaça: paralaxe com o mouse + deriva contínua da textura dentro dos fachos
-      const px = active ? pointer.nx : Math.sin((t * TAU) / 20) * 0.15;
+      const px = gentle ? 0 : active ? pointer.nx : Math.sin((t * TAU) / 20) * 0.15;
       const py = active ? pointer.ny : 0;
       parallax.x += (px - parallax.x) * 0.04;
       parallax.y += (py - parallax.y) * 0.04;
@@ -176,11 +190,13 @@ export default function StageLights() {
     });
     io.observe(hero);
     window.addEventListener("pointermove", onPointerMove, { passive: true });
+    reduceMotion.addEventListener?.("change", onMotionChange);
 
     return () => {
       pause();
       io.disconnect();
       window.removeEventListener("pointermove", onPointerMove);
+      reduceMotion.removeEventListener?.("change", onMotionChange);
     };
   }, []);
 
