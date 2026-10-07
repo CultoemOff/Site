@@ -101,7 +101,13 @@ export const Courses: CollectionConfig = {
           type: "row",
           fields: [
             { name: "mode", type: "text", label: "Modalidade", defaultValue: "Online" },
-            { name: "hours", type: "number", label: "Carga horária (horas)", defaultValue: 6 },
+            {
+              name: "hours",
+              type: "number",
+              label: "Carga horária (horas)",
+              defaultValue: 6,
+              admin: { description: "0 = o site não mostra a duração." },
+            },
             { name: "access", type: "text", label: "Acesso", defaultValue: "Acesso por 1 ano" },
           ],
         },

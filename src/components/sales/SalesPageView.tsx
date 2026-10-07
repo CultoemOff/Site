@@ -113,7 +113,8 @@ export default function SalesPageView({ course, page, audience }: Props) {
             <p className="sp-hero__sub">{page.subheadline}</p>
             <ul className="sp-hero__facts" aria-label="Resumo">
               <li>{page.modules.length} módulos em vídeo</li>
-              <li>{course.format.hours} horas</li>
+              {/* carga horária: só aparece quando está definida (0 ou vazio = não mostra) */}
+              {course.format.hours > 0 && <li>{course.format.hours} horas</li>}
               <li>{course.format.access}</li>
               {course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
               {course.includes?.some((x) => /comunidade|membros/i.test(x)) ? <li>Dúvidas e comunidade</li> : null}
@@ -295,7 +296,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
           </h2>
           <ul className="sp-hero__facts sp-facts--modules" aria-label="Formato">
             <li>{page.modules.length} módulos</li>
-            <li>{course.format.hours} horas de videoaulas gravadas</li>
+            <li>{course.format.hours > 0 ? `${course.format.hours} horas de videoaulas gravadas` : "Videoaulas gravadas"}</li>
             <li>{course.format.access}</li>
             {course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
             {course.includes?.some((x) => /comunidade|membros/i.test(x)) ? <li>Dúvidas e comunidade</li> : null}
@@ -437,7 +438,8 @@ export default function SalesPageView({ course, page, audience }: Props) {
             <ul className="sp-checks">
               <li>
                 <Check />
-                {page.modules.length} módulos em videoaulas gravadas ({course.format.hours} horas)
+                {page.modules.length} módulos em videoaulas gravadas
+                {course.format.hours > 0 ? ` (${course.format.hours} horas)` : ""}
               </li>
               {page.modules.some((m) => m.tag) && (
                 <li>

@@ -26,7 +26,7 @@ export const COURSE_STATUS_LABEL: Record<CourseStatus, string> = {
 export type CourseFormat = {
   /** ex.: "Online" */
   mode: string;
-  /** carga horária em horas */
+  /** carga horária em horas; 0 = ainda não definida (o site não mostra a duração) */
   hours: number;
   /** ex.: "Acesso por 1 ano" */
   access: string;
@@ -39,7 +39,7 @@ export const formatPrice = (value: number) =>
 /** Parcelamento: { count: 8, value: 10.03 } → "8x de R$ 10,03" */
 export const formatInstallments = (i: { count: number; value: number }) => `${i.count}x de ${formatPrice(i.value)}`;
 
-export type CourseRevScope = "price" | "href" | "testimonials";
+export type CourseRevScope = "price" | "href" | "testimonials" | "hours";
 
 export type CourseDiagram = "network" | "analog" | "live" | "companion" | "dmx";
 
@@ -86,7 +86,7 @@ export type Course = {
   rev?: number;
   /**
    * O que a mudança de `rev` altera no banco. "price" = só preço, parcelas e status; "href" = só o link de compra;
-   * "testimonials" = só os depoimentos. Pode ser uma lista. Textos e demais campos editados no admin ficam como estão.
+   * "testimonials" = só os depoimentos; "hours" = só a carga horária. Pode ser uma lista. Textos e demais campos editados no admin ficam como estão.
    * Sem este campo, atualiza tudo.
    */
   revScope?: CourseRevScope | CourseRevScope[];
@@ -120,9 +120,10 @@ export const COURSES: Course[] = [
       "Projeto prático: OBS, NDI, PTZ, rede e Companion funcionando juntos",
     ],
     appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
-    // rev 8: grava no banco só o link de compra (rev 7) e os depoimentos (rev 8); o resto do painel fica como está
-    rev: 8,
-    revScope: ["href", "testimonials"],
+    // rev 9: grava no banco só o link de compra (rev 7), os depoimentos (rev 8) e a carga horária zerada (rev 9);
+    // o resto do painel fica como está
+    rev: 9,
+    revScope: ["href", "testimonials", "hours"],
     // Depoimentos enviados pelo Jonas em 07/10/2026 (texto como ele mandou). Depois de publicados, quem manda é o painel.
     testimonials: [
       {
@@ -155,7 +156,8 @@ export const COURSES: Course[] = [
       "Apostila de comandos e dicas rápidas para imprimir e consultar depois",
       "Área de membros para tirar dúvidas e comunidade de alunos",
     ],
-    format: { mode: "Online", hours: 8, access: "Acesso vitalício" },
+    // carga horária ainda não definida (será menor que as 8 h previstas): 0 = o site não mostra a duração
+    format: { mode: "Online", hours: 0, access: "Acesso vitalício" },
     status: "inscricoes-abertas",
     featured: true,
     // página de pagamento da Hotmart (todos os botões de compra usam este link)

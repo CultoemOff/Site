@@ -80,7 +80,9 @@ for (const [i, c] of COURSES.entries()) {
   // depoimentos ficam fora de `data`: uma atualização completa da formação não mexe neles
   const testimonials = (c.testimonials ?? []).map((t) => ({ title: t.title ?? "", text: t.text, name: t.name, role: t.role ?? "" }));
   const exists = await payload.find({ collection: "courses", where: { slug: { equals: c.id } }, limit: 1, depth: 0 });
-  const doc = exists.docs[0] as unknown as { id: string | number; contentRev?: number; testimonials?: unknown[] | null } | undefined;
+  const doc = exists.docs[0] as unknown as
+    | { id: string | number; contentRev?: number; testimonials?: unknown[] | null; format?: { mode?: string | null; access?: string | null } | null }
+    | undefined;
   if (doc) {
     // já existe: só atualiza quando o conteúdo no código é mais novo (campo "rev" em src/config/courses.ts)
     if ((doc.contentRev ?? 0) < (c.rev ?? 0)) {
@@ -97,6 +99,10 @@ for (const [i, c] of COURSES.entries()) {
               contentRev,
               ...(scopes.includes("price") ? { price, priceFrom, installmentCount, installmentValue, status } : {}),
               ...(scopes.includes("href") ? { href } : {}),
+              // carga horária: mantém modalidade e acesso como estão no painel e troca só as horas
+              ...(scopes.includes("hours")
+                ? { format: { mode: doc.format?.mode ?? c.format.mode, access: doc.format?.access ?? c.format.access, hours: c.format.hours } }
+                : {}),
               // depoimentos: só entram se o painel ainda não tiver nenhum (nunca sobrescreve o que foi cadastrado lá)
               ...(scopes.includes("testimonials") && !hasTestimonials ? { testimonials } : {}),
             },

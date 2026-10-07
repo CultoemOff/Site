@@ -88,7 +88,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
           )}
           <ul className="course__format" aria-label="Formato">
             <li>{course.format.mode}</li>
-            <li>{course.format.hours} horas</li>
+            {course.format.hours > 0 && <li>{course.format.hours} horas</li>}
             <li>{course.format.access}</li>
           </ul>
           {course.includes && course.includes.length > 0 && (
