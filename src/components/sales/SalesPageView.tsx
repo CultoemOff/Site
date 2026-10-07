@@ -122,7 +122,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
               {cta("topo")}
               <div className="sp-hero__price">
                 {priceTag()}
-                <span>{GUARANTEE_DAYS} dias de garantia</span>
+                <span>Acesso imediato · {GUARANTEE_DAYS} dias de garantia · Compra segura pela Hotmart</span>
               </div>
             </div>
           </div>
@@ -168,44 +168,17 @@ export default function SalesPageView({ course, page, audience }: Props) {
         </ul>
       </div>
 
-      {/* ---------- dores ---------- */}
+      {/* ---------- o problema e o que muda (hoje × depois da formação) ---------- */}
       <section className="sp-section sp-section--mist" aria-labelledby="sp-dores">
         <div className="sp-section__inner">
           <p className="swp-kicker">Você se reconhece?</p>
           <h2 id="sp-dores" className="swp-title">
             Se alguma dessas situações já aconteceu no seu culto, esta formação é para você.
           </h2>
-          <ul className="sp-pains">
-            {page.pains.map((p, i) => (
-              <li key={p} data-reveal style={{ "--i": i % 3 } as React.CSSProperties}>
-                <span aria-hidden="true">!</span>
-                {p}
-              </li>
-            ))}
-          </ul>
-          <p className="sp-bridge">
-            {page.bridge}
-            {course.question && (
-              <>
-                {" "}
-                <strong>{course.question}</strong> Você vai saber responder.
-              </>
-            )}
-          </p>
-        </div>
-      </section>
-
-      {/* ---------- antes × depois ---------- */}
-      <section className="sp-section sp-section--paper" aria-labelledby="sp-compare">
-        <div className="sp-section__inner">
-          <p className="swp-kicker">Antes e depois</p>
-          <h2 id="sp-compare" className="swp-title">
-            O que muda na rotina da sua equipe.
-          </h2>
-          <div className="sp-compare" role="table" aria-label="Antes e depois da formação">
+          <div className="sp-compare" role="table" aria-label="Hoje e depois da formação">
             <div className="sp-compare__head" role="row">
-              <span role="columnheader">Sem a formação</span>
-              <span role="columnheader">Com a formação</span>
+              <span role="columnheader">Hoje, no culto</span>
+              <span role="columnheader">Depois da formação</span>
             </div>
             {page.compare.map((c) => (
               <div key={c.before} className="sp-compare__row" role="row" data-reveal>
@@ -220,6 +193,15 @@ export default function SalesPageView({ course, page, audience }: Props) {
               </div>
             ))}
           </div>
+          <p className="sp-bridge">
+            {page.bridge}
+            {course.question && (
+              <>
+                {" "}
+                <strong>{course.question}</strong> Você vai saber responder.
+              </>
+            )}
+          </p>
           <div className="sp-center-cta">{cta("antes e depois")}</div>
         </div>
       </section>
@@ -235,6 +217,37 @@ export default function SalesPageView({ course, page, audience }: Props) {
         </aside>
       )}
 
+      {/* ---------- depoimentos (só aparecem quando há depoimentos reais cadastrados no painel) ---------- */}
+      {testimonials.length > 0 && (
+        <section className="sp-section sp-section--paper" aria-labelledby="sp-depoimentos" data-track-view="depoimentos">
+          <div className="sp-section__inner">
+            <p className="swp-kicker">Quem já fez</p>
+            <h2 id="sp-depoimentos" className="swp-title">
+              O que os alunos dizem.
+            </h2>
+            <ul className="sp-quotes">
+              {testimonials.map((t, i) => (
+                <li key={`${t.name}-${i}`} data-reveal style={{ "--i": i % 3 } as React.CSSProperties}>
+                  <blockquote>
+                    {t.title && <p className="sp-quotes__title">“{t.title}”</p>}
+                    <p>{t.text}</p>
+                  </blockquote>
+                  <p className="sp-quotes__who">
+                    <span className="sp-quotes__avatar" aria-hidden="true">
+                      {t.name.trim().charAt(0).toUpperCase()}
+                    </span>
+                    <span>
+                      <strong>{t.name}</strong>
+                      {t.role && <span>{t.role}</span>}
+                    </span>
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* ---------- por dentro das aulas (ilustrações) ---------- */}
       {page.inside && (
         <section className="sp-section sp-section--ink" aria-labelledby="sp-inside">
@@ -243,25 +256,31 @@ export default function SalesPageView({ course, page, audience }: Props) {
             <h2 id="sp-inside" className="swp-title">
               {page.inside.title}
             </h2>
+            <div className="sp-inside__layout">
             <figure className="sp-inside__topo" data-anim>
               <TopologyIllo />
               <figcaption>{page.inside.topology}</figcaption>
             </figure>
             <div className="sp-inside__grid">
               <figure className="sp-inside__card" data-reveal data-anim>
-                <DhcpScreenIllo />
+                <div className="sp-inside__crop">
+                  <DhcpScreenIllo />
+                </div>
                 <figcaption>
                   <strong>{page.inside.dhcp.title}</strong>
                   {page.inside.dhcp.text}
                 </figcaption>
               </figure>
               <figure className="sp-inside__card" data-reveal data-anim style={{ "--i": 1 } as React.CSSProperties}>
-                <TerminalIllo />
+                <div className="sp-inside__crop">
+                  <TerminalIllo />
+                </div>
                 <figcaption>
                   <strong>{page.inside.terminal.title}</strong>
                   {page.inside.terminal.text}
                 </figcaption>
               </figure>
+            </div>
             </div>
           </div>
         </section>
@@ -362,44 +381,14 @@ export default function SalesPageView({ course, page, audience }: Props) {
         </section>
       )}
 
-      {/* ---------- depoimentos (só aparecem quando há depoimentos reais cadastrados no painel) ---------- */}
-      {testimonials.length > 0 && (
-        <section className="sp-section sp-section--paper" aria-labelledby="sp-depoimentos" data-track-view="depoimentos">
-          <div className="sp-section__inner">
-            <p className="swp-kicker">Quem já fez</p>
-            <h2 id="sp-depoimentos" className="swp-title">
-              O que os alunos dizem.
-            </h2>
-            <ul className="sp-quotes">
-              {testimonials.map((t, i) => (
-                <li key={`${t.name}-${i}`} data-reveal style={{ "--i": i % 3 } as React.CSSProperties}>
-                  <blockquote>
-                    <p>“{t.text}”</p>
-                  </blockquote>
-                  <p className="sp-quotes__who">
-                    <span className="sp-quotes__avatar" aria-hidden="true">
-                      {t.name.trim().charAt(0).toUpperCase()}
-                    </span>
-                    <span>
-                      <strong>{t.name}</strong>
-                      {t.role && <span>{t.role}</span>}
-                    </span>
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
-
-      {/* ---------- para quem é ---------- */}
+      {/* ---------- para quem é + quem ensina ---------- */}
       <section className="sp-section sp-section--paper" aria-labelledby="sp-quem">
-        <div className="sp-section__inner">
-          <p className="swp-kicker">Para quem é</p>
-          <h2 id="sp-quem" className="swp-title">
-            Feita para quem serve na técnica.
-          </h2>
-          <div className="sp-who">
+        <div className="sp-section__inner sp-fit">
+          <div>
+            <p className="swp-kicker">Para quem é</p>
+            <h2 id="sp-quem" className="swp-title">
+              Feita para quem serve na técnica.
+            </h2>
             <ul className="sp-checks">
               {page.forWho.map((w) => (
                 <li key={w}>
@@ -417,31 +406,20 @@ export default function SalesPageView({ course, page, audience }: Props) {
               ))}
             </ul>
           </div>
+          {teacher && (
+            <aside className="sp-fit__teacher" aria-labelledby="sp-prof">
+              <span className="sp-teacher__photo">
+                <Image src={teacher.photo} alt={`Foto de ${teacher.name}`} fill sizes="120px" />
+              </span>
+              <p className="swp-kicker">Seu professor</p>
+              <h3 id="sp-prof">{teacher.name}</h3>
+              <p className="sp-teacher__role">{teacher.role}</p>
+              <p>{teacher.bio}</p>
+              <p>Aulas com quem vive na prática os problemas que ensina a resolver, na realidade de quem serve na igreja.</p>
+            </aside>
+          )}
         </div>
       </section>
-
-      {/* ---------- professor ---------- */}
-      {teacher && (
-        <section className="sp-section sp-section--mist" aria-labelledby="sp-prof">
-          <div className="sp-section__inner sp-teacher">
-            <span className="sp-teacher__photo">
-              <Image src={teacher.photo} alt={`Foto de ${teacher.name}`} fill sizes="160px" />
-            </span>
-            <div>
-              <p className="swp-kicker">Seu professor</p>
-              <h2 id="sp-prof" className="swp-title">
-                {teacher.name}
-              </h2>
-              <p className="sp-teacher__role">{teacher.role}</p>
-              <p className="swp-lead">{teacher.bio}</p>
-              <p className="swp-lead">
-                Aulas com quem vive na prática os problemas que ensina a resolver, na realidade de quem serve na
-                igreja.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ---------- oferta ---------- */}
       <section id="oferta" className="sp-section sp-offer" aria-labelledby="sp-oferta" data-track-view="oferta">
@@ -473,13 +451,13 @@ export default function SalesPageView({ course, page, audience }: Props) {
                   {i}
                 </li>
               ))}
-              {/* materiais que ainda não estão na lista "Inclui" da formação */}
+              {/* materiais que não estão na lista "Inclui" da formação (ex.: a planilha) */}
               {page.materials?.items
-                .filter((m) => !course.includes?.some((i) => i.toLowerCase().includes(m.title.toLowerCase().split(" ")[0])))
+                .filter((m) => m.offerLine)
                 .map((m) => (
                   <li key={m.title}>
                     <Check />
-                    {m.title}
+                    {m.offerLine}
                   </li>
                 ))}
               <li>

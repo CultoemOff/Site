@@ -39,6 +39,8 @@ export const formatPrice = (value: number) =>
 /** Parcelamento: { count: 8, value: 10.03 } → "8x de R$ 10,03" */
 export const formatInstallments = (i: { count: number; value: number }) => `${i.count}x de ${formatPrice(i.value)}`;
 
+export type CourseRevScope = "price" | "href" | "testimonials";
+
 export type CourseDiagram = "network" | "analog" | "live" | "companion" | "dmx";
 
 export type Course = {
@@ -76,17 +78,18 @@ export type Course = {
    * Depoimentos de alunos, cadastrados no painel (Conteúdo → Formações). Só depoimentos reais:
    * enquanto a lista estiver vazia, a página de venda não mostra a seção.
    */
-  testimonials?: { name: string; role?: string; text: string }[];
+  testimonials?: { title?: string; text: string; name: string; role?: string }[];
   /**
    * Versão do conteúdo no código. Ao rodar `npm run seed`, a formação já existente no banco só é
    * atualizada quando este número é maior que o gravado lá (assim as edições do admin não são perdidas).
    */
   rev?: number;
   /**
-   * O que a mudança de `rev` altera no banco. "price" = só preço, parcelas e status; "href" = só o link de compra
-   * (textos e demais campos editados no admin ficam como estão). Sem este campo, atualiza tudo.
+   * O que a mudança de `rev` altera no banco. "price" = só preço, parcelas e status; "href" = só o link de compra;
+   * "testimonials" = só os depoimentos. Pode ser uma lista. Textos e demais campos editados no admin ficam como estão.
+   * Sem este campo, atualiza tudo.
    */
-  revScope?: "price" | "href";
+  revScope?: CourseRevScope | CourseRevScope[];
 };
 
 /** A formação tem preço para mostrar? (0 ou vazio = sem preço, como nas que ainda vão lançar) */
@@ -117,9 +120,30 @@ export const COURSES: Course[] = [
       "Projeto prático: OBS, NDI, PTZ, rede e Companion funcionando juntos",
     ],
     appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
-    // rev 7: só troca o link de compra no banco (revScope "href"); o resto do que está no painel fica como está
-    rev: 7,
-    revScope: "href",
+    // rev 8: grava no banco só o link de compra (rev 7) e os depoimentos (rev 8); o resto do painel fica como está
+    rev: 8,
+    revScope: ["href", "testimonials"],
+    // Depoimentos enviados pelo Jonas em 07/10/2026 (texto como ele mandou). Depois de publicados, quem manda é o painel.
+    testimonials: [
+      {
+        title: "Finalmente entendi rede na prática.",
+        text: "Eu já trabalhava com transmissão na igreja, mas quando aparecia algum problema de conexão eu ficava perdido. O curso conseguiu explicar redes de uma forma simples e totalmente voltada para a minha realidade.",
+        name: "Rafael Martins",
+        role: "Voluntário",
+      },
+      {
+        title: "O conteúdo faz muito mais sentido quando aplicado à igreja.",
+        text: "Já tinha assistido aulas de redes antes, mas eram muito focadas em TI. Aqui consegui entender com tranqulidade kkkk",
+        name: "Lucas Ferreira",
+        role: "Voluntário",
+      },
+      {
+        title: "Consegui resolver problemas que pareciam complicados.",
+        text: "Vou colocar companion pra automatizar tarefas e o curso me ajudou a destravar minha mente e aplicar as ideias, pq não conhecia nada de roteador.",
+        name: "André O",
+        role: "Técnico de Áudio",
+      },
+    ],
     diagram: "network",
     // Os valores precisam ser iguais aos do checkout da Hotmart.
     // Parcela calculada com a mesma taxa do print do Jonas (R$ 69,00 → 8x de R$ 10,03); confirmar na Hotmart.

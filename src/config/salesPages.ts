@@ -10,9 +10,7 @@ export type SalesPage = {
   subheadline: string;
   /** link do vídeo de vendas no YouTube; vazio = espaço reservado "vídeo em breve" */
   videoUrl: string;
-  /** situações em que o aluno se reconhece */
-  pains: string[];
-  /** antes × depois */
+  /** situações em que o aluno se reconhece hoje e como ficam depois da formação */
   compare: { before: string; after: string }[];
   /** argumento de valor, logo acima da oferta: quanto custa não saber */
   value: { title: string; text: string };
@@ -48,7 +46,14 @@ export type SalesPage = {
   materials?: {
     title: string;
     lead: string;
-    items: { tag: string; title: string; text: string; image?: { src: string; alt: string; width: number; height: number } }[];
+    items: {
+      tag: string;
+      title: string;
+      text: string;
+      /** como o material aparece na lista "O que você leva" (só para o que não está no campo "Inclui" da formação) */
+      offerLine?: string;
+      image?: { src: string; alt: string; width: number; height: number };
+    }[];
   };
   forWho: string[];
   notForWho: string[];
@@ -65,25 +70,17 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     // Para voltar a ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
     promo: { label: "Lançamento + Black November" },
     compare: [
-      { before: "Desliga e liga tudo de novo, e torce.", after: "Segue um roteiro de diagnóstico e acha a causa." },
+      { before: "A fonte NDI não aparece no OBS e ninguém sabe por quê.", after: "Você segue um roteiro de diagnóstico e acha a causa." },
+      { before: "A câmera PTZ “sumiu” da rede depois que alguém mexeu no roteador.", after: "A rede da técnica fica mapeada e documentada: cada equipamento com o seu IP." },
+      { before: "A transmissão engasga justamente na hora da ministração.", after: "Cada equipamento fica no lugar certo: cabo, PoE ou Wi-Fi." },
+      { before: "A solução de sempre é desligar e ligar tudo de novo, e torcer.", after: "Você entende o que acontece entre a câmera, o switch e o computador da live." },
       { before: "Depende de “alguém de TI” para qualquer problema.", after: "A própria equipe resolve o que aparece no culto." },
-      { before: "Ninguém sabe o IP de nada.", after: "A rede da técnica fica mapeada e documentada." },
-      { before: "Live no Wi-Fi, disputando com a igreja inteira.", after: "Cada equipamento no lugar certo: cabo, PoE ou Wi-Fi." },
       { before: "Compra equipamento sem saber se vai funcionar.", after: "Entende o que cada switch, cabo e câmera faz antes de comprar." },
     ],
     value: {
       title: "Quanto custa não entender de rede?",
       text: "Um culto com a transmissão fora do ar, uma câmera parada no meio da ministração ou uma visita técnica de emergência custam muito mais do que esta formação. Você paga uma vez e a equipe toda aprende a pensar a rede.",
     },
-    pains: [
-      "A fonte NDI não aparece no OBS e ninguém sabe por quê.",
-      "A câmera PTZ “sumiu” da rede depois que alguém mexeu no roteador.",
-      "A transmissão engasga justamente na hora da ministração.",
-      "Ninguém da equipe sabe qual é o IP de cada equipamento.",
-      "O celular usado como câmera trava ou perde a conexão.",
-      "A solução de sempre é desligar e ligar tudo de novo, e torcer.",
-      "Não sei o que é NDI, Bitfocus Companion ou Art-Net, nem como essas tecnologias podem ajudar.",
-    ],
     bridge: "O problema quase nunca é o equipamento. É a rede que ninguém explicou para a equipe.",
     finalTitle: "O próximo culto pode começar sem susto na rede.",
     finalNote: "Fazer o melhor para Deus também passa pela técnica.",
@@ -168,21 +165,21 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       ],
     },
     materials: {
-      title: "Apostila e planilha para deixar na mesa da técnica.",
-      lead: "Dois materiais prontos para usar na sua igreja: um para consultar na hora do aperto, outro para a rede da técnica parar de ser um mistério.",
+      title: "Dois materiais para deixar na mesa da técnica.",
+      lead: "Prévias reais do que vem com a formação: um PDF para consultar na hora do aperto e uma planilha para a rede da igreja parar de ser um mistério.",
       items: [
         {
-          tag: "Para imprimir",
-          title: "Apostila de comandos e dicas rápidas",
-          text: "Os comandos e atalhos que você mais vai usar, reunidos num material pronto para imprimir e deixar ao lado do computador da live.",
-          // image: { src: "/images/formacoes/redes-apostila.jpg", alt: "Páginas da apostila de comandos e dicas rápidas", width: 1200, height: 900 },
+          tag: "PDF para imprimir · 3 páginas",
+          title: "A cola do técnico",
+          text: "Uma pergunta, um comando, no Windows e no Linux. Traz também a revisão dos primeiros módulos, um diagnóstico rápido por sintoma e a ficha “A rede da minha igreja” para preencher a lápis.",
+          image: { src: "/images/formacoes/redes-cola-do-tecnico.jpg", alt: "Primeira página da cola do técnico, com a tabela “Qual comando responde qual pergunta” no Windows e no Linux", width: 1600, height: 1067 },
         },
         {
-          tag: "Para preencher",
-          title: "Planilha de documentação de IPs",
-          // TODO (Jonas): conferir se o texto descreve a planilha como ela é.
-          text: "Um modelo para registrar o endereço IP de cada equipamento da técnica. Preenchida uma vez, a equipe para de adivinhar onde cada coisa está na rede.",
-          // image: { src: "/images/formacoes/redes-planilha-ip.jpg", alt: "Planilha de documentação de IPs preenchida com os equipamentos da técnica", width: 1200, height: 900 },
+          tag: "Planilha · modelo para preencher",
+          title: "Documentação de rede da igreja",
+          text: "Abas para vídeo, áudio, iluminação, infraestrutura e computadores, além de faixas de IP, Wi-Fi e portas do switch. A planilha avisa quando um IP está duplicado ou fora da faixa, e o Mapa de IPs mostra quais endereços estão livres.",
+          offerLine: "Planilha de documentação de rede da igreja",
+          image: { src: "/images/formacoes/redes-planilha-mapa-de-ips.jpg", alt: "Aba Mapa de IPs da planilha, mostrando quais endereços da rede estão em uso e quais estão livres", width: 1600, height: 1067 },
         },
       ],
     },
@@ -209,14 +206,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         question: "E se eu tiver dúvidas durante as aulas?",
         answer: "A formação tem uma área de membros com espaço para tirar dúvidas e uma comunidade de alunos, para você trocar experiências com quem serve na técnica de outras igrejas.",
-      },
-      {
-        question: "Como é a apostila?",
-        answer: "Um material com os principais comandos e dicas rápidas, pensado para ser impresso e ficar na mesa da técnica para consulta.",
-      },
-      {
-        question: "Vou aprender VLAN, QoS e IGMP?",
-        answer: "Não neste curso. Aqui o foco são os fundamentos. Tópicos avançados como VLAN, QoS e IGMP ficam para o Curso 2.",
       },
       {
         question: "O curso ensina Dante e Bitfocus Companion?",

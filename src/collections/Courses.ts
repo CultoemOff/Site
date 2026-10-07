@@ -151,6 +151,7 @@ export const Courses: CollectionConfig = {
           "Aparecem na página de venda da formação. Use só depoimentos reais, com autorização de quem escreveu. Sem nenhum cadastrado, a seção não aparece.",
       },
       fields: [
+        { name: "title", type: "text", label: "Frase de destaque (opcional)", admin: { description: "Aparece em negrito, entre aspas, acima do depoimento." } },
         { name: "text", type: "textarea", label: "Depoimento", required: true },
         {
           type: "row",

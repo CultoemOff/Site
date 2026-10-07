@@ -77,25 +77,30 @@ for (const [i, c] of COURSES.entries()) {
     hideOnHome: Boolean(c.hideOnHome),
     contentRev: c.rev ?? 0,
   };
+  // depoimentos ficam fora de `data`: uma atualização completa da formação não mexe neles
+  const testimonials = (c.testimonials ?? []).map((t) => ({ title: t.title ?? "", text: t.text, name: t.name, role: t.role ?? "" }));
   const exists = await payload.find({ collection: "courses", where: { slug: { equals: c.id } }, limit: 1, depth: 0 });
-  const doc = exists.docs[0] as unknown as { id: string | number; contentRev?: number } | undefined;
+  const doc = exists.docs[0] as unknown as { id: string | number; contentRev?: number; testimonials?: unknown[] | null } | undefined;
   if (doc) {
     // já existe: só atualiza quando o conteúdo no código é mais novo (campo "rev" em src/config/courses.ts)
     if ((doc.contentRev ?? 0) < (c.rev ?? 0)) {
-      if (c.revScope === "price") {
-        // mudança só de preço: mexe em preço, parcelas e status; textos e demais campos do painel ficam como estão
-        const { price, priceFrom, installmentCount, installmentValue, status, contentRev } = data;
+      const scopes = c.revScope ? (Array.isArray(c.revScope) ? c.revScope : [c.revScope]) : [];
+      if (scopes.length > 0) {
+        // mudança dirigida: só os campos do(s) escopo(s); textos e demais campos do painel ficam como estão
+        const { price, priceFrom, installmentCount, installmentValue, status, href, contentRev } = data;
+        const hasTestimonials = Array.isArray(doc.testimonials) && doc.testimonials.length > 0;
         await retry(() =>
           payload.update({
             collection: "courses",
             id: doc.id,
-            data: { price, priceFrom, installmentCount, installmentValue, status, contentRev },
+            data: {
+              contentRev,
+              ...(scopes.includes("price") ? { price, priceFrom, installmentCount, installmentValue, status } : {}),
+              ...(scopes.includes("href") ? { href } : {}),
+              // depoimentos: só entram se o painel ainda não tiver nenhum (nunca sobrescreve o que foi cadastrado lá)
+              ...(scopes.includes("testimonials") && !hasTestimonials ? { testimonials } : {}),
+            },
           }),
-        );
-      } else if (c.revScope === "href") {
-        // mudança só do link de compra: nenhum outro campo do painel é tocado
-        await retry(() =>
-          payload.update({ collection: "courses", id: doc.id, data: { href: data.href, contentRev: data.contentRev } }),
         );
       } else {
         // link de inscrição: se o código não tem um, mantém o que foi colocado no painel
@@ -106,7 +111,7 @@ for (const [i, c] of COURSES.entries()) {
     }
     continue;
   }
-  await retry(() => payload.create({ collection: "courses", data: { ...data, order: (i + 1) * 10 } }));
+  await retry(() => payload.create({ collection: "courses", data: { ...data, testimonials, order: (i + 1) * 10 } }));
   created++;
 }
 
