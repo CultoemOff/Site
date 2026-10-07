@@ -124,7 +124,8 @@ export const COURSES: Course[] = [
     // o resto do painel fica como está
     rev: 9,
     revScope: ["href", "testimonials", "hours"],
-    // Depoimentos enviados pelo Jonas em 07/10/2026 (texto como ele mandou). Depois de publicados, quem manda é o painel.
+    // Depoimentos de alunos reais, com uso do nome autorizado (confirmado pelo Jonas em 07/10/2026; texto como ele mandou).
+    // Depois de publicados, quem manda é o painel.
     testimonials: [
       {
         title: "Finalmente entendi rede na prática.",
@@ -147,7 +148,7 @@ export const COURSES: Course[] = [
     ],
     diagram: "network",
     // Os valores precisam ser iguais aos do checkout da Hotmart.
-    // Parcela calculada com a mesma taxa do print do Jonas (R$ 69,00 → 8x de R$ 10,03); confirmar na Hotmart.
+    // Parcelamento conferido pelo Jonas com o checkout da Hotmart em 07/10/2026 (8x de R$ 8,58).
     price: 59,
     priceFrom: 138.8,
     installments: { count: 8, value: 8.58 },

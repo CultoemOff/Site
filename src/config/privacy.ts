@@ -8,7 +8,6 @@ export const PRIVACY_UPDATED = "2026-10-07";
 
 /**
  * E-mail para pedidos sobre dados pessoais (acesso, correção, exclusão, descadastro).
- * TODO (Jonas): preencher com o e-mail de contato do Culto em Off.
- * Enquanto estiver vazio, a página indica o Instagram como canal de contato.
+ * Se ficar vazio, a página indica o Instagram como canal de contato.
  */
-export const PRIVACY_CONTACT_EMAIL = "";
+export const PRIVACY_CONTACT_EMAIL = "contato@cultoemoff.com.br";
