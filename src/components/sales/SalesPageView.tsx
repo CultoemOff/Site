@@ -5,7 +5,7 @@ import ArrowButton from "@/components/ui/ArrowButton";
 import { formatInstallments, formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
 import type { SalesPage } from "@/config/salesPages";
-import { GUARANTEE_DAYS, type SiteSettingsData } from "@/config/site";
+import { GUARANTEE_DAYS, LOGO_SRC, type SiteSettingsData } from "@/config/site";
 import { resolvePrice } from "@/lib/pricing";
 import "@/components/blog/blog.css";
 import "@/components/sections/courses/courses.css";
@@ -92,6 +92,13 @@ export default function SalesPageView({ course, page, audience }: Props) {
 
       {/* ---------- topo ---------- */}
       <header className={`sp-hero${promoOn ? " sp-hero--promo" : ""}`}>
+        {/* a página não tem o menu do site: só a marca, sem link */}
+        <p className="sp-brand">
+          <Image src={LOGO_SRC} alt="" width={36} height={36} priority />
+          <span>
+            Culto em <strong>Off</strong>
+          </span>
+        </p>
         <div className="sp-hero__inner">
           <div className="sp-hero__text">
             <p className="swp-hero__channel">

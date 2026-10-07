@@ -92,6 +92,11 @@ for (const [i, c] of COURSES.entries()) {
             data: { price, priceFrom, installmentCount, installmentValue, status, contentRev },
           }),
         );
+      } else if (c.revScope === "href") {
+        // mudança só do link de compra: nenhum outro campo do painel é tocado
+        await retry(() =>
+          payload.update({ collection: "courses", id: doc.id, data: { href: data.href, contentRev: data.contentRev } }),
+        );
       } else {
         // link de inscrição: se o código não tem um, mantém o que foi colocado no painel
         const { href, ...semLink } = data;

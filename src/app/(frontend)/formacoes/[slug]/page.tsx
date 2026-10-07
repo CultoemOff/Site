@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ViewportFx from "@/components/fx/ViewportFx";
 import Footer from "@/components/layout/Footer";
-import Navbar from "@/components/layout/Navbar";
 import SalesPageView from "@/components/sales/SalesPageView";
 import { getInstructor } from "@/config/instructors";
 import { SALES_PAGES } from "@/config/salesPages";
@@ -81,8 +80,8 @@ export default async function CourseSalesPage({ params }: Props) {
           })),
         }}
       />
-      <Navbar />
-      <main id="conteudo" tabIndex={-1}>
+      {/* página de venda sem o menu do site: menos saídas antes da oferta (a marca aparece no topo, sem link) */}
+      <main id="conteudo" tabIndex={-1} className="sp-main">
         <SalesPageView course={course} page={page} audience={settings.audience} />
       </main>
       <Footer settings={settings} />

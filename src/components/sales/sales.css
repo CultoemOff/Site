@@ -6,12 +6,37 @@
 .sp-hero {
   position: relative;
   overflow: hidden;
-  padding: calc(var(--nav-h) + clamp(36px, 5vw, 72px)) 20px clamp(48px, 7vw, 88px);
+  padding: calc(var(--nav-h) + clamp(24px, 3vw, 40px)) 20px clamp(48px, 7vw, 88px);
   background:
     radial-gradient(ellipse 45% 70% at 80% 35%, rgba(59, 140, 255, 0.28), transparent 70%),
     radial-gradient(ellipse 40% 60% at 10% 0%, rgba(106, 92, 255, 0.18), transparent 70%),
     linear-gradient(180deg, #03050c 0%, var(--abyss) 100%);
   color: var(--text-on-dark);
+}
+/* Página sem o menu do site: o espaço que ele ocupava some e fica só a marca no topo. */
+.sp-main {
+  --nav-h: 0px;
+}
+.sp-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto clamp(22px, 3vw, 36px);
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #f2f6ff;
+}
+.sp-brand img {
+  width: 36px;
+  height: 36px;
+  filter: drop-shadow(0 0 12px rgba(59, 140, 255, 0.35));
+}
+.sp-brand strong {
+  font-weight: 700;
+  color: #6aa5ff;
 }
 .sp-hero__inner {
   max-width: 1200px;
@@ -2006,7 +2031,7 @@
    ========================================================== */
 /* o menu fica logo abaixo da faixa */
 .sp-hero--promo {
-  padding-top: calc(var(--nav-h) + var(--promo-h) + clamp(36px, 5vw, 72px));
+  padding-top: calc(var(--nav-h) + var(--promo-h) + clamp(24px, 3vw, 40px));
 }
 
 /* telas estreitas: colunas não podem crescer além da tela */

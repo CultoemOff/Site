@@ -78,10 +78,10 @@ export type Course = {
    */
   rev?: number;
   /**
-   * O que a mudança de `rev` altera no banco. "price" = só preço, parcelas e status
+   * O que a mudança de `rev` altera no banco. "price" = só preço, parcelas e status; "href" = só o link de compra
    * (textos e demais campos editados no admin ficam como estão). Sem este campo, atualiza tudo.
    */
-  revScope?: "price";
+  revScope?: "price" | "href";
 };
 
 /** A formação tem preço para mostrar? (0 ou vazio = sem preço, como nas que ainda vão lançar) */
@@ -112,7 +112,9 @@ export const COURSES: Course[] = [
       "Projeto prático: OBS, NDI, PTZ, rede e Companion funcionando juntos",
     ],
     appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
-    rev: 6,
+    // rev 7: só troca o link de compra no banco (revScope "href"); o resto do que está no painel fica como está
+    rev: 7,
+    revScope: "href",
     diagram: "network",
     // Os valores precisam ser iguais aos do checkout da Hotmart.
     // Parcela calculada com a mesma taxa do print do Jonas (R$ 69,00 → 8x de R$ 10,03); confirmar na Hotmart.
@@ -128,7 +130,7 @@ export const COURSES: Course[] = [
     status: "inscricoes-abertas",
     featured: true,
     // página de pagamento da Hotmart (todos os botões de compra usam este link)
-    href: "https://pay.hotmart.com/W107866343I?checkoutMode=10",
+    href: "https://pay.hotmart.com/W107866343I",
   },
   {
     id: "audio-mesa-analogica",
