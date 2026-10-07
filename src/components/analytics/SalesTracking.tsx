@@ -13,21 +13,20 @@ type Props = {
 
 /**
  * Medição da página de venda (não mostra nada na tela):
- *  - view_item quando a página abre;
+ *  - view_item quando a página abre (no pixel da Meta, vira ViewContent);
  *  - view_section quando cada parte marcada com data-track-view aparece na tela (uma vez por visita à página).
  * Assim dá para ver no Google Analytics até onde as pessoas rolam antes de comprar ou desistir.
  */
 export default function SalesTracking({ itemId, name, value }: Props) {
   useEffect(() => {
-    // o Google Analytics pode terminar de carregar um pouco depois da página: espera até 6 s
+    // Meta: vai na hora (fica na fila do pixel até ele iniciar, se o visitante ainda não aceitou os cookies)
+    track("view_item", { label: name, itemId, value, only: "meta" });
+    // Google Analytics: pode terminar de carregar um pouco depois da página; espera até 6 s
     let tries = 0;
-    let sent = false;
     const send = () => {
-      if (sent) return;
-      if (!window.gtag && !window.fbq && tries++ < 20) return;
-      sent = true;
+      if (!window.gtag && tries++ < 20) return;
       clearInterval(timer);
-      track("view_item", { label: name, itemId, value });
+      track("view_item", { label: name, itemId, value, only: "ga" });
     };
     const timer = setInterval(send, 300);
     send();
@@ -40,7 +39,7 @@ export default function SalesTracking({ itemId, name, value }: Props) {
           if (!entry.isIntersecting || !section || seen.has(section)) continue;
           seen.add(section);
           io.unobserve(entry.target);
-          track("view_section", { label: name, itemId, section });
+          track("view_section", { label: name, itemId, section, only: "ga" });
         }
       },
       { threshold: 0.25 },

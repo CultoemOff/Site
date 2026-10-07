@@ -23,6 +23,9 @@
  *  - download_software clique em "Baixar" depois do cadastro        (label = software)
  *
  * No GA4, marque begin_checkout (e outros que quiser) como "evento principal" para virar conversão.
+ *
+ * Pixel da Meta (só depois do aceite dos cookies): PageView a cada página, ViewContent na página da formação,
+ * CliqueComprar no botão de compra e Lead nos cadastros. A compra (Purchase) é disparada pela Hotmart.
  */
 
 declare global {
@@ -33,13 +36,21 @@ declare global {
   }
 }
 
-const META_EVENTS: Record<string, string> = {
+/**
+ * Eventos que vão para o pixel da Meta. Só estes; o resto fica só no Google Analytics,
+ * para o Gerenciador de Eventos mostrar apenas o que interessa aos anúncios.
+ *  - view_item      → ViewContent (padrão)       página de uma formação aberta
+ *  - begin_checkout → CliqueComprar (personalizado) clique em um botão de compra.
+ *    Não é InitiateCheckout de propósito: esse a Hotmart já dispara no checkout, e aqui ficaria duplicado.
+ *  - generate_lead / join_waitlist → Lead (padrão)
+ */
+const META_STANDARD: Record<string, string> = {
   view_item: "ViewContent",
-  begin_checkout: "InitiateCheckout",
-  click_equipment: "ViewContent",
-  click_offer: "ViewContent",
   generate_lead: "Lead",
   join_waitlist: "Lead",
+};
+const META_CUSTOM: Record<string, string> = {
+  begin_checkout: "CliqueComprar",
 };
 
 /** eventos de comércio do GA4: levam moeda, valor e o item (a formação) */
@@ -57,39 +68,63 @@ export type TrackParams = {
   itemId?: string;
   /** parte da página (evento view_section) */
   section?: string;
+  /** enviar só para um dos destinos (padrão: os dois) */
+  only?: "ga" | "meta";
 };
+
+/**
+ * Fila do pixel da Meta: o pixel só é carregado depois que o visitante aceita os cookies,
+ * e isso pode acontecer depois de a página já ter aberto. O que aconteceu antes fica aqui
+ * e é enviado quando o pixel inicia (ver Analytics.tsx). Sem aceite, nada sai do navegador.
+ */
+const metaQueue: unknown[][] = [];
+
+function sendMeta(...args: unknown[]) {
+  if (window.fbq) window.fbq(...args);
+  else if (metaQueue.length < 20) metaQueue.push(args);
+}
+
+/** Chamado logo depois de o pixel iniciar: envia o que ficou esperando. */
+export function flushMeta() {
+  if (!window.fbq) return;
+  for (const args of metaQueue.splice(0)) window.fbq(...args);
+}
 
 export function track(event: string, params: TrackParams = {}) {
   if (typeof window === "undefined") return;
   const hasValue = typeof params.value === "number" && params.value > 0;
-  const ga: Record<string, unknown> = {
-    event_label: params.label,
-    link_url: params.url,
-    cta_location: params.location,
-    section: params.section,
-  };
-  if (ITEM_EVENTS.has(event)) {
-    ga.currency = "BRL";
-    if (hasValue) ga.value = params.value;
-    ga.items = [
-      {
-        item_id: params.itemId || params.label,
-        item_name: params.label,
-        item_category: "Formação",
-        ...(hasValue ? { price: params.value } : {}),
-        quantity: 1,
-      },
-    ];
+
+  if (params.only !== "meta") {
+    const ga: Record<string, unknown> = {
+      event_label: params.label,
+      link_url: params.url,
+      cta_location: params.location,
+      section: params.section,
+    };
+    if (ITEM_EVENTS.has(event)) {
+      ga.currency = "BRL";
+      if (hasValue) ga.value = params.value;
+      ga.items = [
+        {
+          item_id: params.itemId || params.label,
+          item_name: params.label,
+          item_category: "Formação",
+          ...(hasValue ? { price: params.value } : {}),
+          quantity: 1,
+        },
+      ];
+    }
+    window.gtag?.("event", event, ga);
   }
-  window.gtag?.("event", event, ga);
-  if (window.fbq) {
-    const standard = META_EVENTS[event];
-    if (standard) {
-      window.fbq("track", standard, {
-        content_name: params.label,
-        ...(hasValue ? { value: params.value, currency: "BRL" } : {}),
-      });
-    } else window.fbq("trackCustom", event, { label: params.label, location: params.location, section: params.section });
+
+  if (params.only !== "ga") {
+    const meta = {
+      content_name: params.label,
+      ...(params.itemId ? { content_ids: [params.itemId], content_type: "product" } : {}),
+      ...(hasValue ? { value: params.value, currency: "BRL" } : {}),
+    };
+    if (META_STANDARD[event]) sendMeta("track", META_STANDARD[event], meta);
+    else if (META_CUSTOM[event]) sendMeta("trackCustom", META_CUSTOM[event], { ...meta, local: params.location });
   }
 }
 

@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import "./consent.css";
 
-import { trackClick } from "./track";
+import { CONSENT_EVENT, CONSENT_KEY, readConsent, type Consent } from "./consent";
+import { flushMeta, trackClick } from "./track";
 
 /**
  * Google Analytics 4 com Consent Mode v2 + Meta Pixel opcional (LGPD):
@@ -13,22 +14,10 @@ import { trackClick } from "./track";
  * Cliques em elementos com data-track viram eventos (ver ./track.ts).
  */
 
-const KEY = "coe-consent";
-export const CONSENT_EVENT = "coe:consent-open";
-
-function readConsent(): "granted" | "denied" | null {
-  try {
-    const v = localStorage.getItem(KEY);
-    return v === "granted" || v === "denied" ? v : null;
-  } catch {
-    return null;
-  }
-}
-
 export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: string }) {
   const pathname = usePathname();
   const [showBanner, setShowBanner] = useState(false);
-  const [consent, setConsent] = useState<"granted" | "denied" | null>(null);
+  const [consent, setConsent] = useState<Consent>(null);
 
   useEffect(() => {
     const c = readConsent();
@@ -45,9 +34,14 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
     return () => document.removeEventListener("click", trackClick, { capture: true });
   }, []);
 
-  // Meta Pixel: só depois do aceite
+  // Meta Pixel: só com ID configurado e depois do aceite. Carrega aqui, com a página já interativa.
   useEffect(() => {
-    if (!pixelId || consent !== "granted" || window.fbq) return;
+    if (!pixelId || consent !== "granted") return;
+    if (window.fbq) {
+      // já tinha sido carregado nesta visita e o visitante voltou a aceitar
+      window.fbq("consent", "grant");
+      return;
+    }
     /* eslint-disable */
     (function (f: any, b: Document, e: string, v: string) {
       if (f.fbq) return;
@@ -69,6 +63,8 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
     const fbq = (window as Window).fbq;
     fbq?.("init", pixelId);
     fbq?.("track", "PageView");
+    // eventos que aconteceram antes de o pixel iniciar (ex.: ViewContent da página do curso)
+    flushMeta();
   }, [pixelId, consent]);
 
   // page_view a cada navegação (App Router não recarrega a página)
@@ -85,7 +81,7 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
 
   const choose = (value: "granted" | "denied") => {
     try {
-      localStorage.setItem(KEY, value);
+      localStorage.setItem(CONSENT_KEY, value);
     } catch {
       /* navegação privada: vale só para esta visita */
     }
@@ -101,7 +97,7 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
         <>
       <Script id="ga-consent" strategy="afterInteractive">
         {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
-var c=null;try{c=localStorage.getItem('${KEY}')}catch(e){}
+var c=null;try{c=localStorage.getItem('${CONSENT_KEY}')}catch(e){}
 gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:c==='granted'?'granted':'denied'});
 gtag('js',new Date());gtag('config','${gaId}',{send_page_view:false});`}
       </Script>
