@@ -68,7 +68,7 @@ npm run generate:types      # (opcional) gera src/payload-types.ts
 - Metadados, Open Graph e Twitter Card em todas as páginas; título/descrição/imagem próprios por post.
 - `sitemap.xml` (inclui os posts) e `robots.txt` (bloqueia `/admin` e `/api`).
 - Dados estruturados (JSON-LD): organização, formações (Course com preço em BRL) e posts (BlogPosting).
-- Eventos de conversão enviados ao GA4 (e ao Meta Pixel, se configurado): `select_course` (clique em "Quero participar"), `click_partner`, `copy_coupon`, `click_equipment` e `click_social`. No GA4, marque `select_course` como **evento principal** para acompanhar como conversão.
+- Eventos enviados ao GA4 (e ao Meta Pixel, se configurado), descritos em `src/components/analytics/track.ts`. Funil de venda das formações: `view_item` (página da formação aberta), `view_section` (até onde a pessoa rolou), `select_item` (clique que leva à página da formação) e `begin_checkout` (clique em um botão de compra, com o valor e o lugar do botão). No GA4, marque `begin_checkout` como **evento principal** para acompanhar como conversão. A compra em si acontece na Hotmart.
 - Meta Pixel opcional (admin → Configurações do site → Analytics, ou `NEXT_PUBLIC_META_PIXEL_ID`). Só carrega depois que o visitante aceita os cookies.
 - Google Analytics 4 com **Consent Mode v2**: nada é coletado até o visitante aceitar no banner (LGPD). O link “Preferências de cookies” no rodapé reabre a escolha.
 

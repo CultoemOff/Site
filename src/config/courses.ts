@@ -73,6 +73,11 @@ export type Course = {
   /** não aparece na home (continua em /formacoes) */
   hideOnHome?: boolean;
   /**
+   * Depoimentos de alunos, cadastrados no painel (Conteúdo → Formações). Só depoimentos reais:
+   * enquanto a lista estiver vazia, a página de venda não mostra a seção.
+   */
+  testimonials?: { name: string; role?: string; text: string }[];
+  /**
    * Versão do conteúdo no código. Ao rodar `npm run seed`, a formação já existente no banco só é
    * atualizada quando este número é maior que o gravado lá (assim as edições do admin não são perdidas).
    */

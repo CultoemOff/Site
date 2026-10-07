@@ -141,6 +141,26 @@ export const Courses: CollectionConfig = {
       admin: { description: "Aparece no card com foto e uma breve descrição." },
     },
     lines("includes", "Inclui (opcional)", "Item"),
+    {
+      name: "testimonials",
+      type: "array",
+      label: "Depoimentos de alunos",
+      labels: { singular: "Depoimento", plural: "Depoimentos" },
+      admin: {
+        description:
+          "Aparecem na página de venda da formação. Use só depoimentos reais, com autorização de quem escreveu. Sem nenhum cadastrado, a seção não aparece.",
+      },
+      fields: [
+        { name: "text", type: "textarea", label: "Depoimento", required: true },
+        {
+          type: "row",
+          fields: [
+            { name: "name", type: "text", label: "Nome", required: true },
+            { name: "role", type: "text", label: "Função e igreja (opcional)", admin: { description: "Ex.: Voluntário de vídeo, Igreja X." } },
+          ],
+        },
+      ],
+    },
     { name: "topicsTitle", type: "text", label: "Título da lista de tópicos", defaultValue: "Conteúdo" },
     lines("topics", "Tópicos", "Tópico"),
     lines("appliedTo", "Aplicado a (opcional)", "Tecnologia"),

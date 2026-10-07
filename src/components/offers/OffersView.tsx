@@ -27,7 +27,7 @@ export default function OffersView({ offers, homeUrl, courses = [] }: { offers: 
           href={`${prefix}/formacoes/${promoCourse.c.id}`}
           cta="Ver a oferta"
           ctaShort="Ver oferta"
-          trackLabel={`${promoCourse.c.title} (faixa das ofertas)`}
+          track={{ label: promoCourse.c.title, id: promoCourse.c.id, location: "faixa amarela (ofertas)" }}
         />
       )}
       <Navbar base={homeUrl} />
@@ -55,7 +55,9 @@ export default function OffersView({ offers, homeUrl, courses = [] }: { offers: 
       {promoCourse && (
         <ExitPopup
           id={`ofertas-${promoCourse.c.id}`}
-          productName={`${promoCourse.c.title} (página de ofertas)`}
+          productName={promoCourse.c.title}
+          itemId={promoCourse.c.id}
+          location="popup de saída (ofertas)"
           badge={promoCourse.p.promo!.label}
           title={`Antes de sair: ${promoCourse.p.off}% de desconto no Curso de ${promoCourse.c.title}`}
           text={`${promoCourse.c.tagline} São ${promoCourse.c.topics.length} módulos em vídeo, com ${promoCourse.c.format.access.toLowerCase()} e ${GUARANTEE_DAYS} dias de garantia.`}

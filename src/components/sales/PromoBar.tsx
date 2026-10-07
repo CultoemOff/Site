@@ -14,11 +14,12 @@ type Props = {
   /** versão curta do botão para o celular */
   ctaShort?: string;
   external?: boolean;
-  trackLabel: string;
+  /** medição do clique: nome da formação, onde a faixa está e, se o botão já leva à compra, o preço */
+  track: { label: string; location: string; id?: string; value?: number };
 };
 
 /** Faixa amarela da promoção: fixa no topo, acima do menu, com o desconto, o prazo (se houver) e o botão. */
-export default function PromoBar({ label, off, endsAt, product, href, cta, ctaShort, external, trackLabel }: Props) {
+export default function PromoBar({ label, off, endsAt, product, href, cta, ctaShort, external, track: tr }: Props) {
   const inner = (
     <>
       <span className="promo-bar__cta-full">{cta}</span>
@@ -26,7 +27,14 @@ export default function PromoBar({ label, off, endsAt, product, href, cta, ctaSh
       {external && <span className="sr-only"> (abre em nova aba)</span>}
     </>
   );
-  const track = { "data-track": "select_course", "data-track-label": trackLabel };
+  // link de fora (Hotmart) = início da compra; link interno = ida para a página da formação
+  const track = {
+    "data-track": external ? "begin_checkout" : "select_item",
+    "data-track-label": tr.label,
+    "data-track-location": tr.location,
+    "data-track-id": tr.id,
+    "data-track-value": tr.value,
+  };
   return (
     <div className="promo-bar" role="note">
       <span className="promo-bar__label">{label}</span>

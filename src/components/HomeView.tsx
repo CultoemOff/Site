@@ -44,7 +44,7 @@ export default function HomeView({ courses, settings, offers, youtube, latestPos
           href={`/formacoes/${promoCourse.c.id}`}
           cta="Ver a oferta"
           ctaShort="Ver oferta"
-          trackLabel={`${promoCourse.c.title} (faixa da home)`}
+          track={{ label: promoCourse.c.title, id: promoCourse.c.id, location: "faixa amarela (home)" }}
         />
       )}
       <Navbar />

@@ -86,6 +86,9 @@ function mapCourse(d: Doc): Course {
     instructor: str(d.instructor) || undefined,
     includes: list(d.includes).length ? list(d.includes) : undefined,
     hideOnHome: Boolean(d.hideOnHome),
+    testimonials: (Array.isArray(d.testimonials) ? d.testimonials : [])
+      .map((t) => ({ name: str(obj(t).name), role: str(obj(t).role) || undefined, text: str(obj(t).text) }))
+      .filter((t) => t.name && t.text),
   };
 }
 

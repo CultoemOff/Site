@@ -148,12 +148,20 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
           <div className="course__cta">
             {/* compra direta (Hotmart) em destaque; a página da formação fica como "mais informações" */}
             {course.href && (
-              <ArrowButton href={course.href} external track={{ event: "select_course", label: course.title }}>
+              <ArrowButton
+                href={course.href}
+                external
+                track={{ event: "begin_checkout", label: course.title, id: course.id, value: hasPrice(course) ? price : undefined, location: "card da formação" }}
+              >
                 {promo ? "Comprar com desconto" : "Quero participar"}
               </ArrowButton>
             )}
             {hasSalesPage(course.id) && (
-              <ArrowButton href={`/formacoes/${course.id}`} variant={course.href ? "ghost" : "primary"}>
+              <ArrowButton
+                href={`/formacoes/${course.id}`}
+                variant={course.href ? "ghost" : "primary"}
+                track={{ event: "select_item", label: course.title, id: course.id, location: "card da formação" }}
+              >
                 Ver detalhes da formação
               </ArrowButton>
             )}

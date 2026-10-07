@@ -19,6 +19,11 @@ type Props = {
   ctaLabel: string;
   external?: boolean;
   productName: string;
+  /** medição: id da formação e preço atual (o preço só quando o botão leva direto à compra) */
+  itemId?: string;
+  value?: number;
+  /** onde o aviso aparece, ex.: "popup de saída (ofertas)" */
+  location?: string;
 };
 
 /**
@@ -27,7 +32,7 @@ type Props = {
  *  - no celular, quando ela já rolou boa parte da página e volta rápido para cima.
  * Aparece uma vez por visita. Fecha com Esc, no X ou clicando fora.
  */
-export default function ExitPopup({ id, title, text, priceFrom, price, badge, endsAt, ctaHref, ctaLabel, external, productName }: Props) {
+export default function ExitPopup({ id, title, text, priceFrom, price, badge, endsAt, ctaHref, ctaLabel, external, productName, itemId, value, location = "popup de saída" }: Props) {
   const [open, setOpen] = useState(false);
   const shown = useRef(false);
   const closeBtn = useRef<HTMLButtonElement>(null);
@@ -43,8 +48,8 @@ export default function ExitPopup({ id, title, text, priceFrom, price, badge, en
       /* sem sessionStorage: mostra mesmo assim, uma vez nesta página */
     }
     setOpen(true);
-    track("exit_popup_view", { label: productName });
-  }, [key, productName]);
+    track("exit_popup_view", { label: productName, location });
+  }, [key, productName, location]);
 
   useEffect(() => {
     let armed = false;
@@ -116,8 +121,11 @@ export default function ExitPopup({ id, title, text, priceFrom, price, badge, en
           className="btn btn--primary exit__cta"
           href={ctaHref}
           {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          data-track="select_course"
-          data-track-label={`${productName} (popup de saída)`}
+          data-track={external ? "begin_checkout" : "select_item"}
+          data-track-label={productName}
+          data-track-location={location}
+          data-track-id={itemId}
+          data-track-value={value}
           onClick={() => setOpen(false)}
         >
           <span>{ctaLabel}</span>

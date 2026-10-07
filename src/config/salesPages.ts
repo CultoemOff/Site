@@ -10,21 +10,14 @@ export type SalesPage = {
   subheadline: string;
   /** link do vídeo de vendas no YouTube; vazio = espaço reservado "vídeo em breve" */
   videoUrl: string;
-  /** três motivos pelos quais esta formação é diferente de um curso de redes comum */
-  pillars: { title: string; text: string }[];
   /** situações em que o aluno se reconhece */
   pains: string[];
   /** antes × depois */
   compare: { before: string; after: string }[];
-  /** argumento de valor: quanto custa não saber */
-  value: { title: string; text: string; points: string[] };
-  /** objeções comuns, respondidas */
-  objections: { objection: string; answer: string }[];
+  /** argumento de valor, logo acima da oferta: quanto custa não saber */
+  value: { title: string; text: string };
   /** frase-ponte depois das dores */
   bridge: string;
-  outcomesTitle: string;
-  /** o que muda depois da formação */
-  outcomes: string[];
   /** título do chamado final */
   finalTitle: string;
   /** frase curta acima do botão final */
@@ -39,20 +32,24 @@ export type SalesPage = {
   promo?: { label: string; endsAt?: string };
   /** detalhe de cada módulo (mesma ordem de course.topics); tag opcional, ex.: "Aula prática" */
   modules: { title: string; items: string[]; tag?: string }[];
-  /** módulo final em destaque (aula prática) */
+  /** projeto prático do último módulo, em destaque dentro da lista de módulos */
   capstone?: {
     badge: string;
     title: string;
     text: string;
-    points: string[];
     chain: { name: string; what: string }[];
   };
-  /** aviso de pré-requisito (ex.: rede antes do Companion) */
-  prereq?: { kicker: string; title: string; text: string; steps: string[] };
   /** seção ilustrada "por dentro das aulas" */
   inside?: { title: string; topology: string; dhcp: { title: string; text: string }; terminal: { title: string; text: string } };
-  /** amostra da apostila */
-  cheatsheet?: { title: string; label: string; rows: { cmd: string; what: string }[] };
+  /**
+   * Materiais inclusos (apostila, planilha...). `image` é a foto ou captura REAL do material,
+   * guardada em /public/images/formacoes/. Sem imagem, o card mostra só o texto.
+   */
+  materials?: {
+    title: string;
+    lead: string;
+    items: { tag: string; title: string; text: string; image?: { src: string; alt: string; width: number; height: number } }[];
+  };
   forWho: string[];
   notForWho: string[];
   faq: { question: string; answer: string }[];
@@ -67,24 +64,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     // Promoção de lançamento + Black November, sem contagem regressiva.
     // Para voltar a ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
     promo: { label: "Lançamento + Black November" },
-    pillars: [
-      {
-        title: "Feita para a técnica da igreja",
-        text: "Nada de exemplos de escritório. Tudo é explicado com câmera, mesa, switch, projeção e o computador da live.",
-      },
-      {
-        title: "Do zero, sem jargão",
-        text: "Cada conceito começa do começo, em português claro. Você não precisa ser de TI para acompanhar.",
-      },
-      {
-        title: "Você não aprende sozinho",
-        text: "Área de membros para tirar dúvidas e uma comunidade de alunos que vivem os mesmos desafios na técnica.",
-      },
-      {
-        title: "Aprendeu hoje, usa no próximo culto",
-        text: "Cada módulo termina em algo prático: um comando, um teste ou um ajuste que você aplica na sua igreja.",
-      },
-    ],
     compare: [
       { before: "Desliga e liga tudo de novo, e torce.", after: "Segue um roteiro de diagnóstico e acha a causa." },
       { before: "Depende de “alguém de TI” para qualquer problema.", after: "A própria equipe resolve o que aparece no culto." },
@@ -94,32 +73,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     ],
     value: {
       title: "Quanto custa não entender de rede?",
-      text: "Um culto com a transmissão fora do ar, uma câmera parada no meio da ministração ou uma visita técnica de emergência custam muito mais do que esta formação.",
-      points: [
-        "Custa menos do que um lanche para a equipe depois do culto.",
-        "Você paga uma vez e a equipe toda aprende a pensar a rede.",
-        "Acesso vitalício: o conteúdo fica com você para rever quando precisar.",
-        "Área de membros para tirar dúvidas e comunidade de alunos.",
-      ],
+      text: "Um culto com a transmissão fora do ar, uma câmera parada no meio da ministração ou uma visita técnica de emergência custam muito mais do que esta formação. Você paga uma vez e a equipe toda aprende a pensar a rede.",
     },
-    objections: [
-      {
-        objection: "“Eu não sou de TI.”",
-        answer: "A formação foi pensada exatamente para você: voluntário que opera a técnica e nunca estudou redes.",
-      },
-      {
-        objection: "“Minha igreja é pequena.”",
-        answer: "Rede pequena também dá problema. Com um roteador, um switch e um computador você já aplica tudo.",
-      },
-      {
-        objection: "“Não tenho tempo.”",
-        answer: "São videoaulas gravadas e o acesso é vitalício. Você assiste no seu ritmo, quando puder.",
-      },
-      {
-        objection: "“E se não for para mim?”",
-        answer: "Você tem 7 dias de garantia. Se não gostar, pede o reembolso e recebe 100% do valor de volta.",
-      },
-    ],
     pains: [
       "A fonte NDI não aparece no OBS e ninguém sabe por quê.",
       "A câmera PTZ “sumiu” da rede depois que alguém mexeu no roteador.",
@@ -130,7 +85,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       "Não sei o que é NDI, Bitfocus Companion ou Art-Net, nem como essas tecnologias podem ajudar.",
     ],
     bridge: "O problema quase nunca é o equipamento. É a rede que ninguém explicou para a equipe.",
-    outcomesTitle: "Você passa a entender a rede, em vez de depender da sorte.",
     finalTitle: "O próximo culto pode começar sem susto na rede.",
     finalNote: "Fazer o melhor para Deus também passa pela técnica.",
     verse: {
@@ -138,14 +92,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       ref: "Colossenses 3:23",
       note: "Servir com excelência é também entender o que você opera.",
     },
-    outcomes: [
-      "Saber o que é IP, máscara, gateway, DHCP e DNS, e por que isso importa no culto.",
-      "Descobrir e testar qualquer equipamento da rede com poucos comandos.",
-      "Montar a rede da técnica com cabo, switch e PoE do jeito certo.",
-      "Fazer NDI, câmeras PTZ e o celular como câmera funcionarem de forma estável.",
-      "Seguir um roteiro de diagnóstico quando algo falhar, em vez de adivinhar.",
-      "Conversar com o pessoal de TI ou com o fornecedor falando a mesma língua.",
-    ],
     modules: [
       {
         title: "Fundamentos: o que é uma rede, LAN, internet, switch e roteador",
@@ -209,21 +155,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         text: "ipconfig, ping e arp, mostrados na tela e explicados linha por linha: o que digitar e como ler a resposta.",
       },
     },
-    prereq: {
-      kicker: "Antes do Companion",
-      title: "Não adianta querer aprender Bitfocus Companion sem saber os fundamentos de rede.",
-      text: "O Companion conversa com o OBS, as câmeras PTZ, a mesa e a iluminação pela rede. Cada conexão pede um endereço IP e uma porta. Sem a base, cada botão vira tentativa e erro. Com ela, você entende por que a conexão não fecha e resolve.",
-      steps: ["Primeiro: fundamentos de rede", "Depois: Companion e automação", "Resultado: um botão comanda tudo"],
-    },
     capstone: {
       badge: "Módulo 9 · Projeto prático",
       title: "No final, você vê tudo funcionando junto.",
       text: "O último módulo é um projeto prático: a rede, a câmera PTZ, o NDI, o OBS e o Companion montados e operando ao mesmo tempo, como em um culto de verdade.",
-      points: [
-        "Você acompanha a montagem do começo ao fim, passo a passo.",
-        "Cada conceito dos módulos anteriores aparece em uso real.",
-        "É o roteiro para repetir na sua igreja.",
-      ],
       chain: [
         { name: "Rede", what: "IPs, switch e cabos conferidos" },
         { name: "Câmera PTZ", what: "encontrada e controlada pela rede" },
@@ -232,15 +167,23 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         { name: "Companion", what: "um botão comandando tudo" },
       ],
     },
-    cheatsheet: {
-      title: "Apostila de comandos e dicas rápidas",
-      label: "Redes · guia rápido",
-      rows: [
-        { cmd: "ipconfig /all", what: "Mostra IP, máscara, gateway e DNS no Windows" },
-        { cmd: "ip a", what: "Mostra os endereços da máquina no Linux" },
-        { cmd: "ping 192.168.0.50", what: "Testa se um equipamento responde" },
-        { cmd: "arp -a", what: "Lista os equipamentos vistos na rede" },
-        { cmd: "tracert / traceroute", what: "Mostra o caminho até um destino" },
+    materials: {
+      title: "Apostila e planilha para deixar na mesa da técnica.",
+      lead: "Dois materiais prontos para usar na sua igreja: um para consultar na hora do aperto, outro para a rede da técnica parar de ser um mistério.",
+      items: [
+        {
+          tag: "Para imprimir",
+          title: "Apostila de comandos e dicas rápidas",
+          text: "Os comandos e atalhos que você mais vai usar, reunidos num material pronto para imprimir e deixar ao lado do computador da live.",
+          // image: { src: "/images/formacoes/redes-apostila.jpg", alt: "Páginas da apostila de comandos e dicas rápidas", width: 1200, height: 900 },
+        },
+        {
+          tag: "Para preencher",
+          title: "Planilha de documentação de IPs",
+          // TODO (Jonas): conferir se o texto descreve a planilha como ela é.
+          text: "Um modelo para registrar o endereço IP de cada equipamento da técnica. Preenchida uma vez, a equipe para de adivinhar onde cada coisa está na rede.",
+          // image: { src: "/images/formacoes/redes-planilha-ip.jpg", alt: "Planilha de documentação de IPs preenchida com os equipamentos da técnica", width: 1200, height: 900 },
+        },
       ],
     },
     forWho: [

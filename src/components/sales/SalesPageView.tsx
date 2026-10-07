@@ -1,6 +1,7 @@
 import Image from "next/image";
 import YouTubeEmbed from "@/components/blog/YouTubeEmbed";
 import CourseDiagramView from "@/components/sections/courses/CourseDiagrams";
+import SalesTracking from "@/components/analytics/SalesTracking";
 import ArrowButton from "@/components/ui/ArrowButton";
 import { formatInstallments, formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
@@ -13,7 +14,7 @@ import "@/components/software-page/software-page.css";
 import Countdown from "./Countdown";
 import ExitPopup from "./ExitPopup";
 import PromoBar from "./PromoBar";
-import { DeckIllo, DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
+import { DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
 import "./sales.css";
 
 type Props = {
@@ -46,16 +47,17 @@ export default function SalesPageView({ course, page, audience }: Props) {
   const hasLink = Boolean(course.href);
   const ctaHref = hasLink ? course.href! : "#oferta";
   const ctaLabel = promoOn ? "Comprar com desconto" : "Comprar agora";
-  const cta = (variant: "primary" | "ghost" = "primary", label = ctaLabel) => (
+  const cta = (location: string, variant: "primary" | "ghost" = "primary", label = ctaLabel) => (
     <ArrowButton
       href={ctaHref}
       variant={variant}
       external={hasLink}
-      track={{ event: "select_course", label: course.title }}
+      track={{ event: "begin_checkout", label: course.title, id: course.id, value: price, location }}
     >
       {label}
     </ArrowButton>
   );
+  const testimonials = course.testimonials ?? [];
   const priceTag = (className = "") => (
     <p className={`sp-price ${className}`}>
       {priceFrom && (
@@ -86,7 +88,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
           cta="Comprar agora"
           ctaShort="Comprar"
           external={hasLink}
-          trackLabel={`${course.title} (faixa do topo)`}
+          track={{ label: course.title, id: course.id, location: "faixa amarela (página do curso)", value: hasLink ? price : undefined }}
         />
       )}
 
@@ -117,7 +119,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
               {course.includes?.some((x) => /comunidade|membros/i.test(x)) ? <li>Dúvidas e comunidade</li> : null}
             </ul>
             <div className="sp-hero__actions">
-              {cta()}
+              {cta("topo")}
               <div className="sp-hero__price">
                 {priceTag()}
                 <span>{GUARANTEE_DAYS} dias de garantia</span>
@@ -165,25 +167,6 @@ export default function SalesPageView({ course, page, audience }: Props) {
           </li>
         </ul>
       </div>
-
-      {/* ---------- por que é diferente ---------- */}
-      <section className="sp-section sp-section--tight sp-section--paper" aria-labelledby="sp-pilares">
-        <div className="sp-section__inner">
-          <p className="swp-kicker">Por que esta formação</p>
-          <h2 id="sp-pilares" className="swp-title">
-            Muito mais que um curso de redes: é a rede explicada para quem serve na técnica.
-          </h2>
-          <ul className="sp-pillars">
-            {page.pillars.map((p, i) => (
-              <li key={p.title} data-reveal data-glow style={{ "--i": i } as React.CSSProperties}>
-                <span className="sp-pillars__num">{String(i + 1).padStart(2, "0")}</span>
-                <h3>{p.title}</h3>
-                <p>{p.text}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
 
       {/* ---------- dores ---------- */}
       <section className="sp-section sp-section--mist" aria-labelledby="sp-dores">
@@ -237,6 +220,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
               </div>
             ))}
           </div>
+          <div className="sp-center-cta">{cta("antes e depois")}</div>
         </div>
       </section>
 
@@ -283,55 +267,8 @@ export default function SalesPageView({ course, page, audience }: Props) {
         </section>
       )}
 
-      {/* ---------- transformação ---------- */}
-      <section className="sp-section sp-section--mist" aria-labelledby="sp-depois">
-        <div className="sp-section__inner sp-split">
-          <div>
-            <p className="swp-kicker">Depois da formação</p>
-            <h2 id="sp-depois" className="swp-title">
-              {page.outcomesTitle}
-            </h2>
-            <div className="sp-split__cta">{cta("ghost")}</div>
-          </div>
-          <ul className="sp-checks">
-            {page.outcomes.map((o) => (
-              <li key={o}>
-                <Check />
-                {o}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ---------- pré-requisito: rede antes do Companion ---------- */}
-      {page.prereq && (
-        <section className="sp-section sp-section--graphite sp-prereq" aria-labelledby="sp-prereq">
-          <div className="sp-section__inner sp-prereq__layout">
-            <div>
-              <p className="swp-kicker">{page.prereq.kicker}</p>
-              <h2 id="sp-prereq" className="swp-title">
-                {page.prereq.title}
-              </h2>
-              <p className="swp-lead">{page.prereq.text}</p>
-              <ol className="sp-prereq__steps">
-                {page.prereq.steps.map((st, k) => (
-                  <li key={st} data-reveal style={{ "--i": k } as React.CSSProperties}>
-                    <span>{k + 1}</span>
-                    {st}
-                  </li>
-                ))}
-              </ol>
-            </div>
-            <div className="sp-prereq__deck" data-anim>
-              <DeckIllo />
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* ---------- módulos ---------- */}
-      <section id="modulos" className="sp-section sp-section--mist" aria-labelledby="sp-modulos">
+      <section id="modulos" className="sp-section sp-section--mist" aria-labelledby="sp-modulos" data-track-view="modulos">
         <div className="sp-section__inner">
           <p className="swp-kicker">Conteúdo</p>
           <h2 id="sp-modulos" className="swp-title">
@@ -369,75 +306,88 @@ export default function SalesPageView({ course, page, audience }: Props) {
               </li>
             ))}
           </ol>
+
+          {/* projeto prático do último módulo, em destaque dentro do conteúdo */}
+          {page.capstone && (
+            <div className="sp-capstone sp-capstone--card">
+              <div>
+                <p className="sp-capstone__badge">
+                  <span aria-hidden="true" />
+                  {page.capstone.badge}
+                </p>
+                <h3 className="swp-title">{page.capstone.title}</h3>
+                <p className="swp-lead">{page.capstone.text}</p>
+              </div>
+              <ol className="sp-chain" aria-label="O que entra em operação na aula prática">
+                {page.capstone.chain.map((c, k) => (
+                  <li key={c.name} data-reveal style={{ "--i": k } as React.CSSProperties}>
+                    <span className="sp-chain__num">{k + 1}</span>
+                    <span className="sp-chain__name">{c.name}</span>
+                    <span className="sp-chain__what">{c.what}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+          <div className="sp-center-cta">{cta("módulos")}</div>
         </div>
       </section>
 
-      {/* ---------- módulo prático em destaque ---------- */}
-      {page.capstone && (
-        <section className="sp-section sp-capstone" aria-labelledby="sp-capstone">
-          <div className="sp-section__inner sp-capstone__layout">
-            <div>
-              <p className="sp-capstone__badge">
-                <span aria-hidden="true" />
-                {page.capstone.badge}
-              </p>
-              <h2 id="sp-capstone" className="swp-title">
-                {page.capstone.title}
-              </h2>
-              <p className="swp-lead">{page.capstone.text}</p>
-              <ul className="sp-checks sp-capstone__list">
-                {page.capstone.points.map((pt) => (
-                  <li key={pt}>
-                    <Check />
-                    {pt}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <ol className="sp-chain" aria-label="O que entra em operação na aula prática">
-              {page.capstone.chain.map((c, k) => (
-                <li key={c.name} data-reveal style={{ "--i": k } as React.CSSProperties}>
-                  <span className="sp-chain__num">{k + 1}</span>
-                  <span className="sp-chain__name">{c.name}</span>
-                  <span className="sp-chain__what">{c.what}</span>
+      {/* ---------- materiais inclusos (apostila, planilha) ---------- */}
+      {page.materials && (
+        <section className="sp-section sp-section--ink" aria-labelledby="sp-materiais" data-track-view="materiais">
+          <div className="sp-section__inner">
+            <p className="swp-kicker">Materiais inclusos</p>
+            <h2 id="sp-materiais" className="swp-title">
+              {page.materials.title}
+            </h2>
+            <p className="swp-lead">{page.materials.lead}</p>
+            <ul className="sp-materials">
+              {page.materials.items.map((m, i) => (
+                <li key={m.title} className={m.image ? "" : "sp-materials__item--text"} data-reveal style={{ "--i": i } as React.CSSProperties}>
+                  {m.image && (
+                    <span className="sp-materials__img">
+                      <Image src={m.image.src} alt={m.image.alt} width={m.image.width} height={m.image.height} sizes="(max-width: 760px) 92vw, 560px" />
+                    </span>
+                  )}
+                  <div>
+                    <p className="sp-materials__tag">{m.tag}</p>
+                    <h3>{m.title}</h3>
+                    <p>{m.text}</p>
+                  </div>
                 </li>
               ))}
-            </ol>
+            </ul>
           </div>
         </section>
       )}
 
-      {/* ---------- apostila ---------- */}
-      {page.cheatsheet && (
-        <section className="sp-section sp-section--ink" aria-labelledby="sp-apostila">
-          <div className="sp-section__inner sp-split">
-            <div>
-              <p className="swp-kicker">Bônus incluso</p>
-              <h2 id="sp-apostila" className="swp-title">
-                {page.cheatsheet.title} para deixar na mesa da técnica.
-              </h2>
-              <p className="swp-lead">
-                Os comandos e atalhos que você mais vai usar, reunidos num material pronto para imprimir. Na hora do
-                aperto, é só consultar.
-              </p>
-            </div>
-            <div className="sp-sheet" aria-label="Amostra da apostila">
-              <p className="sp-sheet__head">
-                <span>Culto em Off</span>
-                <span>{page.cheatsheet.label}</span>
-              </p>
-              <dl>
-                {page.cheatsheet.rows.map((r) => (
-                  <div key={r.cmd}>
-                    <dt>
-                      <code>{r.cmd}</code>
-                    </dt>
-                    <dd>{r.what}</dd>
-                  </div>
-                ))}
-              </dl>
-              <p className="sp-sheet__foot">Amostra ilustrativa</p>
-            </div>
+      {/* ---------- depoimentos (só aparecem quando há depoimentos reais cadastrados no painel) ---------- */}
+      {testimonials.length > 0 && (
+        <section className="sp-section sp-section--paper" aria-labelledby="sp-depoimentos" data-track-view="depoimentos">
+          <div className="sp-section__inner">
+            <p className="swp-kicker">Quem já fez</p>
+            <h2 id="sp-depoimentos" className="swp-title">
+              O que os alunos dizem.
+            </h2>
+            <ul className="sp-quotes">
+              {testimonials.map((t, i) => (
+                <li key={`${t.name}-${i}`} data-reveal style={{ "--i": i % 3 } as React.CSSProperties}>
+                  <blockquote>
+                    <p>“{t.text}”</p>
+                  </blockquote>
+                  <p className="sp-quotes__who">
+                    <span className="sp-quotes__avatar" aria-hidden="true">
+                      {t.name.trim().charAt(0).toUpperCase()}
+                    </span>
+                    <span>
+                      <strong>{t.name}</strong>
+                      {t.role && <span>{t.role}</span>}
+                    </span>
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       )}
@@ -493,59 +443,19 @@ export default function SalesPageView({ course, page, audience }: Props) {
         </section>
       )}
 
-      {/* ---------- objeções ---------- */}
-      <section className="sp-section sp-section--graphite" aria-labelledby="sp-objecoes">
-        <div className="sp-section__inner">
-          <p className="swp-kicker">Talvez você esteja pensando</p>
-          <h2 id="sp-objecoes" className="swp-title">
-            “Será que é para mim?”
-          </h2>
-          <ul className="sp-objections">
-            {page.objections.map((o, i) => (
-              <li key={o.objection} data-reveal style={{ "--i": i % 2 } as React.CSSProperties}>
-                <h3>{o.objection}</h3>
-                <p>{o.answer}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ---------- valor ---------- */}
-      <section className="sp-section sp-section--paper" aria-labelledby="sp-valor">
-        <div className="sp-section__inner sp-split">
-          <div>
-            <p className="swp-kicker">Vale a pena?</p>
-            <h2 id="sp-valor" className="swp-title">
-              {page.value.title}
-            </h2>
-            <p className="swp-lead">{page.value.text}</p>
-          </div>
-          <div className="sp-value">
-            <div className="sp-value__price">
-              <span>Tudo isso por</span>
-              {priceTag("sp-price--big")}
-            </div>
-            <ul className="sp-checks">
-              {page.value.points.map((v) => (
-                <li key={v}>
-                  <Check />
-                  {v}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
       {/* ---------- oferta ---------- */}
-      <section id="oferta" className="sp-section sp-offer" aria-labelledby="sp-oferta">
+      <section id="oferta" className="sp-section sp-offer" aria-labelledby="sp-oferta" data-track-view="oferta">
+        <div className="sp-section__inner sp-offer__intro">
+          <p className="swp-kicker">Vale a pena?</p>
+          <h2 id="sp-oferta" className="swp-title">
+            {page.value.title}
+          </h2>
+          <p className="swp-lead">{page.value.text}</p>
+        </div>
         <div className="sp-section__inner sp-offer__layout">
           <div className="sp-offer__box">
             <p className="swp-kicker">O que você leva</p>
-            <h2 id="sp-oferta" className="sp-offer__title">
-              {course.title}
-            </h2>
+            <h3 className="sp-offer__title">{course.title}</h3>
             <ul className="sp-checks">
               <li>
                 <Check />
@@ -563,6 +473,15 @@ export default function SalesPageView({ course, page, audience }: Props) {
                   {i}
                 </li>
               ))}
+              {/* materiais que ainda não estão na lista "Inclui" da formação */}
+              {page.materials?.items
+                .filter((m) => !course.includes?.some((i) => i.toLowerCase().includes(m.title.toLowerCase().split(" ")[0])))
+                .map((m) => (
+                  <li key={m.title}>
+                    <Check />
+                    {m.title}
+                  </li>
+                ))}
               <li>
                 <Check />
                 {course.format.access}, no seu ritmo, no computador ou celular
@@ -598,7 +517,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
                 </small>
               </div>
             )}
-            <div className="sp-buy__cta">{cta()}</div>
+            <div className="sp-buy__cta">{cta("oferta")}</div>
             <p className="sp-buy__safe">
               <Check />
               Compra segura pela Hotmart · {GUARANTEE_DAYS} dias de garantia
@@ -608,7 +527,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
       </section>
 
       {/* ---------- FAQ ---------- */}
-      <section className="sp-section sp-section--mist" aria-labelledby="sp-faq">
+      <section className="sp-section sp-section--mist" aria-labelledby="sp-faq" data-track-view="duvidas">
         <div className="sp-section__inner sp-faq">
           <div>
             <p className="swp-kicker">Dúvidas</p>
@@ -633,7 +552,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
       </section>
 
       {/* ---------- CTA final ---------- */}
-      <section className="sp-final" aria-labelledby="sp-final">
+      <section className="sp-final" aria-labelledby="sp-final" data-track-view="final">
         <div className="sp-section__inner">
           <h2 id="sp-final" className="swp-title">
             {page.finalTitle}
@@ -649,7 +568,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
               <Countdown endsAt={endsAt} />
             </div>
           )}
-          <div className="sp-final__cta">{cta()}</div>
+          <div className="sp-final__cta">{cta("final")}</div>
         </div>
       </section>
 
@@ -661,7 +580,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
           </strong>
           <span>{endsAt ? <>acaba em <Countdown endsAt={endsAt} variant="inline" /></> : `${GUARANTEE_DAYS} dias de garantia`}</span>
         </p>
-        {cta("primary", "Comprar")}
+        {cta("barra do celular", "primary", "Comprar")}
       </div>
 
       {/* ---------- aviso ao sair da página ---------- */}
@@ -669,6 +588,8 @@ export default function SalesPageView({ course, page, audience }: Props) {
         <ExitPopup
           id={course.id}
           productName={course.title}
+          itemId={course.id}
+          value={hasLink ? price : undefined}
           badge={page.promo!.label}
           title={endsAt ? "Espere! O preço de lançamento não vai durar." : `Espere! Você ainda tem ${off}% de desconto.`}
           text={
@@ -684,6 +605,9 @@ export default function SalesPageView({ course, page, audience }: Props) {
           external={hasLink}
         />
       )}
+
+      {/* medição da página (Google Analytics): não mostra nada na tela */}
+      <SalesTracking itemId={course.id} name={course.title} value={price} />
     </>
   );
 }

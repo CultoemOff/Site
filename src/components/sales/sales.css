@@ -2162,3 +2162,150 @@ body:has(.promo-bar) .sp-offer {
     animation: none;
   }
 }
+
+/* ==========================================================
+   Página enxuta: projeto prático dentro dos módulos, materiais,
+   depoimentos e argumento de valor junto da oferta
+   ========================================================== */
+
+/* projeto prático como cartão azul dentro da seção de módulos */
+.sp-capstone--card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  margin-top: clamp(28px, 4vw, 44px);
+  padding: clamp(22px, 4vw, 44px);
+  border-radius: 24px;
+}
+.sp-capstone--card .swp-title {
+  margin-top: 10px;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+/* materiais inclusos (apostila, planilha) */
+.sp-materials {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2.4vw, 28px);
+  margin: clamp(28px, 4vw, 44px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.sp-materials li {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+  padding: clamp(18px, 2.4vw, 26px);
+  border-radius: 20px;
+  border: 1px solid var(--sp-card-border);
+  background: var(--sp-card);
+}
+.sp-materials__img {
+  display: block;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff;
+}
+.sp-materials__img img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.sp-materials h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  line-height: 1.2;
+  color: var(--sp-title);
+}
+.sp-materials p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--sp-muted);
+}
+.sp-materials .sp-materials__tag {
+  margin-bottom: 8px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sp-accent);
+}
+
+/* depoimentos (só com depoimentos reais cadastrados no painel) */
+.sp-quotes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 22px);
+  margin: clamp(28px, 4vw, 44px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.sp-quotes li {
+  display: grid;
+  gap: 18px;
+  align-content: space-between;
+  padding: clamp(18px, 2.4vw, 26px);
+  border-radius: 20px;
+  border: 1px solid var(--sp-card-border);
+  background: var(--sp-card);
+}
+.sp-quotes blockquote {
+  margin: 0;
+}
+.sp-quotes blockquote p {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--sp-text);
+}
+.sp-quotes__who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+.sp-quotes__avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--sp-accent);
+  color: #fff;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+}
+.sp-quotes__who > span:last-child {
+  display: grid;
+  line-height: 1.3;
+}
+.sp-quotes__who strong {
+  color: var(--sp-title);
+}
+.sp-quotes__who > span:last-child > span {
+  font-size: 0.86rem;
+  color: var(--sp-muted);
+}
+
+/* argumento de valor logo acima da oferta */
+.sp-offer__intro {
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+.sp-offer__intro .swp-lead {
+  max-width: 760px;
+}
+
+@media (max-width: 960px) {
+  .sp-capstone--card,
+  .sp-quotes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .sp-materials {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
