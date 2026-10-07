@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import Analytics from "@/components/analytics/Analytics";
+import CheckoutParams from "@/components/analytics/CheckoutParams";
 import { APPLE_ICON_SRC, ICON_SRC, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/config/site";
 import { getSiteSettings } from "@/lib/cms";
 import { OG_IMAGE, SITE_URL, safeGaId, safePixelId } from "@/lib/seo";
@@ -75,6 +76,8 @@ export default async function FrontendLayout({ children }: Readonly<{ children: 
           Pular para o conteúdo
         </a>
         {children}
+        {/* leva UTMs e origem da visita até o link de compra da Hotmart */}
+        <CheckoutParams />
         {(gaId || pixelId) && <Analytics gaId={gaId} pixelId={pixelId} />}
       </body>
     </html>
