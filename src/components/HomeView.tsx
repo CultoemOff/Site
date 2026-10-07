@@ -3,7 +3,6 @@ import ViewportFx from "@/components/fx/ViewportFx";
 import Hero from "@/components/hero/Hero";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
-import About from "@/components/sections/about/About";
 import Courses from "@/components/sections/courses/Courses";
 import Faq from "@/components/sections/faq/Faq";
 import Manifesto from "@/components/sections/manifesto/Manifesto";
@@ -53,7 +52,6 @@ export default function HomeView({ courses, settings, offers, youtube, latestPos
         <Problems />
         <Manifesto />
         <Courses courses={courses} />
-        <About />
         <OffersHome offers={offers} />
         <SoftwareSection />
         {youtube}

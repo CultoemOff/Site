@@ -1,5 +1,5 @@
 /**
- * Equipamentos recomendados (página /equipamentos; a seção CH 05 da home usa as Ofertas).
+ * Equipamentos recomendados (página /equipamentos; a seção CH 04 da home usa as Ofertas).
  * Estes são os valores padrão: usados quando o banco não está configurado e no `npm run seed`.
  * Depois do seed, tudo se edita no admin → Conteúdo → Equipamentos.
  */

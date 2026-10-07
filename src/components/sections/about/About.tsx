@@ -3,7 +3,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { INSTRUCTORS, NEXT_INSTRUCTOR_SOON } from "@/config/instructors";
 import "./about.css";
 
-/** CH 04: professores da escola (cards grandes). */
+/** CH 04: professores da escola (cards grandes). Fica na página /formacoes, logo depois das formações. */
 export default function About() {
   return (
     <section id="sobre" className="section section--abyss about" aria-labelledby="sobre-title">

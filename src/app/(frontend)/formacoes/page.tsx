@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ViewportFx from "@/components/fx/ViewportFx";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import About from "@/components/sections/about/About";
 import Courses from "@/components/sections/courses/Courses";
 import { getCourses, getSiteSettings } from "@/lib/cms";
 import { JsonLd, coursesJsonLd } from "@/lib/seo";
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/formacoes" },
 };
 
-/** Catálogo completo de formações (destino do botão "Ver mais formações"). */
+/** Catálogo completo de formações (destino do botão "Ver mais formações"), seguido dos professores. */
 export default async function FormacoesPage() {
   const [courses, settings] = await Promise.all([getCourses(), getSiteSettings()]);
   return (
@@ -24,6 +25,8 @@ export default async function FormacoesPage() {
       <Navbar />
       <main id="conteudo" tabIndex={-1} className="page-formacoes">
         <Courses courses={courses} showMoreButton={false} />
+        {/* professores: saíram da home e ficam aqui, junto de todas as formações */}
+        <About />
       </main>
       <Footer settings={settings} />
       <ViewportFx />
