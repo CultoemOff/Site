@@ -305,6 +305,15 @@
   margin: 1px 0 0;
   accent-color: var(--electric);
 }
+.gate__privacy {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #9fb0d6;
+}
+.gate__privacy a {
+  color: #9fc2ff;
+  text-underline-offset: 3px;
+}
 .gate__error {
   margin: 0;
   font-size: 0.84rem;

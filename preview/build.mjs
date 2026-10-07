@@ -5,7 +5,7 @@ const esbuild = require("esbuild");
 const root = path.resolve(import.meta.dirname, "..");
 const M = "/home/claude/.npm-global/lib/node_modules";
 await esbuild.build({
-  entryPoints: [path.join(root, "preview/entry.tsx"), path.join(root, "preview/entry-ptz.tsx"), path.join(root, "preview/entry-redes.tsx"), path.join(root, "preview/entry-ofertas.tsx"), path.join(root, "preview/entry-formacoes.tsx")],
+  entryPoints: [path.join(root, "preview/entry.tsx"), path.join(root, "preview/entry-ptz.tsx"), path.join(root, "preview/entry-redes.tsx"), path.join(root, "preview/entry-ofertas.tsx"), path.join(root, "preview/entry-formacoes.tsx"), path.join(root, "preview/entry-privacidade.tsx")],
   bundle: true,
   outdir: path.join(root, "preview/dist"),
   format: "iife",

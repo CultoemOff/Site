@@ -56,3 +56,38 @@
     animation: none;
   }
 }
+
+.consent a {
+  color: #9fc2ff;
+  text-underline-offset: 3px;
+}
+.consent a:hover {
+  color: #fff;
+}
+
+/* celular: aviso mais baixo, para tomar menos tela */
+@media (max-width: 760px) {
+  .consent {
+    left: 10px;
+    right: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    gap: 10px;
+    padding: 12px 14px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+  .consent p {
+    flex-basis: 100%;
+  }
+  .consent__actions {
+    width: 100%;
+  }
+  .consent__btn {
+    flex: 1;
+    min-height: 40px;
+  }
+  /* na página de venda, o aviso fica acima da barra fixa de compra, sem cobrir o botão */
+  body:has(.sp-sticky) .consent {
+    bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+  }
+}

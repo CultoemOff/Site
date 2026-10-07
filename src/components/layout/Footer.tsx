@@ -31,12 +31,13 @@ export default function Footer({ settings, minimal = false }: { settings: SiteSe
               © {year} {SITE_NAME}. Formação técnica para quem serve na igreja.
             </span>
           </p>
-          {/* preferências de cookies continuam acessíveis: não é link de saída */}
-          {hasConsent && (
-            <div className="footer__legal">
-              <ConsentLink />
-            </div>
-          )}
+          {/* links legais: abrem em outra aba, para a pessoa não perder a página da oferta */}
+          <div className="footer__legal">
+            <Link className="footer__consent" href="/privacidade" target="_blank" rel="noopener" prefetch={false}>
+              Política de privacidade
+            </Link>
+            {hasConsent && <ConsentLink />}
+          </div>
         </div>
       </footer>
     );
@@ -102,6 +103,9 @@ export default function Footer({ settings, minimal = false }: { settings: SiteSe
           © {year} {SITE_NAME}. Formação técnica para quem serve na igreja.
         </p>
         <div className="footer__legal">
+          <Link className="footer__consent" href="/privacidade">
+            Política de privacidade
+          </Link>
           {hasConsent && <ConsentLink />}
           <p className="footer__signal" aria-hidden="true">
             <span />

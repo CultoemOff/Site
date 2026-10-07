@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import "../src/app/(frontend)/globals.css";
 import "../src/components/fx/fx.css";
 import { trackClick } from "../src/components/analytics/track";
+import Analytics from "../src/components/analytics/Analytics";
 import CheckoutParams from "../src/components/analytics/CheckoutParams";
 import ViewportFx from "../src/components/fx/ViewportFx";
 import Footer from "../src/components/layout/Footer";
@@ -21,6 +22,8 @@ createRoot(document.getElementById("root")!).render(
     </main>
     <Footer settings={DEFAULT_SETTINGS} minimal />
     <CheckoutParams />
+    {/* só na prévia: mostra o aviso de cookies como no site (IDs de mentira, nada é carregado) */}
+    <Analytics gaId="G-PREVIA" pixelId="" />
     <ViewportFx />
   </>,
 );

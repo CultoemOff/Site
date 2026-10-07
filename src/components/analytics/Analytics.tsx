@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -109,7 +110,10 @@ gtag('js',new Date());gtag('config','${gaId}',{send_page_view:false});`}
         <div className="consent" role="dialog" aria-live="polite" aria-label="Preferências de cookies">
           <p>
             Usamos cookies {gaId && pixelId ? "do Google Analytics e da Meta" : pixelId ? "da Meta" : "do Google Analytics"} para
-            entender como o site é usado e melhorar o conteúdo. Você decide.
+            entender como o site é usado{pixelId ? " e medir nossos anúncios" : " e melhorar o conteúdo"}. Você decide.{" "}
+            <Link href="/privacidade" prefetch={false}>
+              Política de privacidade
+            </Link>
           </p>
           <div className="consent__actions">
             <button type="button" className="consent__btn" onClick={() => choose("denied")}>

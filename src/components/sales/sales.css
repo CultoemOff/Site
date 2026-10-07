@@ -2434,3 +2434,33 @@ body:has(.promo-bar) .sp-offer {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ==========================================================
+   Celular: quem chega por anúncio vê o botão de compra sem rolar
+   ========================================================== */
+@media (max-width: 760px) {
+  /* botão e preço sobem para logo abaixo da promessa; os selos (módulos, acesso...) vão para depois */
+  .sp-hero__text {
+    display: flex;
+    flex-direction: column;
+  }
+  .sp-hero__actions {
+    order: 1;
+    margin-top: 20px;
+  }
+  .sp-hero__facts {
+    order: 2;
+  }
+  .sp-hero__title {
+    font-size: clamp(2rem, 9vw, 2.6rem);
+  }
+  .sp-hero__sub {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  /* o botão do topo ocupa a largura toda: mais fácil de tocar */
+  .sp-hero__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useId, useState, type FormEvent } from "react";
 import { track } from "@/components/analytics/track";
 import { COUNTRIES } from "@/config/countries";
@@ -237,6 +238,13 @@ export default function DownloadGate({ source, productName, downloadUrl = "", ac
         />
         <label htmlFor={`${uid}-consent`}>{LEAD_CONSENT_TEXT}</label>
       </div>
+      <p className="gate__privacy">
+        Saiba como usamos os seus dados na{" "}
+        <Link href="/privacidade" target="_blank" rel="noopener" prefetch={false}>
+          Política de privacidade
+        </Link>
+        .
+      </p>
       {err("consent")}
 
       {errors.form && (

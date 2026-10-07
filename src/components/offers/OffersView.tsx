@@ -49,6 +49,7 @@ export default function OffersView({ offers, homeUrl, courses = [] }: { offers: 
       <footer className="offers__footer">
         <a href={homeUrl}>{SITE_NAME}</a>
         <span>Formação técnica para voluntários de igreja</span>
+        <a href={`${prefix}/privacidade`}>Política de privacidade</a>
       </footer>
 
       {/* aviso ao sair: apresenta o curso em promoção a quem veio só pelas ofertas (uma vez por visita) */}
