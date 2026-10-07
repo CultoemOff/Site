@@ -45,6 +45,12 @@
 .teacher__photo img {
   object-fit: cover;
 }
+/* foto em pé (4:5), com o equipamento aparecendo */
+.teacher__photo--scene {
+  width: 168px;
+  height: 210px;
+  border-radius: 18px;
+}
 .teacher__photo--soon {
   display: grid;
   place-items: center;
@@ -170,6 +176,11 @@
   .teacher__photo {
     width: 96px;
     height: 96px;
+  }
+  .teacher__photo--scene {
+    width: 112px;
+    height: 140px;
+    border-radius: 14px;
   }
   .teacher__photo--soon svg {
     width: 42px;

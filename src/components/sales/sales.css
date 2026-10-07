@@ -2395,6 +2395,25 @@ body:has(.promo-bar) .sp-offer {
   height: 96px;
   margin-bottom: 6px;
 }
+/* foto do professor em ação (4:5), no topo do cartão */
+.sp-fit__scene {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #0f1d47;
+}
+.sp-fit__scene img {
+  object-fit: cover;
+}
+@media (max-width: 960px) {
+  /* coluna única: a foto não ocupa a largura toda, para o cartão não ficar enorme */
+  .sp-fit__scene {
+    width: min(100%, 340px);
+  }
+}
 .sp-fit__teacher h3 {
   margin: 0;
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;

@@ -409,9 +409,15 @@ export default function SalesPageView({ course, page, audience }: Props) {
           </div>
           {teacher && (
             <aside className="sp-fit__teacher" aria-labelledby="sp-prof">
-              <span className="sp-teacher__photo">
-                <Image src={teacher.photo} alt={`Foto de ${teacher.name}`} fill sizes="120px" />
-              </span>
+              {teacher.photoScene ? (
+                <span className="sp-fit__scene">
+                  <Image src={teacher.photoScene} alt={`${teacher.name} na mesa de som`} fill sizes="(max-width: 960px) 92vw, 400px" />
+                </span>
+              ) : (
+                <span className="sp-teacher__photo">
+                  <Image src={teacher.photo} alt={`Foto de ${teacher.name}`} fill sizes="120px" />
+                </span>
+              )}
               <p className="swp-kicker">Seu professor</p>
               <h3 id="sp-prof">{teacher.name}</h3>
               <p className="sp-teacher__role">{teacher.role}</p>

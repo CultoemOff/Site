@@ -16,8 +16,14 @@ export default function About() {
           <ul className="about__team-list">
             {INSTRUCTORS.map((t, i) => (
               <li key={t.id} className="teacher" data-reveal style={{ "--i": i % 2 } as React.CSSProperties}>
-                <span className="teacher__photo">
-                  <Image src={t.photoLarge ?? t.photo} alt={`Foto de ${t.name}`} fill sizes="(max-width: 560px) 96px, 132px" />
+                {/* com foto "em ação" (photoScene), o card mostra a foto em pé, com o equipamento aparecendo */}
+                <span className={`teacher__photo${t.photoScene ? " teacher__photo--scene" : ""}`}>
+                  <Image
+                    src={t.photoScene ?? t.photoLarge ?? t.photo}
+                    alt={`Foto de ${t.name}`}
+                    fill
+                    sizes={t.photoScene ? "(max-width: 560px) 112px, 168px" : "(max-width: 560px) 96px, 132px"}
+                  />
                 </span>
                 <div className="teacher__head">
                   <p className="teacher__role">{t.role}</p>
