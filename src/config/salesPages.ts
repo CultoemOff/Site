@@ -66,9 +66,9 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     subheadline:
       "Entenda o que acontece entre a câmera, a mesa, o switch e o computador da live, e resolva os problemas de rede do culto com segurança, sem precisar virar técnico de TI.",
     videoUrl: "",
-    // Promoção de lançamento + Black November, sem contagem regressiva.
+    // Preço especial de lançamento, sem contagem regressiva.
     // Para voltar a ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
-    promo: { label: "Lançamento + Black November" },
+    promo: { label: "Preço especial de lançamento" },
     compare: [
       { before: "A fonte NDI não aparece no OBS e ninguém sabe por quê.", after: "Você segue um roteiro de diagnóstico e acha a causa." },
       { before: "A câmera PTZ “sumiu” da rede depois que alguém mexeu no roteador.", after: "A rede da técnica fica mapeada e documentada: cada equipamento com o seu IP." },
