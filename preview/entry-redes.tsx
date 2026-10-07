@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!).render(
     <main id="conteudo" tabIndex={-1} className="sp-main">
       <SalesPageView course={course} page={SALES_PAGES[course.id]} audience={DEFAULT_SETTINGS.audience} />
     </main>
-    <Footer settings={DEFAULT_SETTINGS} />
+    <Footer settings={DEFAULT_SETTINGS} minimal />
     <ViewportFx />
   </>,
 );

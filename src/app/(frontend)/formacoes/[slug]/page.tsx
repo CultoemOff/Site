@@ -84,7 +84,7 @@ export default async function CourseSalesPage({ params }: Props) {
       <main id="conteudo" tabIndex={-1} className="sp-main">
         <SalesPageView course={course} page={page} audience={settings.audience} />
       </main>
-      <Footer settings={settings} />
+      <Footer settings={settings} minimal />
       <ViewportFx />
     </>
   );

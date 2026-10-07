@@ -117,6 +117,26 @@
   border-color: #6aa5ff;
   background: rgba(29, 78, 216, 0.3);
 }
+/* versão enxuta (página de venda): uma linha só, sem links de navegação */
+.footer--minimal {
+  padding: 22px 20px 26px;
+}
+.footer--minimal .footer__bottom {
+  align-items: center;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.footer__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer__mark img {
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
 .footer__legal {
   display: flex;
   flex-wrap: wrap;
