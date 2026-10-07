@@ -23,7 +23,7 @@ createRoot(document.getElementById("root")!).render(
     <Footer settings={DEFAULT_SETTINGS} minimal />
     <CheckoutParams />
     {/* só na prévia: mostra o aviso de cookies como no site (IDs de mentira, nada é carregado) */}
-    <Analytics gaId="G-PREVIA" pixelId="" />
+    <Analytics gaId="G-PREVIA" pixelId={new URLSearchParams(location.search).get("pixel") ?? ""} />
     <ViewportFx />
   </>,
 );

@@ -69,7 +69,9 @@ npm run generate:types      # (opcional) gera src/payload-types.ts
 - `sitemap.xml` (inclui os posts) e `robots.txt` (bloqueia `/admin` e `/api`).
 - Dados estruturados (JSON-LD): organização, formações (Course com preço em BRL) e posts (BlogPosting).
 - Eventos enviados ao GA4 (e ao Meta Pixel, se configurado), descritos em `src/components/analytics/track.ts`. Funil de venda das formações: `view_item` (página da formação aberta), `view_section` (até onde a pessoa rolou), `select_item` (clique que leva à página da formação) e `begin_checkout` (clique em um botão de compra, com o valor e o lugar do botão). No GA4, marque `begin_checkout` como **evento principal** para acompanhar como conversão. A compra em si acontece na Hotmart.
-- Meta Pixel opcional (admin → Configurações do site → Analytics, ou `NEXT_PUBLIC_META_PIXEL_ID`). Só carrega depois que o visitante aceita os cookies.
+- Meta Pixel opcional: ID em `NEXT_PUBLIC_META_PIXEL_ID` (ou no admin → Site → Configurações do site → Analytics, que tem prioridade). Vazio = o pixel não é carregado. Só carrega depois que o visitante aceita os cookies, com a página já interativa. Eventos: `PageView` a cada troca de página, `ViewContent` na página de uma formação, `CliqueComprar` (personalizado) no clique de um botão de compra e `Lead` nos cadastros. O `InitiateCheckout` e o `Purchase` são disparados pela Hotmart, no checkout.
+- Link de compra (Hotmart): as UTMs que chegam na URL da página são repassadas ao link `pay.hotmart.com`, junto com o parâmetro de origem `sck` no formato `<origem>|<botão>` (ex.: `ig|oferta`, `site|topo`). Regras em `src/lib/checkoutLink.ts`.
+- Política de privacidade em `/privacidade` (texto em `src/components/privacy/PrivacyView.tsx`; e-mail de contato e data em `src/config/privacy.ts`).
 - Google Analytics 4 com **Consent Mode v2**: nada é coletado até o visitante aceitar no banner (LGPD). O link “Preferências de cookies” no rodapé reabre a escolha.
 
 ## Onde editar no código
