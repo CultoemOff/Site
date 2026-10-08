@@ -4,6 +4,12 @@
  * Preço, professor, módulos e status vêm de src/config/courses.ts (ou do admin).
  */
 
+/** um módulo da formação; `items` são os títulos das aulas e `lessons` sai da contagem deles */
+export type SalesModule = { title: string; items: string[]; tag?: string };
+
+/** total de aulas do curso principal (cada item de módulo é uma aula) */
+export const lessonCount = (modules: SalesModule[]) => modules.reduce((n, m) => n + m.items.length, 0);
+
 export type SalesPage = {
   /** título principal (promessa) */
   headline: string;
@@ -29,7 +35,9 @@ export type SalesPage = {
    */
   promo?: { label: string; endsAt?: string };
   /** detalhe de cada módulo (mesma ordem de course.topics); tag opcional, ex.: "Aula prática" */
-  modules: { title: string; items: string[]; tag?: string }[];
+  modules: SalesModule[];
+  /** módulo bônus lançado depois do curso principal: aparece à parte e não entra na contagem de módulos e aulas */
+  extraModule?: SalesModule & { note: string };
   /** projeto prático do último módulo, em destaque dentro da lista de módulos */
   capstone?: {
     badge: string;
@@ -89,56 +97,116 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       ref: "Colossenses 3:23",
       note: "Servir com excelência é também entender o que você opera.",
     },
+    // Títulos das aulas conforme os roteiros (01/10/2026): cada item é uma aula. 53 aulas no curso principal.
     modules: [
       {
-        title: "Fundamentos: o que é uma rede, LAN, internet, switch e roteador",
-        items: ["O que é uma rede local", "LAN e internet", "Diferença entre switch e roteador", "Como os equipamentos da técnica se conectam"],
+        title: "Entendendo redes",
+        items: ["O que é uma rede?", "Rede local x internet", "Como os equipamentos se comunicam", "A rede de uma igreja moderna"],
       },
       {
-        title: "Endereçamento: IP, máscara, gateway, DHCP e DNS",
-        items: ["Endereço IP e IPv4", "IP privado e IP público", "Máscara e faixa de rede", "Gateway, DHCP e DNS"],
+        title: "IP na prática",
+        items: [
+          "O que é um endereço IP?",
+          "DHCP: quem entrega os IPs",
+          "IP automático x IP fixo",
+          "Máscara e gateway",
+          "DNS",
+          "A regra de ouro",
+        ],
       },
       {
-        title: "Comandos de rede no Windows e no Linux",
+        title: "Comandos essenciais no Windows e no Linux",
         tag: "Aula prática",
-        items: ["Descobrir o próprio IP", "Testar se um equipamento responde", "Ver quem está na rede", "Guia rápido para imprimir"],
+        items: [
+          "Abrindo o terminal",
+          "ipconfig e ip a: descobrindo o seu IP",
+          "ping: o equipamento responde?",
+          "DNS pelo terminal",
+          "Rede privada no Windows",
+          "A cola do técnico",
+        ],
       },
       {
-        title: "Cabos, switches e PoE",
+        title: "Equipamentos, cabos e PoE",
         tag: "Aula prática",
-        items: ["Cabo de rede e conectores", "Switch gerenciável e não gerenciável", "PoE: energia pelo cabo", "Organizando a rede da técnica"],
+        items: [
+          "Modem, roteador, switch e access point",
+          "Por dentro do roteador",
+          "Entendendo o switch",
+          "Switch gerenciável",
+          "Cabos de rede",
+          "Até onde vai cada cabo",
+          "PoE: energia pelo cabo",
+        ],
       },
       {
         title: "Wi-Fi na igreja",
         tag: "Aula prática",
-        items: ["Quando usar Wi-Fi e quando usar cabo", "Rede da técnica x rede dos membros", "Cuidados com a transmissão"],
-      },
-      {
-        title: "NDI na prática",
-        tag: "Aula prática",
-        items: ["O que é NDI", "Por que a fonte não aparece", "NDI e OBS", "Boas práticas de rede para vídeo"],
-      },
-      {
-        title: "Câmeras PTZ e o celular como câmera (Iriun)",
-        tag: "Aula prática",
-        items: ["Colocando a câmera PTZ na rede", "Controle e descoberta", "Usando o celular como câmera com o Iriun", "Estabilidade na hora do culto"],
-      },
-      {
-        title: "Troubleshooting: encontrando o problema antes do culto",
-        tag: "Aula prática",
-        items: ["Roteiro de diagnóstico passo a passo", "Problemas mais comuns da técnica", "Checklist antes do culto"],
-      },
-      {
-        title: "Tudo funcionando junto: OBS, NDI, PTZ, rede e Companion",
-        tag: "Projeto prático",
         items: [
-          "A rede montada e conferida",
-          "Câmera PTZ respondendo na rede",
-          "Vídeo chegando por NDI no OBS",
-          "Companion disparando as ações com um botão",
+          "Como o Wi-Fi funciona",
+          "Canais, largura e sinal",
+          "Repetidor, mesh e access point",
+          "Rede da produção x rede dos visitantes",
+          "Celular como câmera com o Iriun",
+          "Do celular no Wi-Fi até o OBS",
+        ],
+      },
+      {
+        title: "NDI e câmeras PTZ",
+        tag: "Aula prática",
+        items: [
+          "NDI: vídeo pela rede",
+          "Banda: Full NDI x NDI HX",
+          "NDI Tools",
+          "NDI no OBS",
+          "Áudio por NDI",
+          "Câmeras PTZ",
+          "A câmera PTZ na rede",
+          "Comandos de PTZ",
+        ],
+      },
+      {
+        title: "Controle pela rede",
+        tag: "Aula prática",
+        items: ["IP, porta, TCP e UDP", "Os protocolos da igreja", "OBS WebSocket e firewall", "Companion: visão geral"],
+      },
+      {
+        title: "Prática: NDI de ponta a ponta",
+        tag: "Módulo prático",
+        items: [
+          "O cenário e o plano",
+          "Preparando a rede",
+          "NDI na câmera PTZ",
+          "O PC do telão",
+          "O PC da transmissão",
+          "Testes e checklist",
+        ],
+      },
+      {
+        title: "Planejar, diagnosticar e projeto final",
+        tag: "Projeto final",
+        items: [
+          "Planejando a rede",
+          "Organizando os IPs",
+          "Boas práticas",
+          "Método de diagnóstico",
+          "Problemas reais",
+          "Projeto final: a rede completa de uma igreja",
         ],
       },
     ],
+    extraModule: {
+      title: "Acesso remoto",
+      tag: "Módulo extra",
+      note: "Lançado depois do curso principal",
+      items: [
+        "Acessar a rede da igreja de fora",
+        "IP público, CGNAT e portas",
+        "VPN na prática",
+        "Área de trabalho remota",
+        "Mesa, câmeras, OBS e Companion de longe",
+      ],
+    },
     inside: {
       title: "Por dentro das aulas: você enxerga a rede da sua técnica.",
       topology:
@@ -153,15 +221,15 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
     },
     capstone: {
-      badge: "Módulo 9 · Projeto prático",
-      title: "No final, você vê tudo funcionando junto.",
-      text: "O último módulo é um projeto prático: a rede, a câmera PTZ, o NDI, o OBS e o Companion montados e operando ao mesmo tempo, como em um culto de verdade.",
+      badge: "Módulos 8 e 9 · Prática e projeto final",
+      title: "No final, você vê tudo funcionando junto e projeta a rede da sua igreja.",
+      text: "No módulo 8 você acompanha, na tela, uma câmera PTZ, o PC do telão e o PC da transmissão ligados por NDI, do zero ao checklist. No módulo 9 vem o projeto final: a rede completa de uma igreja, com topologia, lista de compras, tabela de IPs e teste.",
       chain: [
-        { name: "Rede", what: "IPs, switch e cabos conferidos" },
-        { name: "Câmera PTZ", what: "encontrada e controlada pela rede" },
-        { name: "NDI", what: "vídeo trafegando entre os equipamentos" },
-        { name: "OBS", what: "recebendo as fontes e transmitindo" },
-        { name: "Companion", what: "um botão comandando tudo" },
+        { name: "Rede", what: "switch, cabos e IPs conferidos" },
+        { name: "Câmera PTZ", what: "enviando vídeo por NDI" },
+        { name: "PC do telão", what: "entrando na rede como fonte NDI" },
+        { name: "OBS", what: "recebendo câmera e telão para transmitir" },
+        { name: "Projeto final", what: "a rede de uma igreja, do zero" },
       ],
     },
     materials: {
@@ -192,7 +260,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     ],
     notForWho: [
       "Quem quer se formar administrador de redes corporativas.",
-      "Quem procura VLAN, QoS e IGMP em profundidade: esses temas ficam para o Curso 2.",
+      "Quem procura projeto de VLAN e QoS em profundidade: esses temas ficam para o Curso 2.",
     ],
     faq: [
       {
@@ -201,7 +269,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "Como são as aulas?",
-        answer: "Videoaulas gravadas, divididas em 9 módulos. Seis deles têm aula prática e o último é um projeto prático com tudo funcionando junto. Você assiste no seu ritmo, pelo computador ou celular, com acesso vitalício.",
+        answer: "São 53 videoaulas gravadas, divididas em 9 módulos. Boa parte tem demonstração na tela, o módulo 8 é todo prático (NDI de ponta a ponta) e o módulo 9 termina com o projeto final. Depois do lançamento chega um módulo extra de acesso remoto, com mais 5 aulas. Você assiste no seu ritmo, pelo computador ou celular, com acesso vitalício.",
       },
       {
         question: "E se eu tiver dúvidas durante as aulas?",
@@ -209,7 +277,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "O curso ensina Dante e Bitfocus Companion?",
-        answer: "O Companion aparece no projeto prático do módulo 9, em uso junto com OBS, NDI e PTZ, e tem uma formação própria para quem quiser se aprofundar. O Dante é citado como exemplo e terá uma formação dedicada no futuro.",
+        answer: "O Companion aparece no módulo 7, numa visão geral do que ele é e do que precisa da rede, e terá uma formação própria para quem quiser se aprofundar. O Dante é citado como exemplo de áudio em rede e também terá uma formação dedicada no futuro.",
       },
       {
         question: "Preciso ter algum equipamento para acompanhar?",

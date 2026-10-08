@@ -5,7 +5,7 @@ import SalesTracking from "@/components/analytics/SalesTracking";
 import ArrowButton from "@/components/ui/ArrowButton";
 import { formatInstallments, formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
-import type { SalesPage } from "@/config/salesPages";
+import { lessonCount, type SalesModule, type SalesPage } from "@/config/salesPages";
 import { GUARANTEE_DAYS, LOGO_SRC, type SiteSettingsData } from "@/config/site";
 import { resolvePrice } from "@/lib/pricing";
 import "@/components/blog/blog.css";
@@ -37,6 +37,9 @@ const Cross = () => (
 /** Página de venda de uma formação: promessa, vídeo, dores, módulos, professor, oferta com prazo, garantia e FAQ. */
 export default function SalesPageView({ course, page, audience }: Props) {
   const teacher = getInstructor(course.instructor);
+  // cada item de módulo é uma aula; o módulo extra fica fora da contagem
+  const lessons = lessonCount(page.modules);
+  const moduleFacts = `${page.modules.length} módulos · ${lessons} aulas`;
 
   // Promoção: vale enquanto o prazo não passou. Depois disso a página mostra o preço cheio.
   const { price, priceFrom, off, promo, installments } = resolvePrice(course);
@@ -112,7 +115,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
             <h1 className="sp-hero__title">{page.headline}</h1>
             <p className="sp-hero__sub">{page.subheadline}</p>
             <ul className="sp-hero__facts" aria-label="Resumo">
-              <li>{page.modules.length} módulos em vídeo</li>
+              <li>{moduleFacts} em vídeo</li>
               {/* carga horária: só aparece quando está definida (0 ou vazio = não mostra) */}
               {course.format.hours > 0 && <li>{course.format.hours} horas</li>}
               <li>{course.format.access}</li>
@@ -159,8 +162,8 @@ export default function SalesPageView({ course, page, audience }: Props) {
             </li>
           ))}
           <li>
-            <strong>{page.modules.length} módulos</strong>
-            <span>com aulas práticas e projeto final</span>
+            <strong>{lessons} aulas</strong>
+            <span>em {page.modules.length} módulos, com prática e projeto final</span>
           </li>
           <li>
             <strong>{GUARANTEE_DAYS} dias</strong>
@@ -292,10 +295,10 @@ export default function SalesPageView({ course, page, audience }: Props) {
         <div className="sp-section__inner">
           <p className="swp-kicker">Conteúdo</p>
           <h2 id="sp-modulos" className="swp-title">
-            {page.modules.length} módulos, do conceito à prática.
+            {page.modules.length} módulos e {lessons} aulas, do conceito à prática.
           </h2>
           <ul className="sp-hero__facts sp-facts--modules" aria-label="Formato">
-            <li>{page.modules.length} módulos</li>
+            <li>{moduleFacts}</li>
             <li>{course.format.hours > 0 ? `${course.format.hours} horas de videoaulas gravadas` : "Videoaulas gravadas"}</li>
             <li>{course.format.access}</li>
             {course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
@@ -303,28 +306,11 @@ export default function SalesPageView({ course, page, audience }: Props) {
           </ul>
           <ol className="sp-modules">
             {page.modules.map((m, i) => (
-              <li key={m.title}>
-                <details className={`sp-module${page.capstone && i === page.modules.length - 1 ? " sp-module--star" : ""}`} open={i === 0}>
-                  <summary>
-                    <span className="sp-module__num">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="sp-module__title">
-                      {m.title}
-                      {m.tag && (
-                        <em className={`sp-module__tag${m.tag.startsWith("Projeto") ? " sp-module__tag--project" : ""}`}>{m.tag}</em>
-                      )}
-                    </span>
-                    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                      <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </summary>
-                  <ul>
-                    {m.items.map((it) => (
-                      <li key={it}>{it}</li>
-                    ))}
-                  </ul>
-                </details>
-              </li>
+              <ModuleItem key={m.title} m={m} num={String(i + 1).padStart(2, "0")} star={Boolean(page.capstone) && i === page.modules.length - 1} open={i === 0} />
             ))}
+            {page.extraModule && (
+              <ModuleItem m={page.extraModule} num="+" extra note={page.extraModule.note} />
+            )}
           </ol>
 
           {/* projeto prático do último módulo, em destaque dentro do conteúdo */}
@@ -444,9 +430,15 @@ export default function SalesPageView({ course, page, audience }: Props) {
             <ul className="sp-checks">
               <li>
                 <Check />
-                {page.modules.length} módulos em videoaulas gravadas
+                {lessons} videoaulas gravadas em {page.modules.length} módulos
                 {course.format.hours > 0 ? ` (${course.format.hours} horas)` : ""}
               </li>
+              {page.extraModule && (
+                <li>
+                  <Check />
+                  Módulo extra: {page.extraModule.title.toLowerCase()} ({page.extraModule.items.length} aulas, {page.extraModule.note.toLowerCase()})
+                </li>
+              )}
               {page.modules.some((m) => m.tag) && (
                 <li>
                   <Check />
@@ -596,5 +588,34 @@ export default function SalesPageView({ course, page, audience }: Props) {
       {/* medição da página (Google Analytics): não mostra nada na tela */}
       <SalesTracking itemId={course.id} name={course.title} value={price} />
     </>
+  );
+}
+
+/** um módulo da lista (acordeão), com a contagem de aulas no título */
+function ModuleItem({ m, num, star, open, extra, note }: { m: SalesModule; num: string; star?: boolean; open?: boolean; extra?: boolean; note?: string }) {
+  const cls = `sp-module${star ? " sp-module--star" : ""}${extra ? " sp-module--extra" : ""}`;
+  return (
+    <li>
+      <details className={cls} open={open}>
+        <summary>
+          <span className="sp-module__num">{num}</span>
+          <span className="sp-module__title">
+            {m.title}
+            <small className="sp-module__count">
+              {m.items.length} aulas{note ? ` · ${note}` : ""}
+            </small>
+            {m.tag && <em className={`sp-module__tag${/^(Projeto|Módulo extra)/.test(m.tag) ? " sp-module__tag--project" : ""}`}>{m.tag}</em>}
+          </span>
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </summary>
+        <ol className="sp-module__lessons">
+          {m.items.map((it) => (
+            <li key={it}>{it}</li>
+          ))}
+        </ol>
+      </details>
+    </li>
   );
 }

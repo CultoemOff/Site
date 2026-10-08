@@ -398,11 +398,24 @@
 .sp-module[open] summary svg {
   transform: rotate(180deg);
 }
-.sp-module ul {
+.sp-module__count {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+.sp-module--extra {
+  border-style: dashed;
+}
+.sp-module__lessons {
   margin: 0;
   padding: 0 18px 16px 58px;
   display: grid;
   gap: 6px;
+  list-style: decimal;
   color: var(--muted-on-dark);
   font-size: 0.94rem;
 }
@@ -657,8 +670,8 @@
     width: 120px;
     height: 120px;
   }
-  .sp-module ul {
-    padding-left: 18px;
+  .sp-module__lessons {
+    padding-left: 36px;
   }
   .sp-pains {
     grid-template-columns: 1fr;
@@ -2463,4 +2476,13 @@ body:has(.promo-bar) .sp-offer {
     width: 100%;
     justify-content: center;
   }
+}
+
+/* lista de aulas e contagem: seguem as cores do tema da seção (legíveis no fundo claro) */
+.sp-section .sp-module__lessons {
+  color: var(--sp-text);
+}
+.sp-section .sp-module__count {
+  color: var(--sp-muted);
+  opacity: 1;
 }

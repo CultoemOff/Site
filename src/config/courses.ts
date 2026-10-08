@@ -39,7 +39,7 @@ export const formatPrice = (value: number) =>
 /** Parcelamento: { count: 8, value: 10.03 } → "8x de R$ 10,03" */
 export const formatInstallments = (i: { count: number; value: number }) => `${i.count}x de ${formatPrice(i.value)}`;
 
-export type CourseRevScope = "price" | "href" | "testimonials" | "hours";
+export type CourseRevScope = "price" | "href" | "testimonials" | "hours" | "topics";
 
 export type CourseDiagram = "network" | "analog" | "live" | "companion" | "dmx";
 
@@ -86,7 +86,8 @@ export type Course = {
   rev?: number;
   /**
    * O que a mudança de `rev` altera no banco. "price" = só preço, parcelas e status; "href" = só o link de compra;
-   * "testimonials" = só os depoimentos; "hours" = só a carga horária. Pode ser uma lista. Textos e demais campos editados no admin ficam como estão.
+   * "testimonials" = só os depoimentos; "hours" = só a carga horária;
+   * "topics" = só o resumo, o título da lista de módulos, os módulos e as tecnologias aplicadas. Pode ser uma lista. Textos e demais campos editados no admin ficam como estão.
    * Sem este campo, atualiza tudo.
    */
   revScope?: CourseRevScope | CourseRevScope[];
@@ -103,27 +104,28 @@ export const COURSES: Course[] = [
     title: "Redes para Igrejas",
     tagline: "Entenda a infraestrutura por trás das tecnologias que você já usa.",
     summary:
-      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. Videoaulas gravadas em 9 módulos, do conceito ao projeto prático com OBS, NDI, PTZ e Companion funcionando juntos.",
+      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. São 53 videoaulas gravadas em 9 módulos, do primeiro conceito ao projeto final da rede completa de uma igreja, com prática de NDI de ponta a ponta entre câmera PTZ, telão e transmissão.",
     question: "Por que dois equipamentos ligados no mesmo switch não conseguem conversar?",
-    topicsTitle: "9 módulos",
-    // Módulos do Curso 1 (básico). Tópicos avançados (VLAN, QoS, IGMP) ficam para o Curso 2.
-    // TODO: conferir os títulos com o roteiro final das aulas.
+    topicsTitle: "9 módulos · 53 aulas",
+    // Módulos conforme os roteiros das aulas (01/10/2026). VLAN e QoS em profundidade ficam para o Curso 2.
+    // O módulo extra de acesso remoto (5 aulas) sai depois e aparece só na página de vendas.
     topics: [
-      "Fundamentos: o que é uma rede, LAN, internet, switch e roteador",
-      "Endereçamento: IP, máscara, gateway, DHCP e DNS",
-      "Comandos de rede no Windows e no Linux",
-      "Cabos, switches e PoE",
-      "Wi-Fi na igreja",
-      "NDI na prática",
-      "Câmeras PTZ e o celular como câmera (Iriun)",
-      "Troubleshooting: encontrando o problema antes do culto",
-      "Projeto prático: OBS, NDI, PTZ, rede e Companion funcionando juntos",
+      "Entendendo redes",
+      "IP na prática: IP, DHCP, máscara, gateway e DNS",
+      "Comandos essenciais no Windows e no Linux",
+      "Equipamentos, cabos e PoE",
+      "Wi-Fi na igreja e o celular como câmera",
+      "NDI e câmeras PTZ",
+      "Controle pela rede: portas, protocolos, OBS e Companion",
+      "Prática: NDI de ponta a ponta",
+      "Planejar, diagnosticar e projeto final",
     ],
     appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
-    // rev 9: grava no banco só o link de compra (rev 7), os depoimentos (rev 8) e a carga horária zerada (rev 9);
-    // o resto do painel fica como está
-    rev: 9,
-    revScope: ["href", "testimonials", "hours"],
+    // rev 10: grava no banco só o resumo e os módulos (escopo "topics"), atualizados pelos roteiros das aulas;
+    // os escopos anteriores ficam na lista porque já foram aplicados e não mudam nada de novo
+    // (depoimentos só entram se o painel não tiver nenhum). O resto do painel fica como está.
+    rev: 10,
+    revScope: ["href", "testimonials", "hours", "topics"],
     // Depoimentos de alunos reais, com uso do nome autorizado (confirmado pelo Jonas em 07/10/2026; texto como ele mandou).
     // Depois de publicados, quem manda é o painel.
     testimonials: [

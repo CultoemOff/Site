@@ -89,7 +89,7 @@ for (const [i, c] of COURSES.entries()) {
       const scopes = c.revScope ? (Array.isArray(c.revScope) ? c.revScope : [c.revScope]) : [];
       if (scopes.length > 0) {
         // mudança dirigida: só os campos do(s) escopo(s); textos e demais campos do painel ficam como estão
-        const { price, priceFrom, installmentCount, installmentValue, status, href, contentRev } = data;
+        const { price, priceFrom, installmentCount, installmentValue, status, href, contentRev, summary, topicsTitle, topics, appliedTo } = data;
         const hasTestimonials = Array.isArray(doc.testimonials) && doc.testimonials.length > 0;
         await retry(() =>
           payload.update({
@@ -99,6 +99,7 @@ for (const [i, c] of COURSES.entries()) {
               contentRev,
               ...(scopes.includes("price") ? { price, priceFrom, installmentCount, installmentValue, status } : {}),
               ...(scopes.includes("href") ? { href } : {}),
+              ...(scopes.includes("topics") ? { summary, topicsTitle, topics, appliedTo } : {}),
               // carga horária: mantém modalidade e acesso como estão no painel e troca só as horas
               ...(scopes.includes("hours")
                 ? { format: { mode: doc.format?.mode ?? c.format.mode, access: doc.format?.access ?? c.format.access, hours: c.format.hours } }
