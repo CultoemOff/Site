@@ -252,7 +252,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
         </section>
       )}
 
-      {/* ---------- por dentro das aulas (ilustrações) ---------- */}
+      {/* ---------- por dentro das aulas (frames reais; sem eles, ilustrações) ---------- */}
       {page.inside && (
         <section className="sp-section sp-section--ink" aria-labelledby="sp-inside">
           <div className="sp-section__inner">
@@ -260,6 +260,30 @@ export default function SalesPageView({ course, page, audience }: Props) {
             <h2 id="sp-inside" className="swp-title">
               {page.inside.title}
             </h2>
+            {page.inside.frames && page.inside.frames.length > 0 ? (
+              <div className="sp-inside__layout sp-inside__layout--frames">
+                {page.inside.frames.map((f, k) => (
+                  <figure
+                    key={f.src}
+                    className={k === 0 ? "sp-inside__topo sp-inside__frame" : "sp-inside__card sp-inside__frame"}
+                    data-reveal
+                    style={{ "--i": k } as React.CSSProperties}
+                  >
+                    <Image
+                      src={f.src}
+                      alt={f.alt}
+                      width={f.width}
+                      height={f.height}
+                      sizes={k === 0 ? "(min-width: 1100px) 760px, 100vw" : "(min-width: 1100px) 380px, (min-width: 700px) 50vw, 100vw"}
+                    />
+                    <figcaption>
+                      <strong>{f.title}</strong>
+                      {f.text}
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            ) : (
             <div className="sp-inside__layout">
             <figure className="sp-inside__topo" data-anim>
               <TopologyIllo />
@@ -286,6 +310,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
               </figure>
             </div>
             </div>
+            )}
           </div>
         </section>
       )}

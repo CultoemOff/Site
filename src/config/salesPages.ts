@@ -46,7 +46,17 @@ export type SalesPage = {
     chain: { name: string; what: string }[];
   };
   /** seção ilustrada "por dentro das aulas" */
-  inside?: { title: string; topology: string; dhcp: { title: string; text: string }; terminal: { title: string; text: string } };
+  inside?: {
+    title: string;
+    topology: string;
+    dhcp: { title: string; text: string };
+    terminal: { title: string; text: string };
+    /**
+     * Frames REAIS das aulas (em /public/images/formacoes/). Quando existem, entram no lugar das ilustrações:
+     * o primeiro fica em destaque e os demais viram os cards ao lado.
+     */
+    frames?: { src: string; alt: string; width: number; height: number; title: string; text: string }[];
+  };
   /**
    * Materiais inclusos (apostila, planilha...). `image` é a foto ou captura REAL do material,
    * guardada em /public/images/formacoes/. Sem imagem, o card mostra só o texto.
@@ -207,6 +217,33 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         title: "Os comandos que resolvem",
         text: "ipconfig, ping e arp, mostrados na tela e explicados linha por linha: o que digitar e como ler a resposta.",
       },
+      // frames reais das aulas, enviados pelo Jonas em 08/10/2026
+      frames: [
+        {
+          src: "/images/formacoes/redes-aula-regra-de-ouro.jpg",
+          alt: "Slide da aula A regra de ouro: o IP 192.168.0.148 dividido em rua (192.168.0) e casa (148), com duas ruas diferentes que têm uma casa de mesmo número",
+          width: 1600,
+          height: 900,
+          title: "Cada conceito vira um desenho simples",
+          text: "Na aula “A regra de ouro”, o IP vira rua e casa: dá para ver por que dois equipamentos com o mesmo número final, em ruas diferentes, não conversam.",
+        },
+        {
+          src: "/images/formacoes/redes-aula-terminal-ping.jpg",
+          alt: "Prompt de comando do Windows com o resultado do ipconfig e um ping respondendo, gravado durante a aula",
+          width: 1598,
+          height: 858,
+          title: "Os comandos que resolvem",
+          text: "ipconfig e ping na tela, explicados linha por linha: o que digitar e como ler a resposta.",
+        },
+        {
+          src: "/images/formacoes/redes-aula-equipamentos.jpg",
+          alt: "Equipamentos de rede num rack, com cabos ligados nas portas e os LEDs de link acesos",
+          width: 1400,
+          height: 923,
+          title: "Equipamento de verdade, de perto",
+          text: "Portas, cabos e LEDs mostrados no equipamento real, para você reconhecer o que vê no rack da igreja.",
+        },
+      ],
     },
     capstone: {
       badge: "Módulos 8 e 9 · Prática e projeto final",
