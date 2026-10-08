@@ -2515,25 +2515,16 @@ body:has(.promo-bar) .sp-offer {
   font-size: 1.1rem;
   color: var(--sp-title);
 }
+/* todos os frames no mesmo formato 16:9, para a grade ficar alinhada */
+.sp-inside__frame img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  /* o print do terminal é um pouco mais largo: corta só a direita, nunca o começo das linhas */
+  object-position: left center;
+}
 @media (min-width: 700px) {
   .sp-inside__layout--frames {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .sp-inside__layout--frames .sp-inside__frame:first-child {
-    grid-column: 1 / -1;
-  }
-}
-@media (min-width: 1100px) {
-  .sp-inside__layout--frames {
-    grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
-    align-items: start;
-  }
-  .sp-inside__layout--frames .sp-inside__frame:first-child {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-  }
-  .sp-inside__layout--frames .sp-inside__card figcaption {
-    font-size: 0.88rem;
-    line-height: 1.5;
+    align-items: stretch;
   }
 }

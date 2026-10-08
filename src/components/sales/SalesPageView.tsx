@@ -265,7 +265,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
                 {page.inside.frames.map((f, k) => (
                   <figure
                     key={f.src}
-                    className={k === 0 ? "sp-inside__topo sp-inside__frame" : "sp-inside__card sp-inside__frame"}
+                    className="sp-inside__card sp-inside__frame"
                     data-reveal
                     style={{ "--i": k } as React.CSSProperties}
                   >
@@ -274,7 +274,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
                       alt={f.alt}
                       width={f.width}
                       height={f.height}
-                      sizes={k === 0 ? "(min-width: 1100px) 760px, 100vw" : "(min-width: 1100px) 380px, (min-width: 700px) 50vw, 100vw"}
+                      sizes="(min-width: 1200px) 560px, (min-width: 700px) 50vw, 100vw"
                     />
                     <figcaption>
                       <strong>{f.title}</strong>

@@ -53,7 +53,7 @@ export type SalesPage = {
     terminal: { title: string; text: string };
     /**
      * Frames REAIS das aulas (em /public/images/formacoes/). Quando existem, entram no lugar das ilustrações:
-     * o primeiro fica em destaque e os demais viram os cards ao lado.
+     * aparecem numa grade de 2 colunas (1 no celular), todos em 16:9.
      */
     frames?: { src: string; alt: string; width: number; height: number; title: string; text: string }[];
   };
@@ -224,8 +224,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
           alt: "Slide da aula A regra de ouro: o IP 192.168.0.148 dividido em rua (192.168.0) e casa (148), com duas ruas diferentes que têm uma casa de mesmo número",
           width: 1600,
           height: 900,
-          title: "Cada conceito vira um desenho simples",
-          text: "Na aula “A regra de ouro”, o IP vira rua e casa: dá para ver por que dois equipamentos com o mesmo número final, em ruas diferentes, não conversam.",
+          title: "Exemplos reais, analogias fáceis",
+          text: "Exemplos reais com analogias fáceis de entender, e ilustrações e imagens para ajudar em cada conceito.",
         },
         {
           src: "/images/formacoes/redes-aula-terminal-ping.jpg",
@@ -233,7 +233,15 @@ export const SALES_PAGES: Record<string, SalesPage> = {
           width: 1598,
           height: 858,
           title: "Os comandos que resolvem",
-          text: "ipconfig e ping na tela, explicados linha por linha: o que digitar e como ler a resposta.",
+          text: "Conheça os comandos do terminal e aprenda a ler as informações que eles mostram.",
+        },
+        {
+          src: "/images/formacoes/redes-aula-ndi-obs.jpg",
+          alt: "Propriedades de uma fonte NDI no OBS, recebendo a imagem da câmera PTZ principal da igreja",
+          width: 1600,
+          height: 899,
+          title: "NDI configurado na prática",
+          text: "Aprenda a configurar o NDI para câmeras, captura de tela e outras fontes, direto no OBS.",
         },
         {
           src: "/images/formacoes/redes-aula-equipamentos.jpg",
