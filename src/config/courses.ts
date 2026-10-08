@@ -108,7 +108,6 @@ export const COURSES: Course[] = [
     question: "Por que dois equipamentos ligados no mesmo switch não conseguem conversar?",
     topicsTitle: "9 módulos · 53 aulas",
     // Módulos conforme os roteiros das aulas (01/10/2026). VLAN e QoS em profundidade ficam para o Curso 2.
-    // O módulo extra de acesso remoto (5 aulas) sai depois e aparece só na página de vendas.
     topics: [
       "Entendendo redes",
       "IP na prática: IP, DHCP, máscara, gateway e DNS",

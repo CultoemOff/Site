@@ -195,18 +195,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         ],
       },
     ],
-    extraModule: {
-      title: "Acesso remoto",
-      tag: "Módulo extra",
-      note: "Lançado depois do curso principal",
-      items: [
-        "Acessar a rede da igreja de fora",
-        "IP público, CGNAT e portas",
-        "VPN na prática",
-        "Área de trabalho remota",
-        "Mesa, câmeras, OBS e Companion de longe",
-      ],
-    },
     inside: {
       title: "Por dentro das aulas: você enxerga a rede da sua técnica.",
       topology:
@@ -269,7 +257,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "Como são as aulas?",
-        answer: "São 53 videoaulas gravadas, divididas em 9 módulos. Boa parte tem demonstração na tela, o módulo 8 é todo prático (NDI de ponta a ponta) e o módulo 9 termina com o projeto final. Depois do lançamento chega um módulo extra de acesso remoto, com mais 5 aulas. Você assiste no seu ritmo, pelo computador ou celular, com acesso vitalício.",
+        answer: "São 53 videoaulas gravadas, divididas em 9 módulos. Boa parte tem demonstração na tela, o módulo 8 é todo prático (NDI de ponta a ponta) e o módulo 9 termina com o projeto final. Você assiste no seu ritmo, pelo computador ou celular, com acesso vitalício.",
       },
       {
         question: "E se eu tiver dúvidas durante as aulas?",
