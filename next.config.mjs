@@ -10,10 +10,14 @@ const nextConfig = {
       { source: "/tag/:path*", destination: "/blog", permanent: true },
     ];
   },
-  // ofertas.<domínio> abre direto a página de ofertas (o subdomínio aponta para este mesmo projeto na Vercel)
+  // ofertas.<domínio> e links.<domínio> abrem direto as suas páginas (o subdomínio aponta para este mesmo projeto na Vercel)
   async rewrites() {
     return {
-      beforeFiles: [{ source: "/", has: [{ type: "host", value: "ofertas\\..+" }], destination: "/ofertas" }],
+      beforeFiles: [
+        { source: "/", has: [{ type: "host", value: "ofertas\\..+" }], destination: "/ofertas" },
+        // links.<domínio> abre a página de links da bio (substitui o Linktree)
+        { source: "/", has: [{ type: "host", value: "links\\..+" }], destination: "/links" },
+      ],
     };
   },
   images: {

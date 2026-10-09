@@ -1,0 +1,171 @@
+/* Página de links da bio (links.cultoemoff.com.br) */
+.lk {
+  min-height: 100svh;
+  padding: clamp(36px, 8vw, 72px) 16px 40px;
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(59, 140, 255, 0.28), transparent 60%),
+    radial-gradient(80% 50% at 50% 100%, rgba(91, 208, 255, 0.1), transparent 70%),
+    #050a18;
+  color: #e3ebff;
+}
+.lk__inner {
+  max-width: 560px;
+  margin: 0 auto;
+}
+.lk__head {
+  text-align: center;
+}
+.lk__logo {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(91, 208, 255, 0.35), 0 18px 40px -12px rgba(59, 140, 255, 0.6);
+}
+.lk__name {
+  margin: 16px 0 4px;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.6rem;
+  color: #fff;
+}
+.lk__bio {
+  margin: 0;
+  font-size: 1rem;
+  color: #c9d6f5;
+}
+.lk__topics {
+  margin: 10px auto 0;
+  max-width: 440px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: #8fa3cc;
+}
+.lk__social {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lk__social a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(110, 150, 255, 0.3);
+  color: #dbe6ff;
+  transition: background 0.2s, border-color 0.2s;
+}
+.lk__social a:hover,
+.lk__social a:focus-visible {
+  background: rgba(59, 140, 255, 0.18);
+  border-color: rgba(91, 208, 255, 0.6);
+}
+.lk__list {
+  display: grid;
+  gap: 12px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lk__item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(110, 150, 255, 0.24);
+  background: rgba(12, 24, 60, 0.65);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+}
+.lk__item:hover,
+.lk__item:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(91, 208, 255, 0.6);
+  background: rgba(20, 38, 88, 0.8);
+}
+.lk__item:focus-visible,
+.lk__social a:focus-visible,
+.lk__foot a:focus-visible {
+  outline: 2px solid #5bd0ff;
+  outline-offset: 3px;
+}
+.lk__item--hi {
+  border-color: transparent;
+  background: linear-gradient(135deg, #1d4ed8, #3b8cff);
+  box-shadow: 0 18px 40px -16px rgba(59, 140, 255, 0.8);
+}
+.lk__item--hi:hover,
+.lk__item--hi:focus-visible {
+  background: linear-gradient(135deg, #2257e6, #4b97ff);
+}
+.lk__text {
+  display: grid;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.lk__text strong {
+  font-size: 1.02rem;
+  color: #fff;
+}
+.lk__text span:not(.lk__tag) {
+  font-size: 0.88rem;
+  color: #b9c8ea;
+}
+.lk__item--hi .lk__text span:not(.lk__tag) {
+  color: #e6efff;
+}
+.lk__tag {
+  justify-self: start;
+  margin-bottom: 2px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(91, 208, 255, 0.14);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9fdcff;
+}
+.lk__item--hi .lk__tag {
+  background: #ffd43b;
+  color: #0b0d12;
+}
+.lk__item svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: #8fb6ff;
+}
+.lk__item--hi svg {
+  color: #fff;
+}
+.lk__foot {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #7f92bb;
+}
+.lk__foot p {
+  margin: 0 0 8px;
+}
+.lk__foot a {
+  color: #a9c4ff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lk__item {
+    transition: none;
+  }
+  .lk__item:hover {
+    transform: none;
+  }
+}

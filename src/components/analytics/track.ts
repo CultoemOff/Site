@@ -18,6 +18,7 @@
  *  - click_offer     clique em um produto da página de ofertas      (label = nome do produto)
  *  - click_review    clique em "Assistir review" de uma oferta      (label = nome do produto)
  *  - click_social    clique em YouTube / Instagram / TikTok         (label = rede)
+ *  - click_link      clique em um link da página de links da bio    (label = destino)
  *  - generate_lead   cadastro concluído para liberar um download    (label = software)
  *  - join_waitlist   inscrição na lista de espera de uma formação   (label = formação)
  *  - download_software clique em "Baixar" depois do cadastro        (label = software)

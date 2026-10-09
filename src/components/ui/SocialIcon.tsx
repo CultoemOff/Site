@@ -1,5 +1,5 @@
 /** Ícones simples das redes sociais (traço, herdam a cor do texto). */
-export default function SocialIcon({ name }: { name: "youtube" | "instagram" | "tiktok" }) {
+export default function SocialIcon({ name }: { name: "youtube" | "instagram" | "tiktok" | "facebook" }) {
   const common = {
     fill: "none",
     stroke: "currentColor",
@@ -20,6 +20,11 @@ export default function SocialIcon({ name }: { name: "youtube" | "instagram" | "
           <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
           <circle cx="12" cy="12" r="4" />
           <circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none" />
+        </g>
+      )}
+      {name === "facebook" && (
+        <g {...common}>
+          <path d="M14.5 20.5v-7h2.4l.4-2.8h-2.8V9c0-.8.3-1.4 1.4-1.4h1.5V5.1c-.3 0-1.2-.1-2.2-.1-2.2 0-3.6 1.3-3.6 3.7v2h-2.4v2.8h2.4v7" />
         </g>
       )}
       {name === "tiktok" && (

@@ -28,6 +28,11 @@ export const SOCIAL_DEFAULTS = {
   tiktok: "https://www.tiktok.com/@cultoemoff",
 };
 
+/** Facebook (só aparece na página de links; não está no painel) */
+export const FACEBOOK_URL = "https://www.facebook.com/cultoemoff";
+/** Endereço principal do site, usado nos links que saem de links.cultoemoff.com.br */
+export const MAIN_SITE_URL = "https://cultoemoff.com.br";
+
 // YouTube
 export const YOUTUBE_CHANNEL_ID = "UCW6UK6AE4PyaJsH5PIAD7hw";
 export const YOUTUBE_CHANNEL_URL = SOCIAL_DEFAULTS.youtube;
