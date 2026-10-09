@@ -5,6 +5,7 @@ import SocialIcon from "@/components/ui/SocialIcon";
 import { hasPrice, type Course } from "@/config/courses";
 import { FACEBOOK_URL, LOGO_SRC, MAIN_SITE_URL, SITE_NAME, type SiteSettingsData } from "@/config/site";
 import type { YouTubeVideo } from "@/lib/youtube";
+import LinksTracking from "./LinksTracking";
 import "./links.css";
 
 /** Marca de origem nos links do próprio site (aparece no Analytics e segue até a Hotmart). */
@@ -80,7 +81,7 @@ function IconThumb({ kind }: { kind: "youtube" | "ofertas" }) {
 }
 
 /** Um link da lista: miniatura redonda, título, texto e (opcional) um conteúdo extra abaixo. */
-function LinkRow({ row }: { row: Row }) {
+function LinkRow({ row, position }: { row: Row; position: number }) {
   return (
     <li className="lk__card">
       <a
@@ -90,6 +91,7 @@ function LinkRow({ row }: { row: Row }) {
         data-track="click_link"
         data-track-label={row.track}
         data-track-location="links"
+        data-track-position={position}
       >
         {row.thumb}
         <span className="lk__text">
@@ -128,7 +130,7 @@ export default function LinksView({
         <ul className="lk__videos" aria-label="Vídeos mais recentes">
           {videos.slice(0, 3).map((v) => (
             <li key={v.id}>
-              <a href={v.url} {...ext()} data-track="click_link" data-track-label={`Vídeo: ${v.title}`} data-track-location="links">
+              <a href={v.url} {...ext()} data-track="click_link" data-track-label={`Vídeo: ${v.title}`} data-track-location="links" data-track-position={1}>
                 <Image src={v.thumbnail} alt="" width={320} height={180} sizes="(min-width: 600px) 170px, 30vw" />
                 <span>{v.title}</span>
               </a>
@@ -232,7 +234,7 @@ export default function LinksView({
 
         {/* 1º YouTube, 2º a formação em destaque, depois os demais */}
         <ul className="lk__list">
-          <LinkRow row={youtube} />
+          <LinkRow row={youtube} position={1} />
         </ul>
 
         {/* formação em destaque */}
@@ -243,6 +245,7 @@ export default function LinksView({
             data-track="click_link"
             data-track-label={`Formação ${course.title}`}
             data-track-location="links"
+            data-track-position={2}
           >
             <span className="lk__feature-media">
               <Image
@@ -271,8 +274,8 @@ export default function LinksView({
         )}
 
         <ul className="lk__list">
-          {rows.map((r) => (
-            <LinkRow key={r.title} row={r} />
+          {rows.map((r, i) => (
+            <LinkRow key={r.title} row={r} position={i + 3} />
           ))}
         </ul>
 
@@ -283,6 +286,7 @@ export default function LinksView({
           </Link>
         </footer>
       </div>
+      <LinksTracking />
     </main>
   );
 }

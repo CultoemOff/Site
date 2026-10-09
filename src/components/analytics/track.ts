@@ -18,7 +18,10 @@
  *  - click_offer     clique em um produto da página de ofertas      (label = nome do produto)
  *  - click_review    clique em "Assistir review" de uma oferta      (label = nome do produto)
  *  - click_social    clique em YouTube / Instagram / TikTok         (label = rede)
- *  - click_link      clique em um link da página de links da bio    (label = destino)
+ *  - click_link      clique em um link da página de links da bio    (label = destino, link_position = posição na lista)
+ *  - links_exit      saída da página de links (ao fechar/trocar de aba ou app): clicked = sim/nao, clicks,
+ *                    last_click, seconds (tempo na página) e scroll_percent (até onde rolou)
+ *  - links_no_click  saída da página de links SEM clicar em nada (mesmos dados do links_exit)
  *  - generate_lead   cadastro concluído para liberar um download    (label = software)
  *  - join_waitlist   inscrição na lista de espera de uma formação   (label = formação)
  *  - download_software clique em "Baixar" depois do cadastro        (label = software)
@@ -69,6 +72,8 @@ export type TrackParams = {
   itemId?: string;
   /** parte da página (evento view_section) */
   section?: string;
+  /** posição do link na lista (página de links da bio: 1 = primeiro) */
+  position?: number;
   /** enviar só para um dos destinos (padrão: os dois) */
   only?: "ga" | "meta";
 };
@@ -101,6 +106,7 @@ export function track(event: string, params: TrackParams = {}) {
       link_url: params.url,
       cta_location: params.location,
       section: params.section,
+      link_position: params.position,
     };
     if (ITEM_EVENTS.has(event)) {
       ga.currency = "BRL";
@@ -131,17 +137,19 @@ export function track(event: string, params: TrackParams = {}) {
 
 /**
  * Clique em qualquer elemento com data-track="evento".
- * Opcionais: data-track-label, data-track-value (reais), data-track-location e data-track-id.
+ * Opcionais: data-track-label, data-track-value (reais), data-track-location, data-track-id e data-track-position.
  */
 export function trackClick(e: MouseEvent) {
   const el = e.target instanceof Element ? e.target.closest<HTMLElement>("[data-track]") : null;
   if (!el) return;
   const value = Number(el.dataset.trackValue);
+  const position = Number(el.dataset.trackPosition);
   track(el.dataset.track || "click", {
     label: el.dataset.trackLabel,
     url: el instanceof HTMLAnchorElement ? el.href : undefined,
     value: Number.isFinite(value) && value > 0 ? value : undefined,
     location: el.dataset.trackLocation,
     itemId: el.dataset.trackId,
+    position: Number.isFinite(position) && position > 0 ? position : undefined,
   });
 }

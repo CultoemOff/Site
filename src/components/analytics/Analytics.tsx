@@ -71,9 +71,13 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
   // page_view a cada navegação (App Router não recarrega a página)
   const first = useRef(true);
   useEffect(() => {
+    // links.cultoemoff.com.br mostra a página /links no endereço "/": no Analytics ela aparece como /links,
+    // separada da home (o domínio continua no relatório, no campo "Nome do host")
+    const loc = window.location;
+    const isLinks = loc.hostname.startsWith("links.") && (pathname === "/" || pathname === "/links");
     window.gtag?.("event", "page_view", {
-      page_path: pathname,
-      page_location: window.location.href,
+      page_path: isLinks ? "/links" : pathname,
+      page_location: isLinks ? `${loc.origin}/links${loc.search}` : loc.href,
       page_title: document.title,
     });
     if (first.current) first.current = false;
