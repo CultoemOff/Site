@@ -207,6 +207,17 @@ if (!currentSettings?.updatedAt) {
   settingsSeeded = true;
 }
 
+// Link da Loja da Dorn (pedido do Jonas em 08/10/2026): grava no painel o link com o código de parceiro
+// quando o que está lá não tem esse código. Depois disso, quem manda volta a ser o painel.
+{
+  const g = (await payload.findGlobal({ slug: "site-settings", depth: 0 })) as unknown as { dorn?: { url?: string | null } | null };
+  const dornUrl = g?.dorn?.url ?? "";
+  if (!dornUrl.includes("bg_ref=5bEbXB4NMt")) {
+    await retry(() => payload.updateGlobal({ slug: "site-settings", data: { dorn: { ...(g?.dorn ?? {}), url: DEFAULT_SETTINGS.dorn.url } } }));
+    payload.logger.info(`Link da Loja da Dorn atualizado: ${DEFAULT_SETTINGS.dorn.url}`);
+  }
+}
+
 
 /** Envia uma imagem para Mídias: baixa da URL de origem; se não conseguir, usa o arquivo em /public. */
 async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: string }) {

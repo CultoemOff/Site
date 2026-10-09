@@ -38,7 +38,7 @@ export const YOUTUBE_REVALIDATE_SECONDS = 3600;
 export const SPRESENTER_URL = "https://spresenter.com/pt";
 export const SPRESENTER_COUPON = "CULTOEMOFF5";
 export const VOLUTS_URL = "https://voluts.com.br/igrejas/?parceiro=cultoemoff";
-export const DORN_URL = "https://www.dornstore.com.br/?bg_ref=5bEbXB4NMt";
+export const DORN_URL = "https://www.dornstore.com.br?bg_ref=5bEbXB4NMt";
 
 /** Configurações que o site usa (vindas do admin, com estes valores como padrão). */
 export type SiteSettingsData = {
