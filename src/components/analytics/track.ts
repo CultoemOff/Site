@@ -9,6 +9,7 @@
  *  - select_item      clique que leva até a página da formação       (faixa amarela, "Ver detalhes")
  *  - begin_checkout   clique em um botão de compra (vai para a Hotmart); cta_location diz qual botão
  *  - exit_popup_view  o aviso de saída apareceu
+ *  - video_start / video_progress (25/50/75%) / video_complete   vídeo de vendas do topo (progresso só no .mp4)
  *  A compra em si acontece na Hotmart: para ela aparecer no GA4, o mesmo ID precisa estar configurado lá.
  *
  * Demais eventos:

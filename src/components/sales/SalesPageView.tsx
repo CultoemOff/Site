@@ -1,5 +1,4 @@
 import Image from "next/image";
-import YouTubeEmbed from "@/components/blog/YouTubeEmbed";
 import CourseDiagramView from "@/components/sections/courses/CourseDiagrams";
 import SalesTracking from "@/components/analytics/SalesTracking";
 import ArrowButton from "@/components/ui/ArrowButton";
@@ -14,6 +13,7 @@ import "@/components/software-page/software-page.css";
 import Countdown from "./Countdown";
 import ExitPopup from "./ExitPopup";
 import PromoBar from "./PromoBar";
+import SalesVideo from "./SalesVideo";
 import { DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
 import "./sales.css";
 
@@ -96,7 +96,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
       )}
 
       {/* ---------- topo ---------- */}
-      <header className={`sp-hero${promoOn ? " sp-hero--promo" : ""}`}>
+      <header className={`sp-hero${promoOn ? " sp-hero--promo" : ""}${page.videoVertical ? " sp-hero--vertical" : ""}`}>
         {/* a página não tem o menu do site: só a marca, sem link */}
         <p className="sp-brand">
           <Image src={LOGO_SRC} alt="" width={36} height={36} priority />
@@ -105,7 +105,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
           </span>
         </p>
         <div className="sp-hero__inner">
-          <div className="sp-hero__text">
+          <div className="sp-hero__text" id="sp-inicio">
             <p className="swp-hero__channel">
               <span aria-hidden="true" />
               Formação Culto em Off{course.status === "lancamento-em-breve" ? " · Lançamento em breve" : ""}
@@ -131,10 +131,15 @@ export default function SalesPageView({ course, page, audience }: Props) {
             </div>
           </div>
 
-          {/* vídeo de vendas */}
-          <div className="sp-video">
+          {/* vídeo de vendas (no celular vem primeiro; em pé, ocupa quase a tela toda) */}
+          <div className={`sp-video${page.videoVertical ? " sp-video--vertical" : ""}`}>
             {page.videoUrl ? (
-              <YouTubeEmbed url={page.videoUrl} caption={`Apresentação da formação ${course.title}`} />
+              <SalesVideo
+                src={page.videoUrl}
+                poster={page.videoPoster}
+                vertical={page.videoVertical}
+                title={`Apresentação da formação ${course.title}`}
+              />
             ) : (
               <div className="sp-video__placeholder" role="img" aria-label="Vídeo de apresentação em breve">
                 <div className="sp-video__diagram" aria-hidden="true">
@@ -147,6 +152,15 @@ export default function SalesPageView({ course, page, audience }: Props) {
                 </span>
                 <span className="sp-video__label">Vídeo de apresentação em breve</span>
               </div>
+            )}
+            {/* aviso de que a página continua (só no celular, com o vídeo em pé) */}
+            {page.videoVertical && (
+              <a className="sp-scrollcue" href="#sp-inicio">
+                <span>Role para saber mais</span>
+                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
             )}
           </div>
         </div>

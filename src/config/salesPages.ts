@@ -14,8 +14,15 @@ export type SalesPage = {
   /** título principal (promessa) */
   headline: string;
   subheadline: string;
-  /** link do vídeo de vendas no YouTube; vazio = espaço reservado "vídeo em breve" */
+  /**
+   * Vídeo de vendas: link do YouTube (pode ser Shorts) ou arquivo .mp4 (ex.: "/videos/redes-para-igrejas.mp4",
+   * guardado em /public/videos/). Vazio = espaço reservado "vídeo em breve".
+   */
   videoUrl: string;
+  /** capa do vídeo .mp4 (imagem em /public); no YouTube a capa vem de lá */
+  videoPoster?: string;
+  /** vídeo em pé (9:16): no celular ocupa quase a tela toda, com o aviso para rolar abaixo */
+  videoVertical?: boolean;
   /** situações em que o aluno se reconhece hoje e como ficam depois da formação */
   compare: { before: string; after: string }[];
   /** argumento de valor, logo acima da oferta: quanto custa não saber */
@@ -84,6 +91,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     subheadline:
       "Entenda o que acontece entre a câmera, a mesa, o switch e o computador da live, e resolva os problemas de rede do culto com segurança, sem precisar virar técnico de TI.",
     videoUrl: "",
+    // o vídeo de apresentação será vertical (9:16)
+    videoVertical: true,
     // Preço especial de lançamento, sem contagem regressiva.
     // Para voltar a ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
     promo: { label: "Preço especial de lançamento" },
