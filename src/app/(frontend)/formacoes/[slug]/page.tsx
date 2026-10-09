@@ -82,7 +82,7 @@ export default async function CourseSalesPage({ params }: Props) {
       />
       {/* página de venda sem o menu do site: menos saídas antes da oferta (a marca aparece no topo, sem link) */}
       <main id="conteudo" tabIndex={-1} className="sp-main">
-        <SalesPageView course={course} page={page} audience={settings.audience} />
+        <SalesPageView course={course} page={page} audience={settings.audience} instagram={settings.social.instagram} />
       </main>
       <Footer settings={settings} minimal />
       <ViewportFx />

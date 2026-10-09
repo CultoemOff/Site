@@ -2701,3 +2701,56 @@ body:has(.promo-bar) .sp-offer {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+
+/* dúvida antes da compra: direct do Instagram */
+.sp-direct {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f58529, #dd2a7b 50%, #8134af);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 12px 28px -14px rgba(221, 42, 123, 0.9);
+}
+.sp-direct svg {
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+.sp-direct:hover {
+  filter: brightness(1.08);
+}
+.sp-direct:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+.sp-direct--compact {
+  min-height: 40px;
+  margin-top: 12px;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid rgba(221, 42, 123, 0.6);
+  color: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: none;
+}
+.sp-direct-box {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--sp-card-border);
+  background: var(--sp-card);
+}
+.sp-direct-box p {
+  margin: 0;
+  color: var(--sp-text);
+  line-height: 1.5;
+}

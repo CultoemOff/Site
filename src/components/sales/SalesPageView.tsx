@@ -21,7 +21,39 @@ type Props = {
   course: Course;
   page: SalesPage;
   audience: SiteSettingsData["audience"];
+  /** perfil do Instagram (do painel): vira o botão "Fale comigo no direct" */
+  instagram?: string;
 };
+
+/** https://www.instagram.com/cultoemoff → https://ig.me/m/cultoemoff (abre direto a conversa no direct) */
+function instagramDm(url?: string) {
+  const m = url?.match(/instagram\.com\/([A-Za-z0-9._]+)/);
+  return m ? `https://ig.me/m/${m[1]}` : "";
+}
+
+/** Botão para tirar dúvida no direct do Instagram (abre o app no celular). */
+function DirectButton({ href, location, compact }: { href: string; location: string; compact?: boolean }) {
+  return (
+    <a
+      className={`sp-direct${compact ? " sp-direct--compact" : ""}`}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-track="click_contact"
+      data-track-label="Direct do Instagram"
+      data-track-location={location}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none" />
+        </g>
+      </svg>
+      <span>{compact ? "Dúvida? Fale comigo no direct" : "Fale comigo no direct do Instagram"}</span>
+    </a>
+  );
+}
 
 const Check = () => (
   <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
@@ -35,7 +67,8 @@ const Cross = () => (
 );
 
 /** Página de venda de uma formação: promessa, vídeo, dores, módulos, professor, oferta com prazo, garantia e FAQ. */
-export default function SalesPageView({ course, page, audience }: Props) {
+export default function SalesPageView({ course, page, audience, instagram }: Props) {
+  const dm = instagramDm(instagram);
   const teacher = getInstructor(course.instructor);
   // cada item de módulo é uma aula; o módulo extra fica fora da contagem
   const lessons = lessonCount(page.modules);
@@ -567,6 +600,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
               <Check />
               Compra segura pela Hotmart · {GUARANTEE_DAYS} dias de garantia
             </p>
+            {dm && <DirectButton href={dm} location="oferta" compact />}
           </div>
         </div>
       </section>
@@ -579,6 +613,12 @@ export default function SalesPageView({ course, page, audience }: Props) {
             <h2 id="sp-faq" className="swp-title">
               Perguntas frequentes.
             </h2>
+            {dm && (
+              <div className="sp-direct-box">
+                <p>Ficou alguma dúvida que não está aqui? Me chama no direct que eu respondo.</p>
+                <DirectButton href={dm} location="duvidas" />
+              </div>
+            )}
           </div>
           <div className="sp-faq__list">
             {page.faq.map((f) => (

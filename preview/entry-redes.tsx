@@ -18,7 +18,7 @@ document.addEventListener("click", trackClick, { capture: true });
 createRoot(document.getElementById("root")!).render(
   <>
     <main id="conteudo" tabIndex={-1} className="sp-main">
-      <SalesPageView course={course} page={SALES_PAGES[course.id]} audience={DEFAULT_SETTINGS.audience} />
+      <SalesPageView course={course} page={SALES_PAGES[course.id]} audience={DEFAULT_SETTINGS.audience} instagram={DEFAULT_SETTINGS.social.instagram} />
     </main>
     <Footer settings={DEFAULT_SETTINGS} minimal />
     <CheckoutParams />

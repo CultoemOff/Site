@@ -19,6 +19,7 @@
  *  - click_offer     clique em um produto da página de ofertas      (label = nome do produto)
  *  - click_review    clique em "Assistir review" de uma oferta      (label = nome do produto)
  *  - click_social    clique em YouTube / Instagram / TikTok         (label = rede)
+ *  - click_contact   clique em "Fale comigo no direct" na página da formação (cta_location = oferta / duvidas)
  *  - click_link      clique em um link da página de links da bio    (label = destino, link_position = posição na lista)
  *  - links_exit      saída da página de links (ao fechar/trocar de aba ou app): clicked = sim/nao, clicks,
  *                    last_click, seconds (tempo na página) e scroll_percent (até onde rolou)
