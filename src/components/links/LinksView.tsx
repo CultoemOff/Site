@@ -10,11 +10,11 @@ import "./links.css";
 /** Marca de origem nos links do próprio site (aparece no Analytics e segue até a Hotmart). */
 const FROM_BIO = "utm_source=links&utm_medium=bio";
 
-/** Miniaturas redondas de cada link (recortes das telas reais dos parceiros e do logo). */
+/** Miniaturas redondas de cada link (logos enviados pelo Jonas, recorte da tela da Dorn e o logo do site). */
 const THUMBS = {
   formacao: "/images/links/formacao-redes.jpg",
-  voluts: "/images/links/voluts.jpg",
-  spresenter: "/images/links/spresenter.jpg",
+  voluts: "/images/links/voluts.png",
+  spresenter: "/images/links/spresenter.png",
   dorn: "/images/links/dorn.jpg",
 };
 
@@ -139,7 +139,6 @@ export default function LinksView({
   };
 
   const rows: Row[] = [
-    youtube,
     {
       title: "Voluts",
       text: "App para líderes de ministérios de igrejas",
@@ -230,6 +229,11 @@ export default function LinksView({
             ))}
           </ul>
         </header>
+
+        {/* 1º YouTube, 2º a formação em destaque, depois os demais */}
+        <ul className="lk__list">
+          <LinkRow row={youtube} />
+        </ul>
 
         {/* formação em destaque */}
         {course && (
