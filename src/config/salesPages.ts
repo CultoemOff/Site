@@ -96,6 +96,8 @@ export type SalesPage = {
     }[];
   };
   forWho: { icon: IconName; text: string }[];
+  /** false = esconde a seção de depoimentos ("Quem já fez"), mesmo com depoimentos no painel */
+  showTestimonials?: boolean;
   notForWho: string[];
   faq: { question: string; answer: string }[];
 };
@@ -314,6 +316,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         },
       ],
     },
+    // seção "Quem já fez" retirada a pedido do Jonas (09/10/2026); os depoimentos continuam no painel
+    showTestimonials: false,
     forWho: [
       { icon: "headphones", text: "Voluntários de áudio, vídeo, live, projeção e luz." },
       { icon: "video", text: "Quem opera NDI, PTZ, OBS ou mesa digital." },

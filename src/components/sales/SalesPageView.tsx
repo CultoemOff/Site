@@ -95,7 +95,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {label}
     </ArrowButton>
   );
-  const testimonials = course.testimonials ?? [];
+  const testimonials = page.showTestimonials === false ? [] : (course.testimonials ?? []);
   // selos de resumo (topo e conteúdo), cada um com ícone
   const facts = (
     <>
