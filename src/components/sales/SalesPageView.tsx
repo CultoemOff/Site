@@ -448,7 +448,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       </section>
 
       {/* ---------- materiais inclusos (apostila, planilha) ---------- */}
-      {page.materials && (
+      {page.materials && !page.materials.hideSection && (
         <section className="sp-section sp-section--ink" aria-labelledby="sp-materiais" data-track-view="materiais">
           <div className="sp-section__inner">
             <Kicker icon="gift">{page.materials.kicker ?? "Materiais inclusos"}</Kicker>

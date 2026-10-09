@@ -76,6 +76,8 @@ export type SalesPage = {
   materials?: {
     /** "Bônus inclusos" quando os materiais são apresentados como bônus */
     kicker?: string;
+    /** true = não mostra a seção própria dos materiais; eles aparecem só como bônus na oferta */
+    hideSection?: boolean;
     title: string;
     lead: string;
     items: {
@@ -288,6 +290,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     },
     materials: {
       kicker: "Bônus inclusos",
+      // seção com as prévias retirada a pedido do Jonas (09/10/2026); os bônus continuam listados na oferta
+      hideSection: true,
       title: "Dois bônus para a mesa da técnica.",
       lead: "Já inclusos na formação, sem custo a mais.",
       items: [
