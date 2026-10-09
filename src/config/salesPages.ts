@@ -109,6 +109,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     // Para voltar a ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
     promo: { label: "Preço especial de lançamento" },
     compare: [
+      { before: "Usa cabo HDMI ou USB longo, com extensão, e não sabe por que a câmera fica travando.", after: "Conhece o limite de cada tipo de cabo e passa a levar as câmeras pela rede, com NDI." },
       { before: "A fonte NDI não aparece no OBS e ninguém sabe por quê.", after: "Você segue um roteiro de diagnóstico e acha a causa." },
       { before: "A câmera PTZ “sumiu” da rede depois que alguém mexeu no roteador.", after: "A rede da técnica fica mapeada e documentada: cada equipamento com o seu IP." },
       { before: "A transmissão engasga justamente na hora da ministração.", after: "Cada equipamento fica no lugar certo: cabo, PoE ou Wi-Fi." },
