@@ -16,11 +16,19 @@
   text-align: center;
 }
 .lk__logo {
-  width: 96px;
-  height: 96px;
+  display: grid;
+  place-items: center;
+  width: 104px;
+  height: 104px;
   margin: 0 auto;
   border-radius: 50%;
+  background: #fff;
   box-shadow: 0 0 0 3px rgba(91, 208, 255, 0.35), 0 18px 40px -12px rgba(59, 140, 255, 0.6);
+}
+.lk__logo img {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
 }
 .lk__name {
   margin: 16px 0 4px;
@@ -72,39 +80,32 @@
   padding: 0;
   list-style: none;
 }
+.lk__card {
+  border-radius: 16px;
+  border: 1px solid rgba(110, 150, 255, 0.24);
+  background: rgba(12, 24, 60, 0.65);
+  transition: border-color 0.2s, background 0.2s;
+}
+.lk__card:hover,
+.lk__card:focus-within {
+  border-color: rgba(91, 208, 255, 0.6);
+  background: rgba(20, 38, 88, 0.8);
+}
 .lk__item {
   display: flex;
   align-items: center;
   gap: 14px;
-  min-height: 64px;
-  padding: 14px 18px;
+  min-height: 72px;
+  padding: 12px 16px 12px 12px;
   border-radius: 16px;
-  border: 1px solid rgba(110, 150, 255, 0.24);
-  background: rgba(12, 24, 60, 0.65);
   color: inherit;
   text-decoration: none;
-  transition: transform 0.2s, border-color 0.2s, background 0.2s;
-}
-.lk__item:hover,
-.lk__item:focus-visible {
-  transform: translateY(-2px);
-  border-color: rgba(91, 208, 255, 0.6);
-  background: rgba(20, 38, 88, 0.8);
 }
 .lk__item:focus-visible,
 .lk__social a:focus-visible,
 .lk__foot a:focus-visible {
   outline: 2px solid #5bd0ff;
   outline-offset: 3px;
-}
-.lk__item--hi {
-  border-color: transparent;
-  background: linear-gradient(135deg, #1d4ed8, #3b8cff);
-  box-shadow: 0 18px 40px -16px rgba(59, 140, 255, 0.8);
-}
-.lk__item--hi:hover,
-.lk__item--hi:focus-visible {
-  background: linear-gradient(135deg, #2257e6, #4b97ff);
 }
 .lk__text {
   display: grid;
@@ -116,37 +117,9 @@
   font-size: 1.02rem;
   color: #fff;
 }
-.lk__text span:not(.lk__tag) {
+.lk__text span {
   font-size: 0.88rem;
   color: #b9c8ea;
-}
-.lk__item--hi .lk__text span:not(.lk__tag) {
-  color: #e6efff;
-}
-.lk__tag {
-  justify-self: start;
-  margin-bottom: 2px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(91, 208, 255, 0.14);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #9fdcff;
-}
-.lk__item--hi .lk__tag {
-  background: #ffd43b;
-  color: #0b0d12;
-}
-.lk__item svg {
-  flex: none;
-  width: 16px;
-  height: 16px;
-  color: #8fb6ff;
-}
-.lk__item--hi svg {
-  color: #fff;
 }
 .lk__foot {
   margin-top: 32px;
@@ -162,10 +135,267 @@
   color: #a9c4ff;
 }
 @media (prefers-reduced-motion: reduce) {
-  .lk__item {
+  .lk__card,
+  .lk__feature {
     transition: none;
   }
-  .lk__item:hover {
+  .lk__feature:hover {
     transform: none;
   }
+}
+
+/* miniaturas redondas */
+.lk__thumb {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  background: #0d1530;
+}
+.lk__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lk__thumb--logo {
+  background: #fff;
+}
+.lk__thumb--logo img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+.lk__thumb--youtube {
+  background: #fff;
+}
+.lk__thumb--youtube svg {
+  width: 30px;
+  height: 30px;
+}
+.lk__thumb--ofertas {
+  background: linear-gradient(135deg, #ffd43b, #ffb020);
+  color: #0b0d12;
+}
+.lk__thumb--ofertas svg {
+  width: 24px;
+  height: 24px;
+}
+.lk__arrow {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: #8fb6ff;
+}
+
+/* formação em destaque */
+.lk__feature {
+  display: block;
+  margin-top: 28px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(160deg, #1d4ed8, #0f2a78);
+  box-shadow: 0 24px 50px -20px rgba(59, 140, 255, 0.85);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.lk__feature:hover,
+.lk__feature:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 28px 60px -20px rgba(91, 208, 255, 0.9);
+}
+.lk__feature:focus-visible {
+  outline: 2px solid #5bd0ff;
+  outline-offset: 3px;
+}
+.lk__feature-media {
+  position: relative;
+  display: block;
+}
+.lk__feature-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.lk__sale {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #ffd43b;
+  color: #0b0d12;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.6);
+}
+.lk__feature-body {
+  display: grid;
+  gap: 6px;
+  padding: 16px 18px 18px;
+}
+.lk__kicker {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9fdcff;
+}
+.lk__feature-body strong {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+.lk__feature-body > span:not(.lk__kicker):not(.lk__feature-cta) {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #dbe6ff;
+}
+.lk__feature-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #fff;
+  color: #0f2a78;
+  font-weight: 700;
+}
+.lk__feature-cta .lk__arrow {
+  color: currentColor;
+}
+
+/* vídeos mais recentes do canal */
+.lk__videos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0 12px 12px;
+  list-style: none;
+}
+.lk__videos a {
+  display: grid;
+  gap: 4px;
+  color: #b9c8ea;
+  text-decoration: none;
+}
+.lk__videos img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.lk__videos span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+.lk__videos a:hover span,
+.lk__videos a:focus-visible span {
+  color: #fff;
+}
+
+/* destaque curto abaixo do link (ex.: teste grátis) */
+.lk__note {
+  margin: -4px 16px 12px 72px;
+  justify-self: start;
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(52, 211, 153, 0.16);
+  color: #6ee7b7;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* cupom do SPresenter em forma de voucher (borda pontilhada, como um recorte) */
+.lk__voucher {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 14px;
+  margin: 0 12px 12px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1.5px dashed rgba(255, 212, 59, 0.7);
+  background: rgba(255, 212, 59, 0.08);
+}
+.lk__voucher-label {
+  margin: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffd43b;
+}
+.lk__voucher-benefit {
+  margin: 2px 0 0;
+  font-size: 0.86rem;
+  color: #e3ebff;
+}
+.lk__voucher-code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lk__voucher-code code {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #ffd43b;
+  color: #0b0d12;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.lk__voucher .coupon__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lk__voucher .coupon__copy svg {
+  width: 16px;
+  height: 16px;
+}
+.lk__voucher .coupon__copy:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.lk__voucher .coupon__copy.is-copied {
+  border-color: #6ee7b7;
+  color: #6ee7b7;
+}
+.lk__voucher .coupon__copy:focus-visible {
+  outline: 2px solid #5bd0ff;
+  outline-offset: 2px;
 }
