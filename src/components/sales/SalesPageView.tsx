@@ -132,7 +132,17 @@ export default function SalesPageView({ course, page, audience }: Props) {
           </div>
 
           {/* vídeo de vendas (no celular vem primeiro; em pé, ocupa quase a tela toda) */}
-          <div className={`sp-video${page.videoVertical ? " sp-video--vertical" : ""}`}>
+          <div
+            className={`sp-video${page.videoVertical ? " sp-video--vertical" : ""}`}
+            style={
+              page.videoUrl && page.videoSize
+                ? ({
+                    "--video-ar": `${page.videoSize.width} / ${page.videoSize.height}`,
+                    "--video-r": page.videoSize.width / page.videoSize.height,
+                  } as React.CSSProperties)
+                : undefined
+            }
+          >
             {page.videoUrl ? (
               <SalesVideo
                 src={page.videoUrl}

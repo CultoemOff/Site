@@ -23,6 +23,8 @@ export type SalesPage = {
   videoPoster?: string;
   /** vídeo em pé (9:16): no celular ocupa quase a tela toda, com o aviso para rolar abaixo */
   videoVertical?: boolean;
+  /** proporção real do vídeo (largura e altura em pixels); sem isso, usa 9:16 no vertical e 16:9 no horizontal */
+  videoSize?: { width: number; height: number };
   /** situações em que o aluno se reconhece hoje e como ficam depois da formação */
   compare: { before: string; after: string }[];
   /** argumento de valor, logo acima da oferta: quanto custa não saber */
@@ -90,9 +92,12 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     headline: "Pare de reiniciar tudo e torcer para funcionar.",
     subheadline:
       "Entenda o que acontece entre a câmera, a mesa, o switch e o computador da live, e resolva os problemas de rede do culto com segurança, sem precisar virar técnico de TI.",
-    videoUrl: "",
-    // o vídeo de apresentação será vertical (9:16)
+    // vídeo de apresentação (versão provisória enviada pelo Jonas em 09/10/2026), convertido para a web:
+    // 720x1218, 30 fps, H.264 + AAC, ~13 MB, em /public/videos/
+    videoUrl: "/videos/redes-para-igrejas.mp4",
+    videoPoster: "/images/formacoes/redes-video-capa.jpg",
     videoVertical: true,
+    videoSize: { width: 720, height: 1218 },
     // Preço especial de lançamento, sem contagem regressiva.
     // Para voltar a ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
     promo: { label: "Preço especial de lançamento" },
