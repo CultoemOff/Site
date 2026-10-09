@@ -40,6 +40,10 @@ export default function SalesPageView({ course, page, audience }: Props) {
   // cada item de módulo é uma aula; o módulo extra fica fora da contagem
   const lessons = lessonCount(page.modules);
   const moduleFacts = `${page.modules.length} módulos · ${lessons} aulas`;
+  // materiais apresentados como bônus; o que eles substituem some da lista "Inclui" para não repetir
+  const bonuses = (page.materials?.items ?? []).filter((m) => m.bonus);
+  const replaced = bonuses.map((m) => m.bonus?.replaces?.toLowerCase()).filter(Boolean) as string[];
+  const includes = (course.includes ?? []).filter((x) => !replaced.some((r) => x.toLowerCase().includes(r)));
 
   // Promoção: vale enquanto o prazo não passou. Depois disso a página mostra o preço cheio.
   const { price, priceFrom, off, promo, installments } = resolvePrice(course);
@@ -119,7 +123,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
               {/* carga horária: só aparece quando está definida (0 ou vazio = não mostra) */}
               {course.format.hours > 0 && <li>{course.format.hours} horas</li>}
               <li>{course.format.access}</li>
-              {course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
+              {bonuses.length > 0 ? <li>{bonuses.length} bônus inclusos</li> : course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
               {course.includes?.some((x) => /comunidade|membros/i.test(x)) ? <li>Dúvidas e comunidade</li> : null}
             </ul>
             <div className="sp-hero__actions">
@@ -350,7 +354,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
             <li>{moduleFacts}</li>
             <li>{course.format.hours > 0 ? `${course.format.hours} horas de videoaulas gravadas` : "Videoaulas gravadas"}</li>
             <li>{course.format.access}</li>
-            {course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
+            {bonuses.length > 0 ? <li>{bonuses.length} bônus inclusos</li> : course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
             {course.includes?.some((x) => /comunidade|membros/i.test(x)) ? <li>Dúvidas e comunidade</li> : null}
           </ul>
           <ol className="sp-modules">
@@ -392,7 +396,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
       {page.materials && (
         <section className="sp-section sp-section--ink" aria-labelledby="sp-materiais" data-track-view="materiais">
           <div className="sp-section__inner">
-            <p className="swp-kicker">Materiais inclusos</p>
+            <p className="swp-kicker">{page.materials.kicker ?? "Materiais inclusos"}</p>
             <h2 id="sp-materiais" className="swp-title">
               {page.materials.title}
             </h2>
@@ -494,7 +498,7 @@ export default function SalesPageView({ course, page, audience }: Props) {
                   Aulas práticas e um projeto final com tudo funcionando junto
                 </li>
               )}
-              {course.includes?.map((i) => (
+              {includes.map((i) => (
                 <li key={i}>
                   <Check />
                   {i}
@@ -518,6 +522,19 @@ export default function SalesPageView({ course, page, audience }: Props) {
                 Garantia incondicional de {GUARANTEE_DAYS} dias
               </li>
             </ul>
+            {bonuses.length > 0 && (
+              <>
+                <p className="sp-bonus__title">Bônus inclusos</p>
+                <ul className="sp-checks sp-bonus">
+                  {bonuses.map((m, k) => (
+                    <li key={m.title}>
+                      <em className="sp-bonus__tag">Bônus {k + 1}</em>
+                      {m.bonus?.line}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
             <div className="sp-guarantee">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />

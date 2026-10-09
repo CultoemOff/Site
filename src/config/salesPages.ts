@@ -71,6 +71,8 @@ export type SalesPage = {
    * guardada em /public/images/formacoes/. Sem imagem, o card mostra só o texto.
    */
   materials?: {
+    /** "Bônus inclusos" quando os materiais são apresentados como bônus */
+    kicker?: string;
     title: string;
     lead: string;
     items: {
@@ -79,6 +81,11 @@ export type SalesPage = {
       text: string;
       /** como o material aparece na lista "O que você leva" (só para o que não está no campo "Inclui" da formação) */
       offerLine?: string;
+      /**
+       * Material apresentado como bônus: nome na lista "O que você leva" (com o selo "Bônus").
+       * `replaces` = trecho do campo "Inclui" da formação que fala do mesmo material (some da lista para não repetir).
+       */
+      bonus?: { line: string; replaces?: string };
       image?: { src: string; alt: string; width: number; height: number };
     }[];
   };
@@ -280,20 +287,23 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       ],
     },
     materials: {
-      title: "Dois materiais para deixar na mesa da técnica.",
-      lead: "Prévias reais do que vem com a formação: um PDF para consultar na hora do aperto e uma planilha para a rede da igreja parar de ser um mistério.",
+      kicker: "Bônus inclusos",
+      title: "Dois bônus para deixar na mesa da técnica.",
+      lead: "Prévias reais dos bônus que já vêm com a formação, sem custo a mais: um PDF para consultar na hora do aperto e uma planilha para a rede da igreja parar de ser um mistério.",
       items: [
         {
-          tag: "PDF para imprimir · 3 páginas",
+          tag: "Bônus 1 · PDF para imprimir · 3 páginas",
           title: "A cola do técnico",
+          // no campo "Inclui" da formação ela aparece como "Apostila de comandos e dicas rápidas..."
+          bonus: { line: "A cola do técnico: PDF de comandos e dicas rápidas para imprimir", replaces: "apostila" },
           text: "Uma pergunta, um comando, no Windows e no Linux. Traz também a revisão dos primeiros módulos, um diagnóstico rápido por sintoma e a ficha “A rede da minha igreja” para preencher a lápis.",
           image: { src: "/images/formacoes/redes-cola-do-tecnico.jpg", alt: "Primeira página da cola do técnico, com a tabela “Qual comando responde qual pergunta” no Windows e no Linux", width: 1600, height: 1067 },
         },
         {
-          tag: "Planilha · modelo para preencher",
+          tag: "Bônus 2 · Planilha · modelo para preencher",
           title: "Documentação de rede da igreja",
           text: "Abas para vídeo, áudio, iluminação, infraestrutura e computadores, além de faixas de IP, Wi-Fi e portas do switch. A planilha avisa quando um IP está duplicado ou fora da faixa, e o Mapa de IPs mostra quais endereços estão livres.",
-          offerLine: "Planilha de documentação de rede da igreja",
+          bonus: { line: "Planilha de documentação de rede da igreja" },
           image: { src: "/images/formacoes/redes-planilha-mapa-de-ips.jpg", alt: "Aba Mapa de IPs da planilha, mostrando quais endereços da rede estão em uso e quais estão livres", width: 1600, height: 1067 },
         },
       ],

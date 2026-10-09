@@ -2673,3 +2673,31 @@ body:has(.promo-bar) .sp-offer {
     animation: none;
   }
 }
+
+/* bônus na lista "O que você leva" */
+.sp-bonus__title {
+  margin: 20px 0 10px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(255, 212, 59, 0.45);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffd43b;
+}
+.sp-bonus li {
+  align-items: center;
+}
+.sp-bonus__tag {
+  flex: none;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #ffd43b;
+  color: #0b0d12;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
