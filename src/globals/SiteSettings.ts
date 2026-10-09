@@ -163,7 +163,7 @@ export const SiteSettings: GlobalConfig = {
               label: "ID do Meta Pixel (opcional)",
               admin: {
                 description:
-                  "Só números. Carrega apenas depois que o visitante aceita os cookies. Se vazio, usa a variável NEXT_PUBLIC_META_PIXEL_ID da Vercel; se as duas estiverem vazias, o pixel não é carregado.",
+                  "Só números. Carrega apenas depois que o visitante aceita os cookies. Se vazio, usa a variável NEXT_PUBLIC_META_PIXEL_ID da Vercel e, sem ela, o pixel do Culto em Off (1167756799251222).",
               },
             },
           ],

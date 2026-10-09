@@ -130,7 +130,8 @@ export const DEFAULT_SETTINGS: SiteSettingsData = {
   voluts: { url: VOLUTS_URL, screen: "/partners/voluts.jpg" },
   dorn: { url: DORN_URL, image: "/partners/dorn.jpg" },
   gaId: process.env.NEXT_PUBLIC_GA_ID || "",
-  metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || "",
+  // ID do pixel do Culto em Off (público, aparece no código de qualquer site que usa pixel). O painel ou a variável da Vercel têm prioridade.
+  metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || "1167756799251222",
   ptzDownloadUrl: "",
   audience: AUDIENCE_DEFAULTS,
   faq: FAQ_DEFAULTS,
