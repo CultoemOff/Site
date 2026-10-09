@@ -2754,3 +2754,159 @@ body:has(.promo-bar) .sp-offer {
   color: var(--sp-text);
   line-height: 1.5;
 }
+
+/* ==========================================================
+   Ícones (padrão Lucide, ver components/ui/Icon.tsx)
+   ========================================================== */
+.sp-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.sp-kicker .icon {
+  flex: none;
+}
+.sp-facts--icons li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.sp-facts--icons .icon {
+  flex: none;
+  color: var(--signal);
+}
+.sp-proof__list li > .icon {
+  margin-bottom: 4px;
+  color: var(--signal);
+}
+
+/* hoje × depois: ícone próprio de cada situação num círculo */
+.sp-compare__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin-top: -6px;
+  border-radius: 12px;
+}
+.sp-compare__row .sp-compare__icon svg {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background: none;
+}
+.sp-compare__before .sp-compare__icon {
+  color: #ff9a88;
+  background: rgba(255, 110, 90, 0.14);
+}
+.sp-compare__after .sp-compare__icon {
+  color: #7ee2b0;
+  background: rgba(46, 204, 138, 0.16);
+}
+.sp-section .sp-compare__before .sp-compare__icon {
+  color: var(--sp-bad);
+  background: var(--sp-bad-border);
+}
+.sp-section .sp-compare__after .sp-compare__icon {
+  color: var(--sp-good);
+  background: var(--sp-good-border);
+}
+.sp-section .sp-compare__row .sp-compare__icon svg {
+  background: none;
+}
+.sp-compare__row p {
+  align-items: center;
+}
+
+/* listas com ícone próprio por item */
+.sp-checks__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-top: -4px;
+  border-radius: 10px;
+  color: var(--signal);
+  background: rgba(59, 140, 255, 0.14);
+}
+.sp-checks--icons li {
+  align-items: center;
+}
+.sp-checks--icons .sp-checks__icon svg,
+.sp-section .sp-checks--icons .sp-checks__icon svg {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+}
+.sp-section .sp-checks__icon {
+  color: var(--sp-good);
+  background: var(--sp-good-bg);
+}
+.sp-checks--no .sp-checks__icon,
+.sp-section .sp-checks--no .sp-checks__icon {
+  color: var(--sp-bad, #ff9a88);
+  background: var(--sp-bad-bg, rgba(255, 110, 90, 0.14));
+}
+
+/* módulos: ícone ao lado do número */
+.sp-module__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: var(--signal);
+  background: rgba(59, 140, 255, 0.12);
+}
+.sp-module summary .sp-module__icon svg {
+  width: 20px;
+  height: 20px;
+  transform: none;
+  color: inherit;
+}
+.sp-module[open] summary .sp-module__icon svg {
+  transform: none;
+}
+
+/* frames das aulas, bônus, compra segura */
+.sp-inside__frame figcaption strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sp-inside__frame figcaption strong .icon {
+  flex: none;
+  color: var(--signal);
+}
+.sp-materials__tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sp-bonus .sp-bonus__icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  background: none;
+  color: #ffd43b;
+}
+
+/* perguntas frequentes: ícone de dúvida à esquerda, o "+" continua à direita */
+.sp-faq__item summary > span {
+  flex: 1;
+}
+.sp-faq__item summary .sp-faq__icon,
+.sp-faq__item[open] summary .sp-faq__icon {
+  transform: none;
+  color: var(--signal);
+}

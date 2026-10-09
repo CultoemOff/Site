@@ -2,6 +2,7 @@ import Image from "next/image";
 import CourseDiagramView from "@/components/sections/courses/CourseDiagrams";
 import SalesTracking from "@/components/analytics/SalesTracking";
 import ArrowButton from "@/components/ui/ArrowButton";
+import Icon, { type IconName } from "@/components/ui/Icon";
 import { formatInstallments, formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
 import { lessonCount, type SalesModule, type SalesPage } from "@/config/salesPages";
@@ -55,15 +56,12 @@ function DirectButton({ href, location, compact }: { href: string; location: str
   );
 }
 
-const Check = () => (
-  <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-    <path d="m5 10.5 3.2 3.2L15 6.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-const Cross = () => (
-  <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-    <path d="m6 6 8 8M14 6l-8 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
+/** rótulo pequeno acima do título da seção, com ícone */
+const Kicker = ({ icon, children }: { icon: IconName; children: React.ReactNode }) => (
+  <p className="swp-kicker sp-kicker">
+    <Icon name={icon} size={16} />
+    {children}
+  </p>
 );
 
 /** Página de venda de uma formação: promessa, vídeo, dores, módulos, professor, oferta com prazo, garantia e FAQ. */
@@ -98,6 +96,38 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
     </ArrowButton>
   );
   const testimonials = course.testimonials ?? [];
+  // selos de resumo (topo e conteúdo), cada um com ícone
+  const facts = (
+    <>
+      <li>
+        <Icon name="play" size={15} />
+        {moduleFacts}
+      </li>
+      {/* carga horária: só aparece quando está definida (0 ou vazio = não mostra) */}
+      {course.format.hours > 0 && (
+        <li>
+          <Icon name="clock" size={15} />
+          {course.format.hours} horas
+        </li>
+      )}
+      <li>
+        <Icon name="infinity" size={15} />
+        {course.format.access}
+      </li>
+      {bonuses.length > 0 && (
+        <li>
+          <Icon name="gift" size={15} />
+          {bonuses.length} bônus
+        </li>
+      )}
+      {course.includes?.some((x) => /comunidade|membros/i.test(x)) && (
+        <li>
+          <Icon name="message" size={15} />
+          Comunidade
+        </li>
+      )}
+    </>
+  );
   const priceTag = (className = "") => (
     <p className={`sp-price ${className}`}>
       {priceFrom && (
@@ -151,13 +181,8 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             <p className="sp-hero__course">{course.title}</p>
             <h1 className="sp-hero__title">{page.headline}</h1>
             <p className="sp-hero__sub">{page.subheadline}</p>
-            <ul className="sp-hero__facts" aria-label="Resumo">
-              <li>{moduleFacts} em vídeo</li>
-              {/* carga horária: só aparece quando está definida (0 ou vazio = não mostra) */}
-              {course.format.hours > 0 && <li>{course.format.hours} horas</li>}
-              <li>{course.format.access}</li>
-              {bonuses.length > 0 ? <li>{bonuses.length} bônus inclusos</li> : course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
-              {course.includes?.some((x) => /comunidade|membros/i.test(x)) ? <li>Dúvidas e comunidade</li> : null}
+            <ul className="sp-hero__facts sp-facts--icons" aria-label="Resumo">
+              {facts}
             </ul>
             <div className="sp-hero__actions">
               {cta("topo")}
@@ -216,19 +241,22 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {/* ---------- prova / autoridade rápida ---------- */}
       <div className="sp-proof" aria-label="Números do Culto em Off">
         <ul className="sp-proof__list">
-          {audience.stats.slice(0, 2).map((s) => (
+          {audience.stats.slice(0, 2).map((s, k) => (
             <li key={s.label}>
+              <Icon name={k === 0 ? "eye" : "monitorPlay"} size={22} />
               <strong>{s.value}</strong>
               <span>{s.label}</span>
             </li>
           ))}
           <li>
+            <Icon name="book" size={22} />
             <strong>{lessons} aulas</strong>
-            <span>em {page.modules.length} módulos, com prática e projeto final</span>
+            <span>em {page.modules.length} módulos</span>
           </li>
           <li>
+            <Icon name="shield" size={22} />
             <strong>{GUARANTEE_DAYS} dias</strong>
-            <span>de garantia incondicional</span>
+            <span>de garantia</span>
           </li>
         </ul>
       </div>
@@ -236,7 +264,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {/* ---------- o problema e o que muda (hoje × depois da formação) ---------- */}
       <section className="sp-section sp-section--mist" aria-labelledby="sp-dores">
         <div className="sp-section__inner">
-          <p className="swp-kicker">Você se reconhece?</p>
+          <Kicker icon="eye">Você se reconhece?</Kicker>
           <h2 id="sp-dores" className="swp-title">
             Se alguma dessas situações já aconteceu no seu culto, esta formação é para você.
           </h2>
@@ -248,25 +276,20 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             {page.compare.map((c) => (
               <div key={c.before} className="sp-compare__row" role="row" data-reveal>
                 <p role="cell" className="sp-compare__before">
-                  <Cross />
+                  <span className="sp-compare__icon">
+                    <Icon name={c.icon ?? "x"} size={20} />
+                  </span>
                   {c.before}
                 </p>
                 <p role="cell" className="sp-compare__after">
-                  <Check />
+                  <span className="sp-compare__icon">
+                    <Icon name="check" size={20} />
+                  </span>
                   {c.after}
                 </p>
               </div>
             ))}
           </div>
-          <p className="sp-bridge">
-            {page.bridge}
-            {course.question && (
-              <>
-                {" "}
-                <strong>{course.question}</strong> Você vai saber responder.
-              </>
-            )}
-          </p>
           <div className="sp-center-cta">{cta("antes e depois")}</div>
         </div>
       </section>
@@ -278,7 +301,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             <p>“{page.verse.text}”</p>
             <cite>{page.verse.ref}</cite>
           </blockquote>
-          <p className="sp-verse__note">{page.verse.note}</p>
+          {page.verse.note && <p className="sp-verse__note">{page.verse.note}</p>}
         </aside>
       )}
 
@@ -286,7 +309,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {testimonials.length > 0 && (
         <section className="sp-section sp-section--paper" aria-labelledby="sp-depoimentos" data-track-view="depoimentos">
           <div className="sp-section__inner">
-            <p className="swp-kicker">Quem já fez</p>
+            <Kicker icon="quote">Quem já fez</Kicker>
             <h2 id="sp-depoimentos" className="swp-title">
               O que os alunos dizem.
             </h2>
@@ -317,7 +340,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {page.inside && (
         <section className="sp-section sp-section--ink" aria-labelledby="sp-inside">
           <div className="sp-section__inner">
-            <p className="swp-kicker">Por dentro das aulas</p>
+            <Kicker icon="monitorPlay">Por dentro das aulas</Kicker>
             <h2 id="sp-inside" className="swp-title">
               {page.inside.title}
             </h2>
@@ -338,7 +361,10 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                       sizes="(min-width: 1200px) 560px, (min-width: 700px) 50vw, 100vw"
                     />
                     <figcaption>
-                      <strong>{f.title}</strong>
+                      <strong>
+                        {f.icon && <Icon name={f.icon} size={18} />}
+                        {f.title}
+                      </strong>
                       {f.text}
                     </figcaption>
                   </figure>
@@ -379,16 +405,12 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {/* ---------- módulos ---------- */}
       <section id="modulos" className="sp-section sp-section--mist" aria-labelledby="sp-modulos" data-track-view="modulos">
         <div className="sp-section__inner">
-          <p className="swp-kicker">Conteúdo</p>
+          <Kicker icon="book">Conteúdo</Kicker>
           <h2 id="sp-modulos" className="swp-title">
-            {page.modules.length} módulos e {lessons} aulas, do conceito à prática.
+            {page.modules.length} módulos, {lessons} aulas.
           </h2>
-          <ul className="sp-hero__facts sp-facts--modules" aria-label="Formato">
-            <li>{moduleFacts}</li>
-            <li>{course.format.hours > 0 ? `${course.format.hours} horas de videoaulas gravadas` : "Videoaulas gravadas"}</li>
-            <li>{course.format.access}</li>
-            {bonuses.length > 0 ? <li>{bonuses.length} bônus inclusos</li> : course.includes?.some((x) => /apostila/i.test(x)) ? <li>Apostila para imprimir</li> : null}
-            {course.includes?.some((x) => /comunidade|membros/i.test(x)) ? <li>Dúvidas e comunidade</li> : null}
+          <ul className="sp-hero__facts sp-facts--modules sp-facts--icons" aria-label="Formato">
+            {facts}
           </ul>
           <ol className="sp-modules">
             {page.modules.map((m, i) => (
@@ -429,7 +451,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {page.materials && (
         <section className="sp-section sp-section--ink" aria-labelledby="sp-materiais" data-track-view="materiais">
           <div className="sp-section__inner">
-            <p className="swp-kicker">{page.materials.kicker ?? "Materiais inclusos"}</p>
+            <Kicker icon="gift">{page.materials.kicker ?? "Materiais inclusos"}</Kicker>
             <h2 id="sp-materiais" className="swp-title">
               {page.materials.title}
             </h2>
@@ -443,7 +465,10 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                     </span>
                   )}
                   <div>
-                    <p className="sp-materials__tag">{m.tag}</p>
+                    <p className="sp-materials__tag">
+                      {m.icon && <Icon name={m.icon} size={16} />}
+                      {m.tag}
+                    </p>
                     <h3>{m.title}</h3>
                     <p>{m.text}</p>
                   </div>
@@ -458,22 +483,26 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       <section className="sp-section sp-section--paper" aria-labelledby="sp-quem">
         <div className="sp-section__inner sp-fit">
           <div>
-            <p className="swp-kicker">Para quem é</p>
+            <Kicker icon="userCheck">Para quem é</Kicker>
             <h2 id="sp-quem" className="swp-title">
-              Feita para quem serve na técnica.
+              Para quem serve na técnica.
             </h2>
-            <ul className="sp-checks">
+            <ul className="sp-checks sp-checks--icons">
               {page.forWho.map((w) => (
-                <li key={w}>
-                  <Check />
-                  {w}
+                <li key={w.text}>
+                  <span className="sp-checks__icon">
+                    <Icon name={w.icon} size={18} />
+                  </span>
+                  {w.text}
                 </li>
               ))}
             </ul>
-            <ul className="sp-checks sp-checks--no">
+            <ul className="sp-checks sp-checks--no sp-checks--icons">
               {page.notForWho.map((w) => (
                 <li key={w}>
-                  <Cross />
+                  <span className="sp-checks__icon">
+                    <Icon name="x" size={18} />
+                  </span>
                   {w}
                 </li>
               ))}
@@ -490,11 +519,10 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                   <Image src={teacher.photo} alt={`Foto de ${teacher.name}`} fill sizes="120px" />
                 </span>
               )}
-              <p className="swp-kicker">Seu professor</p>
+              <Kicker icon="graduation">Seu professor</Kicker>
               <h3 id="sp-prof">{teacher.name}</h3>
               <p className="sp-teacher__role">{teacher.role}</p>
               <p>{teacher.bio}</p>
-              <p>Aulas com quem vive na prática os problemas que ensina a resolver, na realidade de quem serve na igreja.</p>
             </aside>
           )}
         </div>
@@ -503,7 +531,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {/* ---------- oferta ---------- */}
       <section id="oferta" className="sp-section sp-offer" aria-labelledby="sp-oferta" data-track-view="oferta">
         <div className="sp-section__inner sp-offer__intro">
-          <p className="swp-kicker">Vale a pena?</p>
+          <Kicker icon="tag">Vale a pena?</Kicker>
           <h2 id="sp-oferta" className="swp-title">
             {page.value.title}
           </h2>
@@ -513,46 +541,41 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           <div className="sp-offer__box">
             <p className="swp-kicker">O que você leva</p>
             <h3 className="sp-offer__title">{course.title}</h3>
-            <ul className="sp-checks">
+            <ul className="sp-checks sp-checks--icons">
               <li>
-                <Check />
-                {lessons} videoaulas gravadas em {page.modules.length} módulos
+                <span className="sp-checks__icon">
+                  <Icon name="play" size={18} />
+                </span>
+                {lessons} videoaulas em {page.modules.length} módulos
                 {course.format.hours > 0 ? ` (${course.format.hours} horas)` : ""}
               </li>
-              {page.extraModule && (
-                <li>
-                  <Check />
-                  Módulo extra: {page.extraModule.title.toLowerCase()} ({page.extraModule.items.length} aulas, {page.extraModule.note.toLowerCase()})
-                </li>
-              )}
               {page.modules.some((m) => m.tag) && (
                 <li>
-                  <Check />
-                  Aulas práticas e um projeto final com tudo funcionando junto
+                  <span className="sp-checks__icon">
+                    <Icon name="wrench" size={18} />
+                  </span>
+                  Aulas práticas e projeto final
                 </li>
               )}
               {includes.map((i) => (
                 <li key={i}>
-                  <Check />
-                  {i}
+                  <span className="sp-checks__icon">
+                    <Icon name={/comunidade|membros|dúvida/i.test(i) ? "message" : "check"} size={18} />
+                  </span>
+                  {/comunidade|membros/i.test(i) ? "Área de membros e comunidade de alunos" : i}
                 </li>
               ))}
-              {/* materiais que não estão na lista "Inclui" da formação (ex.: a planilha) */}
-              {page.materials?.items
-                .filter((m) => m.offerLine)
-                .map((m) => (
-                  <li key={m.title}>
-                    <Check />
-                    {m.offerLine}
-                  </li>
-                ))}
               <li>
-                <Check />
-                {course.format.access}, no seu ritmo, no computador ou celular
+                <span className="sp-checks__icon">
+                  <Icon name="infinity" size={18} />
+                </span>
+                {course.format.access}, no computador ou celular
               </li>
               <li>
-                <Check />
-                Garantia incondicional de {GUARANTEE_DAYS} dias
+                <span className="sp-checks__icon">
+                  <Icon name="shield" size={18} />
+                </span>
+                {GUARANTEE_DAYS} dias de garantia
               </li>
             </ul>
             {bonuses.length > 0 && (
@@ -561,6 +584,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                 <ul className="sp-checks sp-bonus">
                   {bonuses.map((m, k) => (
                     <li key={m.title}>
+                      <Icon name={m.icon ?? "gift"} size={18} className="sp-bonus__icon" />
                       <em className="sp-bonus__tag">Bônus {k + 1}</em>
                       {m.bonus?.line}
                     </li>
@@ -574,8 +598,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                 <path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               <p>
-                <strong>Risco zero:</strong> se em até {GUARANTEE_DAYS} dias você achar que a formação não é para você,
-                devolvemos 100% do valor.
+                <strong>Risco zero:</strong> não gostou em {GUARANTEE_DAYS} dias? Devolvemos 100%.
               </p>
             </div>
           </div>
@@ -597,7 +620,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             )}
             <div className="sp-buy__cta">{cta("oferta")}</div>
             <p className="sp-buy__safe">
-              <Check />
+              <Icon name="lock" size={16} />
               Compra segura pela Hotmart · {GUARANTEE_DAYS} dias de garantia
             </p>
             {dm && <DirectButton href={dm} location="oferta" compact />}
@@ -609,13 +632,13 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       <section className="sp-section sp-section--mist" aria-labelledby="sp-faq" data-track-view="duvidas">
         <div className="sp-section__inner sp-faq">
           <div>
-            <p className="swp-kicker">Dúvidas</p>
+            <Kicker icon="help">Dúvidas</Kicker>
             <h2 id="sp-faq" className="swp-title">
               Perguntas frequentes.
             </h2>
             {dm && (
               <div className="sp-direct-box">
-                <p>Ficou alguma dúvida que não está aqui? Me chama no direct que eu respondo.</p>
+                <p>Ficou com dúvida? Me chama no direct.</p>
                 <DirectButton href={dm} location="duvidas" />
               </div>
             )}
@@ -624,6 +647,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             {page.faq.map((f) => (
               <details key={f.question} className="sp-faq__item">
                 <summary>
+                  <Icon name="help" size={18} className="sp-faq__icon" />
                   <span>{f.question}</span>
                   <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                     <path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -705,6 +729,11 @@ function ModuleItem({ m, num, star, open, extra, note }: { m: SalesModule; num: 
       <details className={cls} open={open}>
         <summary>
           <span className="sp-module__num">{num}</span>
+          {m.icon && (
+            <span className="sp-module__icon">
+              <Icon name={m.icon} size={20} />
+            </span>
+          )}
           <span className="sp-module__title">
             {m.title}
             <small className="sp-module__count">
