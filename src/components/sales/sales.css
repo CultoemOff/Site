@@ -2910,3 +2910,97 @@ body:has(.promo-bar) .sp-offer {
   transform: none;
   color: var(--signal);
 }
+
+/* ==========================================================
+   Problema → solução em cards: ilustração em cima, depois o "hoje" e o "depois"
+   ========================================================== */
+.sp-pcards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  margin: clamp(28px, 4vw, 40px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px) {
+  .sp-pcards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1100px) {
+  .sp-pcards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.sp-pcard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid var(--sp-card-border, rgba(110, 150, 255, 0.22));
+  background: var(--sp-card, rgba(12, 24, 60, 0.6));
+}
+.sp-pcard__art {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  padding: 10px 14px;
+  color: #cfe0ff;
+  background:
+    radial-gradient(ellipse 70% 80% at 50% 60%, rgba(59, 140, 255, 0.28), transparent 70%),
+    linear-gradient(180deg, #0a1430, #060b1c);
+}
+.sp-pcard__art .pi {
+  width: 100%;
+  height: 100%;
+}
+.pi .pi-accent {
+  color: #5bd0ff;
+}
+.pi .pi-bad {
+  color: #ff8a7a;
+}
+.sp-pcard__body {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  flex: 1;
+  align-content: start;
+}
+.sp-pcard__body p {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.sp-pcard__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.sp-pcard__before {
+  color: var(--sp-muted, #b9c8ea);
+}
+.sp-pcard__before .sp-pcard__label {
+  color: var(--sp-bad, #ff9a88);
+}
+.sp-pcard__after {
+  padding-top: 14px;
+  border-top: 1px dashed var(--sp-card-border, rgba(110, 150, 255, 0.3));
+  color: var(--sp-title, #fff);
+  font-weight: 500;
+}
+.sp-pcard__after .sp-pcard__label {
+  color: var(--sp-good, #7ee2b0);
+}
+
+/* professor ao lado das perguntas frequentes */
+.sp-faq .sp-fit__teacher {
+  margin-top: 20px;
+}

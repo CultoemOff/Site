@@ -1,3 +1,4 @@
+import type { ProblemIlloName } from "@/components/sales/ProblemIllo";
 import type { IconName } from "@/components/ui/Icon";
 
 /**
@@ -29,7 +30,7 @@ export type SalesPage = {
   videoSize?: { width: number; height: number };
   /** situações em que o aluno se reconhece hoje e como ficam depois da formação */
   /** situações "hoje × depois", cada uma com um ícone próprio */
-  compare: { before: string; after: string; icon?: IconName }[];
+  compare: { before: string; after: string; icon?: IconName; illo?: ProblemIlloName }[];
   /** argumento de valor, logo acima da oferta: quanto custa não saber */
   value: { title: string; text: string };
   /** frase-ponte depois das dores */
@@ -96,6 +97,8 @@ export type SalesPage = {
     }[];
   };
   forWho: { icon: IconName; text: string }[];
+  /** false = esconde a seção "Para quem é" (o conteúdo pode ir para o FAQ) */
+  showForWho?: boolean;
   /** false = esconde a seção de depoimentos ("Quem já fez"), mesmo com depoimentos no painel */
   showTestimonials?: boolean;
   notForWho: string[];
@@ -116,10 +119,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     // Para voltar a ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
     promo: { label: "Preço especial de lançamento" },
     compare: [
-      { icon: "plug", before: "Usa cabo HDMI ou USB longo, com extensão, e não sabe por que a câmera fica travando.", after: "Conhece o limite de cada tipo de cabo e passa a levar as câmeras pela rede, com NDI." },
-      { icon: "refresh", before: "A solução de sempre é desligar e ligar tudo de novo, e torcer.", after: "Você entende o que acontece entre a câmera, o switch e o computador da live." },
-      { icon: "cart", before: "Compra equipamento sem saber se vai funcionar.", after: "Entende o que cada switch, roteador, cabo e câmera faz antes de comprar." },
-      { icon: "users", before: "Precisa de uma equipe grande de voluntários para operar os cultos.", after: "Conhece os protocolos de rede que ligam mesa, live, iluminação e projeção, e ganha coragem para automatizar o culto com o Companion." },
+      { icon: "plug", illo: "cable", before: "Usa cabo HDMI ou USB longo, com extensão, e não sabe por que a câmera fica travando.", after: "Conhece o limite de cada tipo de cabo e passa a levar as câmeras pela rede, com NDI." },
+      { icon: "refresh", illo: "restart", before: "A solução de sempre é desligar e ligar tudo de novo, e torcer.", after: "Você entende o que acontece entre a câmera, o switch e o computador da live." },
+      { icon: "cart", illo: "buy", before: "Compra equipamento sem saber se vai funcionar.", after: "Entende o que cada switch, roteador, cabo e câmera faz antes de comprar." },
+      { icon: "users", illo: "automate", before: "Precisa de uma equipe grande de voluntários para operar os cultos.", after: "Conhece os protocolos de rede que ligam mesa, live, iluminação e projeção, e ganha coragem para automatizar o culto com o Companion." },
     ],
     value: {
       title: "Quanto custa não entender de rede?",
@@ -318,6 +321,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     },
     // seção "Quem já fez" retirada a pedido do Jonas (09/10/2026); os depoimentos continuam no painel
     showTestimonials: false,
+    // seção "Para quem é" retirada (10/10/2026): o conteúdo foi para o FAQ; o professor fica ao lado do FAQ
+    showForWho: false,
     forWho: [
       { icon: "headphones", text: "Voluntários de áudio, vídeo, live, projeção e luz." },
       { icon: "video", text: "Quem opera NDI, PTZ, OBS ou mesa digital." },
@@ -329,6 +334,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       "Quem busca VLAN e QoS a fundo (ficam para o Curso 2).",
     ],
     faq: [
+      {
+        question: "Para quem é a formação?",
+        answer: "Voluntários de áudio, vídeo, live, projeção e luz, quem opera NDI, PTZ, OBS ou mesa digital e líderes que organizam a técnica.",
+      },
       {
         question: "Preciso saber alguma coisa de rede antes?",
         answer: "Não. Começa do zero, com exemplos reais de culto.",
@@ -360,6 +369,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         question: "E se eu não gostar?",
         answer: "Você tem 7 dias de garantia, com reembolso de 100%.",
+      },
+      {
+        question: "Para quem a formação não é?",
+        answer: "Para quem quer virar administrador de redes corporativas ou busca VLAN e QoS a fundo (esses temas ficam para o Curso 2).",
       },
     ],
   },

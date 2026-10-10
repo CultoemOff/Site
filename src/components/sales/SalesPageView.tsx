@@ -14,6 +14,7 @@ import "@/components/software-page/software-page.css";
 import Countdown from "./Countdown";
 import ExitPopup from "./ExitPopup";
 import PromoBar from "./PromoBar";
+import ProblemIllo from "./ProblemIllo";
 import SalesVideo from "./SalesVideo";
 import { DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
 import "./sales.css";
@@ -268,28 +269,29 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           <h2 id="sp-dores" className="swp-title">
             Se alguma dessas situações já aconteceu no seu culto, esta formação é para você.
           </h2>
-          <div className="sp-compare" role="table" aria-label="Hoje e depois da formação">
-            <div className="sp-compare__head" role="row">
-              <span role="columnheader">Hoje, no culto</span>
-              <span role="columnheader">Depois da formação</span>
-            </div>
-            {page.compare.map((c) => (
-              <div key={c.before} className="sp-compare__row" role="row" data-reveal>
-                <p role="cell" className="sp-compare__before">
-                  <span className="sp-compare__icon">
-                    <Icon name={c.icon ?? "x"} size={20} />
-                  </span>
-                  {c.before}
-                </p>
-                <p role="cell" className="sp-compare__after">
-                  <span className="sp-compare__icon">
-                    <Icon name="check" size={20} />
-                  </span>
-                  {c.after}
-                </p>
-              </div>
+          <ul className="sp-pcards">
+            {page.compare.map((c, k) => (
+              <li key={c.before} className="sp-pcard" data-reveal style={{ "--i": k } as React.CSSProperties}>
+                <div className="sp-pcard__art">{c.illo ? <ProblemIllo name={c.illo} /> : c.icon && <Icon name={c.icon} size={40} />}</div>
+                <div className="sp-pcard__body">
+                  <p className="sp-pcard__before">
+                    <span className="sp-pcard__label">
+                      <Icon name="x" size={14} />
+                      Hoje
+                    </span>
+                    {c.before}
+                  </p>
+                  <p className="sp-pcard__after">
+                    <span className="sp-pcard__label">
+                      <Icon name="check" size={14} />
+                      Depois da formação
+                    </span>
+                    {c.after}
+                  </p>
+                </div>
+              </li>
             ))}
-          </div>
+          </ul>
           <div className="sp-center-cta">{cta("antes e depois")}</div>
         </div>
       </section>
@@ -479,7 +481,8 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
         </section>
       )}
 
-      {/* ---------- para quem é + quem ensina ---------- */}
+      {/* ---------- para quem é (pode ser escondida: o conteúdo vai para o FAQ) ---------- */}
+      {page.showForWho !== false && (
       <section className="sp-section sp-section--paper" aria-labelledby="sp-quem">
         <div className="sp-section__inner sp-fit">
           <div>
@@ -508,25 +511,9 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               ))}
             </ul>
           </div>
-          {teacher && (
-            <aside className="sp-fit__teacher" aria-labelledby="sp-prof">
-              {teacher.photoScene ? (
-                <span className="sp-fit__scene">
-                  <Image src={teacher.photoScene} alt={`${teacher.name} na mesa de som`} fill sizes="(max-width: 960px) 92vw, 400px" />
-                </span>
-              ) : (
-                <span className="sp-teacher__photo">
-                  <Image src={teacher.photo} alt={`Foto de ${teacher.name}`} fill sizes="120px" />
-                </span>
-              )}
-              <Kicker icon="graduation">Seu professor</Kicker>
-              <h3 id="sp-prof">{teacher.name}</h3>
-              <p className="sp-teacher__role">{teacher.role}</p>
-              <p>{teacher.bio}</p>
-            </aside>
-          )}
         </div>
       </section>
+      )}
 
       {/* ---------- oferta ---------- */}
       <section id="oferta" className="sp-section sp-offer" aria-labelledby="sp-oferta" data-track-view="oferta">
@@ -636,6 +623,23 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             <h2 id="sp-faq" className="swp-title">
               Perguntas frequentes.
             </h2>
+            {teacher && (
+            <aside className="sp-fit__teacher" aria-labelledby="sp-prof">
+              {teacher.photoScene ? (
+                <span className="sp-fit__scene">
+                  <Image src={teacher.photoScene} alt={`${teacher.name} na mesa de som`} fill sizes="(max-width: 960px) 92vw, 400px" />
+                </span>
+              ) : (
+                <span className="sp-teacher__photo">
+                  <Image src={teacher.photo} alt={`Foto de ${teacher.name}`} fill sizes="120px" />
+                </span>
+              )}
+              <Kicker icon="graduation">Seu professor</Kicker>
+              <h3 id="sp-prof">{teacher.name}</h3>
+              <p className="sp-teacher__role">{teacher.role}</p>
+              <p>{teacher.bio}</p>
+            </aside>
+            )}
             {dm && (
               <div className="sp-direct-box">
                 <p>Ficou com dúvida? Me chama no direct.</p>
