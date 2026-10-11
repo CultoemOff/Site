@@ -272,7 +272,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           <ul className="sp-pcards">
             {page.compare.map((c, k) => (
               <li key={c.before} className="sp-pcard" data-reveal style={{ "--i": k } as React.CSSProperties}>
-                <div className="sp-pcard__art">{c.illo ? <ProblemIllo name={c.illo} /> : c.icon && <Icon name={c.icon} size={40} />}</div>
+                <div className="sp-pcard__art" data-anim>{c.illo ? <ProblemIllo name={c.illo} /> : c.icon && <Icon name={c.icon} size={40} />}</div>
                 <div className="sp-pcard__body">
                   <p className="sp-pcard__before">
                     <span className="sp-pcard__label">
@@ -618,11 +618,14 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {/* ---------- FAQ ---------- */}
       <section className="sp-section sp-section--mist" aria-labelledby="sp-faq" data-track-view="duvidas">
         <div className="sp-section__inner sp-faq">
-          <div>
+          {/* título em cima, ocupando a largura toda: professor e perguntas começam na mesma linha */}
+          <div className="sp-faq__head">
             <Kicker icon="help">Dúvidas</Kicker>
             <h2 id="sp-faq" className="swp-title">
               Perguntas frequentes.
             </h2>
+          </div>
+          <div className="sp-faq__side">
             {teacher && (
             <aside className="sp-fit__teacher" aria-labelledby="sp-prof">
               {teacher.photoScene ? (

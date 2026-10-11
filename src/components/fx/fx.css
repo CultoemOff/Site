@@ -81,7 +81,8 @@
   }
 }
 /* animações decorativas paradas; brilho do mouse desligado */
-.fx-lite [data-anim] *:not([data-reveal]) {
+/* (as ilustrações pequenas dos cards, .pi, continuam: são leves e sem elas a cena fica incompleta) */
+.fx-lite [data-anim] *:not([data-reveal]):not(.pi *) {
   animation-play-state: paused !important;
 }
 .fx-lite [data-glow]::after {
