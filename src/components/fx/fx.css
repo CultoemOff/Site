@@ -63,3 +63,44 @@
     display: none;
   }
 }
+
+/* ==========================================================
+   Modo leve (.fx-lite no <html>, ver lib/perfMode.ts): aparelhos fracos
+   ========================================================== */
+/* entrada do conteúdo: só aparece, sem desfoque (o blur é caro em placa de vídeo integrada) */
+.fx-lite.js-reveal [data-reveal].is-visible {
+  animation: reveal-lite 0.4s ease-out backwards;
+  animation-delay: 0s;
+}
+@keyframes reveal-lite {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* animações decorativas paradas; brilho do mouse desligado */
+.fx-lite [data-anim] *:not([data-reveal]) {
+  animation-play-state: paused !important;
+}
+.fx-lite [data-glow]::after {
+  display: none;
+}
+/* desfoque de fundo (menu, barra de compra, botões, avisos) vira cor sólida */
+.fx-lite .nav--solid {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(5, 10, 24, 0.96);
+}
+.fx-lite * {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+/* topo da home: menos aparelhos de luz e fumaça parada */
+.fx-lite .mh--desktop {
+  display: none;
+}
+.fx-lite .stage-haze__layer > span {
+  animation: none;
+}

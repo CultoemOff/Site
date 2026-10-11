@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
+import { isLite, probeFrameRate } from "@/lib/perfMode";
 
 /**
  * Observador único de viewport (montado uma vez na página):
  * - [data-reveal]: entra com opacity + translateY + blur (stagger via --i);
  * - [data-anim]: animações CSS só rodam enquanto o bloco está visível;
- * - [data-glow]: gradiente discreto que acompanha o mouse (--mx / --my).
+ * - [data-glow]: gradiente discreto que acompanha o mouse (--mx / --my);
+ * - mede a fluidez nos primeiros segundos e liga o "modo leve" em aparelhos fracos (ver lib/perfMode).
  *
  * Sem JavaScript, nada fica escondido: a classe .js-reveal só é aplicada
  * por um script inline no layout, que também a remove se este componente
@@ -18,6 +20,7 @@ export default function ViewportFx() {
     root.classList.add("reveal-live");
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const stopProbe = probeFrameRate();
 
     const revealEls = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
     let revealIO: IntersectionObserver | null = null;
@@ -63,7 +66,7 @@ export default function ViewportFx() {
       el.style.setProperty("--my", `${e.clientY - r.top}px`);
     };
     const onPointer = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
+      if (e.pointerType !== "mouse" || isLite()) return;
       lastEvent = e;
       if (!glowRaf) glowRaf = requestAnimationFrame(applyGlow);
     };
@@ -71,6 +74,7 @@ export default function ViewportFx() {
     if (canHover && !reduce) document.addEventListener("pointermove", onPointer, { passive: true });
 
     return () => {
+      stopProbe();
       revealIO?.disconnect();
       animIO.disconnect();
       document.removeEventListener("pointermove", onPointer);

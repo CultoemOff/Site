@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "../src/app/(frontend)/globals.css";
 import "../src/components/fx/fx.css";
 import HomeView from "../src/components/HomeView";
+import { LITE_INLINE_SCRIPT } from "../src/lib/perfMode";
 import YouTubeView from "../src/components/sections/youtube/YouTubeView";
 import { COURSES } from "../src/config/courses";
 import { DEFAULT_SETTINGS } from "../src/config/site";
@@ -11,6 +12,8 @@ import LatestPosts from "../src/components/blog/LatestPosts";
 import { SEED_POSTS } from "../src/content/posts";
 
 // Prévia fora do Next: usa os dados padrão (sem banco) e o estado sem vídeos do YouTube.
+// como o script inline do layout: modo leve por pistas do aparelho
+new Function(LITE_INLINE_SCRIPT)();
 document.documentElement.classList.add("js-reveal");
 createRoot(document.getElementById("root")!).render(
   <>

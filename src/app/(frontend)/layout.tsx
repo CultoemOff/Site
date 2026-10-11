@@ -4,6 +4,7 @@ import Analytics from "@/components/analytics/Analytics";
 import CheckoutParams from "@/components/analytics/CheckoutParams";
 import { APPLE_ICON_SRC, ICON_SRC, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/config/site";
 import { getSiteSettings } from "@/lib/cms";
+import { LITE_INLINE_SCRIPT } from "@/lib/perfMode";
 import { OG_IMAGE, SITE_URL, safeGaId, safePixelId } from "@/lib/seo";
 import "./globals.css";
 import "@/components/fx/fx.css";
@@ -69,6 +70,7 @@ export default async function FrontendLayout({ children }: Readonly<{ children: 
         <script
           dangerouslySetInnerHTML={{
             __html:
+              LITE_INLINE_SCRIPT +
               "document.documentElement.classList.add('js-reveal');setTimeout(function(){var r=document.documentElement;if(!r.classList.contains('reveal-live'))r.classList.remove('js-reveal')},4000);",
           }}
         />

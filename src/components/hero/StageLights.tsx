@@ -1,5 +1,6 @@
 "use client";
 
+import { isLite, LITE_EVENT } from "@/lib/perfMode";
 import { useEffect, useRef, type CSSProperties } from "react";
 import {
   BEAM_LENGTH,
@@ -87,10 +88,19 @@ export default function StageLights() {
     // a luz não fica parada. Entra o modo suave: varredura lenta e curta, a 30 quadros por segundo,
     // sem seguir o mouse e sem a paralaxe da fumaça. O tamanho da tela não entra nessa conta.
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let gentle = reduceMotion.matches;
+    // Modo leve (aparelho fraco, ver lib/perfMode): mesmo ritmo do modo suave e, além disso,
+    // fumaça parada e sem paralaxe, que são as partes que mais pesam para a placa de vídeo.
+    let lite = isLite();
+    let gentle = reduceMotion.matches || lite;
     const onMotionChange = () => {
-      gentle = reduceMotion.matches;
+      gentle = reduceMotion.matches || lite;
     };
+    const onLite = () => {
+      lite = true;
+      gentle = true;
+    };
+    // a medição de fluidez fica no ViewportFx (montado na mesma página)
+    window.addEventListener(LITE_EVENT, onLite);
 
     const state = MOVING_HEADS.map((h) => ({ x: STAGE_FOCUS.x + h.spread, y: STAGE_FOCUS.y }));
     const aim = { x: STAGE_FOCUS.x, y: STAGE_FOCUS.y };
@@ -161,12 +171,12 @@ export default function StageLights() {
       const py = active ? pointer.ny : 0;
       parallax.x += (px - parallax.x) * 0.04;
       parallax.y += (py - parallax.y) * 0.04;
-      for (const layer of hazeLayers) {
+      if (!lite) for (const layer of hazeLayers) {
         const depth = Number(layer.dataset.hazeDepth ?? 1);
         layer.style.transform = `translate3d(${(-parallax.x * 70 * depth).toFixed(2)}px, ${(-parallax.y * 26 * depth).toFixed(2)}px, 0)`;
       }
       if (hazeGlow) hazeGlow.style.transform = `translate(${u(aim.x)}, ${u(aim.y - 60)}) translate(-50%, -50%)`;
-      if (beamsLayer) {
+      if (beamsLayer && !lite) {
         const mx = (-t * 9 - parallax.x * 120).toFixed(1);
         const my = (-t * 3 - parallax.y * 40).toFixed(1);
         beamsLayer.style.setProperty("--smoke-pos", `${mx}px ${my}px`);
@@ -194,6 +204,7 @@ export default function StageLights() {
 
     return () => {
       pause();
+      window.removeEventListener(LITE_EVENT, onLite);
       io.disconnect();
       window.removeEventListener("pointermove", onPointerMove);
       reduceMotion.removeEventListener?.("change", onMotionChange);
