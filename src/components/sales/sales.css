@@ -3793,3 +3793,53 @@ body:has(.promo-bar) .sp-offer {
 }
 .sp-hero__note svg { flex: none; width: 20px; height: 20px; color: var(--signal, #fbbf24); }
 .sp-page--red .sp-hero__note { border-color: rgba(255, 77, 94, 0.45); background: rgba(255, 77, 94, 0.12); }
+
+/* promessas em destaque (logo depois dos números) */
+.sp-highlights {
+  background: var(--ink, #070a14);
+  padding: clamp(2.2rem, 5vw, 3.6rem) 1.25rem;
+}
+.sp-highlights__list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1120px;
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 860px) {
+  .sp-highlights__list { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+}
+.sp-highlight {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  color: #fff;
+}
+.sp-highlight__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: rgba(96, 165, 250, 0.16);
+  color: #93c5fd;
+}
+.sp-highlight__title {
+  margin: 0 0 0.45rem;
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.sp-highlight__text {
+  margin: 0;
+  color: var(--muted-on-dark, #a5b0c8);
+  line-height: 1.55;
+}
+.sp-page--red .sp-highlight { border-color: rgba(255, 77, 94, 0.28); background: linear-gradient(160deg, rgba(255, 77, 94, 0.14), rgba(255, 255, 255, 0.02)); }
+.sp-page--red .sp-highlight__icon { background: rgba(255, 77, 94, 0.18); color: #ff6b7a; }

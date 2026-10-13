@@ -294,6 +294,25 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
         </ul>
       </div>
 
+      {/* ---------- promessas em destaque ---------- */}
+      {page.highlights && page.highlights.length > 0 && (
+        <section className="sp-highlights" aria-label="O que muda na sua igreja">
+          <ul className="sp-highlights__list">
+            {page.highlights.map((h, k) => (
+              <li key={h.title} className="sp-highlight" data-reveal style={{ "--i": k } as React.CSSProperties}>
+                <span className="sp-highlight__icon">
+                  <Icon name={h.icon} size={28} />
+                </span>
+                <div>
+                  <h2 className="sp-highlight__title">{h.title}</h2>
+                  <p className="sp-highlight__text">{h.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {/* ---------- o problema e o que muda (hoje × depois da formação) ---------- */}
       <section className="sp-section sp-section--mist" aria-labelledby="sp-dores">
         <div className="sp-section__inner">

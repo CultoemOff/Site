@@ -36,6 +36,8 @@ export type SalesPage = {
   installmentsNote?: string;
   /** destaque curto logo abaixo do subtítulo (responde a principal objeção) */
   heroNote?: { icon: IconName; text: string };
+  /** frases de promessa em destaque, logo depois dos números (cartões grandes com ícone) */
+  highlights?: { icon: IconName; title: string; text: string }[];
   /** o que a formação controla/integra: grade de cartões com ícone */
   integrations?: { title: string; items: { icon: IconName; name: string; what: string }[]; art?: "streamdeck" };
   /** proporção real do vídeo (largura e altura em pixels); sem isso, usa 9:16 no vertical e 16:9 no horizontal */
@@ -402,6 +404,18 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     heroNote: { icon: "smartphone", text: "Não precisa comprar Stream Deck: funciona no celular, tablet ou navegador." },
     installmentsNote: "em até 8x no cartão",
     promo: { label: "Preço especial de lançamento" },
+    highlights: [
+      {
+        icon: "users",
+        title: "Precise de menos voluntários para operar o culto.",
+        text: "Otimize as funções na sua igreja: o painel faz o trabalho repetitivo e a equipe fica livre para o que importa.",
+      },
+      {
+        icon: "lightbulb",
+        title: "Iluminação 100% automática durante o culto.",
+        text: "Aprenda a automatizar toda a iluminação da sua igreja: no Louvor, no Momento da Palavra e em todo o culto.",
+      },
+    ],
     compare: [
       { icon: "users", illo: "automate", before: "Uma pessoa em cada programa, e o culto depende de todo mundo acertar junto.", after: "Um toque troca a cena, chama a letra e acende a luz, na ordem certa." },
       { icon: "video", illo: "ptz", before: "A câmera chega atrasada no pregador.", after: "Preset da câmera e cena certa no mesmo botão." },
