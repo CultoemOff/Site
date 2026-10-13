@@ -15,6 +15,7 @@ import Countdown from "./Countdown";
 import ExitPopup from "./ExitPopup";
 import PromoBar from "./PromoBar";
 import ProblemIllo from "./ProblemIllo";
+import LogoOrbit from "./LogoOrbit";
 import StreamDeckArt from "./StreamDeckArt";
 import SalesVideo from "./SalesVideo";
 import { DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
@@ -351,10 +352,21 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {page.integrations && (
         <section className="sp-section sp-section--ink" aria-labelledby="sp-integra">
           <div className="sp-section__inner">
-            <Kicker icon="zap">Um painel, tudo junto</Kicker>
-            <h2 id="sp-integra" className="swp-title">
-              {page.integrations.title}
-            </h2>
+            {page.integrations.orbit ? (
+              <LogoOrbit logos={page.integrations.orbit}>
+                <Kicker icon="zap">Um painel, tudo junto</Kicker>
+                <h2 id="sp-integra" className="swp-title">
+                  {page.integrations.title}
+                </h2>
+              </LogoOrbit>
+            ) : (
+              <>
+                <Kicker icon="zap">Um painel, tudo junto</Kicker>
+                <h2 id="sp-integra" className="swp-title">
+                  {page.integrations.title}
+                </h2>
+              </>
+            )}
             <div className={page.integrations.art ? "sp-integra__layout" : undefined}>
             {page.integrations.art === "streamdeck" && <StreamDeckArt />}
             <ul className="sp-integra">
@@ -533,6 +545,52 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
         </div>
       </section>
 
+      {/* ---------- além das aulas: comunidade e atualizações ---------- */}
+      {page.extras && (
+        <section className="sp-section sp-section--ink" aria-labelledby="sp-extras" data-track-view="comunidade">
+          <div className="sp-section__inner">
+            <Kicker icon="users">Além das aulas</Kicker>
+            <h2 id="sp-extras" className="swp-title">
+              {page.extras.title}
+            </h2>
+            <ul className="sp-extras">
+              {page.extras.items.map((x, k) => (
+                <li key={x.title} className="sp-extra" data-reveal style={{ "--i": k } as React.CSSProperties}>
+                  <div className={`sp-extra__art sp-extra__art--${x.art}`} data-anim aria-hidden="true">
+                    {x.art === "community" ? (
+                      <>
+                        <span className="xa-msg xa-msg--1"><i /><b /><b /></span>
+                        <span className="xa-msg xa-msg--2 xa-msg--me"><b /><b /><i /></span>
+                        <span className="xa-msg xa-msg--3"><i /><b /><b /></span>
+                        <span className="xa-typing"><i /><i /><i /></span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="xa-line" />
+                        {["Lançamento", "Novas aulas", "Atualizações", "Mais aulas"].map((t, j) => (
+                          <span key={t} className={`xa-step xa-step--${j + 1}`}>
+                            <i />
+                            {t}
+                          </span>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                  <div className="sp-extra__body">
+                    <p className="sp-extra__tag">
+                      <Icon name={x.art === "community" ? "message" : "refresh"} size={14} />
+                      {x.tag}
+                    </p>
+                    <h3>{x.title}</h3>
+                    <p>{x.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* ---------- materiais inclusos (apostila, planilha) ---------- */}
       {page.materials && !page.materials.hideSection && (
         <section className="sp-section sp-section--ink" aria-labelledby="sp-materiais" data-track-view="materiais">
@@ -631,9 +689,9 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               {includes.map((i) => (
                 <li key={i}>
                   <span className="sp-checks__icon">
-                    <Icon name={/comunidade|membros|dúvida/i.test(i) ? "message" : "check"} size={18} />
+                    <Icon name={/comunidade|membros|dúvida/i.test(i) ? "message" : /atualiza|novas aulas/i.test(i) ? "refresh" : "check"} size={18} />
                   </span>
-                  {/comunidade|membros/i.test(i) ? "Área de membros e comunidade de alunos" : i}
+                  {/^área de membros/i.test(i) ? "Área de membros e comunidade de alunos" : i}
                 </li>
               ))}
               <li>

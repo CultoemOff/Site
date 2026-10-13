@@ -38,8 +38,16 @@ export type SalesPage = {
   heroNote?: { icon: IconName; text: string };
   /** frases de promessa em destaque, logo depois dos números (cartões grandes com ícone) */
   highlights?: { icon: IconName; title: string; text: string }[];
+  /** "além das aulas": comunidade e curso que cresce (cartões com mini-ilustração) */
+  extras?: { title: string; items: { art: "community" | "updates"; tag: string; title: string; text: string }[] };
   /** o que a formação controla/integra: grade de cartões com ícone */
-  integrations?: { title: string; items: { icon: IconName; name: string; what: string }[]; art?: "streamdeck" };
+  integrations?: {
+    title: string;
+    items: { icon: IconName; name: string; what: string }[];
+    art?: "streamdeck";
+    /** meia-lua de logos girando em volta do título; logo = arquivo em /public/images/logos/ (sem fundo) */
+    orbit?: { name: string; logo?: string }[];
+  };
   /** proporção real do vídeo (largura e altura em pixels); sem isso, usa 9:16 no vertical e 16:9 no horizontal */
   videoSize?: { width: number; height: number };
   /** situações em que o aluno se reconhece hoje e como ficam depois da formação */
@@ -425,6 +433,18 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     integrations: {
       title: "Tudo o que você vai controlar.",
       art: "streamdeck",
+      // logos oficiais: colocar o PNG/SVG sem fundo em /public/images/logos/ e preencher "logo"
+      orbit: [
+        { name: "Holyrics" },
+        { name: "SPresenter", logo: "/images/logos/spresenter.png" },
+        { name: "OBS Studio" },
+        { name: "grandMA2" },
+        { name: "Lumikit" },
+        { name: "Stream Deck" },
+        { name: "Yamaha" },
+        { name: "Behringer" },
+        { name: "Soundcraft" },
+      ],
       items: [
         { icon: "monitorPlay", name: "OBS Studio", what: "Cenas, fontes, áudio, live e gravação" },
         { icon: "presentation", name: "Holyrics", what: "Letras, Bíblia e avisos" },
@@ -439,6 +459,23 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     value: {
       title: "Quanto vale um culto sem correria na técnica?",
       text: "Menos gente apertando botão ao mesmo tempo, menos erro na hora que todo mundo vê.",
+    },
+    extras: {
+      title: "Você não vai montar seu painel sozinho.",
+      items: [
+        {
+          art: "community",
+          tag: "Comunidade",
+          title: "Tire dúvidas e troque projetos.",
+          text: "Uma comunidade com quem também está montando o Companion na igreja: dúvidas, ideias e painéis compartilhados.",
+        },
+        {
+          art: "updates",
+          tag: "Sempre atualizado",
+          title: "Um curso que cresce com o tempo.",
+          text: "Novas aulas e atualizações conforme o Companion evolui, incluídas no seu acesso.",
+        },
+      ],
     },
     finalTitle: "O próximo culto pode rodar num toque.",
     // capstone: o projeto do módulo 7, em destaque logo abaixo dos módulos

@@ -39,7 +39,7 @@ export const formatPrice = (value: number) =>
 /** Parcelamento: { count: 8, value: 10.03 } → "8x de R$ 10,03" */
 export const formatInstallments = (i: { count: number; value: number }) => `${i.count}x de ${formatPrice(i.value)}`;
 
-export type CourseRevScope = "price" | "href" | "testimonials" | "hours" | "topics";
+export type CourseRevScope = "price" | "href" | "testimonials" | "hours" | "topics" | "includes";
 
 export type CourseDiagram = "network" | "analog" | "live" | "companion" | "dmx";
 
@@ -248,10 +248,11 @@ export const COURSES: Course[] = [
     // Preço de lançamento (13/10/2026): R$ 88,90, depois R$ 146,90. Parcelamento: até 8x (valor da parcela vem da Hotmart).
     price: 88.9,
     priceFrom: 146.9,
-    // rev 2: grava no banco preço, módulos e carga horária (o resto do painel fica como está)
-    rev: 2,
-    revScope: ["price", "topics", "hours"],
+    // rev 3: grava no banco preço, módulos, carga horária e o que está incluso (o resto do painel fica como está)
+    rev: 3,
+    revScope: ["price", "topics", "hours", "includes"],
     instructor: "jonas-silva",
+    includes: ["Comunidade para dúvidas e troca de projetos de Companion", "Novas aulas e atualizações incluídas no seu acesso"],
     // carga horária: 0 = o site não mostra horas fechadas; a página mostra os minutos de cada módulo
     format: ONLINE_1_ANO(0),
     status: "lancamento-em-breve",
