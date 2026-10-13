@@ -3671,3 +3671,107 @@ body:has(.promo-bar) .sp-offer {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+
+/* ==========================================================
+   Tema vermelho (página do Companion): destaques em vermelho, como a marca
+   ========================================================== */
+.sp-page--red {
+  --signal: #ff4d5e;
+}
+.sp-page--red .sp-hero {
+  background:
+    radial-gradient(ellipse 45% 70% at 80% 35%, rgba(239, 68, 68, 0.26), transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 0%, rgba(124, 58, 237, 0.16), transparent 70%),
+    linear-gradient(180deg, #07040a 0%, #0b0610 100%);
+}
+.sp-page--red .swp-hero__channel span {
+  background: #ff4d5e;
+  box-shadow: 0 0 10px #ff4d5e;
+}
+.sp-page--red .sp-section {
+  --sp-kicker: #e11d48;
+}
+.sp-page--red .sp-section--ink {
+  --sp-kicker: #ff6b7a;
+}
+.sp-page--red .btn--primary {
+  background: linear-gradient(180deg, #ff5a67 0%, #d4142b 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 0 0 1px rgba(255, 120, 130, 0.5),
+    0 10px 30px -10px rgba(239, 68, 68, 0.85);
+}
+.sp-page--red .btn--primary:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 0 1px rgba(255, 150, 160, 0.7),
+    0 14px 40px -10px rgba(239, 68, 68, 1),
+    0 0 36px -6px rgba(239, 68, 68, 0.55);
+}
+.sp-page--red .sp-video__play {
+  background: linear-gradient(180deg, #ff5a67, #d4142b);
+  box-shadow: 0 0 0 10px rgba(239, 68, 68, 0.18), 0 16px 40px -10px rgba(239, 68, 68, 0.9);
+}
+.sp-page--red .sp-video__placeholder {
+  border-color: rgba(255, 90, 103, 0.35);
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 50%, rgba(220, 38, 38, 0.28), transparent 70%),
+    linear-gradient(180deg, #12060c, #0b0610);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9), 0 0 60px -20px rgba(239, 68, 68, 0.5);
+}
+.sp-page--red .sp-module__icon,
+.sp-page--red .sp-checks__icon {
+  color: #e11d48;
+  background: rgba(225, 29, 72, 0.1);
+}
+.sp-page--red .sp-integra__icon {
+  color: #ff6b7a;
+  background: rgba(255, 77, 94, 0.14);
+}
+.sp-page--red .sp-module[open] {
+  border-color: rgba(225, 29, 72, 0.45);
+}
+.sp-page--red .sp-capstone--card {
+  background: linear-gradient(135deg, #9f1239, #4c0519);
+}
+.sp-page--red .sp-proof__list li > .icon,
+.sp-page--red .sp-inside__frame figcaption strong .icon {
+  color: #ff6b7a;
+}
+.sp-page--red .sp-frame-soon {
+  border-color: rgba(255, 107, 122, 0.35);
+  color: #ff8a96;
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 50%, rgba(220, 38, 38, 0.18), transparent 70%),
+    #0d070c;
+}
+
+/* logo do produto no topo (no lugar do nome em texto) */
+.sp-hero__course--logo img {
+  display: block;
+  width: auto;
+  height: 44px;
+}
+
+/* "tudo o que você vai controlar": painel animado ao lado dos cartões */
+@media (min-width: 1000px) {
+  .sp-integra__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+    margin-top: clamp(24px, 4vw, 36px);
+  }
+  .sp-integra__layout .sp-integra {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0;
+  }
+}
+.sp-integra__layout .sd-art {
+  margin-top: clamp(20px, 4vw, 32px);
+}
+@media (min-width: 1000px) {
+  .sp-integra__layout .sd-art {
+    margin-top: 0;
+  }
+}

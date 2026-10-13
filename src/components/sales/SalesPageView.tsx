@@ -165,7 +165,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
   );
 
   return (
-    <>
+    <div className={`sp-page${page.theme ? ` sp-page--${page.theme}` : ""}`}>
       {/* ---------- faixa da promoção: fixa no topo, acima do menu ---------- */}
       {promoOn && (
         <PromoBar
@@ -197,7 +197,13 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               Formação Culto em Off{course.status === "lancamento-em-breve" ? " · Lançamento em breve" : ""}
               {course.status === "inscricoes-abertas" ? " · Inscrições abertas" : ""}
             </p>
-            <p className="sp-hero__course">{course.title}</p>
+            {page.productLogo ? (
+              <p className="sp-hero__course sp-hero__course--logo">
+                <Image src={page.productLogo.src} alt={page.productLogo.alt} width={page.productLogo.width} height={page.productLogo.height} priority />
+              </p>
+            ) : (
+              <p className="sp-hero__course">{course.title}</p>
+            )}
             <h1 className="sp-hero__title">{page.headline}</h1>
             <p className="sp-hero__sub">{page.subheadline}</p>
             <ul className="sp-hero__facts sp-facts--icons" aria-label="Resumo">
@@ -324,6 +330,8 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             <h2 id="sp-integra" className="swp-title">
               {page.integrations.title}
             </h2>
+            <div className={page.integrations.art ? "sp-integra__layout" : undefined}>
+            {page.integrations.art === "streamdeck" && <StreamDeckArt />}
             <ul className="sp-integra">
               {page.integrations.items.map((it, k) => (
                 <li key={it.name} data-reveal style={{ "--i": k % 4 } as React.CSSProperties}>
@@ -335,6 +343,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                 </li>
               ))}
             </ul>
+            </div>
           </div>
         </section>
       )}
@@ -774,7 +783,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
 
       {/* medição da página (Google Analytics): não mostra nada na tela */}
       <SalesTracking itemId={course.id} name={course.title} value={price} />
-    </>
+    </div>
   );
 }
 

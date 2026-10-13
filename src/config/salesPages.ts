@@ -28,10 +28,14 @@ export type SalesPage = {
   videoVertical?: boolean;
   /** arte animada no lugar do vídeo enquanto ele não existe ("streamdeck" = painel de botões com palco e OBS) */
   heroArt?: "streamdeck";
+  /** cor de destaque da página ("red" = vermelho, como a marca do Companion); sem isso, azul */
+  theme?: "red";
+  /** logo oficial do produto (arquivo enviado pelo Jonas, em /public/images/formacoes/); aparece no topo */
+  productLogo?: { src: string; alt: string; width: number; height: number };
   /** texto do parcelamento quando o valor da parcela ainda não está definido (ex.: "em até 8x no cartão") */
   installmentsNote?: string;
   /** o que a formação controla/integra: grade de cartões com ícone */
-  integrations?: { title: string; items: { icon: IconName; name: string; what: string }[] };
+  integrations?: { title: string; items: { icon: IconName; name: string; what: string }[]; art?: "streamdeck" };
   /** proporção real do vídeo (largura e altura em pixels); sem isso, usa 9:16 no vertical e 16:9 no horizontal */
   videoSize?: { width: number; height: number };
   /** situações em que o aluno se reconhece hoje e como ficam depois da formação */
@@ -389,8 +393,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
   "bitfocus-companion": {
     headline: "Um botão. O culto inteiro.",
     subheadline: "Cena do OBS, câmera, mesa, letra e luz comandados juntos pelo Companion, num Stream Deck, celular ou tablet.",
+    // vídeo de vendas (vertical, como o de Redes): coloque o arquivo em /public/videos/ e preencha videoUrl/videoPoster/videoSize
     videoUrl: "",
-    heroArt: "streamdeck",
+    videoVertical: true,
+    theme: "red",
     installmentsNote: "em até 8x no cartão",
     promo: { label: "Preço especial de lançamento" },
     compare: [
@@ -401,6 +407,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     ],
     integrations: {
       title: "Tudo o que você vai controlar.",
+      art: "streamdeck",
       items: [
         { icon: "monitorPlay", name: "OBS Studio", what: "Cenas, fontes, áudio, live e gravação" },
         { icon: "presentation", name: "Holyrics", what: "Letras, Bíblia e avisos" },

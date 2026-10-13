@@ -23,10 +23,10 @@ const KEYS: { label: string; tone: "blue" | "amber" | "red" | "green" | "violet"
 ];
 
 const BEAMS = [
-  { x: 110, c: "#6aa5ff", d: "0s" },
+  { x: 110, c: "#ff4d5e", d: "0s" },
   { x: 210, c: "#a78bfa", d: "-1.2s" },
   { x: 390, c: "#a78bfa", d: "-2.4s" },
-  { x: 490, c: "#6aa5ff", d: "-3.6s" },
+  { x: 490, c: "#ff4d5e", d: "-3.6s" },
 ];
 
 export default function StreamDeckArt() {
