@@ -41,7 +41,17 @@ export type SalesPage = {
   /** frases de promessa em destaque, logo depois dos números (cartões grandes com ícone) */
   highlights?: { icon: IconName; title: string; text: string }[];
   /** "além das aulas": comunidade e curso que cresce (cartões com mini-ilustração) */
-  extras?: { title: string; items: { art: "community" | "updates"; tag: string; title: string; text: string }[] };
+  extras?: {
+    title: string;
+    items: {
+      art: "community" | "updates";
+      tag: string;
+      title: string;
+      text: string;
+      /** linha do tempo própria (só no "updates"): etapas já feitas acesas, a próxima pulsando */
+      timeline?: { label: string; done?: boolean }[];
+    }[];
+  };
   /** o que a formação controla/integra: grade de cartões com ícone */
   integrations?: {
     title: string;
@@ -168,6 +178,11 @@ export const SALES_PAGES: Record<string, SalesPage> = {
           art: "updates",
           tag: "Novas aulas",
           title: "Saiba quando sair aula nova.",
+          timeline: [
+            { label: "Lançamento", done: true },
+            { label: "Novas aulas", done: true },
+            { label: "Atualizações chegando" },
+          ],
           text: "Quando uma aula nova for lançada, você recebe o aviso na comunidade.",
         },
       ],

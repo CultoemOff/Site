@@ -566,6 +566,16 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                         <span className="xa-msg xa-msg--3"><i /><b /><b /></span>
                         <span className="xa-typing"><i /><i /><i /></span>
                       </>
+                    ) : x.timeline ? (
+                      <div className="xa-tl" style={{ "--steps": x.timeline.length } as React.CSSProperties}>
+                        {x.timeline.map((t, j) => (
+                          <span key={t.label} className={`xa-tl__step${t.done ? " is-done" : " is-next"}`}>
+                            {j > 0 && <span className={`xa-tl__seg${t.done ? " is-done" : ""}`} />}
+                            <i>{t.done && <Icon name="check" size={12} />}</i>
+                            <b>{t.label}</b>
+                          </span>
+                        ))}
+                      </div>
                     ) : (
                       <>
                         <span className="xa-line" />
