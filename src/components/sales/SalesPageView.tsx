@@ -206,6 +206,12 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             )}
             <h1 className="sp-hero__title">{page.headline}</h1>
             <p className="sp-hero__sub">{page.subheadline}</p>
+            {page.heroNote && (
+              <p className="sp-hero__note">
+                <Icon name={page.heroNote.icon} />
+                {page.heroNote.text}
+              </p>
+            )}
             <ul className="sp-hero__facts sp-facts--icons" aria-label="Resumo">
               {facts}
             </ul>

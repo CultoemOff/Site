@@ -34,6 +34,8 @@ export type SalesPage = {
   productLogo?: { src: string; alt: string; width: number; height: number };
   /** texto do parcelamento quando o valor da parcela ainda não está definido (ex.: "em até 8x no cartão") */
   installmentsNote?: string;
+  /** destaque curto logo abaixo do subtítulo (responde a principal objeção) */
+  heroNote?: { icon: IconName; text: string };
   /** o que a formação controla/integra: grade de cartões com ícone */
   integrations?: { title: string; items: { icon: IconName; name: string; what: string }[]; art?: "streamdeck" };
   /** proporção real do vídeo (largura e altura em pixels); sem isso, usa 9:16 no vertical e 16:9 no horizontal */
@@ -397,6 +399,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     videoUrl: "",
     videoVertical: true,
     theme: "red",
+    heroNote: { icon: "smartphone", text: "Não precisa comprar Stream Deck: funciona no celular, tablet ou navegador." },
     installmentsNote: "em até 8x no cartão",
     promo: { label: "Preço especial de lançamento" },
     compare: [
