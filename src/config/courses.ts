@@ -130,8 +130,9 @@ export const COURSES: Course[] = [
     // rev 10: grava no banco só o resumo e os módulos (escopo "topics"), atualizados pelos roteiros das aulas;
     // os escopos anteriores ficam na lista porque já foram aplicados e não mudam nada de novo
     // (depoimentos só entram se o painel não tiver nenhum). O resto do painel fica como está.
-    rev: 10,
-    revScope: ["href", "testimonials", "hours", "topics"],
+    // rev 11: grava também o "inclui" (comunidade com dúvidas, outras igrejas e aviso de novas aulas)
+    rev: 11,
+    revScope: ["href", "testimonials", "hours", "topics", "includes"],
     // Depoimentos de alunos reais, com uso do nome autorizado (confirmado pelo Jonas em 07/10/2026; texto como ele mandou).
     // Depois de publicados, quem manda é o painel.
     testimonials: [
@@ -163,7 +164,7 @@ export const COURSES: Course[] = [
     instructor: "jonas-silva",
     includes: [
       "Apostila de comandos e dicas rápidas para imprimir e consultar depois",
-      "Área de membros para tirar dúvidas e comunidade de alunos",
+      "Comunidade para dúvidas, troca com outras igrejas e aviso de novas aulas",
     ],
     // carga horária ainda não definida (será menor que as 8 h previstas): 0 = o site não mostra a duração
     format: { mode: "Online", hours: 0, access: "Acesso vitalício" },

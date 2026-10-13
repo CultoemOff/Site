@@ -155,6 +155,23 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       title: "Quanto custa não entender de rede?",
       text: "Uma live fora do ar ou uma visita técnica de emergência custam mais do que esta formação.",
     },
+    extras: {
+      title: "Você não vai aprender sozinho.",
+      items: [
+        {
+          art: "community",
+          tag: "Comunidade",
+          title: "Tire dúvidas e troque com outras igrejas.",
+          text: "Uma comunidade com técnicos de outras igrejas: dúvidas, ideias e a experiência de quem está montando a mesma rede.",
+        },
+        {
+          art: "updates",
+          tag: "Novas aulas",
+          title: "Saiba quando sair aula nova.",
+          text: "Quando uma aula nova for lançada, você recebe o aviso na comunidade.",
+        },
+      ],
+    },
     finalTitle: "O próximo culto pode começar sem susto na rede.",
     finalNote: "Fazer o melhor para Deus também passa pela técnica.",
     verse: {
@@ -375,7 +392,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "E se eu tiver dúvidas durante as aulas?",
-        answer: "Você tira dúvidas na área de membros e conversa com a comunidade de alunos.",
+        answer: "Na comunidade de alunos: você tira dúvidas, troca experiências com técnicos de outras igrejas e recebe o aviso quando sair aula nova.",
       },
       {
         question: "O curso ensina Dante e Bitfocus Companion?",
