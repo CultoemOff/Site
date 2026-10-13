@@ -546,19 +546,16 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         title: "Começando",
         icon: "play",
-        minutes: 54,
         items: ["O Companion na igreja", "O mínimo de rede", "Preparando o computador", "Instalando o Companion", "Interface e primeira conexão"],
       },
       {
         title: "Botões",
         icon: "grid",
-        minutes: 55,
         items: ["Anatomia do botão", "Ações: press, release e long press", "Feedbacks e padrão de cores", "Steps", "Páginas, presets e organização"],
       },
       {
         title: "Conectando as aplicações",
         icon: "network",
-        minutes: 125,
         items: [
           "Módulos e conexões",
           "OBS a fundo",
@@ -576,7 +573,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         title: "Variáveis e automação",
         icon: "zap",
-        minutes: 76,
         items: [
           "Variáveis no botão e como feedback",
           "Variáveis personalizadas e locais",
@@ -590,26 +586,22 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         title: "Painéis",
         icon: "smartphone",
-        minutes: 35,
         items: ["Stream Deck e Stream Deck +", "Celular, tablet e navegador", "Vários operadores e Surface Groups"],
       },
       {
         title: "Operação remota",
         icon: "lock",
-        minutes: 33,
         items: ["Cenários e riscos", "Acesso por VPN", "Satellite"],
       },
       {
         title: "Projeto: o culto completo",
         icon: "clipboardCheck",
         tag: "Projeto final",
-        minutes: 44,
         items: ["Planejando o painel", "Página roteiro do culto", "Páginas por função e emergência", "Ensaio e checklist"],
       },
       {
         title: "Confiabilidade",
         icon: "shield",
-        minutes: 33,
         items: ["Backup e restauração", "Atualização e segurança", "Quando o botão não responde"],
       },
     ],
