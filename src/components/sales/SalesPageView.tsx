@@ -92,6 +92,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
   const hasLink = Boolean(course.href);
   const preSale = !hasLink && Boolean(dm);
   const ctaHref = hasLink ? course.href! : preSale ? dm : "#oferta";
+  const pitch = page.exitPitch ?? "Você está a um passo de entender a rede da sua igreja.";
   const ctaLabel = preSale ? "Quero ser avisado" : promoOn ? "Comprar com desconto" : "Comprar agora";
   const cta = (location: string, variant: "primary" | "ghost" = "primary", label = ctaLabel) => (
     <ArrowButton
@@ -843,25 +844,35 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       </div>
 
       {/* ---------- aviso ao sair da página ---------- */}
-      {promoOn && !preSale && (
+      {promoOn && (
         <ExitPopup
           id={course.id}
           productName={course.title}
           itemId={course.id}
           value={hasLink ? price : undefined}
           badge={page.promo!.label}
-          title={endsAt ? "Espere! O preço de lançamento não vai durar." : `Espere! Você ainda tem ${off}% de desconto.`}
+          title={
+            preSale
+              ? "Espere! Quer ser avisado no lançamento?"
+              : endsAt
+                ? "Espere! O preço de lançamento não vai durar."
+                : `Espere! Você ainda tem ${off}% de desconto.`
+          }
           text={
-            endsAt
-              ? `Você está a um passo de entender a rede da sua igreja. Garanta agora ${off}% de desconto antes que o prazo acabe.`
-              : "Você está a um passo de entender a rede da sua igreja. Garanta agora o preço de lançamento, com 7 dias de garantia."
+            preSale
+              ? `${pitch} Me chame no direct e eu te aviso assim que abrir, com o preço de lançamento.`
+              : endsAt
+                ? `${pitch} Garanta agora ${off}% de desconto antes que o prazo acabe.`
+                : `${pitch} Garanta agora o preço de lançamento, com ${GUARANTEE_DAYS} dias de garantia.`
           }
           priceFrom={formatPrice(priceFrom!)}
           price={formatPrice(price)}
-          endsAt={endsAt}
+          endsAt={preSale ? undefined : endsAt}
           ctaHref={ctaHref}
-          ctaLabel="Quero aproveitar o desconto"
-          external={hasLink}
+          ctaLabel={preSale ? "Quero ser avisado" : "Quero aproveitar o desconto"}
+          external={hasLink || preSale}
+          trackEvent={preSale ? "join_waitlist" : undefined}
+          location={preSale ? "popup de saída (pré-venda)" : undefined}
         />
       )}
 

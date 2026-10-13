@@ -36,6 +36,8 @@ export type SalesPage = {
   installmentsNote?: string;
   /** destaque curto logo abaixo do subtítulo (responde a principal objeção) */
   heroNote?: { icon: IconName; text: string };
+  /** frase do popup de saída ("Você está a um passo de ...") */
+  exitPitch?: string;
   /** frases de promessa em destaque, logo depois dos números (cartões grandes com ícone) */
   highlights?: { icon: IconName; title: string; text: string }[];
   /** "além das aulas": comunidade e curso que cresce (cartões com mini-ilustração) */
@@ -411,6 +413,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     videoUrl: "",
     videoVertical: true,
     theme: "red",
+    exitPitch: "Você está a um passo de rodar o culto inteiro num toque.",
     heroNote: { icon: "smartphone", text: "Não precisa comprar Stream Deck: funciona no celular, tablet ou navegador." },
     installmentsNote: "em até 8x no cartão",
     promo: { label: "Preço especial de lançamento" },
@@ -435,7 +438,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     integrations: {
       title: "Tudo o que você vai controlar.",
       art: "streamdeck",
-      note: "Não tenho parceria com essas marcas: elas aparecem aqui só para mostrar a compatibilidade. Marcas e logos pertencem aos seus donos.",
+      note: "Não tenho parceria com a Bitfocus nem com essas marcas: elas aparecem aqui só para mostrar a compatibilidade. Marcas e logos pertencem aos seus donos.",
       // logos oficiais: colocar o PNG/SVG sem fundo em /public/images/logos/ e preencher "logo"
       orbit: [
         { name: "Holyrics" },

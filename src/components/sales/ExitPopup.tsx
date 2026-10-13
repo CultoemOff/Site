@@ -24,6 +24,8 @@ type Props = {
   value?: number;
   /** onde o aviso aparece, ex.: "popup de saída (ofertas)" */
   location?: string;
+  /** evento do botão (padrão: begin_checkout se externo, senão select_item); ex.: join_waitlist na pré-venda */
+  trackEvent?: string;
 };
 
 /**
@@ -32,7 +34,7 @@ type Props = {
  *  - no celular, quando ela já rolou boa parte da página e volta rápido para cima.
  * Aparece uma vez por visita. Fecha com Esc, no X ou clicando fora.
  */
-export default function ExitPopup({ id, title, text, priceFrom, price, badge, endsAt, ctaHref, ctaLabel, external, productName, itemId, value, location = "popup de saída" }: Props) {
+export default function ExitPopup({ id, title, text, priceFrom, price, badge, endsAt, ctaHref, ctaLabel, external, productName, itemId, value, location = "popup de saída", trackEvent }: Props) {
   const [open, setOpen] = useState(false);
   const shown = useRef(false);
   const closeBtn = useRef<HTMLButtonElement>(null);
@@ -121,7 +123,7 @@ export default function ExitPopup({ id, title, text, priceFrom, price, badge, en
           className="btn btn--primary exit__cta"
           href={ctaHref}
           {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          data-track={external ? "begin_checkout" : "select_item"}
+          data-track={trackEvent ?? (external ? "begin_checkout" : "select_item")}
           data-track-label={productName}
           data-track-location={location}
           data-track-id={itemId}
