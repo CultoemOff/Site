@@ -15,6 +15,7 @@ import Countdown from "./Countdown";
 import ExitPopup from "./ExitPopup";
 import PromoBar from "./PromoBar";
 import ProblemIllo from "./ProblemIllo";
+import StreamDeckArt from "./StreamDeckArt";
 import SalesVideo from "./SalesVideo";
 import { DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
 import "./sales.css";
@@ -72,6 +73,9 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
   // cada item de módulo é uma aula; o módulo extra fica fora da contagem
   const lessons = lessonCount(page.modules);
   const moduleFacts = `${page.modules.length} módulos · ${lessons} aulas`;
+  // duração total, quando os módulos trazem os minutos (ex.: "7h35 de aula")
+  const totalMin = page.modules.reduce((n, m) => n + (m.minutes ?? 0), 0);
+  const totalTime = totalMin > 0 ? `${Math.floor(totalMin / 60)}h${String(totalMin % 60).padStart(2, "0")} de aula` : "";
   // materiais apresentados como bônus; o que eles substituem some da lista "Inclui" para não repetir
   const bonuses = (page.materials?.items ?? []).filter((m) => m.bonus);
   const replaced = bonuses.map((m) => m.bonus?.replaces?.toLowerCase()).filter(Boolean) as string[];
@@ -82,18 +86,24 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
   const promoOn = Boolean(promo);
   const endsAt = promo?.endsAt;
 
-  // Botão de compra: usa o link de inscrição da formação (Hotmart). Sem link ainda, leva até a oferta.
+  // Botão de compra: usa o link de inscrição da formação (Hotmart).
+  // Sem link ainda (pré-venda): os botões levam ao direct do Instagram ("Quero ser avisado"); sem Instagram, à oferta.
   const hasLink = Boolean(course.href);
-  const ctaHref = hasLink ? course.href! : "#oferta";
-  const ctaLabel = promoOn ? "Comprar com desconto" : "Comprar agora";
+  const preSale = !hasLink && Boolean(dm);
+  const ctaHref = hasLink ? course.href! : preSale ? dm : "#oferta";
+  const ctaLabel = preSale ? "Quero ser avisado" : promoOn ? "Comprar com desconto" : "Comprar agora";
   const cta = (location: string, variant: "primary" | "ghost" = "primary", label = ctaLabel) => (
     <ArrowButton
       href={ctaHref}
       variant={variant}
-      external={hasLink}
-      track={{ event: "begin_checkout", label: course.title, id: course.id, value: price, location }}
+      external={hasLink || preSale}
+      track={
+        preSale
+          ? { event: "join_waitlist", label: course.title, id: course.id, location }
+          : { event: "begin_checkout", label: course.title, id: course.id, value: price, location }
+      }
     >
-      {label}
+      {preSale && label !== ctaLabel ? "Avise-me" : label}
     </ArrowButton>
   );
   const testimonials = page.showTestimonials === false ? [] : (course.testimonials ?? []);
@@ -104,8 +114,14 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
         <Icon name="play" size={15} />
         {moduleFacts}
       </li>
+      {totalTime && (
+        <li>
+          <Icon name="clock" size={15} />
+          {totalTime}
+        </li>
+      )}
       {/* carga horária: só aparece quando está definida (0 ou vazio = não mostra) */}
-      {course.format.hours > 0 && (
+      {!totalTime && course.format.hours > 0 && (
         <li>
           <Icon name="clock" size={15} />
           {course.format.hours} horas
@@ -138,10 +154,12 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       )}
       <strong>{formatPrice(price)}</strong>
       {priceFrom && <em className="sp-price__off">{off}% OFF</em>}
-      {installments && (
+      {installments ? (
         <span className="sp-price__parcel">
           à vista ou <b>{formatInstallments(installments)}</b> no cartão
         </span>
+      ) : (
+        page.installmentsNote && <span className="sp-price__parcel">à vista ou {page.installmentsNote}</span>
       )}
     </p>
   );
@@ -156,9 +174,9 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           off={off}
           endsAt={endsAt}
           href={ctaHref}
-          cta="Comprar agora"
-          ctaShort="Comprar"
-          external={hasLink}
+          cta={preSale ? "Quero ser avisado" : "Comprar agora"}
+          ctaShort={preSale ? "Avise-me" : "Comprar"}
+          external={hasLink || preSale}
           track={{ label: course.title, id: course.id, location: "faixa amarela (página do curso)", value: hasLink ? price : undefined }}
         />
       )}
@@ -206,7 +224,9 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                 : undefined
             }
           >
-            {page.videoUrl ? (
+            {!page.videoUrl && page.heroArt === "streamdeck" ? (
+              <StreamDeckArt />
+            ) : page.videoUrl ? (
               <SalesVideo
                 src={page.videoUrl}
                 poster={page.videoPoster}
@@ -296,6 +316,29 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
         </div>
       </section>
 
+      {/* ---------- o que a formação controla ---------- */}
+      {page.integrations && (
+        <section className="sp-section sp-section--ink" aria-labelledby="sp-integra">
+          <div className="sp-section__inner">
+            <Kicker icon="zap">Um painel, tudo junto</Kicker>
+            <h2 id="sp-integra" className="swp-title">
+              {page.integrations.title}
+            </h2>
+            <ul className="sp-integra">
+              {page.integrations.items.map((it, k) => (
+                <li key={it.name} data-reveal style={{ "--i": k % 4 } as React.CSSProperties}>
+                  <span className="sp-integra__icon">
+                    <Icon name={it.icon} size={26} />
+                  </span>
+                  <strong>{it.name}</strong>
+                  <span>{it.what}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* ---------- versículo ---------- */}
       {page.verse && (
         <aside className="sp-verse" aria-label="Versículo">
@@ -350,18 +393,25 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               <div className="sp-inside__layout sp-inside__layout--frames">
                 {page.inside.frames.map((f, k) => (
                   <figure
-                    key={f.src}
+                    key={f.src || f.title}
                     className="sp-inside__card sp-inside__frame"
                     data-reveal
                     style={{ "--i": k } as React.CSSProperties}
                   >
-                    <Image
-                      src={f.src}
-                      alt={f.alt}
-                      width={f.width}
-                      height={f.height}
-                      sizes="(min-width: 1200px) 560px, (min-width: 700px) 50vw, 100vw"
-                    />
+                    {f.src ? (
+                      <Image
+                        src={f.src}
+                        alt={f.alt}
+                        width={f.width}
+                        height={f.height}
+                        sizes="(min-width: 1200px) 560px, (min-width: 700px) 50vw, 100vw"
+                      />
+                    ) : (
+                      <span className="sp-frame-soon" role="img" aria-label={`${f.title}: imagem da aula em breve`}>
+                        {f.icon && <Icon name={f.icon} size={40} />}
+                        <span>Imagem da aula em breve</span>
+                      </span>
+                    )}
                     <figcaption>
                       <strong>
                         {f.icon && <Icon name={f.icon} size={18} />}
@@ -416,7 +466,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           </ul>
           <ol className="sp-modules">
             {page.modules.map((m, i) => (
-              <ModuleItem key={m.title} m={m} num={String(i + 1).padStart(2, "0")} star={Boolean(page.capstone) && i === page.modules.length - 1} open={i === 0} />
+              <ModuleItem key={m.title} m={m} num={String(i + 1).padStart(2, "0")} star={Boolean(page.capstone) && (page.modules.some((x) => x.tag?.startsWith("Projeto")) ? Boolean(m.tag?.startsWith("Projeto")) : i === page.modules.length - 1)} open={i === 0} />
             ))}
             {page.extraModule && (
               <ModuleItem m={page.extraModule} num="+" extra note={page.extraModule.note} />
@@ -700,7 +750,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       </div>
 
       {/* ---------- aviso ao sair da página ---------- */}
-      {promoOn && (
+      {promoOn && !preSale && (
         <ExitPopup
           id={course.id}
           productName={course.title}
@@ -744,7 +794,7 @@ function ModuleItem({ m, num, star, open, extra, note }: { m: SalesModule; num: 
           <span className="sp-module__title">
             {m.title}
             <small className="sp-module__count">
-              {m.items.length} aulas{note ? ` · ${note}` : ""}
+              {m.items.length} aulas{m.minutes ? ` · ${m.minutes} min` : ""}{note ? ` · ${note}` : ""}
             </small>
             {m.tag && <em className={`sp-module__tag${/^(Projeto|Módulo extra)/.test(m.tag) ? " sp-module__tag--project" : ""}`}>{m.tag}</em>}
           </span>

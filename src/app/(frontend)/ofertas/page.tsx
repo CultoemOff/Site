@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { isListed } from "@/config/courses";
 import OffersView from "@/components/offers/OffersView";
 import { getCourses, getOffers } from "@/lib/cms";
 import { SITE_URL } from "@/lib/seo";
@@ -15,7 +16,8 @@ export const metadata: Metadata = {
 
 /** Página de ofertas (também atende em ofertas.<domínio>, ver next.config.mjs). */
 export default async function OfertasPage() {
-  const [offers, courses] = await Promise.all([getOffers(), getCourses()]);
+  const [offers, all] = await Promise.all([getOffers(), getCourses()]);
+  const courses = all.filter(isListed);
   // sem domínio configurado ainda, o link para o site principal fica relativo
   const homeUrl = SITE_URL.includes("localhost") ? "/" : SITE_URL;
   return <OffersView offers={offers} homeUrl={homeUrl} courses={courses} />;

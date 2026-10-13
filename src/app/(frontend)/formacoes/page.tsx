@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { isListed } from "@/config/courses";
 import ViewportFx from "@/components/fx/ViewportFx";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
@@ -18,7 +19,9 @@ export const metadata: Metadata = {
 
 /** Catálogo completo de formações (destino do botão "Ver mais formações"), seguido dos professores. */
 export default async function FormacoesPage() {
-  const [courses, settings] = await Promise.all([getCourses(), getSiteSettings()]);
+  const [all, settings] = await Promise.all([getCourses(), getSiteSettings()]);
+  // formações fora da lista (só pelo link direto) não aparecem aqui
+  const courses = all.filter(isListed);
   return (
     <>
       <JsonLd data={coursesJsonLd(courses)} />

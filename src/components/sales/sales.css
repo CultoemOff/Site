@@ -3363,3 +3363,311 @@ body:has(.promo-bar) .sp-offer {
     fill: #7c5cff;
   }
 }
+
+/* ==========================================================
+   Arte do topo do Companion (StreamDeckArt.tsx)
+   ========================================================== */
+.sd-art {
+  margin: 0 auto;
+  width: min(100%, 520px);
+}
+.sd-art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.sd-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  fill: #8fa6d8;
+}
+.sd-mono--dark {
+  fill: #fff;
+}
+.sd-beam {
+  transform-origin: 0 6px;
+  animation: sd-sweep 6s ease-in-out infinite alternate;
+}
+@keyframes sd-sweep {
+  from {
+    transform: rotate(-22deg);
+  }
+  to {
+    transform: rotate(22deg);
+  }
+}
+.sd-scene {
+  opacity: 0;
+  animation: sd-scene 7.95s steps(1) infinite;
+}
+.sd-scene--2 {
+  animation-delay: -5.3s;
+}
+.sd-scene--3 {
+  animation-delay: -2.65s;
+}
+@keyframes sd-scene {
+  0%,
+  33.3% {
+    opacity: 1;
+  }
+  33.4%,
+  100% {
+    opacity: 0;
+  }
+}
+.sd-onair {
+  animation: pi-blink 1.6s ease-in-out infinite;
+}
+.sd-key {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 1;
+  animation: sd-key 7.95s ease-in-out infinite;
+}
+.sd-key--blue {
+  fill: #1e3a8a;
+  --k: #3b82f6;
+}
+.sd-key--amber {
+  fill: #78350f;
+  --k: #f59e0b;
+}
+.sd-key--red {
+  fill: #7f1d1d;
+  --k: #ef4444;
+}
+.sd-key--green {
+  fill: #14532d;
+  --k: #22c55e;
+}
+.sd-key--violet {
+  fill: #3b1d72;
+  --k: #8b5cf6;
+}
+@keyframes sd-key {
+  0%,
+  8%,
+  100% {
+    filter: brightness(1);
+  }
+  2%,
+  5% {
+    fill: var(--k);
+    filter: brightness(1.35);
+  }
+}
+.sd-key__txt {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  fill: #f1f5ff;
+  pointer-events: none;
+}
+
+/* novas cenas dos cards (ProblemIllo: ptz, timer, panel) */
+.pi-ptz-head {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pi-ptz 4s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+@keyframes pi-ptz {
+  0%,
+  30% {
+    transform: rotate(-25deg);
+  }
+  50%,
+  100% {
+    transform: rotate(14deg);
+  }
+}
+.pi-target {
+  opacity: 0;
+  animation: pi-target 4s ease-out infinite;
+}
+@keyframes pi-target {
+  0%,
+  45% {
+    opacity: 0;
+  }
+  55%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.pi-press {
+  fill: #ffc24d;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pi-press 4s ease-in-out infinite;
+}
+@keyframes pi-press {
+  0%,
+  22%,
+  34%,
+  100% {
+    transform: scale(1);
+    fill: #ffc24d;
+  }
+  26%,
+  30% {
+    transform: scale(0.9);
+    fill: #fff3c4;
+  }
+}
+.pi-timer-key {
+  fill: #22c55e;
+  animation: pi-timer-key 4s steps(1) infinite;
+}
+@keyframes pi-timer-key {
+  0%,
+  59% {
+    fill: #22c55e;
+  }
+  60%,
+  100% {
+    fill: #ef4444;
+  }
+}
+.pi-big {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 22px;
+  font-weight: 800;
+  fill: #0a1430;
+}
+.pi-count {
+  animation: pi-sw1 4s steps(1) infinite;
+}
+.pi-count--end {
+  animation-name: pi-sw2;
+}
+@keyframes pi-sw1 {
+  0%,
+  59% {
+    opacity: 1;
+  }
+  60%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes pi-sw2 {
+  0%,
+  59% {
+    opacity: 0;
+  }
+  60%,
+  100% {
+    opacity: 1;
+  }
+}
+.pi-flash {
+  fill: #ffc24d;
+  opacity: 0;
+  animation: pi-flash 4s linear infinite;
+}
+@keyframes pi-flash {
+  0%,
+  60% {
+    opacity: 0;
+  }
+  64%,
+  72%,
+  80%,
+  88% {
+    opacity: 0.6;
+  }
+  68%,
+  76%,
+  84%,
+  92%,
+  100% {
+    opacity: 0;
+  }
+}
+.pi-page {
+  animation: pi-page 3.3s ease-in-out infinite;
+}
+@keyframes pi-page {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  15% {
+    transform: translateY(-8px);
+  }
+  30% {
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================
+   "Um painel, tudo junto": o que a formação controla
+   ========================================================== */
+.sp-integra {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: clamp(24px, 4vw, 36px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 760px) {
+  .sp-integra {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.sp-integra li {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--sp-card-border, rgba(110, 150, 255, 0.22));
+  background: var(--sp-card, rgba(12, 24, 60, 0.6));
+}
+.sp-integra__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  color: #ffc24d;
+  background: rgba(255, 194, 77, 0.12);
+}
+.sp-integra strong {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.05rem;
+  color: var(--sp-title, #fff);
+}
+.sp-integra li > span:last-child {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--sp-muted, #b9c8ea);
+}
+
+/* espaço reservado para as imagens reais das aulas */
+.sp-frame-soon {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  border: 2px dashed rgba(120, 160, 255, 0.35);
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 50%, rgba(59, 140, 255, 0.18), transparent 70%),
+    #070d22;
+  color: #6f8fd6;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ViewportFx from "@/components/fx/ViewportFx";
 import Footer from "@/components/layout/Footer";
 import SalesPageView from "@/components/sales/SalesPageView";
+import { isListed } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
 import { SALES_PAGES } from "@/config/salesPages";
 import { getCourses, getSiteSettings } from "@/lib/cms";
@@ -32,6 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${data.course.title} — formação online`,
     description: `${data.page.subheadline}`,
     alternates: { canonical: `/formacoes/${slug}` },
+    // formação fora da lista: abre pelo link direto, mas não aparece no Google até ser liberada
+    ...(isListed(data.course) ? {} : { robots: { index: false, follow: true } }),
   };
 }
 

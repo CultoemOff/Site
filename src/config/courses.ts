@@ -93,6 +93,13 @@ export type Course = {
   revScope?: CourseRevScope | CourseRevScope[];
 };
 
+/**
+ * Formações fora das listas do site (home, /formacoes, ofertas, sitemap): só abrem pelo link direto da página de venda.
+ * Para liberar, é só tirar o id daqui.
+ */
+export const UNLISTED_COURSE_IDS: string[] = ["bitfocus-companion"];
+export const isListed = (course: Pick<Course, "id">) => !UNLISTED_COURSE_IDS.includes(course.id);
+
 /** A formação tem preço para mostrar? (0 ou vazio = sem preço, como nas que ainda vão lançar) */
 export const hasPrice = (course: Pick<Course, "price">) => course.price > 0;
 
@@ -222,30 +229,33 @@ export const COURSES: Course[] = [
   {
     id: "bitfocus-companion",
     title: "Bitfocus Companion",
-    tagline: "Faça a tecnologia trabalhar junto.",
+    tagline: "Um botão. O culto inteiro.",
     summary:
-      "Transforme várias operações em fluxos simples. Um botão pode trocar a cena do OBS, mover a câmera PTZ, alterar a iluminação e disparar outras ações ao mesmo tempo.",
-    topicsTitle: "Conteúdo",
+      "OBS, câmeras PTZ, mesa de som, Holyrics, iluminação e tomadas comandados por um Stream Deck, celular ou tablet. São 41 aulas em 8 módulos, do primeiro botão ao painel do culto completo.",
+    topicsTitle: "8 módulos · 41 aulas",
     topics: [
-      "Conceito do Companion",
-      "Connections",
-      "Buttons e páginas",
-      "Actions e feedbacks",
-      "Variables",
-      "Triggers",
-      "Stream Deck",
-      "Automações",
-      "Integração entre sistemas",
+      "Começando",
+      "Botões",
+      "Conectando as aplicações",
+      "Variáveis e automação",
+      "Painéis",
+      "Operação remota",
+      "Projeto: o culto completo",
+      "Confiabilidade",
     ],
-    appliedTo: ["OBS", "Câmeras PTZ", "Iluminação", "Áudio", "Projeção", "Streaming"],
+    appliedTo: ["OBS", "Holyrics", "SPresenter", "XR18", "Câmeras PTZ", "grandMA2", "Stream Deck", "Tomadas inteligentes"],
     diagram: "companion",
-    // sem preço até o lançamento (0 = o site não mostra preço)
-    price: 0,
-    rev: 1,
-    revScope: "price",
+    // Preço de lançamento (13/10/2026): R$ 88,90, depois R$ 146,90. Parcelamento: até 8x (valor da parcela vem da Hotmart).
+    price: 88.9,
+    priceFrom: 146.9,
+    // rev 2: grava no banco preço, módulos e carga horária (o resto do painel fica como está)
+    rev: 2,
+    revScope: ["price", "topics", "hours"],
     instructor: "jonas-silva",
-    format: ONLINE_1_ANO(6),
+    // carga horária: 0 = o site não mostra horas fechadas; a página mostra os minutos de cada módulo
+    format: ONLINE_1_ANO(0),
     status: "lancamento-em-breve",
+    // link de compra da Hotmart: ainda não existe (os botões levam ao direct até ele chegar)
     href: "",
   },
   {

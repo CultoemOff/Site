@@ -5,7 +5,7 @@
  * As animações são só CSS (sales.css, prefixo .pi-): pausam fora da tela ([data-anim]), no modo leve
  * e com "reduzir movimento".
  */
-export type ProblemIlloName = "cable" | "restart" | "buy" | "automate";
+export type ProblemIlloName = "cable" | "restart" | "buy" | "automate" | "ptz" | "timer" | "panel";
 
 const LINE = { fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round", strokeLinejoin: "round" } as const;
 
@@ -245,6 +245,91 @@ function Scene({ name }: { name: ProblemIlloName }) {
             <rect x="-20" y="-9" width="40" height="18" rx="2" className="pi-slide" />
           </g>
           <Tag x={274} y={160}>TELÃO</Tag>
+        </>
+      );
+    // câmera PTZ chegando atrasada: com um toque ela vai ao preset e a cena troca junto
+    case "ptz":
+      return (
+        <>
+          <Backdrop id={id} />
+          <g transform="translate(96 82)">
+            <g className="pi-ptz-head">
+              <rect x="-30" y="-26" width="60" height="44" rx="16" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+              <circle cx="0" cy="-4" r="12" {...LINE} fill="#050d26" className="pi-line" />
+              <circle cx="0" cy="-4" r="5" className="pi-lens" />
+            </g>
+            <rect x="-22" y="20" width="44" height="12" rx="4" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+            <rect x="-30" y="32" width="60" height="10" rx="4" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+          </g>
+          {/* alvo: o púlpito */}
+          <g transform="translate(250 104)">
+            <path d="M-20 40 h40 l-6 -34 h-28 Z" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+            <circle cx="0" cy="-12" r="12" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+            <g className="pi-target">
+              <path d="M-34 -40 h12 M-34 -40 v12 M34 -40 h-12 M34 -40 v12 M-34 50 h12 M-34 50 v-12 M34 50 h-12 M34 50 v-12" stroke="#ffc24d" strokeWidth="3" strokeLinecap="round" fill="none" />
+            </g>
+          </g>
+          {/* tecla do painel */}
+          <g transform="translate(170 150)">
+            <rect x="-40" y="-14" width="80" height="26" rx="6" className="pi-press" />
+            <text x="0" y="4" textAnchor="middle" className="pi-tag" style={{ fill: "#0a1430" }}>
+              PREGAÇÃO
+            </text>
+          </g>
+          <Tag x={96} y={30}>PRESET 3</Tag>
+        </>
+      );
+    // pregação estourando o tempo: cronômetro na tecla e luz que pisca no fim
+    case "timer":
+      return (
+        <>
+          <Backdrop id={id} />
+          <g transform="translate(110 92)">
+            <rect x="-62" y="-50" width="124" height="100" rx="16" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+            <rect x="-48" y="-36" width="96" height="72" rx="10" className="pi-timer-key" />
+            <text x="0" y="-8" textAnchor="middle" className="pi-tag" style={{ fill: "#0a1430" }}>
+              PREGAÇÃO
+            </text>
+            <g className="pi-count">
+              <text x="0" y="22" textAnchor="middle" className="pi-big">00:30</text>
+            </g>
+            <g className="pi-count pi-count--end">
+              <text x="0" y="22" textAnchor="middle" className="pi-big">00:00</text>
+            </g>
+          </g>
+          {/* lâmpada no púlpito pisca quando o tempo acaba */}
+          <g transform="translate(240 80)">
+            <circle cy="-4" r="30" className="pi-flash" />
+            <path d="M-12 6a14 14 0 1 1 24 0c-3.5 3.5-5 6-5 10.5h-14c0-4.5-1.5-7-5-10.5Z" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+            <path d="M-7 23h14" {...LINE} className="pi-line" />
+          </g>
+          <path d="M176 92 H210" {...LINE} strokeDasharray="3 5" className="pi-line" opacity="0.6" />
+          <Tag x={240} y={140} tone="amber">LUZ AVISA O FIM</Tag>
+        </>
+      );
+    // painel com páginas por função e cores que a equipe entende
+    case "panel":
+      return (
+        <>
+          <Backdrop id={id} />
+          {[
+            { x: 70, t: "CÂMERAS", c: "#ffc24d" },
+            { x: 160, t: "ÁUDIO", c: "#ff7a6a" },
+            { x: 250, t: "LUZ", c: "#a78bfa" },
+          ].map((pg, k) => (
+            <g key={pg.t} transform={`translate(${pg.x} 86)`}>
+            <g className="pi-page" style={{ animationDelay: `${k * 1.1}s` }}>
+              <rect x="-40" y="-46" width="80" height="84" rx="10" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+              {[0, 1, 2].map((r) =>
+                [0, 1].map((c) => <rect key={`${r}${c}`} x={-30 + c * 32} y={-36 + r * 24} width="28" height="20" rx="4" fill={pg.c} opacity={0.35 + ((r + c) % 2) * 0.45} />),
+              )}
+              <text x="0" y="58" textAnchor="middle" className="pi-tag">
+                {pg.t}
+              </text>
+            </g>
+            </g>
+          ))}
+          <Tag x={160} y={170} tone="amber">1 PÁGINA POR FUNÇÃO</Tag>
         </>
       );
   }

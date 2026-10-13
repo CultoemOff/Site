@@ -8,7 +8,7 @@ import type { IconName } from "@/components/ui/Icon";
  */
 
 /** um módulo da formação; `items` são os títulos das aulas e `lessons` sai da contagem deles */
-export type SalesModule = { title: string; items: string[]; tag?: string; icon?: IconName };
+export type SalesModule = { title: string; items: string[]; tag?: string; icon?: IconName; /** duração do módulo em minutos (aparece ao lado do número de aulas) */ minutes?: number };
 
 /** total de aulas do curso principal (cada item de módulo é uma aula) */
 export const lessonCount = (modules: SalesModule[]) => modules.reduce((n, m) => n + m.items.length, 0);
@@ -26,6 +26,12 @@ export type SalesPage = {
   videoPoster?: string;
   /** vídeo em pé (9:16): no celular ocupa quase a tela toda, com o aviso para rolar abaixo */
   videoVertical?: boolean;
+  /** arte animada no lugar do vídeo enquanto ele não existe ("streamdeck" = painel de botões com palco e OBS) */
+  heroArt?: "streamdeck";
+  /** texto do parcelamento quando o valor da parcela ainda não está definido (ex.: "em até 8x no cartão") */
+  installmentsNote?: string;
+  /** o que a formação controla/integra: grade de cartões com ícone */
+  integrations?: { title: string; items: { icon: IconName; name: string; what: string }[] };
   /** proporção real do vídeo (largura e altura em pixels); sem isso, usa 9:16 no vertical e 16:9 no horizontal */
   videoSize?: { width: number; height: number };
   /** situações em que o aluno se reconhece hoje e como ficam depois da formação */
@@ -68,7 +74,8 @@ export type SalesPage = {
      * Frames REAIS das aulas (em /public/images/formacoes/). Quando existem, entram no lugar das ilustrações:
      * aparecem numa grade de 2 colunas (1 no celular), todos em 16:9.
      */
-    frames?: { src: string; alt: string; width: number; height: number; title: string; text: string; icon?: IconName }[];
+    /** sem `src`: espaço reservado ("imagem real em breve") até chegarem as imagens do curso */
+    frames?: { src?: string; alt: string; width: number; height: number; title: string; text: string; icon?: IconName }[];
   };
   /**
    * Materiais inclusos (apostila, planilha...). `image` é a foto ou captura REAL do material,
@@ -373,6 +380,171 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         question: "Para quem a formação não é?",
         answer: "Para quem quer virar administrador de redes corporativas ou busca VLAN e QoS a fundo (esses temas ficam para o Curso 2).",
+      },
+    ],
+  },
+
+  // Bitfocus Companion (13/10/2026): página só pelo link direto (fora das listas, ver UNLISTED_COURSE_IDS).
+  // Sem link da Hotmart ainda: os botões levam ao direct ("Quero ser avisado").
+  "bitfocus-companion": {
+    headline: "Um botão. O culto inteiro.",
+    subheadline: "Cena do OBS, câmera, mesa, letra e luz comandados juntos pelo Companion, num Stream Deck, celular ou tablet.",
+    videoUrl: "",
+    heroArt: "streamdeck",
+    installmentsNote: "em até 8x no cartão",
+    promo: { label: "Preço especial de lançamento" },
+    compare: [
+      { icon: "users", illo: "automate", before: "Uma pessoa em cada programa, e o culto depende de todo mundo acertar junto.", after: "Um toque troca a cena, chama a letra e acende a luz, na ordem certa." },
+      { icon: "video", illo: "ptz", before: "A câmera chega atrasada no pregador.", after: "Preset da câmera e cena certa no mesmo botão." },
+      { icon: "clock", illo: "timer", before: "A pregação estoura o tempo e ninguém percebe.", after: "Cronômetro na tecla e luz que pisca quando o tempo acaba." },
+      { icon: "grid", illo: "panel", before: "Só uma pessoa sabe operar a técnica.", after: "Painel por função, com cores que qualquer voluntário entende." },
+    ],
+    integrations: {
+      title: "Tudo o que você vai controlar.",
+      items: [
+        { icon: "monitorPlay", name: "OBS Studio", what: "Cenas, fontes, áudio, live e gravação" },
+        { icon: "presentation", name: "Holyrics", what: "Letras, Bíblia e avisos" },
+        { icon: "presentation", name: "SPresenter", what: "Projeção, pelo caminho que funcionar" },
+        { icon: "sliders", name: "Mesa XR18", what: "Mute, fader, cenas e medidores" },
+        { icon: "video", name: "Câmeras PTZ", what: "Presets, velocidade e movimento" },
+        { icon: "lightbulb", name: "grandMA2", what: "Executores e cues da iluminação" },
+        { icon: "power", name: "Tomada e lâmpada", what: "Liga equipamentos e vira tally" },
+        { icon: "code", name: "HTTP, OSC, TCP/UDP", what: "O que não tem módulo pronto" },
+      ],
+    },
+    value: {
+      title: "Quanto vale um culto sem correria na técnica?",
+      text: "Menos gente apertando botão ao mesmo tempo, menos erro na hora que todo mundo vê.",
+    },
+    finalTitle: "O próximo culto pode rodar num toque.",
+    // capstone: o projeto do módulo 7, em destaque logo abaixo dos módulos
+    capstone: {
+      badge: "Módulo 7 · Projeto",
+      title: "Você monta o painel do culto completo.",
+      text: "Do mapa do culto ao ensaio final, com página de emergência pronta.",
+      chain: [
+        { name: "Roteiro", what: "um botão por momento do culto" },
+        { name: "Funções", what: "páginas por operador" },
+        { name: "Emergência", what: "tela preta, mute geral, espera" },
+        { name: "Ensaio", what: "checklist antes do culto" },
+      ],
+    },
+    inside: {
+      title: "Veja como são as aulas.",
+      topology: "",
+      dhcp: { title: "", text: "" },
+      terminal: { title: "", text: "" },
+      // espaços reservados: trocar por imagens reais das aulas quando estiverem prontas (src + width/height)
+      frames: [
+        { icon: "grid", alt: "Painel do culto no Stream Deck", width: 1600, height: 900, title: "Painel do culto", text: "Um botão por momento do culto." },
+        { icon: "monitorPlay", alt: "Conexões do Companion com OBS, Holyrics e mesa", width: 1600, height: 900, title: "Conexões", text: "OBS, Holyrics, XR18 e câmeras." },
+        { icon: "zap", alt: "Triggers e variáveis no Companion", width: 1600, height: 900, title: "Automação", text: "Triggers, variáveis e cronômetro." },
+        { icon: "smartphone", alt: "Celular usado como painel do Companion", width: 1600, height: 900, title: "Qualquer tela", text: "Stream Deck, celular ou tablet." },
+      ],
+    },
+    // aulas conforme o plano do curso (13/10/2026): 41 aulas em 8 módulos
+    modules: [
+      {
+        title: "Começando",
+        icon: "play",
+        minutes: 54,
+        items: ["O Companion na igreja", "O mínimo de rede", "Preparando o computador", "Instalando o Companion", "Interface e primeira conexão"],
+      },
+      {
+        title: "Botões",
+        icon: "grid",
+        minutes: 55,
+        items: ["Anatomia do botão", "Ações: press, release e long press", "Feedbacks e padrão de cores", "Steps", "Páginas, presets e organização"],
+      },
+      {
+        title: "Conectando as aplicações",
+        icon: "network",
+        minutes: 125,
+        items: [
+          "Módulos e conexões",
+          "OBS a fundo",
+          "Holyrics: conectar",
+          "Holyrics: botões",
+          "SPresenter",
+          "XR18: conectar",
+          "XR18: além do mute",
+          "Câmeras PTZ",
+          "grandMA2",
+          "Tomada e lâmpada inteligente",
+          "O que não tem módulo",
+        ],
+      },
+      {
+        title: "Variáveis e automação",
+        icon: "zap",
+        minutes: 76,
+        items: [
+          "Variáveis no botão e como feedback",
+          "Variáveis personalizadas e locais",
+          "Expressões: o conceito",
+          "Expressões: na prática",
+          "Cronômetro de pregação",
+          "Triggers",
+          "Pré-culto automático",
+        ],
+      },
+      {
+        title: "Painéis",
+        icon: "smartphone",
+        minutes: 35,
+        items: ["Stream Deck e Stream Deck +", "Celular, tablet e navegador", "Vários operadores e Surface Groups"],
+      },
+      {
+        title: "Operação remota",
+        icon: "lock",
+        minutes: 33,
+        items: ["Cenários e riscos", "Acesso por VPN", "Satellite"],
+      },
+      {
+        title: "Projeto: o culto completo",
+        icon: "clipboardCheck",
+        tag: "Projeto final",
+        minutes: 44,
+        items: ["Planejando o painel", "Página roteiro do culto", "Páginas por função e emergência", "Ensaio e checklist"],
+      },
+      {
+        title: "Confiabilidade",
+        icon: "shield",
+        minutes: 33,
+        items: ["Backup e restauração", "Atualização e segurança", "Quando o botão não responde"],
+      },
+    ],
+    forWho: [
+      { icon: "headphones", text: "Quem opera áudio, vídeo, live, projeção ou luz." },
+      { icon: "users", text: "Líderes que querem uma técnica mais simples de operar." },
+    ],
+    notForWho: ["Quem procura programação avançada de automação."],
+    showForWho: false,
+    showTestimonials: false,
+    faq: [
+      {
+        question: "Preciso ter um Stream Deck?",
+        answer: "Não. Celular, tablet ou navegador também viram painel (módulo 5).",
+      },
+      {
+        question: "Preciso saber de redes?",
+        answer: "Não. O módulo 1 ensina o mínimo de rede que o Companion precisa.",
+      },
+      {
+        question: "Quais programas e equipamentos o curso mostra?",
+        answer: "OBS, Holyrics, SPresenter, mesa XR18, câmeras PTZ, grandMA2, tomadas e lâmpadas inteligentes, e o que não tem módulo, por HTTP, OSC e TCP/UDP.",
+      },
+      {
+        question: "Como são as aulas?",
+        answer: "41 videoaulas gravadas em 8 módulos, com projeto final do culto completo.",
+      },
+      {
+        question: "Posso parcelar?",
+        answer: "Sim, em até 8x no cartão, pela Hotmart.",
+      },
+      {
+        question: "E se eu não gostar?",
+        answer: "Você tem 7 dias de garantia, com reembolso de 100%.",
       },
     ],
   },
