@@ -4011,3 +4011,13 @@ body:has(.promo-bar) .sp-offer {
 @media (prefers-reduced-motion: reduce) {
   .xa-msg, .xa-typing, .xa-typing i, .xa-line::after, .xa-step i { animation: none; opacity: 1; }
 }
+
+.sp-integra__note {
+  margin: 1.5rem auto 0;
+  max-width: 680px;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted-on-dark, #a5b0c8);
+  opacity: 0.8;
+}

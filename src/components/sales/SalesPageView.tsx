@@ -381,6 +381,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               ))}
             </ul>
             </div>
+            {page.integrations.note && <p className="sp-integra__note">{page.integrations.note}</p>}
           </div>
         </section>
       )}

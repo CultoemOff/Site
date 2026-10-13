@@ -47,6 +47,8 @@ export type SalesPage = {
     art?: "streamdeck";
     /** meia-lua de logos girando em volta do título; logo = arquivo em /public/images/logos/ (sem fundo) */
     orbit?: { name: string; logo?: string }[];
+    /** aviso pequeno no fim da seção (ex.: sem parceria com as marcas) */
+    note?: string;
   };
   /** proporção real do vídeo (largura e altura em pixels); sem isso, usa 9:16 no vertical e 16:9 no horizontal */
   videoSize?: { width: number; height: number };
@@ -433,6 +435,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     integrations: {
       title: "Tudo o que você vai controlar.",
       art: "streamdeck",
+      note: "Não tenho parceria com essas marcas: elas aparecem aqui só para mostrar a compatibilidade. Marcas e logos pertencem aos seus donos.",
       // logos oficiais: colocar o PNG/SVG sem fundo em /public/images/logos/ e preencher "logo"
       orbit: [
         { name: "Holyrics" },
