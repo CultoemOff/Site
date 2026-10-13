@@ -449,7 +449,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         { icon: "monitorPlay", name: "OBS Studio", what: "Cenas, fontes, áudio, live e gravação" },
         { icon: "presentation", name: "Holyrics", what: "Letras, Bíblia e avisos" },
         { icon: "presentation", name: "SPresenter", what: "Projeção, pelo caminho que funcionar" },
-        { icon: "sliders", name: "Mesa XR18", what: "Mute, fader, cenas e medidores" },
+        { icon: "sliders", name: "Mesas de som digitais", what: "Mute, fader, cenas e medidores" },
         { icon: "video", name: "Câmeras PTZ", what: "Presets, velocidade e movimento" },
         { icon: "lightbulb", name: "grandMA2", what: "Executores e cues da iluminação" },
         { icon: "power", name: "Tomada e lâmpada", what: "Liga equipamentos e vira tally" },
@@ -498,7 +498,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       // espaços reservados: trocar por imagens reais das aulas quando estiverem prontas (src + width/height)
       frames: [
         { icon: "grid", alt: "Painel do culto no Stream Deck", width: 1600, height: 900, title: "Painel do culto", text: "Um botão por momento do culto." },
-        { icon: "monitorPlay", alt: "Conexões do Companion com OBS, Holyrics e mesa", width: 1600, height: 900, title: "Conexões", text: "OBS, Holyrics, XR18 e câmeras." },
+        { icon: "monitorPlay", alt: "Conexões do Companion com OBS, Holyrics e mesa", width: 1600, height: 900, title: "Conexões", text: "OBS, Holyrics, mesas digitais e câmeras." },
         { icon: "zap", alt: "Triggers e variáveis no Companion", width: 1600, height: 900, title: "Automação", text: "Triggers, variáveis e cronômetro." },
         { icon: "smartphone", alt: "Celular usado como painel do Companion", width: 1600, height: 900, title: "Qualquer tela", text: "Stream Deck, celular ou tablet." },
       ],
@@ -527,8 +527,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
           "Holyrics: conectar",
           "Holyrics: botões",
           "SPresenter",
-          "XR18: conectar",
-          "XR18: além do mute",
+          "Mesas de som digitais: conectar",
+          "Mesas de som digitais: além do mute",
           "Câmeras PTZ",
           "grandMA2",
           "Tomada e lâmpada inteligente",
@@ -593,7 +593,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "Quais programas e equipamentos o curso mostra?",
-        answer: "OBS, Holyrics, SPresenter, mesa XR18, câmeras PTZ, grandMA2, tomadas e lâmpadas inteligentes, e o que não tem módulo, por HTTP, OSC e TCP/UDP.",
+        answer: "OBS, Holyrics, SPresenter, mesas de som digitais, câmeras PTZ, grandMA2, tomadas e lâmpadas inteligentes, e o que não tem módulo, por HTTP, OSC e TCP/UDP.",
       },
       {
         question: "Como são as aulas?",

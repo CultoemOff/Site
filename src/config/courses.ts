@@ -243,13 +243,13 @@ export const COURSES: Course[] = [
       "Projeto: o culto completo",
       "Confiabilidade",
     ],
-    appliedTo: ["OBS", "Holyrics", "SPresenter", "XR18", "Câmeras PTZ", "grandMA2", "Stream Deck", "Tomadas inteligentes"],
+    appliedTo: ["OBS", "Holyrics", "SPresenter", "Mesas de som digitais", "Câmeras PTZ", "grandMA2", "Stream Deck", "Tomadas inteligentes"],
     diagram: "companion",
     // Preço de lançamento (13/10/2026): R$ 88,90, depois R$ 146,90. Parcelamento: até 8x (valor da parcela vem da Hotmart).
     price: 88.9,
     priceFrom: 146.9,
-    // rev 3: grava no banco preço, módulos, carga horária e o que está incluso (o resto do painel fica como está)
-    rev: 3,
+    // rev 4: grava no banco preço, módulos/aplicações, carga horária e o que está incluso (o resto do painel fica como está)
+    rev: 4,
     revScope: ["price", "topics", "hours", "includes"],
     instructor: "jonas-silva",
     includes: ["Comunidade para dúvidas e troca de projetos de Companion", "Novas aulas e atualizações incluídas no seu acesso"],
