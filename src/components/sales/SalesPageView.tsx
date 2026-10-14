@@ -695,7 +695,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                   <span className="sp-checks__icon">
                     <Icon name="wrench" size={18} />
                   </span>
-                  Aulas práticas e projeto final
+                  {page.modules.some((m) => m.tag?.startsWith("Projeto")) ? "Aulas práticas e projeto final" : "Aulas práticas"}
                 </li>
               )}
               {includes.map((i) => (

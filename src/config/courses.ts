@@ -111,27 +111,28 @@ export const COURSES: Course[] = [
     title: "Redes para Igrejas",
     tagline: "Entenda a infraestrutura por trás das tecnologias que você já usa.",
     summary:
-      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. São 53 videoaulas gravadas em 9 módulos, do primeiro conceito ao projeto final da rede completa de uma igreja, com prática de NDI de ponta a ponta entre câmera PTZ, telão e transmissão.",
+      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. São 54 videoaulas gravadas em 10 módulos, do primeiro conceito ao planejamento da rede da igreja, com roteadores na prática e um módulo prático com OBS, câmeras NDI e Iriun.",
     question: "Por que dois equipamentos ligados no mesmo switch não conseguem conversar?",
-    topicsTitle: "9 módulos · 53 aulas",
+    topicsTitle: "10 módulos · 54 aulas",
     // Módulos conforme os roteiros das aulas (01/10/2026). VLAN e QoS em profundidade ficam para o Curso 2.
     topics: [
       "Entendendo redes",
       "IP na prática: IP, DHCP, máscara, gateway e DNS",
-      "Comandos essenciais no Windows e no Linux",
+      "Comandos essenciais",
       "Equipamentos, cabos e PoE",
       "Wi-Fi na igreja e o celular como câmera",
       "NDI e câmeras PTZ",
-      "Controle pela rede: portas, protocolos, OBS e Companion",
-      "Prática: NDI de ponta a ponta",
-      "Planejar, diagnosticar e projeto final",
+      "Controle pela rede: portas, OBS e Companion",
+      "Roteadores na prática: Vivo, Claro e TP-Link",
+      "Planejar sua rede",
+      "Prática: OBS, câmeras NDI e Iriun",
     ],
-    appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Streaming"],
+    appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Dante", "Streaming"],
     // rev 10: grava no banco só o resumo e os módulos (escopo "topics"), atualizados pelos roteiros das aulas;
     // os escopos anteriores ficam na lista porque já foram aplicados e não mudam nada de novo
     // (depoimentos só entram se o painel não tiver nenhum). O resto do painel fica como está.
-    // rev 11: grava também o "inclui" (comunidade com dúvidas, outras igrejas e aviso de novas aulas)
-    rev: 11,
+    // rev 12: módulos novos (10 módulos, 54 aulas) + "inclui" com a comunidade
+    rev: 12,
     revScope: ["href", "testimonials", "hours", "topics", "includes"],
     // Depoimentos de alunos reais, com uso do nome autorizado (confirmado pelo Jonas em 07/10/2026; texto como ele mandou).
     // Depois de publicados, quem manda é o painel.
