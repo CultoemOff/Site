@@ -35,6 +35,8 @@ export const metadata: Metadata = {
     "mesa de som",
   ],
   icons: { icon: ICON_SRC, apple: APPLE_ICON_SRC },
+  // verificação do domínio no Meta Business (vai no <head> de todas as páginas, renderizado no servidor)
+  verification: { other: { "facebook-domain-verification": "k574kq63f26dfor8p205bsp6m1e87x" } },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
