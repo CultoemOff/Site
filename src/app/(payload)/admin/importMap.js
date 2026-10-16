@@ -28,6 +28,10 @@ import { default as default_91a09b539d3c86b0aebf520e7564ce08 } from '../../../co
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 
+import { default as default_1ece3dac0b6bac8299eb073915253a9f } from '../../../components/admin/campanhas/CampanhasView'
+import { default as default_f477b32af355bab363c2a3d686a2e085 } from '../../../components/admin/campanhas/NavCampanhas'
+import { default as default_68a16153b61e0e8909eb1452171e2a49 } from '../../../components/admin/DashboardSummary'
+import { default as default_4548a437ac64800e0431749d497717d9 } from '../../../components/admin/NavSiteLinks'
 /** @type import('payload').ImportMap */
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -58,5 +62,9 @@ export const importMap = {
   "/components/admin/Icon#default": default_dfe4008080d895d460898c3a6155e9ba,
   "/components/admin/Logo#default": default_91a09b539d3c86b0aebf520e7564ce08,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
-  "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e
+  "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
+  "/components/admin/campanhas/CampanhasView#default": default_1ece3dac0b6bac8299eb073915253a9f,
+  "/components/admin/campanhas/NavCampanhas#default": default_f477b32af355bab363c2a3d686a2e085,
+  "/components/admin/DashboardSummary#default": default_68a16153b61e0e8909eb1452171e2a49,
+  "/components/admin/NavSiteLinks#default": default_4548a437ac64800e0431749d497717d9
 }

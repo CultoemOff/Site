@@ -14,3 +14,8 @@ preview/pub
 # tipos gerados a cada build (payload generate:types)
 /src/payload-types.ts
 .env
+
+# exportações de vendas e anúncios (dados pessoais de compradores): nunca no repositório
+*.csv
+*.xls
+*.xlsx
