@@ -502,7 +502,11 @@ export function groupRows(
     let basis: Signal["basis"] = "Meta";
     if (level === "ad" && hasAdNames) {
       const k = nameKey(sample.ad);
-      realFor = (x) => Boolean(x.adName) && nameKey(x.adName) === k;
+      // o nome no sck pode vir cortado (limite de 30 caracteres da Hotmart): vale o começo do nome
+      realFor = (x) => {
+        const a = nameKey(x.adName);
+        return Boolean(a) && (a === k || (a.length >= 6 && k.startsWith(a)));
+      };
       basis = "Hotmart";
     } else if (level === "campaign" && groups.size === 1) {
       realFor = () => true;

@@ -11,7 +11,9 @@
  *  - src: é o equivalente para links de afiliado e hotlinks (go.hotmart.com), não para pay.hotmart.com.
  *
  * Aqui: as UTMs que chegaram na URL da página são repassadas como vieram, e o sck é montado como
- * "<origem>|<botão>", por exemplo "ig|oferta" ou "site|topo". Se a URL já trouxer sck (ou src), vale o que veio.
+ * "<origem>|<botão>|<anúncio>", por exemplo "ig|barra|Video-02-Reel" ou "site|topo" (sem anúncio, 2 campos).
+ * O anúncio vem do utm_content e é cortado para caber nos 30 caracteres; o painel de campanhas usa esse
+ * 3º campo para calcular o CPA real por anúncio. Se a URL já trouxer sck (ou src), vale o que veio.
  */
 
 export const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
@@ -87,7 +89,11 @@ export function buildCheckoutUrl(href: string, { campaign, location, adsConsent 
     const fromUrl = hotmartCode(campaign[originKey] ?? campaign.sck ?? campaign.src ?? "");
     const button = buttonCode(location);
     const source = hotmartCode(campaign.utm_source ?? "", button ? 29 - button.length : 30) || "site";
-    const value = fromUrl || [source, button].filter(Boolean).join("|");
+    const base = [source, button].filter(Boolean).join("|");
+    // anúncio (utm_content) no 3º campo, só quando sobra espaço para um nome reconhecível
+    const room = 30 - base.length - 1;
+    const ad = campaign.utm_content && button && room >= 6 ? hotmartCode(campaign.utm_content.replace(/\|/g, "-"), room).replace(/-+$/, "") : "";
+    const value = fromUrl || (ad ? `${base}|${ad}` : base);
     if (value) url.searchParams.set(originKey, value.slice(0, 30));
   }
 
