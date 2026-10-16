@@ -63,6 +63,8 @@ export type Sale = {
   buyerName: string;
   buyerEmail: string;
   buyerState: string;
+  /** order bump: código da transação do produto principal (vazio quando é a venda principal) */
+  mainTransaction?: string;
   /** compra de teste (calculado no servidor, pelos e-mails das premissas; o e-mail chega mascarado ao navegador) */
   test?: boolean;
 };

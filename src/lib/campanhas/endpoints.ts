@@ -8,6 +8,7 @@ import { DEFAULT_SETTINGS, withDefaults, type CampaignSettings, type MetaDay, ty
  *   POST /api/campaign-imports/commit    → grava (upsert: reenviar o mesmo arquivo não duplica nada)
  *   POST /api/campaign-imports/settings  → salva as premissas
  *   GET  /api/campaign-imports/reveal    → nomes e e-mails sem máscara (só para quem está logado)
+ *   POST /api/campaign-imports/note      → salva (ou apaga, se vier vazia) a anotação de um dia
  * Todas exigem login no painel.
  */
 
@@ -266,6 +267,26 @@ export const campaignEndpoints: Endpoint[] = [
       };
       await req.payload.updateGlobal({ slug: "campaign-settings", data: data as never, depth: 0 });
       return json({ ok: true });
+    },
+  },
+  {
+    path: "/note",
+    method: "post",
+    handler: async (req) => {
+      if (!req.user) return deny();
+      const b = await body(req);
+      const day = String(b.day ?? "").trim();
+      const text = String(b.text ?? "").trim().slice(0, 2000);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return json({ ok: false, error: "Dia inválido." }, 400);
+      const found = await req.payload.find({ collection: "campaign-notes", where: { day: { equals: day } }, limit: 1, depth: 0 });
+      const doc = found.docs[0] as { id?: string | number } | undefined;
+      if (!text) {
+        if (doc?.id !== undefined) await req.payload.delete({ collection: "campaign-notes", id: doc.id });
+        return json({ ok: true, day, text: "" });
+      }
+      if (doc?.id !== undefined) await req.payload.update({ collection: "campaign-notes", id: doc.id, data: { text } as never, depth: 0 });
+      else await req.payload.create({ collection: "campaign-notes", data: { day, text } as never, depth: 0 });
+      return json({ ok: true, day, text });
     },
   },
   {

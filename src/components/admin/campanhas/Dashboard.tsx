@@ -23,8 +23,9 @@ import {
 } from "@/lib/campanhas/metrics";
 import { ORIGIN_LABEL, type CampaignSettings, type MetaDay, type Sale } from "@/lib/campanhas/types";
 import { BarList, DailyChart, Funnel, Heatmap, HourBars, ProfitChart, Sparkline } from "./charts";
-import { ImportDialog, SettingsPanel } from "./panels";
-import { DailyTable, dailyCsv, GroupTable, SalesList } from "./tables";
+import { Abbr, FinanceSummary } from "./finance";
+import { ImportDialog, NoteDialog, SettingsPanel } from "./panels";
+import { DailyTable, dailyCsv, GroupTable, NoteButton, SalesList } from "./tables";
 import { Card, Delta, MultiSelect, SignalBadge, Segmented } from "./ui";
 
 export type ImportLog = {
@@ -44,6 +45,7 @@ type Props = {
   sales: Sale[];
   settings: CampaignSettings;
   imports: ImportLog[];
+  notes: Record<string, string>;
   today: string;
   query: Record<string, string>;
 };
@@ -98,6 +100,7 @@ const SIGNAL_HINT: Record<Signal["code"], (s: CampaignSettings) => string> = {
 
 type KpiProps = {
   label: string;
+  abbr?: string;
   value: string;
   cur: number | null;
   prev: number | null;
@@ -111,10 +114,13 @@ type KpiProps = {
   big?: boolean;
 };
 
-function Kpi({ label, value, cur, prev, good, compare, spark, color, note, tone = "", mode, big }: KpiProps) {
+function Kpi({ label, abbr, value, cur, prev, good, compare, spark, color, note, tone = "", mode, big }: KpiProps) {
   return (
     <article className={`cmp-kpi${tone ? ` cmp-kpi--${tone}` : ""}${big ? " cmp-kpi--big" : ""}`}>
-      <p className="cmp-kpi__label">{label}</p>
+      <p className="cmp-kpi__label">
+        {label}
+        {abbr && <Abbr k={abbr} />}
+      </p>
       <p className="cmp-kpi__value">{value}</p>
       <div className="cmp-kpi__foot">
         {compare ? <Delta cur={cur} prev={prev} good={good} mode={mode} /> : <span className="cmp-kpi__note">{note}</span>}
@@ -124,9 +130,11 @@ function Kpi({ label, value, cur, prev, good, compare, spark, color, note, tone 
   );
 }
 
-export default function Dashboard({ meta, sales, settings, imports, today, query }: Props) {
+export default function Dashboard({ meta, sales, settings, imports, notes: initialNotes, today, query }: Props) {
   const router = useRouter();
   const [dialog, setDialog] = useState<"import" | "settings" | null>(null);
+  const [notes, setNotes] = useState<Record<string, string>>(initialNotes);
+  const [noteDay, setNoteDay] = useState<string | null>(null);
 
   const salesX = useMemo(() => enrichSales(sales, settings), [sales, settings]);
   const launch = useMemo(() => {
@@ -180,6 +188,7 @@ export default function Dashboard({ meta, sales, settings, imports, today, query
     const fun = funnel(cur.mt, cur.crossSales);
     const salesP = cur.salesP;
     return {
+      metaF,
       cur,
       prev,
       prevR,
@@ -237,7 +246,7 @@ export default function Dashboard({ meta, sales, settings, imports, today, query
   const salesFiltered = st.origins.length + st.payments.length + (st.coupon ? 1 : 0) > 0;
 
   const exportCsv = () => {
-    const blob = new Blob([dailyCsv(v.daily)], { type: "text/csv;charset=utf-8" });
+    const blob = new Blob([dailyCsv(v.daily, notes)], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = `campanhas_${st.from}_a_${st.to}.csv`;
@@ -448,6 +457,7 @@ export default function Dashboard({ meta, sales, settings, imports, today, query
             <Kpi
               big
               label="CPA real"
+              abbr="CPA"
               value={brl(cur.d.cpaReal)}
               cur={cur.d.cpaReal}
               prev={prev.d.cpaReal}
@@ -460,22 +470,47 @@ export default function Dashboard({ meta, sales, settings, imports, today, query
             />
             <Kpi label="Vendas totais" value={String(cur.all.approved)} cur={cur.all.approved} prev={prev.all.approved} good compare={st.compare} note={`${cur.all.siteSales} site · ${cur.all.adSales} anúncio${cur.all.otherSales + cur.all.unknownSales ? ` · ${cur.all.otherSales + cur.all.unknownSales} outras` : ""}`} />
             <Kpi label="Líquido" value={brl(cur.all.net)} cur={cur.all.net} prev={prev.all.net} good compare={st.compare} note={`ticket ${brl(cur.d.ticket)}`} />
-            <Kpi label="ROAS líquido" value={roas(cur.d.roasReal)} cur={cur.d.roasReal} prev={prev.d.roasReal} good compare={st.compare} tone={cur.d.roasReal === null ? "" : cur.d.roasReal >= 1 ? "good" : "bad"} note="líquido ÷ investido" />
-            <Kpi label="CTR (link)" value={pct(cur.d.ctr, 2)} cur={cur.d.ctr} prev={prev.d.ctr} good compare={st.compare} mode="pp" note={`CPC ${brl(cur.d.cpc)}`} tone={cur.d.ctr !== null && cur.d.ctr * 100 < settings.ctrMin ? "bad" : ""} />
-            <Kpi label="Taxa de gancho" value={pct(cur.d.hook)} cur={cur.d.hook} prev={prev.d.hook} good compare={st.compare} mode="pp" note="vídeo 3 s ÷ impressões" tone={cur.d.hook !== null && cur.d.hook * 100 < settings.hookMin ? "mid" : ""} />
+            <Kpi label="ROAS líquido" abbr="ROAS" value={roas(cur.d.roasReal)} cur={cur.d.roasReal} prev={prev.d.roasReal} good compare={st.compare} tone={cur.d.roasReal === null ? "" : cur.d.roasReal >= 1 ? "good" : "bad"} note="líquido ÷ investido" />
+            <Kpi label="Taxa de cliques" abbr="CTR" value={pct(cur.d.ctr, 2)} cur={cur.d.ctr} prev={prev.d.ctr} good compare={st.compare} mode="pp" note={`CPC ${brl(cur.d.cpc)} · no link`} tone={cur.d.ctr !== null && cur.d.ctr * 100 < settings.ctrMin ? "bad" : ""} />
+            <Kpi label="Taxa de gancho" abbr="Hook" value={pct(cur.d.hook)} cur={cur.d.hook} prev={prev.d.hook} good compare={st.compare} mode="pp" note="vídeo 3 s ÷ impressões" tone={cur.d.hook !== null && cur.d.hook * 100 < settings.hookMin ? "mid" : ""} />
           </section>
           <p className="cmp-mini">
             {cur.all.refunds > 0 && <span className="is-bad">{cur.all.refunds} reembolso(s) · {brl(cur.all.refundValue)}</span>}
             <span>Pix {pct(cur.all.approved ? cur.all.pix / cur.all.approved : null, 0)}</span>
             <span>parcelas médias {cur.all.installmentsAvg ? cur.all.installmentsAvg.toFixed(1).replace(".", ",") : "—"}</span>
             {ytSales > 0 && <span>{ytSales} com cupom do YouTube</span>}
-            <span>clique → venda {pct(cur.d.clickToSale, 2)}</span>
+            <span>clique → venda (CVR) {pct(cur.d.clickToSale, 2)}</span>
             <span>frequência {cur.d.frequency ? cur.d.frequency.toFixed(2).replace(".", ",") : "—"} (aprox.)</span>
           </p>
 
+          {/* ---------- resumo financeiro ---------- */}
+          <Card kicker="Números do negócio" title="Resumo financeiro" aside={<span className="cmp-muted">passe o mouse nas siglas para ver o nome</span>}>
+            <FinanceSummary mt={cur.mt} s={cur.crossSales} meta={v.metaF} settings={settings} today={today} until={v.crossTo < st.to ? fullDay(v.crossTo) : undefined} />
+          </Card>
+
           {/* ---------- gráfico principal ---------- */}
           <Card kicker="Dia a dia" title="Investimento × vendas × CPA" aside={<span className="cmp-muted">{v.daily.length} dias</span>}>
-            <DailyChart rows={v.daily} settings={settings} />
+            <DailyChart rows={v.daily} settings={settings} notes={notes} onNote={setNoteDay} />
+            {(() => {
+              const inPeriod = v.daily.filter((r) => notes[r.date]);
+              return (
+                <div className="cmp-notes">
+                  {inPeriod.length ? (
+                    [...inPeriod].reverse().map((r) => (
+                      <div key={r.date} className="cmp-notes__item">
+                        <span className="cmp-notes__day">{labelDay(r.date)}</span>
+                        <NoteButton day={r.date} note={notes[r.date]} onNote={setNoteDay} />
+                      </div>
+                    ))
+                  ) : (
+                    <p className="cmp-muted">Sem anotações no período. Dê dois cliques num dia do gráfico, use “+ nota” na tabela ou o botão abaixo.</p>
+                  )}
+                  <button type="button" className="cmp-btn cmp-btn--ghost cmp-btn--sm" onClick={() => setNoteDay(today)}>
+                    + Anotar hoje
+                  </button>
+                </div>
+              );
+            })()}
           </Card>
 
           <div className="cmp-grid2">
@@ -532,7 +567,7 @@ export default function Dashboard({ meta, sales, settings, imports, today, query
               </button>
             }
           >
-            <DailyTable rows={v.daily} settings={settings} />
+            <DailyTable rows={v.daily} settings={settings} notes={notes} onNote={setNoteDay} />
           </Card>
 
           <Card kicker="Hotmart" title="Vendas do período">
@@ -566,6 +601,22 @@ export default function Dashboard({ meta, sales, settings, imports, today, query
       </Card>
 
       {dialog === "import" && <ImportDialog onClose={() => setDialog(null)} onDone={refresh} />}
+      {noteDay && (
+        <NoteDialog
+          day={noteDay}
+          initial={notes[noteDay] ?? ""}
+          onClose={() => setNoteDay(null)}
+          onSaved={(day, text) => {
+            setNotes((n) => {
+              const next = { ...n };
+              if (text) next[day] = text;
+              else delete next[day];
+              return next;
+            });
+            setNoteDay(null);
+          }}
+        />
+      )}
       {dialog === "settings" && <SettingsPanel settings={settings} onClose={() => setDialog(null)} onSaved={refresh} />}
     </div>
   );

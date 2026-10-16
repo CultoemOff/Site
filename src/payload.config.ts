@@ -7,7 +7,7 @@ import { pt } from "@payloadcms/translations/languages/pt";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 import { YouTubeBlock } from "./blocks/YouTube";
-import { CampaignImports, CampaignSettingsGlobal, HotmartSales, MetaAdDays } from "./collections/Campanhas";
+import { CampaignImports, CampaignNotes, CampaignSettingsGlobal, HotmartSales, MetaAdDays } from "./collections/Campanhas";
 import { Courses } from "./collections/Courses";
 import { Equipment } from "./collections/Equipment";
 import { Leads } from "./collections/Leads";
@@ -57,7 +57,7 @@ export default buildConfig({
     fallbackLanguage: "pt",
   },
   // A ordem aqui é a ordem do menu lateral. Grupos: Loja, Conteúdo, Site, Sistema.
-  collections: [Offers, Equipment, Courses, Posts, Media, Leads, Users, MetaAdDays, HotmartSales, CampaignImports],
+  collections: [Offers, Equipment, Courses, Posts, Media, Leads, Users, MetaAdDays, HotmartSales, CampaignImports, CampaignNotes],
   globals: [SiteSettings, YouTubeCache, SeedState, CampaignSettingsGlobal],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [

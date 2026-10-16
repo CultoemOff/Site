@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { fullDay } from "@/lib/campanhas/dates";
+import { fullDay, labelDay } from "@/lib/campanhas/dates";
 import { brl } from "@/lib/campanhas/format";
 import type { CampaignSettings } from "@/lib/campanhas/types";
 
 /* ---------------- moldura (janela/gaveta) ---------------- */
 
-function Overlay({ title, kicker, onClose, children, footer, side }: { title: string; kicker: string; onClose: () => void; children: ReactNode; footer?: ReactNode; side?: boolean }) {
+export function Overlay({ title, kicker, onClose, children, footer, side }: { title: string; kicker: string; onClose: () => void; children: ReactNode; footer?: ReactNode; side?: boolean }) {
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -435,6 +435,64 @@ export function SettingsPanel({ settings, onClose, onSaved }: { settings: Campai
           + Adicionar
         </button>
       </fieldset>
+    </Overlay>
+  );
+}
+
+/* ---------------- anotação do dia ---------------- */
+
+export function NoteDialog({ day, initial, onClose, onSaved }: { day: string; initial: string; onClose: () => void; onSaved: (day: string, text: string) => void }) {
+  const [text, setText] = useState(initial);
+  const [state, setState] = useState<"idle" | "saving" | "error">("idle");
+  const save = async (value: string) => {
+    setState("saving");
+    try {
+      const res = await fetch("/api/campaign-imports/note", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ day, text: value }),
+      });
+      if (!res.ok) throw new Error();
+      onSaved(day, value.trim());
+    } catch {
+      setState("error");
+    }
+  };
+  return (
+    <Overlay
+      title={`Anotação · ${labelDay(day)}`}
+      kicker="Diário da campanha"
+      onClose={onClose}
+      footer={
+        <>
+          {state === "error" && <span className="cmp-file__error">Não salvou. Tente de novo.</span>}
+          {initial && (
+            <button type="button" className="cmp-btn cmp-btn--ghost cmp-btn--danger" onClick={() => save("")} disabled={state === "saving"}>
+              Apagar
+            </button>
+          )}
+          <button type="button" className="cmp-btn cmp-btn--primary" onClick={() => save(text)} disabled={state === "saving" || text.trim() === initial.trim()}>
+            {state === "saving" ? "Salvando…" : "Salvar"}
+          </button>
+        </>
+      }
+    >
+      <label className="cmp-note-field">
+        <span className="cmp-muted">O que aconteceu neste dia? Ex.: troquei o criativo, subi a verba 20%, live no YouTube, mudei a página.</span>
+        <textarea
+          rows={6}
+          maxLength={2000}
+          value={text}
+          autoFocus
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) void save(text);
+          }}
+          placeholder="Escreva aqui…"
+        />
+        <small className="cmp-muted">{text.length}/2000 · Ctrl+Enter salva</small>
+      </label>
     </Overlay>
   );
 }

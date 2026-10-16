@@ -160,7 +160,7 @@ export function GroupTable({ rows, settings, level }: { rows: GroupRow[]; settin
 
 /* ---------------- dia a dia ---------------- */
 
-export function dailyCsv(rows: DayRow[]): string {
+export function dailyCsv(rows: DayRow[], notes: Record<string, string> = {}): string {
   const n = (v: number | null, d = 2) => (v === null || !Number.isFinite(v) ? "" : v.toFixed(d).replace(".", ","));
   const head = [
     "Data",
@@ -182,6 +182,7 @@ export function dailyCsv(rows: DayRow[]): string {
     "CPA 3 dias",
     "Sinal",
     "Alertas",
+    "Anotação",
   ];
   const lines = rows.map((r) =>
     [
@@ -204,6 +205,7 @@ export function dailyCsv(rows: DayRow[]): string {
       n(r.cpa3),
       r.signal.label,
       r.alerts.map((a) => a.text).join(" | "),
+      notes[r.date] ?? "",
     ]
       .map((v) => {
         const s = String(v);
@@ -214,7 +216,22 @@ export function dailyCsv(rows: DayRow[]): string {
   return "﻿" + [head.join(";"), ...lines].join("\r\n");
 }
 
-export function DailyTable({ rows, settings }: { rows: DayRow[]; settings: CampaignSettings }) {
+export function NoteButton({ day, note, onNote }: { day: string; note?: string; onNote: (day: string) => void }) {
+  return note ? (
+    <button type="button" className="cmp-note" onClick={() => onNote(day)} title="Editar anotação">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 20h4L19 9l-4-4L4 16v4Zm9-13 4 4" />
+      </svg>
+      <span>{note}</span>
+    </button>
+  ) : (
+    <button type="button" className="cmp-note cmp-note--add" onClick={() => onNote(day)}>
+      + nota
+    </button>
+  );
+}
+
+export function DailyTable({ rows, settings, notes, onNote }: { rows: DayRow[]; settings: CampaignSettings; notes: Record<string, string>; onNote: (day: string) => void }) {
   const list = [...rows].reverse();
   const tot = rows.reduce(
     (a, r) => {
@@ -242,6 +259,7 @@ export function DailyTable({ rows, settings }: { rows: DayRow[]; settings: Campa
         <thead>
           <tr>
             <th>Dia</th>
+            <th>Anotação</th>
             <th className="is-num">Investido</th>
             <th className="is-num">Impr.</th>
             <th className="is-num">Cliques</th>
@@ -266,6 +284,9 @@ export function DailyTable({ rows, settings }: { rows: DayRow[]; settings: Campa
           {list.map((r) => (
             <tr key={r.date} className={r.metaMissing ? "is-missing" : ""}>
               <td className="cmp-sticky">{labelDay(r.date)}</td>
+              <td className="cmp-note-cell">
+                <NoteButton day={r.date} note={notes[r.date]} onNote={onNote} />
+              </td>
               <td className="is-num">{r.metaMissing ? <span className="cmp-muted">sem Meta</span> : brl(r.meta.spend)}</td>
               <td className="is-num">{int(r.meta.impressions)}</td>
               <td className="is-num">{int(r.meta.linkClicks)}</td>
@@ -304,6 +325,7 @@ export function DailyTable({ rows, settings }: { rows: DayRow[]; settings: Campa
         <tfoot>
           <tr>
             <td className="cmp-sticky">Total</td>
+            <td />
             <td className="is-num">{brl(tot.spend)}</td>
             <td className="is-num">{int(tot.imp)}</td>
             <td className="is-num">{int(tot.clk)}</td>
@@ -408,7 +430,10 @@ export function SalesList({ sales }: { sales: SaleX[] }) {
                     {x.paymentMethod || "—"}
                     {x.installments > 1 && <small className="cmp-muted"> {x.installments}×</small>}
                   </td>
-                  <td className="is-num">{brl(x.net)}</td>
+                  <td className="is-num">
+                    {brl(x.net)}
+                    {x.isBump && <em className="cmp-tag cmp-tag--bump">order bump</em>}
+                  </td>
                   <td>
                     <span className={`cmp-pill cmp-pill--${STATUS_TONE[x.group]}`}>{x.status}</span>
                   </td>

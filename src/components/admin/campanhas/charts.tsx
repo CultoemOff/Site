@@ -40,11 +40,21 @@ function Tooltip({ x, w, children }: { x: number; w: number; children: ReactNode
 
 /* ---------------- gráfico diário principal ---------------- */
 
-export function DailyChart({ rows, settings }: { rows: DayRow[]; settings: CampaignSettings }) {
+export function DailyChart({
+  rows,
+  settings,
+  notes = {},
+  onNote,
+}: {
+  rows: DayRow[];
+  settings: CampaignSettings;
+  notes?: Record<string, string>;
+  onNote?: (day: string) => void;
+}) {
   const [ref, w] = useWidth<HTMLDivElement>();
   const [hover, setHover] = useState<number | null>(null);
   const h = w < 560 ? 250 : 320;
-  const pad = { l: w < 560 ? 44 : 58, r: w < 560 ? 30 : 44, t: 18, b: 34 };
+  const pad = { l: w < 560 ? 44 : 58, r: w < 560 ? 30 : 44, t: 30, b: 34 };
   const iw = Math.max(10, w - pad.l - pad.r);
   const ih = h - pad.t - pad.b;
   const n = rows.length || 1;
@@ -154,8 +164,35 @@ export function DailyChart({ rows, settings }: { rows: DayRow[]; settings: Campa
             ) : null,
           )}
           {rows.map((r, i) => (
-            <rect key={`h${r.date}`} x={pad.l + bw * i} y={pad.t} width={bw} height={ih} fill="transparent" onMouseEnter={() => setHover(i)} onClick={() => setHover(i)} />
+            <rect
+              key={`h${r.date}`}
+              x={pad.l + bw * i}
+              y={pad.t}
+              width={bw}
+              height={ih}
+              fill="transparent"
+              onMouseEnter={() => setHover(i)}
+              onClick={() => setHover(i)}
+              onDoubleClick={() => onNote?.(r.date)}
+            />
           ))}
+          {rows.map((r, i) =>
+            notes[r.date] ? (
+              <g
+                key={`n${r.date}`}
+                className="cmp-note-pin"
+                transform={`translate(${xm(i)} ${pad.t - 14})`}
+                onMouseEnter={() => setHover(i)}
+                onClick={() => onNote?.(r.date)}
+                role="button"
+                aria-label={`Anotação de ${labelDay(r.date)}`}
+              >
+                <line x1="0" y1="8" x2="0" y2={ih + 14} stroke="rgba(255,212,59,0.28)" strokeDasharray="2 4" />
+                <rect x="-9" y="-9" width="18" height="18" rx="6" fill="#ffd43b" />
+                <path d="M-4 -3h8M-4 1h8M-4 5h5" stroke="#3a2a00" strokeWidth="1.6" strokeLinecap="round" />
+              </g>
+            ) : null,
+          )}
         </svg>
       )}
       {cur && hover !== null && (
@@ -185,6 +222,7 @@ export function DailyChart({ rows, settings }: { rows: DayRow[]; settings: Campa
             <dd className={cur.d.profitAd >= 0 ? "is-good" : "is-bad"}>{cur.metaMissing ? "—" : brl(cur.d.profitAd)}</dd>
           </dl>
           <SignalBadge signal={cur.signal} />
+          {notes[cur.date] && <p className="cmp-tip__note">{notes[cur.date]}</p>}
         </Tooltip>
       )}
       <ul className="cmp-legend">
@@ -214,6 +252,10 @@ export function DailyChart({ rows, settings }: { rows: DayRow[]; settings: Campa
             Sem dados do Meta
           </li>
         )}
+        <li>
+          <i className="cmp-legend__note" />
+          Anotação (dois cliques no dia para escrever)
+        </li>
       </ul>
     </div>
   );

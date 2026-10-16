@@ -75,12 +75,15 @@ export default async function CampanhasView({ initPageResult, params, searchPara
   const admin = payload.config.routes.admin;
   if (!user) redirect(`${admin}/login?redirect=${encodeURIComponent(`${admin}/campanhas`)}`);
 
-  const [metaRes, salesRes, importsRes, rawSettings] = await Promise.all([
+  const [metaRes, salesRes, importsRes, rawSettings, notesRes] = await Promise.all([
     payload.find({ collection: "meta-ad-days", pagination: false, depth: 0, sort: "date" }),
     payload.find({ collection: "hotmart-sales", pagination: false, depth: 0, sort: "soldAt" }),
     payload.find({ collection: "campaign-imports", limit: 15, depth: 0, sort: "-createdAt" }),
     payload.findGlobal({ slug: "campaign-settings", depth: 0 }).catch(() => null),
+    payload.find({ collection: "campaign-notes", pagination: false, depth: 0 }),
   ]);
+  const notes: Record<string, string> = {};
+  for (const n of notesRes.docs as unknown as { day: string; text?: string | null }[]) if (n.day && n.text) notes[n.day] = n.text;
   const settings = withDefaults(rawSettings as unknown as Record<string, unknown>);
   const tests = new Set(settings.testEmails);
 
@@ -113,6 +116,7 @@ export default async function CampanhasView({ initPageResult, params, searchPara
     buyerName: maskName(d.buyerName ?? ""),
     buyerEmail: maskEmail(d.buyerEmail ?? ""),
     buyerState: d.buyerState ?? "",
+    mainTransaction: d.mainTransaction ?? "",
     test: tests.has(String(d.buyerEmail ?? "").toLowerCase()),
   }));
   const imports: ImportLog[] = (importsRes.docs as unknown as (ImportLog & { createdAt: string })[]).map((d) => ({
@@ -141,7 +145,7 @@ export default async function CampanhasView({ initPageResult, params, searchPara
       visibleEntities={visibleEntities}
     >
       <div className={`cmp ${display.variable} ${mono.variable}`}>
-        <Dashboard meta={meta} sales={sales} settings={settings} imports={imports} today={todaySP()} query={query} />
+        <Dashboard meta={meta} sales={sales} settings={settings} imports={imports} notes={notes} today={todaySP()} query={query} />
       </div>
     </DefaultTemplate>
   );

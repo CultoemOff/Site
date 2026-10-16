@@ -269,6 +269,7 @@ export function parseHotmart(csv: string): ParseResult<Sale> {
     name: col("Comprador(a)", "Nome do Comprador", "Comprador"),
     email: col("Email do(a) Comprador(a)", "Email do Comprador", "Email"),
     state: col("Estado / Província", "Estado"),
+    main: col("Transação do Produto Principal"),
   };
   if (c.id < 0) errors.push('Coluna obrigatória ausente: "Código da transação".');
   if (c.status < 0) errors.push('Coluna obrigatória ausente: "Status da transação".');
@@ -324,6 +325,7 @@ export function parseHotmart(csv: string): ParseResult<Sale> {
       buyerName: text(g(r, c.name)).replace(/\s+/g, " "),
       buyerEmail: text(g(r, c.email)).toLowerCase(),
       buyerState: text(g(r, c.state)),
+      mainTransaction: ((m) => (m && m !== id ? m : ""))(text(g(r, c.main))),
     });
   }
   return { kind: "hotmart", rows: out, ignored, errors, warnings };

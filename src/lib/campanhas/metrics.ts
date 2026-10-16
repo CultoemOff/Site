@@ -29,6 +29,8 @@ export type SaleX = Sale & {
   originGroup: OriginGroup;
   isTest: boolean;
   youtube: boolean;
+  /** order bump (não conta como venda nova; soma no faturamento) */
+  isBump: boolean;
 };
 
 export function enrichSales(sales: Sale[], s: CampaignSettings): SaleX[] {
@@ -40,6 +42,7 @@ export function enrichSales(sales: Sale[], s: CampaignSettings): SaleX[] {
     originGroup: originGroup(x.origin, s.adOrigins),
     isTest: Boolean(x.test) || tests.has(x.buyerEmail.toLowerCase()),
     youtube: Boolean(x.coupon) && yt.has(x.coupon.toUpperCase()),
+    isBump: Boolean(x.mainTransaction),
   }));
 }
 
@@ -142,6 +145,14 @@ export type SalesTotals = {
   card: number;
   installmentsAvg: number;
   youtube: number;
+  /** só o curso (sem order bump) */
+  courseGross: number;
+  courseNet: number;
+  bumps: number;
+  bumpGross: number;
+  bumpNet: number;
+  /** taxas da Hotmart (faturamento bruto − líquido) */
+  fees: number;
 };
 
 export function sumSales(rows: SaleX[]): SalesTotals {
@@ -162,6 +173,12 @@ export function sumSales(rows: SaleX[]): SalesTotals {
     card: 0,
     installmentsAvg: 0,
     youtube: 0,
+    courseGross: 0,
+    courseNet: 0,
+    bumps: 0,
+    bumpGross: 0,
+    bumpNet: 0,
+    fees: 0,
   };
   let inst = 0;
   for (const x of rows) {
@@ -175,17 +192,26 @@ export function sumSales(rows: SaleX[]): SalesTotals {
       continue;
     }
     if (x.group !== "approved") continue;
-    t.approved++;
     t.net += x.net;
     t.gross += x.gross;
     t.grossPaid += x.grossPaid;
+    t.fees += x.gross - x.net;
+    if (x.originGroup === "meta") t.netAd += x.net;
+    if (x.isBump) {
+      t.bumps++;
+      t.bumpGross += x.gross;
+      t.bumpNet += x.net;
+      continue;
+    }
+    t.approved++;
+    t.courseGross += x.gross;
+    t.courseNet += x.net;
     inst += x.installments;
     if (/pix/i.test(x.paymentMethod)) t.pix++;
     else if (/cart|credit|apple|google/i.test(x.paymentMethod)) t.card++;
     if (x.youtube) t.youtube++;
     if (x.originGroup === "meta") {
       t.adSales++;
-      t.netAd += x.net;
     } else if (x.originGroup === "site") t.siteSales++;
     else if (x.originGroup === "outros") t.otherSales++;
     else t.unknownSales++;
@@ -196,6 +222,11 @@ export function sumSales(rows: SaleX[]): SalesTotals {
   t.gross = round2(t.gross);
   t.grossPaid = round2(t.grossPaid);
   t.refundValue = round2(t.refundValue);
+  t.courseGross = round2(t.courseGross);
+  t.courseNet = round2(t.courseNet);
+  t.bumpGross = round2(t.bumpGross);
+  t.bumpNet = round2(t.bumpNet);
+  t.fees = round2(t.fees);
   return t;
 }
 
@@ -485,7 +516,7 @@ export function groupRows(
     if (g) g.push(r);
     else groups.set(k, [r]);
   }
-  const approvedAd = salesAll.filter((x) => x.group === "approved" && x.originGroup === "meta");
+  const approvedAd = salesAll.filter((x) => x.group === "approved" && x.originGroup === "meta" && !x.isBump);
   const hasAdNames = approvedAd.some((x) => x.adName);
   const w3from = addDays(to, -2);
   // campanha única com gasto nos últimos 3 dias → recebe as vendas reais da Hotmart
@@ -614,7 +645,7 @@ export type Slice = { key: string; label: string; count: number; net: number };
 export function breakdown(rows: SaleX[], keyOf: (x: SaleX) => string, labelOf: (k: string) => string = (k) => k || "—"): Slice[] {
   const m = new Map<string, Slice>();
   for (const x of rows) {
-    if (x.group !== "approved") continue;
+    if (x.group !== "approved" || x.isBump) continue;
     const k = keyOf(x);
     const b = m.get(k) ?? { key: k, label: labelOf(k), count: 0, net: 0 };
     b.count++;
@@ -627,6 +658,6 @@ export function breakdown(rows: SaleX[], keyOf: (x: SaleX) => string, labelOf: (
 /** vendas aprovadas por dia da semana × hora (7 × 24) */
 export function heatmap(rows: SaleX[]): number[][] {
   const g = Array.from({ length: 7 }, () => Array(24).fill(0) as number[]);
-  for (const x of rows) if (x.group === "approved") g[x.weekday][x.hour]++;
+  for (const x of rows) if (x.group === "approved" && !x.isBump) g[x.weekday][x.hour]++;
   return g;
 }

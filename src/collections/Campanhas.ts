@@ -81,6 +81,8 @@ export const HotmartSales: CollectionConfig = {
     t("buyerName"),
     t("buyerEmail"),
     t("buyerState"),
+    // order bump: aponta para a transação do produto principal
+    t("mainTransaction"),
   ],
 };
 
@@ -101,6 +103,17 @@ export const CampaignImports: CollectionConfig = {
     n("ignored"),
     t("periodFrom"),
     t("periodTo"),
+  ],
+};
+
+export const CampaignNotes: CollectionConfig = {
+  slug: "campaign-notes",
+  labels: { singular: "Anotação do dia", plural: "Anotações dos dias" },
+  admin: { hidden: true, useAsTitle: "day" },
+  access,
+  fields: [
+    { name: "day", type: "text", required: true, unique: true, index: true },
+    { name: "text", type: "textarea" },
   ],
 };
 
