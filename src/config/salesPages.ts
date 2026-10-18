@@ -651,8 +651,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     highlights: [
       {
         icon: "video",
-        title: "PTZ com NDI: a câmera que a gente recomenda.",
-        text: "Você entende por que ela é a escolha ideal para a igreja e também quando as outras câmeras fazem sentido.",
+        title: "Qual câmera comprar, para cada orçamento.",
+        text: "Uma aula sobre os tipos de câmera e as escolhas que a gente recomenda para cada faixa de orçamento da igreja.",
       },
       {
         icon: "users",
@@ -806,14 +806,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         ],
       },
     ],
-    complement: {
-      kicker: "Para ir além",
-      title: "Sua live também depende da rede.",
-      text: "NDI, câmera PTZ e o PC da transmissão conversam pela rede da igreja. O Redes para Igrejas ensina essa parte, do zero.",
-      points: ["NDI e câmeras PTZ na rede", "IP, DHCP, switch e Wi-Fi da igreja", "Roteador configurado do jeito certo"],
-      href: "/formacoes/redes-para-igrejas",
-      cta: "Conhecer o Redes para Igrejas",
-    },
     forWho: [
       { icon: "video", text: "Quem cuida da transmissão, das câmeras, da projeção ou do som." },
       { icon: "users", text: "Líderes de mídia e pastores que cuidam da estrutura." },
