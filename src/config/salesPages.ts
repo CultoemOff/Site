@@ -676,21 +676,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       { icon: "grid", illo: "scenes", before: "Cenas bagunçadas e a letra entrando na hora errada.", after: "Um plano de cenas do culto, com letras e avisos no lugar." },
       { icon: "users", illo: "solo", before: "Tudo depende de \u201cum cara que entende\u201d.", after: "Checklist e plano B para qualquer voluntário operar no domingo." },
     ],
-    integrations: {
-      kicker: "O que você vai aprender",
-      title: "Do altar ao celular de quem assiste em casa.",
-      art: "live",
-      items: [
-        { icon: "monitorPlay", name: "Como funciona a transmissão", what: "Do altar ao celular, e o que o PC realmente precisa ter" },
-        { icon: "video", name: "A câmera certa", what: "Os tipos de câmera e qual escolher para cada orçamento" },
-        { icon: "plug", name: "Conexões e placas", what: "HDMI, SDI, USB, NDI e o celular como câmera" },
-        { icon: "sliders", name: "Som da mesa na live", what: "Mix da live, níveis, filtros e sincronia" },
-        { icon: "grid", name: "Cenas do culto", what: "Louvor, pregação, avisos, letras, tarjas e QR code de ofertas" },
-        { icon: "presentation", name: "PTZ no controle", what: "Presets do culto, controle físico e plugin no OBS" },
-        { icon: "wifi", name: "Encoder e bitrate", what: "Configurações de acordo com a sua internet" },
-        { icon: "clipboardCheck", name: "Domingo sem susto", what: "YouTube, Facebook, gravação, checklist e plano B" },
-      ],
-    },
     value: {
       title: "Quanto vale um domingo sem a live cair?",
       text: "Uma transmissão que trava afasta quem assiste de casa. Uma que funciona leva o culto a quem não pôde ir.",
