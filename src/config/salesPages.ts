@@ -682,7 +682,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       art: "live",
       items: [
         { icon: "monitorPlay", name: "Como funciona a transmissão", what: "Do altar ao celular, e o que o PC realmente precisa ter" },
-        { icon: "video", name: "A câmera certa", what: "Por que a PTZ com NDI é a escolha ideal, e quando usar as outras" },
+        { icon: "video", name: "A câmera certa", what: "Os tipos de câmera e qual escolher para cada orçamento" },
         { icon: "plug", name: "Conexões e placas", what: "HDMI, SDI, USB, NDI e o celular como câmera" },
         { icon: "sliders", name: "Som da mesa na live", what: "Mix da live, níveis, filtros e sincronia" },
         { icon: "grid", name: "Cenas do culto", what: "Louvor, pregação, avisos, letras, tarjas e QR code de ofertas" },
