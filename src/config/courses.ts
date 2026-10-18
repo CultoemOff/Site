@@ -111,28 +111,29 @@ export const COURSES: Course[] = [
     title: "Redes para Igrejas",
     tagline: "Entenda a infraestrutura por trás das tecnologias que você já usa.",
     summary:
-      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. São 54 videoaulas gravadas em 10 módulos, do primeiro conceito ao planejamento da rede da igreja, com roteadores na prática e um módulo prático com OBS, câmeras NDI e Iriun.",
+      "Para quem trabalha com áudio, vídeo, transmissão, câmeras, automação ou iluminação. Não é um curso para formar administradores de rede: é para você entender o que acontece entre um equipamento e outro. São 44 videoaulas gravadas em 10 módulos, do primeiro conceito ao planejamento da rede da igreja, com roteadores na prática e projeto final com OBS, NDI e PTZ. Certificado de 6 horas.",
     question: "Por que dois equipamentos ligados no mesmo switch não conseguem conversar?",
-    topicsTitle: "10 módulos · 54 aulas",
+    topicsTitle: "10 módulos · 44 aulas",
     // Módulos conforme os roteiros das aulas (01/10/2026). VLAN e QoS em profundidade ficam para o Curso 2.
     topics: [
       "Entendendo redes",
       "IP na prática: IP, DHCP, máscara, gateway e DNS",
       "Comandos essenciais",
       "Equipamentos, cabos e PoE",
-      "Wi-Fi na igreja e o celular como câmera",
+      "Wi-Fi na igreja",
       "NDI e câmeras PTZ",
-      "Controle pela rede: portas, OBS e Companion",
+      "Introdução às automações: OBS Studio e Bitfocus Companion",
       "Roteadores na prática: Vivo, Claro e TP-Link",
-      "Planejar sua rede",
-      "Prática: OBS, câmeras NDI e Iriun",
+      "Planejar a rede da igreja + introdução ao Dante",
+      "Prática: OBS, NDI e PTZ (projeto final)",
     ],
     appliedTo: ["NDI", "Câmeras PTZ", "PoE", "Wi-Fi", "Iriun Webcam", "OBS", "Bitfocus Companion", "Dante", "Streaming"],
     // rev 10: grava no banco só o resumo e os módulos (escopo "topics"), atualizados pelos roteiros das aulas;
     // os escopos anteriores ficam na lista porque já foram aplicados e não mudam nada de novo
     // (depoimentos só entram se o painel não tiver nenhum). O resto do painel fica como está.
     // rev 12: módulos novos (10 módulos, 54 aulas) + "inclui" com a comunidade
-    rev: 12,
+    // rev 13: relação final de aulas (10 módulos, 44 vídeos) + certificado de 6 h no "inclui"
+    rev: 13,
     revScope: ["href", "testimonials", "hours", "topics", "includes"],
     // Depoimentos de alunos reais, com uso do nome autorizado (confirmado pelo Jonas em 07/10/2026; texto como ele mandou).
     // Depois de publicados, quem manda é o painel.
@@ -166,6 +167,7 @@ export const COURSES: Course[] = [
     includes: [
       "Apostila de comandos e dicas rápidas para imprimir e consultar depois",
       "Comunidade para dúvidas, troca com outras igrejas e aviso de novas aulas",
+      "Certificado de 6 horas, que vale como horas complementares para estudantes de TI",
     ],
     // carga horária ainda não definida (será menor que as 8 h previstas): 0 = o site não mostra a duração
     format: { mode: "Online", hours: 0, access: "Acesso vitalício" },

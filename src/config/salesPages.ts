@@ -193,12 +193,13 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       text: "Tudo quanto fizerdes, fazei-o de todo o coração, como ao Senhor.",
       ref: "Colossenses 3:23",
     },
-    // Módulos e aulas conforme a lista do Jonas (14/10/2026): 10 módulos, 54 aulas. Cada item é uma aula.
+    // Relação final de aulas da Hotmart (18/10/2026): 10 módulos, 44 vídeos (numeração até a 50).
+    // Cada item é um vídeo; "12, 13" e "31, 32" são um vídeo só. A Aula 0 é grátis no YouTube.
     modules: [
       {
         title: "Entendendo redes",
         icon: "network",
-        items: ["O que é uma rede?", "Rede local x Internet", "Como os equipamentos se comunicam", "A rede de uma igreja moderna"],
+        items: ["O que é uma rede?", "Rede local x Internet", "Como os equipamentos se comunicam", "A rede de uma igreja atualizada"],
       },
       {
         title: "IP na prática",
@@ -209,7 +210,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         title: "Comandos essenciais",
         icon: "terminal",
         tag: "Aula prática",
-        items: ["Abrindo o terminal", "ipconfig e ip a", "ping", "DNS pelo terminal", "Rede privada no Windows", "A cola do técnico"],
+        items: ["Abrindo o terminal", "ipconfig e ping", "DNS pelo terminal", "Configuração de rede privada no Windows", "A cola do técnico"],
       },
       {
         title: "Equipamentos, cabos e PoE",
@@ -219,10 +220,9 @@ export const SALES_PAGES: Record<string, SalesPage> = {
           "Modem, roteador, switch e AP",
           "Por dentro do roteador",
           "Entendendo o switch",
-          "Switch gerenciável",
           "Cabos de rede",
-          "Até onde vai cada cabo",
-          "PoE",
+          "Rede, HDMI, USB e SDI: distância e limites",
+          "PoE: energia e dados em um único cabo",
         ],
       },
       {
@@ -230,49 +230,60 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         icon: "wifi",
         tag: "Aula prática",
         items: [
-          "Como o Wi-Fi funciona",
+          "Como o Wi-Fi funciona: 2,4 GHz x 5 GHz",
           "Canais, largura e sinal",
           "Repetidor, mesh e access point",
-          "Produção x visitantes",
-          "Celular como câmera: Iriun",
-          "Celular no Wi-Fi até o OBS",
+          "Rede de membros/visitantes x rede principal",
         ],
       },
       {
         title: "NDI e câmeras PTZ",
         icon: "video",
         tag: "Aula prática",
-        items: ["NDI: vídeo pela rede", "Banda: Full NDI x HX", "NDI Tools e NDI no OBS", "Áudio por NDI", "Câmeras PTZ", "A PTZ na rede"],
+        items: [
+          "Protocolo NDI: vídeo pela rede",
+          "NDI Full, HX2 e HX3",
+          "Câmeras PTZ",
+          "Configurando uma PTZ no OBS Studio + plugin de controle remoto",
+        ],
       },
       {
-        title: "Controle pela rede",
+        title: "Introdução às automações na igreja (OBS Studio + Bitfocus Companion)",
         icon: "sliders",
         tag: "Aula prática",
         items: [
-          "IP, porta, TCP e UDP",
-          "OBS WebSocket e firewall",
-          "Companion: o que é e onde roda",
-          "Companion: conexões",
-          "Companion: botões, ações e feedbacks",
-          "Companion no culto",
+          "Portas, TCP e UDP, protocolos",
+          "WebSocket do OBS Studio: controle remotamente as cenas da live",
+          "Introdução ao Bitfocus Companion (automações, atalhos e Stream Deck)",
+          "Bitfocus Companion: demonstração prática",
         ],
       },
       {
         title: "Roteadores na prática",
         icon: "server",
         tag: "Aula prática",
-        items: ["Configurando o roteador da Vivo", "Configurando o roteador da Claro", "Configurando um roteador TP-Link"],
+        items: [
+          "Configurando o roteador/modem da Vivo: acesso, DHCP, reserva, portas, Wi-Fi e modo bridge",
+          "Configurando o roteador da Claro",
+          "Configurando um roteador TP-Link",
+        ],
       },
       {
-        title: "Planejar sua rede",
+        title: "Planejar a rede da igreja + introdução ao Dante",
         icon: "clipboardCheck",
-        items: ["Levantamento e dimensionamento", "Endereçamento e segmentação", "Equipamentos de referência", "Dante na rede", "Operação e diagnóstico"],
+        items: [
+          "Levantamento e dimensionamento",
+          "Endereçamento e segmentação da rede + planilha para download",
+          "Equipamentos de referência",
+          "Introdução ao Dante",
+          "Diagnósticos",
+        ],
       },
       {
-        title: "Prática: OBS, câmeras NDI e Iriun",
+        title: "Prática: OBS, NDI e PTZ",
         icon: "monitorPlay",
-        tag: "Módulo prático",
-        items: ["O cenário e o plano", "Preparando a rede", "NDI na câmera PTZ", "O PC do telão", "O PC da transmissão"],
+        tag: "Projeto final",
+        items: ["Preparando o ambiente", "Preparando a rede e o computador", "Montando uma cena no OBS Studio com áudio e vídeo NDI"],
       },
     ],
     inside: {
@@ -378,7 +389,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "Como são as aulas?",
-        answer: "54 videoaulas gravadas em 10 módulos, com demonstrações na tela e um módulo prático no final. Acesso vitalício, no computador ou celular.",
+        answer: "44 videoaulas gravadas em 10 módulos, com demonstrações na tela e projeto final com OBS, NDI e PTZ. Acesso vitalício, no computador ou celular.",
       },
       {
         question: "E se eu tiver dúvidas durante as aulas?",
@@ -386,7 +397,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "O curso ensina Dante e Bitfocus Companion?",
-        answer: "Sim, o essencial: o Companion tem 4 aulas no módulo 7 (conexões, botões e uso no culto) e o Dante aparece no módulo 9, na rede. Os dois terão formações próprias, mais completas.",
+        answer: "Como introdução: o módulo 7 tem duas aulas de Bitfocus Companion (o que é e uma demonstração prática) e o módulo 9 tem uma introdução ao Dante. Os dois terão formações próprias, mais completas.",
       },
       {
         question: "Preciso de algum equipamento?",
@@ -395,6 +406,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         question: "Serve para igreja pequena?",
         answer: "Sim. Os fundamentos valem para qualquer tamanho de igreja.",
+      },
+      {
+        question: "Tem certificado?",
+        answer: "Sim. Ao concluir, você recebe um certificado de 6 horas, que estudantes de TI podem usar como horas complementares (confira as regras da sua faculdade).",
       },
       {
         question: "Posso parcelar?",

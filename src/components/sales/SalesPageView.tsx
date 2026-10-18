@@ -139,6 +139,15 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           {bonuses.length} bônus
         </li>
       )}
+      {course.includes?.some((x) => /certificado/i.test(x)) && (
+        <li>
+          <Icon name="graduation" size={15} />
+          Certificado{(() => {
+            const h = course.includes?.find((x) => /certificado/i.test(x))?.match(/(\d+)\s*h/i)?.[1];
+            return h ? ` de ${h} h` : "";
+          })()}
+        </li>
+      )}
       {course.includes?.some((x) => /comunidade|membros/i.test(x)) && (
         <li>
           <Icon name="message" size={15} />
@@ -701,7 +710,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               {includes.map((i) => (
                 <li key={i}>
                   <span className="sp-checks__icon">
-                    <Icon name={/comunidade|membros|dúvida/i.test(i) ? "message" : /atualiza|novas aulas/i.test(i) ? "refresh" : "check"} size={18} />
+                    <Icon name={/certificado/i.test(i) ? "graduation" : /comunidade|membros|dúvida/i.test(i) ? "message" : /atualiza|novas aulas/i.test(i) ? "refresh" : "check"} size={18} />
                   </span>
                   {/^área de membros/i.test(i) ? "Área de membros e comunidade de alunos" : i}
                 </li>
