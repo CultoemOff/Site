@@ -4058,3 +4058,168 @@ body:has(.promo-bar) .sp-offer {
 @media (prefers-reduced-motion: reduce) {
   .xa-tl__step.is-next i, .xa-tl__seg { animation: none; }
 }
+
+/* cenas da página Culto ao Vivo (ProblemIllo: buffer, sync, scenes, solo) */
+.pi-playhead {
+  animation: pi-playhead 4s linear infinite;
+}
+.pi-shuffle {
+  transform-box: fill-box;
+  animation: pi-shuffle 3.6s ease-in-out infinite;
+}
+@keyframes pi-playhead {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(224px);
+  }
+}
+@keyframes pi-shuffle {
+  0%,
+  60%,
+  100% {
+    transform: translateX(0);
+  }
+  70% {
+    transform: translateX(6px);
+  }
+  80% {
+    transform: translateX(-4px);
+  }
+}
+
+/* ==========================================================
+   Cabine de transmissão (LiveStudioArt.tsx)
+   ========================================================== */
+.ls-art {
+  width: min(100%, 560px);
+}
+.ls-pan {
+  transform-box: fill-box;
+  transform-origin: 30px 22px;
+  animation: ls-pan 7.95s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+@keyframes ls-pan {
+  0%,
+  28% {
+    transform: rotate(-8deg);
+  }
+  36%,
+  62% {
+    transform: rotate(6deg);
+  }
+  70%,
+  100% {
+    transform: rotate(-8deg);
+  }
+}
+.ls-tally {
+  fill: #ff4d4d;
+  animation: pi-blink 1.2s steps(1) infinite;
+}
+.ls-flow {
+  fill: none;
+  stroke: #5bd0ff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 0.14 0.86;
+  animation: pi-pulse-run 2.2s linear infinite;
+}
+.ls-active {
+  fill: #1d4ed8;
+  opacity: 0;
+  animation: ls-active 7.95s steps(1) infinite;
+}
+@keyframes ls-active {
+  0%,
+  19.9% {
+    opacity: 0.85;
+  }
+  20%,
+  100% {
+    opacity: 0;
+  }
+}
+.ls-meter {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: ls-meter 0.9s ease-in-out infinite alternate;
+}
+@keyframes ls-meter {
+  0% {
+    transform: scaleX(0.35);
+  }
+  60% {
+    transform: scaleX(0.72);
+  }
+  100% {
+    transform: scaleX(0.58);
+  }
+}
+.ls-fader {
+  animation: pi-fader 2.4s ease-in-out infinite alternate;
+}
+.ls-heart {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ls-heart 3s ease-out infinite;
+}
+.ls-heart--2 {
+  animation-delay: 1.4s;
+}
+@keyframes ls-heart {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-34px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+/* card de formação complementar (ex.: Redes para Igrejas na página do Culto ao Vivo) */
+.sp-complement {
+  display: grid;
+  gap: 22px;
+  align-items: end;
+  padding: clamp(22px, 4vw, 40px);
+  border-radius: 22px;
+  border: 1px solid rgba(91, 208, 255, 0.28);
+  background:
+    radial-gradient(70% 120% at 100% 0%, rgba(91, 208, 255, 0.14), transparent 60%),
+    linear-gradient(160deg, rgba(15, 37, 96, 0.85), rgba(8, 18, 48, 0.9));
+}
+@media (min-width: 900px) {
+  .sp-complement {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+.sp-complement .swp-title {
+  margin-top: 0.3rem;
+}
+.sp-complement__points {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+  color: var(--sp-title, #eaf0ff);
+}
+.sp-complement__points li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.sp-complement__points .icon,
+.sp-complement__points svg {
+  color: #5bd0ff;
+  flex: none;
+}
+.sp-complement__cta {
+  white-space: nowrap;
+}

@@ -36,6 +36,10 @@ export type SalesPage = {
   installmentsNote?: string;
   /** destaque curto logo abaixo do subtítulo (responde a principal objeção) */
   heroNote?: { icon: IconName; text: string };
+  /** card de outra formação que complementa esta (link interno) */
+  complement?: { kicker: string; title: string; text: string; points: string[]; href: string; cta: string };
+  /** imagem de compartilhamento (WhatsApp, redes): arquivo em /public */
+  ogImage?: string;
   /** frase do popup de saída ("Você está a um passo de ...") */
   exitPitch?: string;
   /** frases de promessa em destaque, logo depois dos números (cartões grandes com ícone) */
@@ -56,7 +60,10 @@ export type SalesPage = {
   integrations?: {
     title: string;
     items: { icon: IconName; name: string; what: string }[];
-    art?: "streamdeck";
+    /** etiqueta pequena acima do título (padrão: "Um painel, tudo junto") */
+    kicker?: string;
+    /** ilustração ao lado dos cartões: painel de botões ou cabine de transmissão */
+    art?: "streamdeck" | "live";
     /** meia-lua de logos girando em volta do título; logo = arquivo em /public/images/logos/ (sem fundo) */
     orbit?: { name: string; logo?: string }[];
     /** aviso pequeno no fim da seção (ex.: sem parceria com as marcas) */
@@ -629,6 +636,227 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
     ],
   },
+  // Culto ao Vivo com Excelência (18/10/2026): pré-venda, só pelo link direto (fora das listas, ver UNLISTED_COURSE_IDS).
+  // Sem link da Hotmart ainda: os botões levam ao direct ("Quero ser avisado").
+  "culto-ao-vivo-com-excelencia": {
+    headline: "Sua live do culto, estável e bonita.",
+    subheadline: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.",
+    // vídeo de vendas (vertical, como o de Redes): coloque o arquivo em /public/videos/ e preencha videoUrl/videoPoster/videoSize
+    videoUrl: "",
+    videoVertical: true,
+    ogImage: "/images/formacoes/culto-ao-vivo-og.jpg",
+    exitPitch: "Você está a um passo de colocar o culto no ar sem susto.",
+    heroNote: { icon: "monitorPlay", text: "Feito para PC simples, poucas câmeras, internet de operadora e equipe voluntária." },
+    promo: { label: "Preço especial de lançamento" },
+    highlights: [
+      {
+        icon: "video",
+        title: "PTZ com NDI: a câmera que a gente recomenda.",
+        text: "Você entende por que ela é a escolha ideal para a igreja e também quando as outras câmeras fazem sentido.",
+      },
+      {
+        icon: "users",
+        title: "Pensado para igreja pequena e média.",
+        text: "Nada de estúdio de TV: tudo parte do PC, das câmeras e da internet que a sua igreja já tem.",
+      },
+      {
+        icon: "monitorPlay",
+        title: "Demonstrações reais na tela do OBS.",
+        text: "Você vê cada configuração sendo feita, passo a passo, e repete no computador da igreja.",
+      },
+      {
+        icon: "refresh",
+        title: "Um curso que cresce com o tempo.",
+        text: "As aulas são numeradas por módulo porque novas aulas vão entrar, incluídas no seu acesso.",
+      },
+    ],
+    compare: [
+      { icon: "wifi", illo: "buffer", before: "A live trava ou cai no meio do culto.", after: "Encoder, bitrate e resolução certos para a sua internet e o seu PC." },
+      { icon: "sliders", illo: "sync", before: "O áudio chega ruim ou atrasado em relação à imagem.", after: "Um mix só para a live, níveis, filtros e sincronia acertados." },
+      { icon: "grid", illo: "scenes", before: "Cenas bagunçadas e a letra entrando na hora errada.", after: "Um plano de cenas do culto, com letras e avisos no lugar." },
+      { icon: "users", illo: "solo", before: "Tudo depende de \u201cum cara que entende\u201d.", after: "Checklist e plano B para qualquer voluntário operar no domingo." },
+    ],
+    integrations: {
+      kicker: "O que você vai aprender",
+      title: "Do altar ao celular de quem assiste em casa.",
+      art: "live",
+      items: [
+        { icon: "monitorPlay", name: "Como funciona a transmissão", what: "Do altar ao celular, e o que o PC realmente precisa ter" },
+        { icon: "video", name: "A câmera certa", what: "Por que a PTZ com NDI é a escolha ideal, e quando usar as outras" },
+        { icon: "plug", name: "Conexões e placas", what: "HDMI, SDI, USB, NDI e o celular como câmera" },
+        { icon: "sliders", name: "Som da mesa na live", what: "Mix da live, níveis, filtros e sincronia" },
+        { icon: "grid", name: "Cenas do culto", what: "Louvor, pregação, avisos, letras, tarjas e QR code de ofertas" },
+        { icon: "presentation", name: "PTZ no controle", what: "Presets do culto, controle físico e plugin no OBS" },
+        { icon: "wifi", name: "Encoder e bitrate", what: "Configurações de acordo com a sua internet" },
+        { icon: "clipboardCheck", name: "Domingo sem susto", what: "YouTube, Facebook, gravação, checklist e plano B" },
+      ],
+    },
+    value: {
+      title: "Quanto vale um domingo sem a live cair?",
+      text: "Uma transmissão que trava afasta quem assiste de casa. Uma que funciona leva o culto a quem não pôde ir.",
+    },
+    finalTitle: "O próximo culto pode ir ao ar sem susto.",
+    inside: {
+      title: "Veja como são as aulas.",
+      topology: "",
+      dhcp: { title: "", text: "" },
+      terminal: { title: "", text: "" },
+      // espaços reservados: trocar por imagens reais das aulas quando estiverem prontas (src + width/height)
+      frames: [
+        { icon: "monitorPlay", alt: "Tela do OBS com as cenas do culto", width: 1600, height: 900, title: "Na tela do OBS", text: "Cada configuração feita na hora." },
+        { icon: "video", alt: "Câmeras da igreja e conexões", width: 1600, height: 900, title: "Câmeras e conexões", text: "PTZ, NDI, placas e celular." },
+        { icon: "sliders", alt: "Áudio da mesa levado para a live", width: 1600, height: 900, title: "Áudio da live", text: "Da mesa para o OBS, sem atraso." },
+        { icon: "clipboardCheck", alt: "Checklist de operação do culto", width: 1600, height: 900, title: "Operação no domingo", text: "Checklist e plano B." },
+      ],
+    },
+    // aulas numeradas por módulo (o Jonas vai acrescentar aulas no futuro)
+    modules: [
+      {
+        title: "O sistema de transmissão e o OBS",
+        icon: "monitorPlay",
+        items: ["Como funciona uma transmissão de culto", "O PC da transmissão: o que realmente importa", "Instalando o OBS Studio", "Tour pela interface do OBS"],
+      },
+      {
+        title: "Câmeras para igrejas",
+        icon: "video",
+        items: [
+          "Os 7 tipos de câmera",
+          "Por que a PTZ é a câmera ideal para a igreja",
+          "PTZ com NDI: a combinação recomendada",
+          "As outras categorias: quando fazem sentido",
+          "Configurações essenciais da câmera",
+        ],
+      },
+      {
+        title: "Conexões, placas, NDI e mesa de corte",
+        icon: "plug",
+        items: [
+          "Tipo de câmera não é tipo de conexão",
+          "HDMI e SDI",
+          "USB e placas de captura",
+          "Vídeo pela rede: NDI, RTSP, SRT e Wi-Fi",
+          "Instalando o NDI e o DistroAV no OBS",
+          "Celular como câmera no OBS",
+          "Mesa de corte: o que é e quando faz sentido",
+        ],
+      },
+      {
+        title: "Áudio na transmissão",
+        icon: "sliders",
+        items: [
+          "O mix da live não é o mix do templo",
+          "Levando o som da mesa para o PC (auxiliares e interface estéreo)",
+          "Do Reaper para o OBS por NDI",
+          "Mixer do OBS e níveis",
+          "Filtros essenciais",
+          "Sincronia de áudio e vídeo",
+        ],
+      },
+      {
+        title: "Montando o culto no OBS",
+        icon: "grid",
+        tag: "Aula prática",
+        items: [
+          "Configurações de vídeo do OBS",
+          "Cenas e fontes: a lógica",
+          "O plano de cenas do culto",
+          "Câmeras com boa imagem: cor, LUT e enquadramento",
+          "Modo Estúdio e transições",
+          "Letras e avisos com o Holyrics",
+          "Letras e avisos com o SPresenter",
+          "Tarjas, QR code de ofertas e avisos",
+          "Organização e backup do OBS",
+        ],
+      },
+      {
+        title: "Controle PTZ",
+        icon: "presentation",
+        tag: "Aula prática",
+        items: [
+          "Como funciona o controle PTZ",
+          "Planejando os presets do culto",
+          "Controle físico: conexão e configuração (exemplo: NEOiD Mini)",
+          "Controle físico na operação do culto",
+          "Plugin PTZ para OBS",
+        ],
+      },
+      {
+        title: "Encoder, bitrate e plataformas",
+        icon: "wifi",
+        items: [
+          "Sua internet aguenta?",
+          "Encoder: qual usar",
+          "Bitrate, resolução e fps",
+          "Transmitindo no YouTube",
+          "Facebook e várias plataformas ao mesmo tempo",
+          "Gravação local junto com a live",
+        ],
+      },
+      {
+        title: "Operação no domingo e plano B",
+        icon: "clipboardCheck",
+        tag: "Operação no domingo",
+        items: [
+          "Checklist pré-culto",
+          "Operando durante o culto",
+          "Monitorando a live",
+          "Quando algo dá errado",
+          "Pós-culto",
+          "Fechamento: a estrutura ideal por porte de igreja",
+        ],
+      },
+    ],
+    complement: {
+      kicker: "Para ir além",
+      title: "Sua live também depende da rede.",
+      text: "NDI, câmera PTZ e o PC da transmissão conversam pela rede da igreja. O Redes para Igrejas ensina essa parte, do zero.",
+      points: ["NDI e câmeras PTZ na rede", "IP, DHCP, switch e Wi-Fi da igreja", "Roteador configurado do jeito certo"],
+      href: "/formacoes/redes-para-igrejas",
+      cta: "Conhecer o Redes para Igrejas",
+    },
+    forWho: [
+      { icon: "video", text: "Quem cuida da transmissão, das câmeras, da projeção ou do som." },
+      { icon: "users", text: "Líderes de mídia e pastores que cuidam da estrutura." },
+    ],
+    notForWho: ["Quem procura produção de vídeo profissional para TV."],
+    showForWho: false,
+    showTestimonials: false,
+    faq: [
+      {
+        question: "Para quem é o curso?",
+        answer: "Para quem cuida da transmissão, das câmeras, da projeção ou do som da igreja, voluntário ou contratado, e para líderes de mídia, pastores e o técnico que faz tudo sozinho. Não precisa ser profissional de vídeo nem de TI.",
+      },
+      {
+        question: "Preciso de equipamento caro?",
+        answer: "Não. O curso parte do que a igreja já tem: um PC com OBS, celular ou webcam e a mesa de som. A câmera PTZ com NDI aparece como recomendação para quando a igreja for investir.",
+      },
+      {
+        question: "Serve para PC fraco?",
+        answer: "Sim. O módulo 1 mostra o que realmente importa no PC da live, e o módulo 7 ensina a ajustar encoder, resolução e bitrate ao que o seu PC e a sua internet aguentam.",
+      },
+      {
+        question: "Serve para Mac?",
+        answer: "O OBS Studio funciona no Windows e no Mac, e a lógica do curso vale para os dois.",
+      },
+      {
+        question: "Quanto tempo de acesso eu tenho?",
+        answer: "Acesso vitalício, com as aulas novas que forem acrescentadas.",
+      },
+      {
+        question: "Como recebo o acesso?",
+        answer: "Pela Hotmart: depois da confirmação do pagamento, você recebe o acesso no seu e-mail.",
+      },
+      {
+        question: "E se eu tiver dúvidas?",
+        answer: "Na área de membros tem uma comunidade para tirar dúvidas.",
+      },
+      {
+        question: "Para quem o curso não é?",
+        answer: "Para quem procura produção de vídeo profissional para TV. O foco é a live do culto na igreja pequena e média.",
+      },
+    ],
+  },
+
 };
 
 export const hasSalesPage = (courseId: string) => Boolean(SALES_PAGES[courseId]);

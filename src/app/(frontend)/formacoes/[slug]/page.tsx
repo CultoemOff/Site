@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${data.course.title} — formação online`,
     description: `${data.page.subheadline}`,
     alternates: { canonical: `/formacoes/${slug}` },
+    ...(data.page.ogImage ? { openGraph: { images: [{ url: data.page.ogImage, width: 1200, height: 630, alt: data.course.title }] } } : {}),
     // formação fora da lista: abre pelo link direto, mas não aparece no Google até ser liberada
     ...(isListed(data.course) ? {} : { robots: { index: false, follow: true } }),
   };

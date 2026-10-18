@@ -16,6 +16,7 @@ import ExitPopup from "./ExitPopup";
 import PromoBar from "./PromoBar";
 import ProblemIllo from "./ProblemIllo";
 import LogoOrbit from "./LogoOrbit";
+import LiveStudioArt from "./LiveStudioArt";
 import StreamDeckArt from "./StreamDeckArt";
 import SalesVideo from "./SalesVideo";
 import { DhcpScreenIllo, TerminalIllo, TopologyIllo } from "./NetworkIllustrations";
@@ -364,14 +365,14 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           <div className="sp-section__inner">
             {page.integrations.orbit ? (
               <LogoOrbit logos={page.integrations.orbit}>
-                <Kicker icon="zap">Um painel, tudo junto</Kicker>
+                <Kicker icon="zap">{page.integrations.kicker ?? "Um painel, tudo junto"}</Kicker>
                 <h2 id="sp-integra" className="swp-title">
                   {page.integrations.title}
                 </h2>
               </LogoOrbit>
             ) : (
               <>
-                <Kicker icon="zap">Um painel, tudo junto</Kicker>
+                <Kicker icon="zap">{page.integrations.kicker ?? "Um painel, tudo junto"}</Kicker>
                 <h2 id="sp-integra" className="swp-title">
                   {page.integrations.title}
                 </h2>
@@ -379,6 +380,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             )}
             <div className={page.integrations.art ? "sp-integra__layout" : undefined}>
             {page.integrations.art === "streamdeck" && <StreamDeckArt />}
+            {page.integrations.art === "live" && <LiveStudioArt />}
             <ul className="sp-integra">
               {page.integrations.items.map((it, k) => (
                 <li key={it.name} data-reveal style={{ "--i": k % 4 } as React.CSSProperties}>
@@ -829,6 +831,41 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           </div>
         </div>
       </section>
+
+      {/* ---------- formação que complementa esta ---------- */}
+      {page.complement && (
+        <section className="sp-section sp-section--ink" aria-labelledby="sp-complemento" data-track-view="complemento">
+          <div className="sp-section__inner">
+            <article className="sp-complement" data-reveal>
+              <div className="sp-complement__text">
+                <Kicker icon="network">{page.complement.kicker}</Kicker>
+                <h2 id="sp-complemento" className="swp-title">
+                  {page.complement.title}
+                </h2>
+                <p className="swp-lead">{page.complement.text}</p>
+                <ul className="sp-complement__points">
+                  {page.complement.points.map((pt) => (
+                    <li key={pt}>
+                      <Icon name="check" size={16} />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <a
+                className="btn btn--ghost sp-complement__cta"
+                href={page.complement.href}
+                data-track="select_content"
+                data-track-label={page.complement.title}
+                data-track-location="complemento"
+              >
+                {page.complement.cta}
+                <Icon name="play" size={14} />
+              </a>
+            </article>
+          </div>
+        </section>
+      )}
 
       {/* ---------- CTA final ---------- */}
       <section className="sp-final" aria-labelledby="sp-final" data-track-view="final">

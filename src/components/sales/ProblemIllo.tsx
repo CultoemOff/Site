@@ -5,7 +5,7 @@
  * As animações são só CSS (sales.css, prefixo .pi-): pausam fora da tela ([data-anim]), no modo leve
  * e com "reduzir movimento".
  */
-export type ProblemIlloName = "cable" | "restart" | "buy" | "automate" | "ptz" | "timer" | "panel";
+export type ProblemIlloName = "cable" | "restart" | "buy" | "automate" | "ptz" | "timer" | "panel" | "buffer" | "sync" | "scenes" | "solo";
 
 const LINE = { fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round", strokeLinejoin: "round" } as const;
 
@@ -330,6 +330,134 @@ function Scene({ name }: { name: ProblemIlloName }) {
             </g>
           ))}
           <Tag x={160} y={170} tone="amber">1 PÁGINA POR FUNÇÃO</Tag>
+        </>
+      );
+    // live travando: upload baixo, o vídeo para e o celular fica carregando
+    case "buffer":
+      return (
+        <>
+          <Backdrop id={id} />
+          <Monitor x={66} y={78} w={86} h={58} id={id}>
+            <rect x="-35" y="-21" width="70" height="42" fill="#1d4ed8" opacity="0.3" />
+            <circle cx="-22" cy="-13" r="3" className="pi-rec" />
+            <rect x="-14" y="-15" width="32" height="5" rx="2" fill="#ff7a6a" opacity="0.8" />
+          </Monitor>
+          <Tag x={66} y={128} tone="red">UPLOAD 2 Mb/s</Tag>
+          <path d="M112 78 C150 40 190 40 222 72" {...LINE} strokeDasharray="3 6" className="pi-line" opacity="0.6" />
+          <path d="M112 78 C150 40 190 40 222 72" pathLength={1} className="pi-signal" />
+          {/* celular com a live parada */}
+          <g transform="translate(252 92)">
+            <rect x="-30" y="-56" width="60" height="112" rx="11" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+            <rect x="-24" y="-44" width="48" height="40" rx="4" fill="#050d26" />
+            <g className="pi-frame">
+              <rect x="-24" y="-44" width="48" height="40" rx="4" fill="#1d4ed8" opacity="0.35" />
+            </g>
+            <g transform="translate(0 -24)">
+              <g className="pi-spin">
+                <path d="M-9 0a9 9 0 1 1 9 9" {...LINE} strokeWidth={2.6} className="pi-amber" />
+              </g>
+            </g>
+            <rect x="-24" y="2" width="22" height="7" rx="3.5" fill="#ff4d4d" />
+            <text x="-13" y="7.6" textAnchor="middle" className="pi-tag" style={{ fill: "#fff", fontSize: "5px" }}>
+              AO VIVO
+            </text>
+            <rect x="-24" y="16" width="48" height="3" rx="1.5" fill="#22355f" />
+            <rect x="-24" y="16" width="14" height="3" rx="1.5" fill="#ff7a6a" />
+          </g>
+          <Tag x={252} y={170} tone="red">CARREGANDO…</Tag>
+        </>
+      );
+    // áudio fora de sincronia: a fala chega depois da imagem
+    case "sync":
+      return (
+        <>
+          <Backdrop id={id} />
+          <Tag x={28} y={44} anchor="start">VÍDEO</Tag>
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <g key={i} transform={`translate(${78 + i * 38} 38)`}>
+              <rect x="0" y="-14" width="32" height="24" rx="3" {...LINE} strokeWidth={1.4} fill={`url(#${id}-panel)`} className="pi-line" />
+              <circle cx="16" cy="-5" r="4" fill="#8fb6ff" opacity="0.6" />
+              <ellipse cx="16" cy="3" rx={i === 2 ? 4 : 2} ry={i === 2 ? 3 : 1} fill="#ff7a6a" opacity={i === 2 ? 1 : 0.5} />
+            </g>
+          ))}
+          <Tag x={28} y={104} anchor="start">ÁUDIO</Tag>
+          <path
+            d="M78 100h70l4-14 4 26 4-30 4 34 4-24 4 14h130"
+            {...LINE}
+            strokeWidth={1.8}
+            className="pi-amber"
+          />
+          {/* a fala devia estar embaixo do quadro 3 */}
+          <path d="M164 56v62" stroke="#ff7a6a" strokeWidth="1.6" strokeDasharray="3 4" />
+          <g transform="translate(164 140)">
+            <path d="M-2 0h-26M-24 -4l-4 4 4 4" stroke="#ff7a6a" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+          </g>
+          <Tag x={150} y={160} tone="red">ÁUDIO ATRASADO</Tag>
+          {/* cursor de reprodução */}
+          <g transform="translate(78 0)">
+            <g className="pi-playhead">
+              <path d="M0 22v104" stroke="#5bd0ff" strokeWidth="2" />
+              <path d="M-5 20h10l-5 6z" fill="#5bd0ff" />
+            </g>
+          </g>
+        </>
+      );
+    // cenas bagunçadas: lista sem ordem e letra entrando por cima da câmera errada
+    case "scenes":
+      return (
+        <>
+          <Backdrop id={id} />
+          <g transform="translate(20 28)">
+            <rect width="104" height="120" rx="8" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+            <text x="10" y="16" className="pi-tag">CENAS</text>
+            {["Cena 1", "Cena 1 (2)", "Nova cena 7", "louvor?", "Cena 3 cópia"].map((t, i) => (
+              <g key={t} transform={`translate(8 ${26 + i * 18})`}>
+                <g className="pi-shuffle" style={{ animationDelay: `${i * 0.3}s` }}>
+                  <rect width="88" height="14" rx="3" fill={i === 3 ? "#3a1f2c" : "#0d1d46"} />
+                  <text x="6" y="10" className="pi-tag" style={{ fontSize: "7px", fill: i === 3 ? "#ff7a6a" : "#8fb6ff", letterSpacing: "0.04em" }}>
+                    {t}
+                  </text>
+                </g>
+              </g>
+            ))}
+          </g>
+          <Monitor x={222} y={78} w={150} h={96} id={id}>
+            <rect x="-69" y="-42" width="138" height="84" fill="#1d4ed8" opacity="0.28" />
+            <circle cx="30" cy="-6" r="14" fill="#8fb6ff" opacity="0.4" />
+            <g className="pi-glitch">
+              <rect x="-62" y="10" width="110" height="9" rx="2" fill="#f8fafc" opacity="0.85" />
+              <rect x="-40" y="22" width="120" height="9" rx="2" fill="#f8fafc" opacity="0.6" />
+            </g>
+          </Monitor>
+          <Tag x={222} y={160} tone="red">LETRA NA CENA ERRADA</Tag>
+        </>
+      );
+    // tudo depende de uma pessoa só
+    case "solo":
+      return (
+        <>
+          <Backdrop id={id} />
+          {[
+            { x: 56, d: "0s" },
+            { x: 112, d: "0.5s" },
+            { x: 208, d: "1s" },
+            { x: 264, d: "1.5s" },
+          ].map((p) => (
+            <g key={p.x} transform={`translate(${p.x} 110)`} opacity="0.55">
+              <circle cy="-26" r="11" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+              <path d="M-18 14c0-14 8-22 18-22s18 8 18 22" {...LINE} fill={`url(#${id}-panel)`} className="pi-line" />
+              <text x="0" y="-48" textAnchor="middle" className="pi-q" style={{ fontSize: "18px", animationDelay: p.d }}>
+                ?
+              </text>
+            </g>
+          ))}
+          <g transform="translate(160 104)">
+            <circle cy="-30" r="34" className="pi-bulb-glow" />
+            <circle cy="-30" r="13" {...LINE} fill={`url(#${id}-panel)`} className="pi-amber" />
+            <path d="M-22 18c0-17 10-26 22-26s22 9 22 26" {...LINE} fill={`url(#${id}-panel)`} className="pi-amber" />
+          </g>
+          <Tag x={160} y={146} tone="amber">SÓ ELE SABE</Tag>
+          <Tag x={160} y={166} tone="red">E SE ELE FALTAR?</Tag>
         </>
       );
   }
