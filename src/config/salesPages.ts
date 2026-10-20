@@ -153,7 +153,7 @@ export type SalesPage = {
 
 export const SALES_PAGES: Record<string, SalesPage> = {
   "redes-para-igrejas": {
-    // pixel da UTMify (script enviado pelo Jonas em 20/10/2026); carrega só após o aceite de cookies
+    // pixel da UTMify (script enviado pelo Jonas em 20/10/2026); carrega sempre
     utmifyPixelId: "6ad77e62256bb057ce2da149",
     headline: "Pare de reiniciar tudo e torcer para funcionar.",
     subheadline: "Entenda a rede por trás da câmera, da mesa e da live, e resolva os problemas do culto sem depender de TI.",
