@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import "./consent.css";
 
-import { CONSENT_EVENT, CONSENT_KEY, readConsent, type Consent } from "./consent";
+import { CONSENT_CHANGED_EVENT, CONSENT_EVENT, CONSENT_KEY, readConsent, type Consent } from "./consent";
 import { flushMeta, trackClick } from "./track";
 
 /**
@@ -94,6 +94,7 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
     if (value === "denied") window.fbq?.("consent", "revoke");
     setConsent(value);
     setShowBanner(false);
+    window.dispatchEvent(new CustomEvent(CONSENT_CHANGED_EVENT, { detail: value }));
   };
 
   return (

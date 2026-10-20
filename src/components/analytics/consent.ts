@@ -7,6 +7,9 @@ export const CONSENT_KEY = "coe-consent";
 /** evento que reabre o aviso de cookies (link "Preferências de cookies" do rodapé) */
 export const CONSENT_EVENT = "coe:consent-open";
 
+/** evento disparado quando o visitante escolhe (aceitar ou recusar); detail = "granted" | "denied" */
+export const CONSENT_CHANGED_EVENT = "coe:consent-changed";
+
 export type Consent = "granted" | "denied" | null;
 
 export function readConsent(): Consent {

@@ -38,6 +38,8 @@ export type SalesPage = {
   heroNote?: { icon: IconName; text: string };
   /** card de outra formação que complementa esta (link interno) */
   complement?: { kicker: string; title: string; text: string; points: string[]; href: string; cta: string };
+  /** pixel da UTMify desta página (id que vem no script da UTMify) */
+  utmifyPixelId?: string;
   /** imagem de compartilhamento (WhatsApp, redes): arquivo em /public */
   ogImage?: string;
   /** frase do popup de saída ("Você está a um passo de ...") */
@@ -151,6 +153,8 @@ export type SalesPage = {
 
 export const SALES_PAGES: Record<string, SalesPage> = {
   "redes-para-igrejas": {
+    // pixel da UTMify (script enviado pelo Jonas em 20/10/2026); carrega só após o aceite de cookies
+    utmifyPixelId: "6ad77e62256bb057ce2da149",
     headline: "Pare de reiniciar tudo e torcer para funcionar.",
     subheadline: "Entenda a rede por trás da câmera, da mesa e da live, e resolva os problemas do culto sem depender de TI.",
     // vídeo de apresentação (versão provisória enviada pelo Jonas em 09/10/2026), convertido para a web:

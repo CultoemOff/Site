@@ -1,6 +1,7 @@
 import Image from "next/image";
 import CourseDiagramView from "@/components/sections/courses/CourseDiagrams";
 import SalesTracking from "@/components/analytics/SalesTracking";
+import UtmifyPixel from "@/components/analytics/UtmifyPixel";
 import ArrowButton from "@/components/ui/ArrowButton";
 import Icon, { type IconName } from "@/components/ui/Icon";
 import { formatInstallments, formatPrice, type Course } from "@/config/courses";
@@ -934,6 +935,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
 
       {/* medição da página (Google Analytics): não mostra nada na tela */}
       <SalesTracking itemId={course.id} name={course.title} value={price} />
+      {page.utmifyPixelId && <UtmifyPixel pixelId={page.utmifyPixelId} />}
     </div>
   );
 }
