@@ -6,7 +6,7 @@ import ArrowButton from "@/components/ui/ArrowButton";
 import Icon, { type IconName } from "@/components/ui/Icon";
 import { formatInstallments, formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
-import { lessonCount, type SalesModule, type SalesPage } from "@/config/salesPages";
+import { lessonCount, moduleLessons, type SalesModule, type SalesPage } from "@/config/salesPages";
 import { GUARANTEE_DAYS, LOGO_SRC, type SiteSettingsData } from "@/config/site";
 import { resolvePrice } from "@/lib/pricing";
 import "@/components/blog/blog.css";
@@ -956,7 +956,7 @@ function ModuleItem({ m, num, star, open, extra, note }: { m: SalesModule; num: 
           <span className="sp-module__title">
             {m.title}
             <small className="sp-module__count">
-              {m.items.length} aulas{m.minutes ? ` · ${m.minutes} min` : ""}{note ? ` · ${note}` : ""}
+              {moduleLessons(m)} aulas{m.minutes ? ` · ${m.minutes} min` : ""}{note ? ` · ${note}` : ""}
             </small>
             {m.tag && <em className={`sp-module__tag${/^(Projeto|Módulo extra)/.test(m.tag) ? " sp-module__tag--project" : ""}`}>{m.tag}</em>}
           </span>
@@ -964,11 +964,15 @@ function ModuleItem({ m, num, star, open, extra, note }: { m: SalesModule; num: 
             <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </summary>
-        <ol className="sp-module__lessons">
-          {m.items.map((it) => (
-            <li key={it}>{it}</li>
-          ))}
-        </ol>
+        {m.items.length > 0 ? (
+          <ol className="sp-module__lessons">
+            {m.items.map((it) => (
+              <li key={it}>{it}</li>
+            ))}
+          </ol>
+        ) : (
+          <p className="sp-module__soon">Os títulos das aulas deste módulo saem em breve.</p>
+        )}
       </details>
     </li>
   );

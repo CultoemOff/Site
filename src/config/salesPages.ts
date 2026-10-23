@@ -8,10 +8,21 @@ import type { IconName } from "@/components/ui/Icon";
  */
 
 /** um módulo da formação; `items` são os títulos das aulas e `lessons` sai da contagem deles */
-export type SalesModule = { title: string; items: string[]; tag?: string; icon?: IconName; /** duração do módulo em minutos (aparece ao lado do número de aulas) */ minutes?: number };
+export type SalesModule = {
+  title: string;
+  items: string[];
+  tag?: string;
+  icon?: IconName;
+  /** duração do módulo em minutos (aparece ao lado do número de aulas) */
+  minutes?: number;
+  /** número de aulas quando os títulos ainda não foram definidos (items vazio): a página mostra "lista de aulas em breve" */
+  count?: number;
+};
 
 /** total de aulas do curso principal (cada item de módulo é uma aula) */
-export const lessonCount = (modules: SalesModule[]) => modules.reduce((n, m) => n + m.items.length, 0);
+/** aulas de um módulo: os títulos listados ou, se ainda não houver títulos, o número informado em `count` */
+export const moduleLessons = (m: SalesModule) => Math.max(m.items.length, m.count ?? 0);
+export const lessonCount = (modules: SalesModule[]) => modules.reduce((n, m) => n + moduleLessons(m), 0);
 
 export type SalesPage = {
   /** título principal (promessa) */
@@ -640,7 +651,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
     ],
   },
-  // Culto ao Vivo com Excelência (18/10/2026): pré-venda, só pelo link direto (fora das listas, ver UNLISTED_COURSE_IDS).
+  // Culto ao Vivo com Excelência: pré-venda, listada em /formacoes desde 23/10/2026 (substitui "Áudio para Live").
+  // Lançamento em novembro + Black November: R$ 97 (preço final R$ 187).
   // Sem link da Hotmart ainda: os botões levam ao direct ("Quero ser avisado").
   "culto-ao-vivo-com-excelencia": {
     headline: "Sua live do culto, estável e bonita.",
@@ -651,7 +663,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     ogImage: "/images/formacoes/culto-ao-vivo-og.jpg",
     exitPitch: "Você está a um passo de colocar o culto no ar sem susto.",
     heroNote: { icon: "monitorPlay", text: "Feito para PC simples, poucas câmeras, internet de operadora e equipe voluntária." },
-    promo: { label: "Preço especial de lançamento" },
+    promo: { label: "Lançamento · Black November" },
     highlights: [
       {
         icon: "video",
@@ -678,7 +690,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       { icon: "wifi", illo: "buffer", before: "A live trava ou cai no meio do culto.", after: "Encoder, bitrate e resolução certos para a sua internet e o seu PC." },
       { icon: "sliders", illo: "sync", before: "O áudio chega ruim ou atrasado em relação à imagem.", after: "Um mix só para a live, níveis, filtros e sincronia acertados." },
       { icon: "grid", illo: "scenes", before: "Cenas bagunçadas e a letra entrando na hora errada.", after: "Um plano de cenas do culto, com letras e avisos no lugar." },
-      { icon: "users", illo: "solo", before: "Tudo depende de \u201cum cara que entende\u201d.", after: "Checklist e plano B para qualquer voluntário operar no domingo." },
+      { icon: "users", illo: "solo", before: "Tudo depende de \u201cum cara que entende\u201d.", after: "Uma operação de domingo com plano B, que qualquer voluntário consegue seguir." },
     ],
     value: {
       title: "Quanto vale um domingo sem a live cair?",
@@ -695,7 +707,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         { icon: "monitorPlay", alt: "Tela do OBS com as cenas do culto", width: 1600, height: 900, title: "Na tela do OBS", text: "Cada configuração feita na hora." },
         { icon: "video", alt: "Câmeras da igreja e conexões", width: 1600, height: 900, title: "Câmeras e conexões", text: "PTZ, NDI, placas e celular." },
         { icon: "sliders", alt: "Áudio da mesa levado para a live", width: 1600, height: 900, title: "Áudio da live", text: "Da mesa para o OBS, sem atraso." },
-        { icon: "clipboardCheck", alt: "Checklist de operação do culto", width: 1600, height: 900, title: "Operação no domingo", text: "Checklist e plano B." },
+        { icon: "clipboardCheck", alt: "Operação do culto no domingo", width: 1600, height: 900, title: "Operação no domingo", text: "Do pré-culto ao plano B." },
       ],
     },
     // aulas numeradas por módulo (o Jonas vai acrescentar aulas no futuro)
@@ -703,7 +715,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         title: "O sistema de transmissão e o OBS",
         icon: "monitorPlay",
-        items: ["Como funciona uma transmissão de culto", "O PC da transmissão: o que realmente importa", "Instalando o OBS Studio", "Tour pela interface do OBS"],
+        items: ["Como funciona uma transmissão de culto", "O PC da transmissão", "Instalando o OBS Studio", "Tour pela interface do OBS"],
       },
       {
         title: "Câmeras para igrejas",
@@ -723,7 +735,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
           "Tipo de câmera não é tipo de conexão",
           "HDMI e SDI",
           "USB e placas de captura",
-          "Vídeo pela rede: NDI, RTSP, SRT e Wi-Fi",
+          "Vídeo pela rede: NDI em resumo, RTSP, SRT e Wi-Fi",
           "Instalando o NDI e o DistroAV no OBS",
           "Celular como câmera no OBS",
           "Mesa de corte: o que é e quando faz sentido",
@@ -734,8 +746,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         icon: "sliders",
         items: [
           "O mix da live não é o mix do templo",
-          "Levando o som da mesa para o PC (auxiliares e interface estéreo)",
-          "Do Reaper para o OBS por NDI",
+          "Levando o som da mesa para o PC",
+          "Mix da live no Reaper, enviado por NDI",
           "Mixer do OBS e níveis",
           "Filtros essenciais",
           "Sincronia de áudio e vídeo",
@@ -764,35 +776,24 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         items: [
           "Como funciona o controle PTZ",
           "Planejando os presets do culto",
-          "Controle físico: conexão e configuração (exemplo: NEOiD Mini)",
-          "Controle físico na operação do culto",
+          "NEOiD Mini: conexão e configuração",
+          "NEOiD Mini na operação do culto",
           "Plugin PTZ para OBS",
         ],
       },
       {
         title: "Encoder, bitrate e plataformas",
         icon: "wifi",
-        items: [
-          "Sua internet aguenta?",
-          "Encoder: qual usar",
-          "Bitrate, resolução e fps",
-          "Transmitindo no YouTube",
-          "Facebook e várias plataformas ao mesmo tempo",
-          "Gravação local junto com a live",
-        ],
+        // títulos das aulas ainda não definidos
+        items: [],
+        count: 5,
       },
       {
         title: "Operação no domingo e plano B",
         icon: "clipboardCheck",
-        tag: "Operação no domingo",
-        items: [
-          "Checklist pré-culto",
-          "Operando durante o culto",
-          "Monitorando a live",
-          "Quando algo dá errado",
-          "Pós-culto",
-          "Fechamento: a estrutura ideal por porte de igreja",
-        ],
+        // títulos das aulas ainda não definidos
+        items: [],
+        count: 3,
       },
     ],
     forWho: [
@@ -813,7 +814,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "Serve para PC fraco?",
-        answer: "Sim. O módulo 1 mostra o que realmente importa no PC da live, e o módulo 7 ensina a ajustar encoder, resolução e bitrate ao que o seu PC e a sua internet aguentam.",
+        answer: "Sim. O módulo 1 mostra o que importa no PC da transmissão, e o módulo 7 trata de encoder, bitrate e plataformas, para a live caber no que o seu PC e a sua internet aguentam.",
       },
       {
         question: "Serve para Mac?",
@@ -822,6 +823,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         question: "Quanto tempo de acesso eu tenho?",
         answer: "Acesso vitalício, com as aulas novas que forem acrescentadas.",
+      },
+      {
+        question: "Tem certificado?",
+        answer: "Sim. Ao concluir o curso, você recebe o certificado de conclusão.",
       },
       {
         question: "Como recebo o acesso?",

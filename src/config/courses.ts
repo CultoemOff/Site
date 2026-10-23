@@ -97,7 +97,7 @@ export type Course = {
  * Formações fora das listas do site (home, /formacoes, ofertas, sitemap): só abrem pelo link direto da página de venda.
  * Para liberar, é só tirar o id daqui.
  */
-export const UNLISTED_COURSE_IDS: string[] = ["bitfocus-companion", "culto-ao-vivo-com-excelencia"];
+export const UNLISTED_COURSE_IDS: string[] = ["bitfocus-companion", "audio-para-live"];
 export const isListed = (course: Pick<Course, "id">) => !UNLISTED_COURSE_IDS.includes(course.id);
 
 /** A formação tem preço para mostrar? (0 ou vazio = sem preço, como nas que ainda vão lançar) */
@@ -268,8 +268,8 @@ export const COURSES: Course[] = [
     title: "Culto ao Vivo com Excelência",
     tagline: "Transmissão de cultos com OBS Studio, do zero ao avançado.",
     summary:
-      "Transmita cultos com OBS Studio na realidade de igrejas pequenas e médias: PC simples, poucas câmeras, internet de operadora e equipe voluntária. São 48 aulas em 8 módulos, em menos de 8 horas, com demonstrações reais na tela do OBS.",
-    topicsTitle: "8 módulos · 48 aulas",
+      "Transmita cultos com OBS Studio na realidade de igrejas pequenas e médias: PC simples, poucas câmeras, internet de operadora e equipe voluntária. São 44 aulas em 8 módulos, das câmeras e conexões ao áudio da live, cenas, controle PTZ e operação no domingo, com demonstrações reais na tela do OBS.",
+    topicsTitle: "8 módulos · 44 aulas",
     topics: [
       "O sistema de transmissão e o OBS",
       "Câmeras para igrejas",
@@ -282,12 +282,18 @@ export const COURSES: Course[] = [
     ],
     appliedTo: ["OBS Studio", "NDI", "Câmeras PTZ", "Placas de captura", "Holyrics", "SPresenter", "YouTube", "Facebook"],
     diagram: "live",
-    // Preço de lançamento (18/10/2026): R$ 117, preço cheio R$ 199. Parcelamento: a confirmar com o checkout da Hotmart.
-    price: 117,
-    priceFrom: 199,
+    // Lançamento em novembro + Black November: R$ 97; preço final R$ 187. Parcelamento: a confirmar com o checkout da Hotmart.
+    price: 97,
+    priceFrom: 187,
+    // rev 1: grava no banco preço, módulos/aplicações e o que está incluso
+    rev: 1,
+    revScope: ["price", "topics", "includes"],
     instructor: "jonas-silva",
-    // comunidade confirmada no briefing; certificado e material complementar só entram quando o Jonas confirmar
-    includes: ["Área de membros com comunidade para tirar dúvidas", "Novas aulas acrescentadas ao curso, incluídas no seu acesso"],
+    includes: [
+      "Certificado de conclusão",
+      "Área de membros com comunidade para tirar dúvidas",
+      "Novas aulas acrescentadas ao curso, incluídas no seu acesso",
+    ],
     format: { mode: "Online", hours: 0, access: "Acesso vitalício" },
     status: "lancamento-em-breve",
     // link de compra da Hotmart: ainda não existe (os botões levam ao direct até ele chegar)

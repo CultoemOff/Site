@@ -4223,3 +4223,17 @@ body:has(.promo-bar) .sp-offer {
 .sp-complement__cta {
   white-space: nowrap;
 }
+
+/* módulo com aulas ainda sem título: só a contagem */
+.sp-module__soon {
+  margin: 0;
+  padding: 0 18px 16px 58px;
+  color: var(--sp-muted, var(--muted-on-dark));
+  font-size: 0.94rem;
+  font-style: italic;
+}
+@media (max-width: 760px) {
+  .sp-module__soon {
+    padding-left: 36px;
+  }
+}

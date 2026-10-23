@@ -10,12 +10,55 @@ import { GUARANTEE_DAYS } from "@/config/site";
 import CourseDiagramView from "./CourseDiagrams";
 import "./courses.css";
 
-function ShieldIcon() {
+export function ShieldIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
       <path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  );
+}
+
+/** faixa "por que confiar" (professores, garantia, 100% online), usada na home e no catálogo */
+export function CoursesTrust() {
+  return (
+    <ul className="courses__trust" aria-label="Por que confiar" data-reveal style={{ "--i": 3 } as React.CSSProperties}>
+      <li>
+        <span className="courses__trust-avatars" aria-hidden="true">
+          {INSTRUCTORS.map((t) => (
+            <span key={t.id} className="courses__trust-avatar">
+              <Image src={t.photo} alt="" fill sizes="44px" />
+            </span>
+          ))}
+        </span>
+        <span>
+          <strong>Professores que vivem a prática</strong>
+          Experiência real em igrejas, grandes bandas, shows e estádios.
+        </span>
+      </li>
+      <li>
+        <span className="courses__trust-icon">
+          <ShieldIcon />
+        </span>
+        <span>
+          <strong>Garantia de {GUARANTEE_DAYS} dias</strong>
+          Não era o que você esperava? Devolvemos 100% do valor.
+        </span>
+      </li>
+      <li>
+        <span className="courses__trust-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="3" y="5" width="18" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+            <path d="M10.5 8.5v5l4-2.5z" fill="currentColor" />
+            <path d="M8 20h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        </span>
+        <span>
+          <strong>100% online</strong>
+          No seu ritmo, pelo computador ou celular.
+        </span>
+      </li>
+    </ul>
   );
 }
 
@@ -193,43 +236,7 @@ export default function Courses({ courses, showMoreButton = true }: { courses: C
           </p>
         </SectionHeader>
 
-        <ul className="courses__trust" aria-label="Por que confiar" data-reveal style={{ "--i": 3 } as React.CSSProperties}>
-          <li>
-            <span className="courses__trust-avatars" aria-hidden="true">
-              {INSTRUCTORS.map((t) => (
-                <span key={t.id} className="courses__trust-avatar">
-                  <Image src={t.photo} alt="" fill sizes="44px" />
-                </span>
-              ))}
-            </span>
-            <span>
-              <strong>Professores que vivem a prática</strong>
-              Experiência real em igrejas, grandes bandas, shows e estádios.
-            </span>
-          </li>
-          <li>
-            <span className="courses__trust-icon">
-              <ShieldIcon />
-            </span>
-            <span>
-              <strong>Garantia de {GUARANTEE_DAYS} dias</strong>
-              Não era o que você esperava? Devolvemos 100% do valor.
-            </span>
-          </li>
-          <li>
-            <span className="courses__trust-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <rect x="3" y="5" width="18" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
-                <path d="M10.5 8.5v5l4-2.5z" fill="currentColor" />
-                <path d="M8 20h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
-            </span>
-            <span>
-              <strong>100% online</strong>
-              No seu ritmo, pelo computador ou celular.
-            </span>
-          </li>
-        </ul>
+        <CoursesTrust />
 
         {featured && <CourseCard course={featured} index={0} />}
 

@@ -1,0 +1,357 @@
+/* ==========================================================
+   /formacoes · catálogo com cards do mesmo tamanho
+   ========================================================== */
+
+.catalog__promo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 212, 59, 0.35);
+  background: linear-gradient(90deg, rgba(255, 212, 59, 0.12), rgba(255, 212, 59, 0.02));
+  color: #f4f7ff;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.catalog__promo strong {
+  color: #ffd43b;
+}
+.catalog__promo a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 212, 59, 0.6);
+  text-underline-offset: 3px;
+}
+.catalog__promo-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffd43b;
+  box-shadow: 0 0 0 0 rgba(255, 212, 59, 0.6);
+  animation: cat-pulse 2s ease-out infinite;
+}
+@keyframes cat-pulse {
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 212, 59, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 212, 59, 0);
+  }
+}
+
+.catalog__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 18px;
+  margin: 0 0 30px;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- card ---------- */
+.cat-card {
+  display: flex;
+  min-width: 0;
+}
+.cat-card > article {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(110, 150, 255, 0.18);
+  background: rgba(12, 24, 60, 0.72);
+  overflow: hidden;
+  transition:
+    transform 0.4s var(--ease-out),
+    border-color 0.3s var(--ease-out),
+    box-shadow 0.4s var(--ease-out);
+}
+.cat-card > article:hover,
+.cat-card > article:focus-within {
+  transform: translateY(-4px);
+  border-color: rgba(90, 150, 255, 0.55);
+  box-shadow: 0 26px 50px -28px rgba(20, 60, 200, 0.85);
+}
+
+/* destaque: formações com preço promocional */
+.cat-card--promo > article {
+  border-color: rgba(255, 212, 59, 0.55);
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(255, 212, 59, 0.1), transparent 70%),
+    rgba(14, 22, 52, 0.9);
+  box-shadow: 0 0 0 1px rgba(255, 212, 59, 0.15), 0 24px 50px -30px rgba(255, 190, 40, 0.55);
+}
+.cat-card--promo > article:hover,
+.cat-card--promo > article:focus-within {
+  border-color: rgba(255, 212, 59, 0.9);
+  box-shadow: 0 0 0 1px rgba(255, 212, 59, 0.35), 0 30px 60px -28px rgba(255, 190, 40, 0.7);
+}
+
+.cat-card__visual {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  border-bottom: 1px solid rgba(110, 150, 255, 0.15);
+  background:
+    linear-gradient(rgba(120, 160, 255, 0.05) 1px, transparent 1px) 0 0 / 100% 22px,
+    linear-gradient(180deg, rgba(4, 10, 30, 0.6), rgba(4, 10, 30, 0.2));
+  overflow: hidden;
+}
+.cat-card__visual > .cd {
+  width: 100%;
+  height: 100%;
+}
+.cat-card__visual > .cd svg {
+  width: 100%;
+  height: 100%;
+}
+.cat-card__visual--image {
+  padding: 0;
+}
+.cat-card__visual--image img {
+  object-fit: cover;
+  /* as capas têm o texto à esquerda */
+  object-position: left center;
+  transition: transform 0.6s var(--ease-out);
+}
+.cat-card > article:hover .cat-card__visual--image img {
+  transform: scale(1.04);
+}
+
+.cat-card__off {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 1;
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: #ef4444;
+  color: #fff;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.6);
+}
+
+.cat-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+  padding: 16px 18px 18px;
+}
+.cat-card__status {
+  font-size: 0.58rem;
+}
+.cat-card__title {
+  margin: 2px 0 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.22rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: #f4f7ff;
+  text-wrap: balance;
+}
+.cat-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+/* o card inteiro é clicável */
+.cat-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+}
+.cat-card__link:focus-visible {
+  outline: none;
+}
+.cat-card > article:has(.cat-card__link:focus-visible) {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+.cat-card__tagline {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--muted-on-dark);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.cat-card__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.cat-card__facts li {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(110, 150, 255, 0.12);
+  color: #cfe0ff;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+}
+
+.cat-card__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(110, 150, 255, 0.2);
+}
+.cat-card__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  margin: 0;
+  color: #f4f7ff;
+}
+.cat-card__price strong {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.cat-card--promo .cat-card__price strong {
+  color: #ffd43b;
+}
+.cat-card__promo {
+  flex-basis: 100%;
+  margin-bottom: 2px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffd43b;
+}
+.cat-card__from {
+  flex-basis: 100%;
+  font-size: 0.8rem;
+  color: var(--muted-on-dark);
+}
+.cat-card__parcel {
+  font-size: 0.78rem;
+  color: var(--muted-on-dark);
+}
+.cat-card__price--soon {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a6e8ff;
+  min-height: 2.6rem;
+  align-items: center;
+}
+.cat-card__teacher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted-on-dark);
+}
+.cat-card__teacher strong {
+  color: #eaf0ff;
+  font-weight: 600;
+}
+.cat-card__teacher-photo {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(160, 190, 255, 0.35);
+}
+.cat-card__teacher-photo img {
+  object-fit: cover;
+}
+
+.cat-card__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(110, 150, 255, 0.4);
+  color: #eaf0ff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition:
+    background 0.3s var(--ease-out),
+    border-color 0.3s var(--ease-out);
+}
+.cat-card__cta svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s var(--ease-out);
+}
+.cat-card > article:hover .cat-card__cta {
+  background: rgba(59, 140, 255, 0.18);
+  border-color: rgba(90, 150, 255, 0.8);
+}
+.cat-card > article:hover .cat-card__cta svg {
+  transform: translateX(3px);
+}
+.cat-card__cta--promo {
+  border-color: transparent;
+  background: #ffd43b;
+  color: #1a1400;
+}
+.cat-card > article:hover .cat-card__cta--promo {
+  background: #ffe066;
+  border-color: transparent;
+}
+.cat-card__cta--off {
+  border-style: dashed;
+  color: var(--muted-on-dark);
+  font-weight: 500;
+}
+
+.catalog .courses__trust {
+  margin: 0;
+}
+
+@media (max-width: 1100px) {
+  .catalog__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .catalog__grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .catalog__promo-dot {
+    animation: none;
+  }
+  .cat-card > article,
+  .cat-card__visual--image img {
+    transition: none;
+  }
+}
