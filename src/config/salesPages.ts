@@ -666,6 +666,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     // vídeo de vendas enviado pelo Jonas em 29/10/2026 (46 MB, 1080x1920), convertido para a web:
     // 720x1280, 30 fps, H.264 + AAC, ~10 MB, em /public/videos/
     videoUrl: "/videos/culto-ao-vivo.mp4",
+    // capa do player: quadro de 0:37 (escolhido pelo Jonas)
     videoPoster: "/images/formacoes/culto-video-capa.jpg",
     videoVertical: true,
     videoSize: { width: 720, height: 1280 },
