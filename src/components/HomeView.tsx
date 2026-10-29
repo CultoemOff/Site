@@ -27,7 +27,7 @@ type Props = {
 
 /** Composição da homepage (sem busca de dados). */
 export default function HomeView({ courses, settings, offers, youtube, latestPosts }: Props) {
-  // a faixa amarela da promoção vem do layout (todas as páginas); a home mostra só as formações em destaque, lado a lado
+  // a faixa amarela da promoção vem do layout (todas as páginas); a home mostra só as duas formações, lado a lado, sem o botão "Ver mais formações"
   const homeCourses = HOME_COURSE_IDS.map((id) => courses.find((c) => c.id === id)).filter((c): c is Course => Boolean(c));
 
   return (
@@ -37,7 +37,7 @@ export default function HomeView({ courses, settings, offers, youtube, latestPos
         <Hero />
         <Problems />
         <Manifesto />
-        <Courses courses={homeCourses} pair />
+        <Courses courses={homeCourses} pair showMoreButton={false} />
         <OffersHome offers={offers} />
         <SoftwareSection />
         {youtube}

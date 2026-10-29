@@ -287,7 +287,8 @@ export const COURSES: Course[] = [
     priceFrom: 117,
     // rev 1: grava no banco preço, módulos/aplicações e o que está incluso
     // rev 2: preço da Black November, inscrições abertas e link de compra da Hotmart
-    rev: 2,
+    // rev 3: link de compra trocado (pedido do Jonas em 29/10/2026)
+    rev: 3,
     revScope: ["price", "topics", "includes", "href"],
     instructor: "jonas-silva",
     includes: [
@@ -298,7 +299,7 @@ export const COURSES: Course[] = [
     format: { mode: "Online", hours: 0, access: "Acesso vitalício" },
     status: "inscricoes-abertas",
     // página de pagamento da Hotmart (enviada pelo Jonas em 29/10/2026)
-    href: "https://pay.hotmart.com/O108087815U?off=78m866xs",
+    href: "https://pay.hotmart.com/O108087815U?checkoutMode=10",
   },
   {
     id: "iluminacao-dmx-grandma2",

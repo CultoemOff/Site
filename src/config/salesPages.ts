@@ -701,12 +701,40 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       topology: "",
       dhcp: { title: "", text: "" },
       terminal: { title: "", text: "" },
-      // espaços reservados: trocar por imagens reais das aulas quando estiverem prontas (src + width/height)
+      // fotos reais das aulas, enviadas pelo Jonas em 29/10/2026 (recortadas em 16:9)
       frames: [
-        { icon: "monitorPlay", alt: "Tela do OBS com as cenas do culto", width: 1600, height: 900, title: "Na tela do OBS", text: "Cada configuração feita na hora." },
-        { icon: "video", alt: "Câmeras da igreja e conexões", width: 1600, height: 900, title: "Câmeras e conexões", text: "PTZ, NDI, placas e celular." },
-        { icon: "sliders", alt: "Áudio da mesa levado para a live", width: 1600, height: 900, title: "Áudio da live", text: "Da mesa para o OBS, sem atraso." },
-        { icon: "clipboardCheck", alt: "Operação do culto no domingo", width: 1600, height: 900, title: "Operação no domingo", text: "Do pré-culto ao plano B." },
+        {
+          src: "/images/formacoes/culto-aula-gravacao.jpg",
+          alt: "Aula do curso gravada na cabine de som da igreja, com o Jonas explicando o equipamento",
+          width: 1195,
+          height: 672,
+          title: "Gravado na cabine da igreja",
+          text: "O equipamento de verdade, explicado na tela.",
+        },
+        {
+          src: "/images/formacoes/culto-aula-obs-ptz.jpg",
+          alt: "Tela do OBS com o painel de controle da câmera PTZ e a pré-visualização da câmera",
+          width: 1189,
+          height: 669,
+          title: "Na tela do OBS",
+          text: "Cenas e controle PTZ configurados passo a passo.",
+        },
+        {
+          src: "/images/formacoes/culto-aula-cameras.jpg",
+          alt: "Jonas na mesa com câmera PTZ, câmera fotográfica, lentes e filmadora lado a lado",
+          width: 825,
+          height: 464,
+          title: "Câmeras para igrejas",
+          text: "Os tipos de câmera lado a lado, para escolher pelo orçamento.",
+        },
+        {
+          src: "/images/formacoes/culto-aula-operacao.jpg",
+          alt: "Operador na cabine de transmissão com o OBS, a mixagem da live e o controle das câmeras",
+          width: 1600,
+          height: 900,
+          title: "A operação do culto",
+          text: "OBS, câmeras e o som da live trabalhando juntos.",
+        },
       ],
     },
     // aulas numeradas por módulo (o Jonas vai acrescentar aulas no futuro)
