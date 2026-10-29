@@ -158,6 +158,10 @@ export type SalesPage = {
   showForWho?: boolean;
   /** false = esconde a seção de depoimentos ("Quem já fez"), mesmo com depoimentos no painel */
   showTestimonials?: boolean;
+  /** faixa de números abaixo do topo (visualizações, vídeos, aulas, garantia); false = some */
+  showProof?: boolean;
+  /** seção "Você se reconhece?" (hoje × depois da formação); false = some */
+  showCompare?: boolean;
   notForWho: string[];
   faq: { question: string; answer: string }[];
 };
@@ -838,6 +842,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     notForWho: ["Quem procura produção de vídeo profissional para TV."],
     showForWho: false,
     showTestimonials: false,
+    // faixa de números abaixo do topo: removida a pedido do Jonas (29/10/2026)
+    showProof: false,
+    // seção "Você se reconhece?": removida a pedido do Jonas (29/10/2026)
+    showCompare: false,
     faq: [
       {
         question: "Para quem é o curso?",

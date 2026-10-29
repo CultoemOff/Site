@@ -285,6 +285,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       </header>
 
       {/* ---------- prova / autoridade rápida ---------- */}
+      {page.showProof !== false && (
       <div className="sp-proof" aria-label="Números do Culto em Off">
         <ul className="sp-proof__list">
           {audience.stats.slice(0, 2).map((s, k) => (
@@ -306,6 +307,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           </li>
         </ul>
       </div>
+      )}
 
       {/* ---------- promessas em destaque ---------- */}
       {page.highlights && page.highlights.length > 0 && (
@@ -327,6 +329,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       )}
 
       {/* ---------- o problema e o que muda (hoje × depois da formação) ---------- */}
+      {page.showCompare !== false && (
       <section className="sp-section sp-section--mist" aria-labelledby="sp-dores">
         <div className="sp-section__inner">
           <Kicker icon="eye">Você se reconhece?</Kicker>
@@ -359,6 +362,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           <div className="sp-center-cta">{cta("antes e depois")}</div>
         </div>
       </section>
+      )}
 
       {/* ---------- o que a formação controla ---------- */}
       {page.integrations && (
