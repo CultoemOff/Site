@@ -1,3 +1,4 @@
+import SitePromo from "./site-promo";
 import { createRoot } from "react-dom/client";
 import "../src/app/(frontend)/globals.css";
 import "../src/components/fx/fx.css";
@@ -13,6 +14,7 @@ import { DEFAULT_SETTINGS } from "../src/config/site";
 document.documentElement.classList.add("js-reveal");
 createRoot(document.getElementById("root")!).render(
   <>
+    <SitePromo />
     <Navbar />
     <main id="conteudo" tabIndex={-1} className="page-formacoes">
       <CourseCatalog courses={COURSES.filter(isListed)} />

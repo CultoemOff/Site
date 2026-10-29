@@ -1,3 +1,4 @@
+import SitePromo from "./site-promo";
 import CheckoutParams from "../src/components/analytics/CheckoutParams";
 import { createRoot } from "react-dom/client";
 import "../src/app/(frontend)/globals.css";
@@ -17,6 +18,7 @@ new Function(LITE_INLINE_SCRIPT)();
 document.documentElement.classList.add("js-reveal");
 createRoot(document.getElementById("root")!).render(
   <>
+  <SitePromo />
   <CheckoutParams />
   <HomeView
     courses={COURSES}

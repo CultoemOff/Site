@@ -758,7 +758,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
 
           <div className={`sp-buy${promoOn ? " sp-buy--promo" : ""}`}>
             {promoOn && <p className="sp-buy__label">{page.promo!.label}</p>}
-            {/* sem prazo, o selo acima ("Preço especial de lançamento") já diz tudo: não repete o título */}
+            {/* sem prazo, o selo acima (ex.: "Preço Black November") já diz tudo: não repete o título */}
             {(!promoOn || endsAt) && <p className="sp-buy__title">{promoOn ? "Preço promocional por tempo limitado" : "Investimento"}</p>}
             {priceTag("sp-price--big")}
             <p className="sp-buy__note">{installments ? "acesso imediato após a confirmação do pagamento" : "pagamento único · acesso imediato"}</p>

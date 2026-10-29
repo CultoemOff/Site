@@ -174,9 +174,9 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     videoPoster: "/images/formacoes/redes-video-capa.jpg",
     videoVertical: true,
     videoSize: { width: 720, height: 1218 },
-    // Preço especial de lançamento, sem contagem regressiva.
-    // Para voltar a ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
-    promo: { label: "Preço especial de lançamento" },
+    // Black November, sem contagem regressiva.
+    // Para ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
+    promo: { label: "Preço Black November" },
     compare: [
       { icon: "plug", illo: "cable", before: "Usa cabo HDMI ou USB longo, com extensão, e não sabe por que a câmera fica travando.", after: "Conhece o limite de cada tipo de cabo e passa a levar as câmeras pela rede, com NDI." },
       { icon: "refresh", illo: "restart", before: "A solução de sempre é desligar e ligar tudo de novo, e torcer.", after: "Você entende o que acontece entre a câmera, o switch e o computador da live." },
@@ -651,9 +651,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
     ],
   },
-  // Culto ao Vivo com Excelência: pré-venda, listada em /formacoes desde 23/10/2026 (substitui "Áudio para Live").
-  // Lançamento em novembro + Black November: R$ 97 (preço final R$ 187).
-  // Sem link da Hotmart ainda: os botões levam ao direct ("Quero ser avisado").
+  // Culto ao Vivo com Excelência: vendas abertas, listada em /formacoes desde 23/10/2026 (substitui "Áudio para Live").
+  // Black November: R$ 77 (preço padrão R$ 117). Link de compra da Hotmart em src/config/courses.ts.
   "culto-ao-vivo-com-excelencia": {
     headline: "Sua live do culto, estável e bonita.",
     subheadline: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.",
@@ -663,7 +662,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     ogImage: "/images/formacoes/culto-ao-vivo-og.jpg",
     exitPitch: "Você está a um passo de colocar o culto no ar sem susto.",
     heroNote: { icon: "monitorPlay", text: "Feito para PC simples, poucas câmeras, internet de operadora e equipe voluntária." },
-    promo: { label: "Lançamento · Black November" },
+    promo: { label: "Preço Black November" },
     highlights: [
       {
         icon: "video",

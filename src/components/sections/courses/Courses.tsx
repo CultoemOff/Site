@@ -62,8 +62,9 @@ export function CoursesTrust() {
   );
 }
 
-function CourseCard({ course, index }: { course: Course; index: number }) {
-  const featured = course.featured;
+function CourseCard({ course, index, plain = false }: { course: Course; index: number; plain?: boolean }) {
+  // `plain`: card comum mesmo para a formação em destaque (home com as duas formações lado a lado)
+  const featured = course.featured && !plain;
   const teacher = getInstructor(course.instructor);
   const { price, priceFrom, off, promo, installments } = resolvePrice(course);
   return (
@@ -215,9 +216,16 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
   );
 }
 
-export default function Courses({ courses, showMoreButton = true }: { courses: Course[]; showMoreButton?: boolean }) {
+/**
+ * `pair`: só as formações recebidas, lado a lado, na ordem recebida (home); sem `pair`, a formação marcada
+ * como destaque ganha o card grande e as outras vão para a grade.
+ */
+export default function Courses({ courses, showMoreButton = true, pair = false }: { courses: Course[]; showMoreButton?: boolean; pair?: boolean }) {
   const visible = showMoreButton ? courses.filter((c) => !c.hideOnHome) : courses;
-  const [featured, ...rest] = [...visible].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
+  const sorted = pair ? visible : [...visible].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
+  const featured = pair ? undefined : sorted[0];
+  const rest = pair ? sorted : sorted.slice(1);
+  const open = visible.filter((c) => c.status === "inscricoes-abertas" || c.status === "disponivel").length;
   return (
     <section id="formacoes" className="section section--abyss courses" aria-labelledby="formacoes-title">
       <div className="courses__glow" aria-hidden="true" />
@@ -230,9 +238,7 @@ export default function Courses({ courses, showMoreButton = true }: { courses: C
           <p>
             Formações pensadas para voluntários: cada uma parte dos fundamentos e chega na aplicação dentro da igreja,{" "}
             <strong>com preço acessível</strong>.{" "}
-            {visible.some((c) => c.status === "inscricoes-abertas" || c.status === "disponivel")
-              ? "A primeira já está com inscrições abertas."
-              : "Lançamento em breve."}
+            {open > 1 ? "Inscrições abertas." : open === 1 ? "A primeira já está com inscrições abertas." : "Lançamento em breve."}
           </p>
         </SectionHeader>
 
@@ -240,9 +246,9 @@ export default function Courses({ courses, showMoreButton = true }: { courses: C
 
         {featured && <CourseCard course={featured} index={0} />}
 
-        <div className="courses__grid">
+        <div className={`courses__grid${pair ? " courses__grid--pair" : ""}`}>
           {rest.map((c, i) => (
-            <CourseCard key={c.id} course={c} index={i} />
+            <CourseCard key={c.id} course={c} index={i} plain={pair} />
           ))}
         </div>
 

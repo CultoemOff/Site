@@ -5,6 +5,7 @@ import { COURSE_STATUS_LABEL, formatInstallments, formatPrice, hasPrice, type Co
 import { getInstructor } from "@/config/instructors";
 import { hasSalesPage } from "@/config/salesPages";
 import { resolvePrice } from "@/lib/pricing";
+import { SITE_PROMO_COURSE_ID } from "@/config/site";
 import CourseDiagramView from "./CourseDiagrams";
 import { CoursesTrust } from "./Courses";
 import "./courses.css";
@@ -118,7 +119,9 @@ function CatalogCard({ course, index }: { course: Course; index: number }) {
 
 export default function CourseCatalog({ courses }: { courses: Course[] }) {
   // promoção primeiro (mantendo a ordem do painel dentro de cada grupo)
-  const sorted = [...courses].sort((a, b) => Number(hasPromo(b)) - Number(hasPromo(a)));
+  // ordem: a formação da faixa amarela, depois as outras em promoção, depois o resto (ordem do painel dentro de cada grupo)
+  const rank = (c: Course) => (c.id === SITE_PROMO_COURSE_ID && hasPromo(c) ? 2 : hasPromo(c) ? 1 : 0);
+  const sorted = [...courses].sort((a, b) => rank(b) - rank(a));
   const promos = sorted.filter(hasPromo);
   return (
     <section id="formacoes" className="section section--abyss courses catalog" aria-labelledby="formacoes-title">
@@ -135,7 +138,7 @@ export default function CourseCatalog({ courses }: { courses: Course[] }) {
           <p className="catalog__promo" data-reveal>
             <span className="catalog__promo-dot" aria-hidden="true" />
             <span>
-              <strong>Preço promocional</strong> em {promos.length === 1 ? "uma formação" : `${promos.length} formações`}:{" "}
+              <strong>Black November</strong> em {promos.length === 1 ? "uma formação" : `${promos.length} formações`}:{" "}
               {promos.map((c, i) => (
                 <span key={c.id}>
                   {i > 0 && (i === promos.length - 1 ? " e " : ", ")}

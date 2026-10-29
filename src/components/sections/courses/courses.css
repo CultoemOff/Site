@@ -961,3 +961,17 @@
   letter-spacing: 0;
   color: #cfe0ff;
 }
+
+/* home: as duas formações em destaque, lado a lado */
+.courses__grid--pair {
+  margin-top: 0;
+}
+.courses__grid--pair .course__visual {
+  height: clamp(220px, 22vw, 280px);
+  min-height: 0;
+  overflow: hidden;
+}
+.courses__grid--pair .course__visual > .cd,
+.courses__grid--pair .course__visual > .cd svg {
+  max-height: 100%;
+}

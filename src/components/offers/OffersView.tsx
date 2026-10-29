@@ -1,9 +1,8 @@
 import Navbar from "@/components/layout/Navbar";
 import ExitPopup from "@/components/sales/ExitPopup";
-import PromoBar from "@/components/sales/PromoBar";
 import { formatPrice, type Course } from "@/config/courses";
 import { resolvePrice } from "@/lib/pricing";
-import { GUARANTEE_DAYS, SITE_NAME } from "@/config/site";
+import { GUARANTEE_DAYS, SITE_NAME, SITE_PROMO_COURSE_ID } from "@/config/site";
 import type { Offer } from "@/config/offers";
 import OffersGrid from "./OffersGrid";
 import "./offers.css";
@@ -13,23 +12,12 @@ import "./offers.css";
  * fundo azul-escuro e cards brancos. `homeUrl` leva ao site principal; `courses` serve só para a faixa da promoção.
  */
 export default function OffersView({ offers, homeUrl, courses = [] }: { offers: Offer[]; homeUrl: string; courses?: Course[] }) {
-  // Formação em promoção: a mesma faixa amarela da home, levando à página da oferta no site principal.
-  const promoCourse = courses.map((c) => ({ c, p: resolvePrice(c) })).find(({ p }) => p.promo);
+  // formação em promoção: a faixa amarela vem do layout; aqui ela serve ao aviso de saída
+  const promos = courses.map((c) => ({ c, p: resolvePrice(c) })).filter(({ p }) => p.promo);
+  const promoCourse = promos.find(({ c }) => c.id === SITE_PROMO_COURSE_ID) ?? promos[0];
   const prefix = homeUrl === "/" ? "" : homeUrl.replace(/\/$/, "");
   return (
     <div className="offers">
-      {promoCourse && (
-        <PromoBar
-          label={promoCourse.p.promo!.label}
-          product={`Curso de ${promoCourse.c.title}`}
-          off={promoCourse.p.off}
-          endsAt={promoCourse.p.promo!.endsAt}
-          href={`${prefix}/formacoes/${promoCourse.c.id}`}
-          cta="Ver a oferta"
-          ctaShort="Ver oferta"
-          track={{ label: promoCourse.c.title, id: promoCourse.c.id, location: "faixa amarela (ofertas)" }}
-        />
-      )}
       <Navbar base={homeUrl} />
 
       <main id="conteudo" tabIndex={-1} className="offers__main">

@@ -282,12 +282,13 @@ export const COURSES: Course[] = [
     ],
     appliedTo: ["OBS Studio", "NDI", "Câmeras PTZ", "Placas de captura", "Holyrics", "SPresenter", "YouTube", "Facebook"],
     diagram: "live",
-    // Lançamento em novembro + Black November: R$ 97; preço final R$ 187. Parcelamento: a confirmar com o checkout da Hotmart.
-    price: 97,
-    priceFrom: 187,
+    // Black November (29/10/2026): R$ 77; preço padrão R$ 117. Parcelamento: a confirmar com o checkout da Hotmart.
+    price: 77,
+    priceFrom: 117,
     // rev 1: grava no banco preço, módulos/aplicações e o que está incluso
-    rev: 1,
-    revScope: ["price", "topics", "includes"],
+    // rev 2: preço da Black November, inscrições abertas e link de compra da Hotmart
+    rev: 2,
+    revScope: ["price", "topics", "includes", "href"],
     instructor: "jonas-silva",
     includes: [
       "Certificado de conclusão",
@@ -295,9 +296,9 @@ export const COURSES: Course[] = [
       "Novas aulas acrescentadas ao curso, incluídas no seu acesso",
     ],
     format: { mode: "Online", hours: 0, access: "Acesso vitalício" },
-    status: "lancamento-em-breve",
-    // link de compra da Hotmart: ainda não existe (os botões levam ao direct até ele chegar)
-    href: "",
+    status: "inscricoes-abertas",
+    // página de pagamento da Hotmart (enviada pelo Jonas em 29/10/2026)
+    href: "https://pay.hotmart.com/O108087815U?off=78m866xs",
   },
   {
     id: "iluminacao-dmx-grandma2",

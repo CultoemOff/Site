@@ -10,11 +10,9 @@ import OffersHome from "@/components/sections/offers-home/OffersHome";
 import Partners from "@/components/sections/partners/Partners";
 import Problems from "@/components/sections/problems/Problems";
 import SoftwareSection from "@/components/sections/software/SoftwareSection";
-import PromoBar from "@/components/sales/PromoBar";
 import type { Course } from "@/config/courses";
 import type { Offer } from "@/config/offers";
-import type { SiteSettingsData } from "@/config/site";
-import { resolvePrice } from "@/lib/pricing";
+import { HOME_COURSE_IDS, type SiteSettingsData } from "@/config/site";
 
 type Props = {
   courses: Course[];
@@ -29,29 +27,17 @@ type Props = {
 
 /** Composição da homepage (sem busca de dados). */
 export default function HomeView({ courses, settings, offers, youtube, latestPosts }: Props) {
-  // Formação em promoção: a faixa amarela aparece também na home e leva à página da oferta.
-  const promoCourse = courses.map((c) => ({ c, p: resolvePrice(c) })).find(({ p }) => p.promo);
+  // a faixa amarela da promoção vem do layout (todas as páginas); a home mostra só as formações em destaque, lado a lado
+  const homeCourses = HOME_COURSE_IDS.map((id) => courses.find((c) => c.id === id)).filter((c): c is Course => Boolean(c));
 
   return (
     <>
-      {promoCourse && (
-        <PromoBar
-          label={promoCourse.p.promo!.label}
-          product={`Curso de ${promoCourse.c.title}`}
-          off={promoCourse.p.off}
-          endsAt={promoCourse.p.promo!.endsAt}
-          href={`/formacoes/${promoCourse.c.id}`}
-          cta="Ver a oferta"
-          ctaShort="Ver oferta"
-          track={{ label: promoCourse.c.title, id: promoCourse.c.id, location: "faixa amarela (home)" }}
-        />
-      )}
       <Navbar />
       <main id="conteudo" tabIndex={-1}>
         <Hero />
         <Problems />
         <Manifesto />
-        <Courses courses={courses} />
+        <Courses courses={homeCourses} pair />
         <OffersHome offers={offers} />
         <SoftwareSection />
         {youtube}

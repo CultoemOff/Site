@@ -157,3 +157,17 @@ body:has(.promo-bar) .faq__intro {
     padding-top: calc(var(--nav-h) + var(--promo-h) + 28px);
   }
 }
+body:has(.promo-bar) .page-formacoes .courses {
+  padding-top: calc(var(--nav-h) + var(--promo-h) + clamp(56px, 8vw, 96px));
+}
+body:has(.promo-bar) .blog-hero,
+body:has(.promo-bar) .post__header {
+  padding-top: calc(var(--nav-h) + var(--promo-h) + clamp(56px, 8vw, 96px));
+}
+body:has(.promo-bar) .swp-hero {
+  padding-top: calc(var(--nav-h) + var(--promo-h) + clamp(40px, 6vw, 80px));
+}
+/* página de links (sem menu): só a altura da faixa */
+body:has(.promo-bar) .lk {
+  padding-top: calc(var(--promo-h) + clamp(36px, 8vw, 72px));
+}

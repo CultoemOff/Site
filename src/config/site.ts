@@ -146,3 +146,12 @@ export const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Blog", href: "/blog" },
   { label: "Produtos em oferta", href: "/ofertas" },
 ];
+
+/**
+ * Formação da faixa amarela em todas as páginas do site (menos nas páginas de venda, que têm a própria faixa).
+ * A faixa só aparece enquanto essa formação estiver com desconto (preço "de/por").
+ */
+export const SITE_PROMO_COURSE_ID = "culto-ao-vivo-com-excelencia";
+
+/** Formações que aparecem na home, nesta ordem (lado a lado). */
+export const HOME_COURSE_IDS = ["culto-ao-vivo-com-excelencia", "redes-para-igrejas"];

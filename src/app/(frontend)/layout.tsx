@@ -2,8 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import Analytics from "@/components/analytics/Analytics";
 import CheckoutParams from "@/components/analytics/CheckoutParams";
-import { APPLE_ICON_SRC, ICON_SRC, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/config/site";
-import { getSiteSettings } from "@/lib/cms";
+import SitePromoBar from "@/components/sales/SitePromoBar";
+import { APPLE_ICON_SRC, ICON_SRC, SITE_DESCRIPTION, SITE_NAME, SITE_PROMO_COURSE_ID, SITE_TAGLINE } from "@/config/site";
+import { getCourses, getSiteSettings } from "@/lib/cms";
+import { resolvePrice } from "@/lib/pricing";
 import { LITE_INLINE_SCRIPT } from "@/lib/perfMode";
 import { OG_IMAGE, SITE_URL, safeGaId, safePixelId } from "@/lib/seo";
 import "./globals.css";
@@ -61,7 +63,11 @@ export const viewport: Viewport = {
 };
 
 export default async function FrontendLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const settings = await getSiteSettings();
+  const [settings, courses] = await Promise.all([getSiteSettings(), getCourses()]);
+  // faixa amarela da formação em promoção (some sozinha quando o desconto acaba)
+  const promoCourse = courses.find((c) => c.id === SITE_PROMO_COURSE_ID);
+  const promoPrice = promoCourse ? resolvePrice(promoCourse) : undefined;
+  const promoHref = promoCourse ? `${SITE_URL.includes("localhost") ? "" : SITE_URL}/formacoes/${promoCourse.id}` : "";
   const gaId = safeGaId(settings.gaId);
   const pixelId = safePixelId(settings.metaPixelId);
 
@@ -79,6 +85,16 @@ export default async function FrontendLayout({ children }: Readonly<{ children: 
         <a href="#conteudo" className="skip-link">
           Pular para o conteúdo
         </a>
+        {promoCourse && promoPrice?.promo && (
+          <SitePromoBar
+            label={promoPrice.promo.label}
+            off={promoPrice.off}
+            endsAt={promoPrice.promo.endsAt}
+            courseId={promoCourse.id}
+            title={promoCourse.title}
+            href={promoHref}
+          />
+        )}
         {children}
         {/* leva UTMs e origem da visita até o link de compra da Hotmart */}
         <CheckoutParams />
