@@ -268,15 +268,15 @@ export const COURSES: Course[] = [
     title: "Culto ao Vivo com Excelência",
     tagline: "Transmissão de cultos com OBS Studio, do zero ao avançado.",
     summary:
-      "Transmita cultos com OBS Studio na realidade de igrejas pequenas e médias: PC simples, poucas câmeras, internet de operadora e equipe voluntária. São 44 aulas em 8 módulos, das câmeras e conexões ao áudio da live, cenas, controle PTZ e operação no domingo, com demonstrações reais na tela do OBS.",
+      "Transmita cultos com OBS Studio na realidade de igrejas pequenas e médias: PC simples, poucas câmeras, internet de operadora e equipe voluntária. São 43 aulas em 8 módulos, das câmeras e conexões ao áudio da live, cenas, controle PTZ e operação no domingo, com demonstrações reais na tela do OBS.",
     question: "Por que a live trava, se a internet da igreja é boa?",
-    topicsTitle: "8 módulos · 44 aulas",
+    topicsTitle: "8 módulos · 43 aulas",
     topics: [
-      "O sistema de transmissão e o OBS",
+      "O sistema de transmissão + hardware do computador",
       "Câmeras para igrejas",
-      "Conexões, placas, NDI e mesa de corte",
+      "Conexões, placas de captura, mesa de corte e NDI",
       "Áudio na transmissão",
-      "Montando o culto no OBS",
+      "OBS Studio: do zero à live",
       "Controle PTZ",
       "Encoder, bitrate e plataformas",
       "Operação no domingo e plano B",
@@ -290,7 +290,8 @@ export const COURSES: Course[] = [
     // rev 2: preço da Black November, inscrições abertas e link de compra da Hotmart
     // rev 3: link de compra trocado (pedido do Jonas em 29/10/2026)
     // rev 4: pergunta do card
-    rev: 4,
+    // rev 5: módulos com os títulos da área de membros (43 aulas)
+    rev: 5,
     revScope: ["price", "topics", "includes", "href", "question"],
     instructor: "jonas-silva",
     includes: [

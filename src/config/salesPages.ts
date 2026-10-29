@@ -739,53 +739,58 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     },
     // aulas numeradas por módulo (o Jonas vai acrescentar aulas no futuro)
     modules: [
+      // módulos 1 a 5: títulos iguais aos da área de membros (Hotmart), enviados pelo Jonas em 29/10/2026
       {
-        title: "O sistema de transmissão e o OBS",
+        title: "O sistema de transmissão + hardware do computador",
         icon: "monitorPlay",
-        items: ["Como funciona uma transmissão de culto", "O PC da transmissão", "Instalando o OBS Studio", "Tour pela interface do OBS"],
+        items: [
+          "Como funciona a transmissão",
+          "A importância do PC e o hardware mínimo",
+          "Instalando o OBS Studio + boas práticas de atualizações",
+          "Tour pela interface do OBS Studio em funcionamento",
+        ],
       },
       {
         title: "Câmeras para igrejas",
         icon: "video",
         items: [
-          "Os 7 tipos de câmera",
-          "Por que a PTZ é a câmera ideal para a igreja",
-          "PTZ com NDI: a combinação recomendada",
-          "As outras categorias: quando fazem sentido",
-          "Configurações essenciais da câmera",
+          "Os tipos de câmeras",
+          "Por que a PTZ é a melhor câmera para igrejas?",
+          "PTZ + NDI",
+          "Outras categorias de câmeras",
+          "Configurações da câmera: exposição, abertura, foco, FPS e resolução",
         ],
       },
       {
-        title: "Conexões, placas, NDI e mesa de corte",
+        title: "Conexões, placas de captura, mesa de corte e NDI",
         icon: "plug",
         items: [
-          "Tipo de câmera não é tipo de conexão",
-          "HDMI e SDI",
-          "USB e placas de captura",
-          "Vídeo pela rede: NDI em resumo, RTSP, SRT e Wi-Fi",
-          "Instalando o NDI e o DistroAV no OBS",
-          "Celular como câmera no OBS",
-          "Mesa de corte: o que é e quando faz sentido",
+          "Introdução",
+          "Conversores HDMI e SDI",
+          "Placas de captura",
+          "Vídeo pela rede: NDI, RTSP, SRT e Wi-Fi",
+          "Configurando NDI e DistroAV no OBS Studio",
+          "Mesa de corte",
         ],
       },
       {
         title: "Áudio na transmissão",
         icon: "sliders",
+        tag: "Aulas práticas",
         items: [
-          "O mix da live não é o mix do templo",
-          "Levando o som da mesa para o PC",
-          "Mix da live no Reaper, enviado por NDI",
-          "Mixer do OBS e níveis",
+          "Por que o áudio fica melhor na igreja do que na live?",
+          "Áudio com mesa de som analógica",
+          "Do Reaper para o OBS Studio (prática)",
+          "Mixer do OBS Studio",
           "Filtros essenciais",
-          "Sincronia de áudio e vídeo",
+          "Sincronizando áudio e vídeo no OBS",
         ],
       },
       {
-        title: "Montando o culto no OBS",
+        title: "OBS Studio: do zero à live",
         icon: "grid",
-        tag: "Aula prática",
+        tag: "Aulas práticas",
         items: [
-          // títulos iguais aos da área de membros (Hotmart), enviados pelo Jonas em 29/10/2026
           "Configurações de vídeo, resolução e processo",
           "Cenas, fontes, câmeras NDI e HDMI + Modo Estúdio",
           "Adicionando mídias: cenas de pré e pós-culto + dica",
@@ -800,7 +805,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         title: "Controle PTZ",
         icon: "presentation",
-        tag: "Aula prática",
+        tag: "Aulas práticas",
         items: [
           "Como funciona o controle PTZ",
           "Planejando os presets do culto",
@@ -812,6 +817,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         title: "Encoder, bitrate e plataformas",
         icon: "wifi",
+        tag: "Aulas práticas",
         // títulos das aulas ainda não definidos
         items: [],
         count: 5,
@@ -819,6 +825,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         title: "Operação no domingo e plano B",
         icon: "clipboardCheck",
+        tag: "Aulas práticas",
         // títulos das aulas ainda não definidos
         items: [],
         count: 3,
@@ -838,7 +845,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       },
       {
         question: "Preciso de equipamento caro?",
-        answer: "Não. O curso parte do que a igreja já tem: um PC com OBS, celular ou webcam e a mesa de som. A câmera PTZ com NDI aparece como recomendação para quando a igreja for investir.",
+        answer: "Não. O curso parte do que a igreja já tem: um PC com OBS, as câmeras que vocês usam hoje e a mesa de som. A câmera PTZ com NDI aparece como recomendação para quando a igreja for investir.",
       },
       {
         question: "Serve para PC fraco?",
