@@ -181,6 +181,9 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     // Black November, sem contagem regressiva.
     // Para ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
     promo: { label: "Preço Black November" },
+    // faixa de números e seção "Você se reconhece?": removidas a pedido do Jonas (29/10/2026)
+    showProof: false,
+    showCompare: false,
     compare: [
       { icon: "plug", illo: "cable", before: "Usa cabo HDMI ou USB longo, com extensão, e não sabe por que a câmera fica travando.", after: "Conhece o limite de cada tipo de cabo e passa a levar as câmeras pela rede, com NDI." },
       { icon: "refresh", illo: "restart", before: "A solução de sempre é desligar e ligar tudo de novo, e torcer.", after: "Você entende o que acontece entre a câmera, o switch e o computador da live." },
