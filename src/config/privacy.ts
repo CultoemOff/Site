@@ -4,7 +4,7 @@
  */
 
 /** Data da última atualização do texto (AAAA-MM-DD). */
-export const PRIVACY_UPDATED = "2026-10-07";
+export const PRIVACY_UPDATED = "2026-10-29";
 
 /**
  * E-mail para pedidos sobre dados pessoais (acesso, correção, exclusão, descadastro).

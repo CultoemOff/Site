@@ -81,7 +81,8 @@ export default function PrivacyView({ instagram, hasConsent }: Props) {
           <h3>Anúncios (pixel da Meta)</h3>
           <p>
             Usamos o pixel da Meta (Facebook e Instagram) para medir o resultado dos nossos anúncios e mostrá-los a pessoas com interesse
-            parecido. O pixel só é carregado <strong>depois que você clica em “Aceitar”</strong> no aviso de cookies. Com ele, a Meta
+            parecido. O pixel é carregado ao abrir a página; se você clicar em <strong>“Recusar”</strong> no aviso de cookies, ele é
+            desligado na hora e não é carregado nas próximas visitas. Com ele, a Meta
             recebe as páginas que você visitou neste site, a abertura da página de uma formação, o clique no botão de compra e a conclusão
             de um cadastro. A Meta pode associar essas informações à sua conta do Facebook ou do Instagram.
           </p>
@@ -90,8 +91,9 @@ export default function PrivacyView({ instagram, hasConsent }: Props) {
           <p>
             Quando você chega por um anúncio ou por um link de divulgação, o endereço traz códigos que indicam a campanha (por exemplo,{" "}
             <code>utm_source</code>). Guardamos esses códigos no seu navegador só durante a visita e os repassamos ao link de compra, para
-            saber qual divulgação gerou a venda. Se você aceitou os cookies, o identificador do clique no anúncio da Meta também é
-            repassado.
+            saber qual divulgação gerou a venda. Se você não recusou os cookies, o identificador do clique no anúncio da Meta também é
+            repassado. Nas páginas das formações, usamos também a UTMify, uma ferramenta que relaciona cada venda ao anúncio ou à
+            divulgação que trouxe a visita.
           </p>
 
           <h3>Compra das formações (Hotmart)</h3>
@@ -116,7 +118,7 @@ export default function PrivacyView({ instagram, hasConsent }: Props) {
               <strong>Sua escolha sobre os cookies</strong> (aceitar ou recusar), para não perguntar de novo a cada visita.
             </li>
             <li>
-              <strong>Cookies do Google Analytics e da Meta</strong>, somente se você aceitar.
+              <strong>Cookies do Google Analytics</strong>, somente se você aceitar, e <strong>da Meta</strong>, a menos que você recuse.
             </li>
             <li>
               <strong>Marcações de funcionamento</strong>: que você já fez o cadastro de um download, que um aviso já foi mostrado nesta

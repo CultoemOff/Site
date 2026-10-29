@@ -11,7 +11,9 @@ import { flushMeta, trackClick } from "./track";
 
 /**
  * Google Analytics 4 com Consent Mode v2 + Meta Pixel opcional (LGPD):
- * nada é armazenado até o visitante aceitar no banner. O Pixel só é carregado depois do aceite.
+ * os cookies do GA só são gravados depois do aceite no banner.
+ * Meta Pixel (decisão do Jonas, 29/10/2026, para os anúncios): carrega ao abrir a página; quem clicar em "Recusar"
+ * desliga o pixel na hora e ele não carrega mais nas próximas visitas.
  * Cliques em elementos com data-track viram eventos (ver ./track.ts).
  */
 
@@ -19,10 +21,13 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
   const pathname = usePathname();
   const [showBanner, setShowBanner] = useState(false);
   const [consent, setConsent] = useState<Consent>(null);
+  // a escolha salva já foi lida? (antes disso o pixel não carrega, para não ligar em quem já recusou)
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const c = readConsent();
     setConsent(c);
+    setReady(true);
     setShowBanner(c === null);
     const open = () => setShowBanner(true);
     window.addEventListener(CONSENT_EVENT, open);
@@ -35,9 +40,9 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
     return () => document.removeEventListener("click", trackClick, { capture: true });
   }, []);
 
-  // Meta Pixel: só com ID configurado e depois do aceite. Carrega aqui, com a página já interativa.
+  // Meta Pixel: só com ID configurado e para quem não recusou. Carrega aqui, com a página já interativa.
   useEffect(() => {
-    if (!pixelId || consent !== "granted") return;
+    if (!pixelId || !ready || consent === "denied") return;
     if (window.fbq) {
       // já tinha sido carregado nesta visita e o visitante voltou a aceitar
       window.fbq("consent", "grant");
@@ -66,7 +71,7 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
     fbq?.("track", "PageView");
     // eventos que aconteceram antes de o pixel iniciar (ex.: ViewContent da página do curso)
     flushMeta();
-  }, [pixelId, consent]);
+  }, [pixelId, consent, ready]);
 
   // page_view a cada navegação (App Router não recarrega a página)
   const first = useRef(true);

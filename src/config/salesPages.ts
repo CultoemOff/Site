@@ -663,9 +663,14 @@ export const SALES_PAGES: Record<string, SalesPage> = {
   "culto-ao-vivo-com-excelencia": {
     headline: "Sua live do culto, estável e bonita.",
     subheadline: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.",
-    // vídeo de vendas (vertical, como o de Redes): coloque o arquivo em /public/videos/ e preencha videoUrl/videoPoster/videoSize
-    videoUrl: "",
+    // vídeo de vendas enviado pelo Jonas em 29/10/2026 (46 MB, 1080x1920), convertido para a web:
+    // 720x1280, 30 fps, H.264 + AAC, ~10 MB, em /public/videos/
+    videoUrl: "/videos/culto-ao-vivo.mp4",
+    videoPoster: "/images/formacoes/culto-video-capa.jpg",
     videoVertical: true,
+    videoSize: { width: 720, height: 1280 },
+    // pixel da UTMify (o mesmo da página do Redes), para rastrear as vendas dos anúncios
+    utmifyPixelId: "6ad77e62256bb057ce2da149",
     ogImage: "/images/formacoes/culto-ao-vivo-og.jpg",
     exitPitch: "Você está a um passo de colocar o culto no ar sem susto.",
     heroNote: { icon: "monitorPlay", text: "Feito para PC simples, poucas câmeras, internet de operadora e equipe voluntária." },

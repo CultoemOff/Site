@@ -36,7 +36,7 @@ export default function CheckoutParams() {
       const next = buildCheckoutUrl(base, {
         campaign: currentCampaign(),
         location: a.dataset.trackLocation,
-        adsConsent: readConsent() === "granted",
+        adsConsent: readConsent() !== "denied",
       });
       if (next !== a.href) a.href = next;
     };
