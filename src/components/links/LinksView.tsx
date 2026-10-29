@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import CopyCouponButton from "@/components/sections/partners/CopyCouponButton";
 import SocialIcon from "@/components/ui/SocialIcon";
-import { hasPrice, type Course } from "@/config/courses";
-import { FACEBOOK_URL, LOGO_SRC, MAIN_SITE_URL, SITE_NAME, type SiteSettingsData } from "@/config/site";
+import type { Course } from "@/config/courses";
+import { LOGO_SRC, MAIN_SITE_URL, SITE_NAME, type SiteSettingsData } from "@/config/site";
+import { resolvePrice } from "@/lib/pricing";
 import type { YouTubeVideo } from "@/lib/youtube";
 import LinksTracking from "./LinksTracking";
 import "./links.css";
@@ -11,13 +12,69 @@ import "./links.css";
 /** Marca de origem nos links do próprio site (aparece no Analytics e segue até a Hotmart). */
 const FROM_BIO = "utm_source=links&utm_medium=bio";
 
-/** Miniaturas redondas de cada link (logos enviados pelo Jonas, recorte da tela da Dorn e o logo do site). */
+/** Miniaturas redondas de cada link (logos enviados pelo Jonas). */
 const THUMBS = {
-  formacao: "/images/links/formacao-redes.jpg",
   voluts: "/images/links/voluts.png",
   spresenter: "/images/links/spresenter.png",
-  dorn: "/images/links/dorn.jpg",
 };
+
+/** Cards das formações em destaque (imagem e texto de cada uma). Formações fora desta lista não aparecem. */
+const FEATURES: Record<string, { image: string; alt: string; width: number; height: number; position?: string; text: string }> = {
+  "culto-ao-vivo-com-excelencia": {
+    image: "/images/formacoes/culto-aula-operacao.jpg",
+    alt: "Operador na cabine de transmissão com o OBS, a mixagem da live e o controle das câmeras",
+    width: 1600,
+    height: 900,
+    position: "70% center",
+    text: "Transmissão de cultos com OBS Studio, do zero ao avançado: câmeras, conexões, NDI, áudio da live, cenas, letras e controle PTZ, na realidade da igreja pequena e média.",
+  },
+  "redes-para-igrejas": {
+    image: "/images/links/formacao-redes.jpg",
+    alt: "Diagrama da cabine técnica na mesma rede: internet, roteador, switch PoE, câmeras PTZ, mesa digital, PCs e Wi-Fi",
+    width: 640,
+    height: 480,
+    text: "IP, DHCP, switch, roteador e Wi-Fi explicados do zero, com exemplos da cabine técnica da igreja: câmeras PTZ, NDI, OBS e mesa digital funcionando na mesma rede.",
+  },
+};
+
+/** Card grande de uma formação. */
+function FeatureCard({ course, position }: { course: Course; position: number }) {
+  const f = FEATURES[course.id];
+  if (!f) return null;
+  const { promo } = resolvePrice(course);
+  return (
+    <a
+      className="lk__feature"
+      href={`${MAIN_SITE_URL}/formacoes/${course.id}?${FROM_BIO}&utm_campaign=formacao`}
+      data-track="click_link"
+      data-track-label={`Formação ${course.title}`}
+      data-track-location="links"
+      data-track-position={position}
+    >
+      <span className="lk__feature-media">
+        <Image
+          src={f.image}
+          alt={f.alt}
+          width={f.width}
+          height={f.height}
+          sizes="(min-width: 600px) 528px, 100vw"
+          priority={position === 2}
+          style={f.position ? { objectPosition: f.position } : undefined}
+        />
+        {promo && <span className="lk__sale">{promo.label}</span>}
+      </span>
+      <span className="lk__feature-body">
+        <span className="lk__kicker">Formação</span>
+        <strong>{course.title}</strong>
+        <span>{f.text}</span>
+        <span className="lk__feature-cta">
+          Saiba mais
+          <Arrow />
+        </span>
+      </span>
+    </a>
+  );
+}
 
 type Row = {
   title: string;
@@ -44,14 +101,6 @@ function Thumb({ src }: { src: string }) {
   return (
     <span className="lk__thumb">
       <Image src={src} alt="" width={96} height={96} sizes="48px" />
-    </span>
-  );
-}
-
-function LogoThumb() {
-  return (
-    <span className="lk__thumb lk__thumb--logo">
-      <Image src={LOGO_SRC} alt="" width={96} height={96} sizes="48px" />
     </span>
   );
 }
@@ -107,16 +156,16 @@ function LinkRow({ row, position }: { row: Row; position: number }) {
 
 export default function LinksView({
   settings,
-  course,
+  courses = [],
   videos = [],
 }: {
   settings: SiteSettingsData;
-  course?: Course;
+  /** formações em destaque, na ordem em que aparecem (só as que têm card em FEATURES) */
+  courses?: Course[];
   videos?: YouTubeVideo[];
 }) {
   const { spresenter } = settings;
-  const onSale = Boolean(course && hasPrice(course) && course.priceFrom && course.priceFrom > course.price);
-  const courseHref = course ? `${MAIN_SITE_URL}/formacoes/${course.id}?${FROM_BIO}&utm_campaign=formacao` : "";
+  const featured = courses.filter((c) => FEATURES[c.id]);
 
   const youtube: Row = {
     title: "YouTube · Culto em Off",
@@ -172,36 +221,12 @@ export default function LinksView({
         </div>
       ) : undefined,
     },
-    {
-      title: "Site do Culto em Off",
-      text: "Downloads gratuitos, blog e formações",
-      href: `${MAIN_SITE_URL}/?${FROM_BIO}`,
-      track: "Site",
-      thumb: <LogoThumb />,
-    },
-    {
-      title: "Produtos em oferta",
-      text: "Equipamentos e ferramentas com desconto, escolhidos pelo Culto em Off",
-      href: `${MAIN_SITE_URL}/ofertas?${FROM_BIO}`,
-      track: "Produtos em oferta",
-      thumb: <IconThumb kind="ofertas" />,
-    },
-    {
-      title: "Câmeras PTZ e controles",
-      text: "Loja da Dorn",
-      href: settings.dorn.url,
-      track: "Loja da Dorn",
-      thumb: <Thumb src={THUMBS.dorn} />,
-      sponsored: true,
-      external: true,
-    },
   ];
 
   const socials = [
     { key: "instagram" as const, label: "Instagram", href: settings.social.instagram },
     { key: "youtube" as const, label: "YouTube", href: settings.social.youtube },
     { key: "tiktok" as const, label: "TikTok", href: settings.social.tiktok },
-    { key: "facebook" as const, label: "Facebook", href: FACEBOOK_URL },
   ].filter((s) => s.href);
 
   return (
@@ -232,50 +257,18 @@ export default function LinksView({
           </ul>
         </header>
 
-        {/* 1º YouTube, 2º a formação em destaque, depois os demais */}
+        {/* 1º YouTube, depois as formações em destaque (Culto ao Vivo, Redes), depois os parceiros */}
         <ul className="lk__list">
           <LinkRow row={youtube} position={1} />
         </ul>
 
-        {/* formação em destaque */}
-        {course && (
-          <a
-            className="lk__feature"
-            href={courseHref}
-            data-track="click_link"
-            data-track-label={`Formação ${course.title}`}
-            data-track-location="links"
-            data-track-position={2}
-          >
-            <span className="lk__feature-media">
-              <Image
-                src={THUMBS.formacao}
-                alt="Diagrama da cabine técnica na mesma rede: internet, roteador, switch PoE, câmeras PTZ, mesa digital, PCs e Wi-Fi"
-                width={640}
-                height={480}
-                sizes="(min-width: 600px) 528px, 100vw"
-                priority
-              />
-              {onSale && <span className="lk__sale">Desconto de lançamento</span>}
-            </span>
-            <span className="lk__feature-body">
-              <span className="lk__kicker">Formação</span>
-              <strong>{course.title}</strong>
-              <span>
-                IP, DHCP, switch, roteador e Wi-Fi explicados do zero, com exemplos da cabine técnica da igreja: câmeras PTZ,
-                NDI, OBS e mesa digital funcionando na mesma rede.
-              </span>
-              <span className="lk__feature-cta">
-                Saiba mais
-                <Arrow />
-              </span>
-            </span>
-          </a>
-        )}
+        {featured.map((c, i) => (
+          <FeatureCard key={c.id} course={c} position={i + 2} />
+        ))}
 
         <ul className="lk__list">
           {rows.map((r, i) => (
-            <LinkRow key={r.title} row={r} position={i + 3} />
+            <LinkRow key={r.title} row={r} position={i + 2 + featured.length} />
           ))}
         </ul>
 

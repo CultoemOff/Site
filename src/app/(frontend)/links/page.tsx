@@ -17,6 +17,9 @@ export const metadata: Metadata = {
 /** Página de links da bio (links.cultoemoff.com.br), no lugar do Linktree. Os links de parceiros vêm do painel. */
 export default async function LinksPage() {
   const [settings, courses, videos] = await Promise.all([getSiteSettings(), getCourses(), getLatestVideosWithFallback(3)]);
-  const course = courses.find((c) => c.id === "redes-para-igrejas");
-  return <LinksView settings={settings} course={course} videos={videos} />;
+  // formações em destaque, nesta ordem (logo abaixo dos vídeos do YouTube)
+  const featured = ["culto-ao-vivo-com-excelencia", "redes-para-igrejas"]
+    .map((id) => courses.find((c) => c.id === id))
+    .filter((c): c is (typeof courses)[number] => Boolean(c));
+  return <LinksView settings={settings} courses={featured} videos={videos} />;
 }

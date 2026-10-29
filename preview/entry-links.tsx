@@ -14,7 +14,7 @@ const demo = [1, 2, 3].map((n) => ({
   published: "",
 }));
 createRoot(document.getElementById("root")!).render(
-  <LinksView settings={DEFAULT_SETTINGS} course={COURSES.find((c) => c.id === "redes-para-igrejas")} videos={demo} />,
+  <LinksView settings={DEFAULT_SETTINGS} courses={["culto-ao-vivo-com-excelencia", "redes-para-igrejas"].map((id) => COURSES.find((c) => c.id === id)!)} videos={demo} />,
 );
 
 // como no site: cliques com data-track viram eventos
