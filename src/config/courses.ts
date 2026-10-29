@@ -39,7 +39,7 @@ export const formatPrice = (value: number) =>
 /** Parcelamento: { count: 8, value: 10.03 } → "8x de R$ 10,03" */
 export const formatInstallments = (i: { count: number; value: number }) => `${i.count}x de ${formatPrice(i.value)}`;
 
-export type CourseRevScope = "price" | "href" | "testimonials" | "hours" | "topics" | "includes";
+export type CourseRevScope = "price" | "href" | "testimonials" | "hours" | "topics" | "includes" | "question";
 
 export type CourseDiagram = "network" | "analog" | "live" | "companion" | "dmx";
 
@@ -269,6 +269,7 @@ export const COURSES: Course[] = [
     tagline: "Transmissão de cultos com OBS Studio, do zero ao avançado.",
     summary:
       "Transmita cultos com OBS Studio na realidade de igrejas pequenas e médias: PC simples, poucas câmeras, internet de operadora e equipe voluntária. São 44 aulas em 8 módulos, das câmeras e conexões ao áudio da live, cenas, controle PTZ e operação no domingo, com demonstrações reais na tela do OBS.",
+    question: "Por que a live trava, se a internet da igreja é boa?",
     topicsTitle: "8 módulos · 44 aulas",
     topics: [
       "O sistema de transmissão e o OBS",
@@ -288,8 +289,9 @@ export const COURSES: Course[] = [
     // rev 1: grava no banco preço, módulos/aplicações e o que está incluso
     // rev 2: preço da Black November, inscrições abertas e link de compra da Hotmart
     // rev 3: link de compra trocado (pedido do Jonas em 29/10/2026)
-    rev: 3,
-    revScope: ["price", "topics", "includes", "href"],
+    // rev 4: pergunta do card
+    rev: 4,
+    revScope: ["price", "topics", "includes", "href", "question"],
     instructor: "jonas-silva",
     includes: [
       "Certificado de conclusão",
