@@ -62,11 +62,20 @@ export function CoursesTrust() {
   );
 }
 
+/** fotos locais dos cards (enquanto a formação não tiver imagem no painel) */
+const CARD_PHOTOS: Record<string, { url: string; alt: string }> = {
+  "culto-ao-vivo-com-excelencia": {
+    url: "/images/formacoes/culto-aula-operacao.jpg",
+    alt: "Operador na cabine de transmissão com o OBS, a mixagem da live e o controle das câmeras",
+  },
+};
+
 function CourseCard({ course, index, plain = false }: { course: Course; index: number; plain?: boolean }) {
   // `plain`: card comum mesmo para a formação em destaque (home com as duas formações lado a lado)
   const featured = course.featured && !plain;
   const teacher = getInstructor(course.instructor);
   const { price, priceFrom, off, promo, installments } = resolvePrice(course);
+  const photo = course.image ?? CARD_PHOTOS[course.id];
   return (
     <article
       className={`course${featured ? " course--featured" : ""}`}
@@ -76,9 +85,9 @@ function CourseCard({ course, index, plain = false }: { course: Course; index: n
       data-glow
       style={{ "--i": index % 2 } as React.CSSProperties}
     >
-      <div className={`course__visual${course.image ? " course__visual--image" : ""}`}>
-        {course.image ? (
-          <Image src={course.image.url} alt={course.image.alt} fill sizes="(max-width: 760px) 100vw, 600px" />
+      <div className={`course__visual${photo ? " course__visual--image" : ""}`}>
+        {photo ? (
+          <Image src={photo.url} alt={photo.alt} fill sizes="(max-width: 760px) 100vw, 600px" />
         ) : (
           <CourseDiagramView type={course.diagram} />
         )}
