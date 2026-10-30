@@ -39,6 +39,8 @@ declare global {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
     fbq?: (...args: unknown[]) => void;
+    /** ID do pixel da Meta iniciado nesta página (usado para a correspondência avançada) */
+    __metaPixelId?: string;
   }
 }
 
@@ -90,6 +92,28 @@ const metaQueue: unknown[][] = [];
 function sendMeta(...args: unknown[]) {
   if (window.fbq) window.fbq(...args);
   else if (metaQueue.length < 20) metaQueue.push(args);
+}
+
+/**
+ * Correspondência avançada manual da Meta: quando a pessoa se identifica (cadastro de download),
+ * o pixel é iniciado de novo com os dados dela. O próprio pixel converte em SHA-256 antes de enviar;
+ * nada sai em texto puro. Chame antes do evento (Lead), para ele já ir com os dados.
+ */
+export function setMetaUserData(data: { email?: string; phone?: string; dial?: string; name?: string; countryIso?: string }) {
+  if (typeof window === "undefined") return;
+  const id = window.__metaPixelId;
+  const em = data.email?.trim().toLowerCase();
+  const digits = (data.phone ?? "").replace(/\D/g, "");
+  const ph = digits ? `${(data.dial ?? "").replace(/\D/g, "")}${digits}` : undefined;
+  const parts = (data.name ?? "").trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const user: Record<string, string> = {};
+  if (em) user.em = em;
+  if (ph) user.ph = ph;
+  if (parts[0]) user.fn = parts[0];
+  if (parts.length > 1) user.ln = parts[parts.length - 1];
+  if (data.countryIso) user.country = data.countryIso.toLowerCase();
+  if (!Object.keys(user).length) return;
+  if (id) sendMeta("init", id, user);
 }
 
 /** Chamado logo depois de o pixel iniciar: envia o que ficou esperando. */

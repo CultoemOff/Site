@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useId, useState, type FormEvent } from "react";
-import { track } from "@/components/analytics/track";
+import { setMetaUserData, track } from "@/components/analytics/track";
 import { COUNTRIES } from "@/config/countries";
 import { LEAD_CONSENT_TEXT, formatBrPhone, validateLead, type LeadErrors, type LeadInput } from "@/lib/leads";
 
@@ -97,6 +97,8 @@ export default function DownloadGate({ source, productName, downloadUrl = "", ac
         } catch {
           /* ok */
         }
+        // correspondência avançada da Meta (só com o aceite marcado no formulário)
+        if (form.consent) setMetaUserData({ email: form.email, phone: form.phone, dial: country.dial, name: form.name, countryIso: country.iso });
         track(waitlist ? "join_waitlist" : "generate_lead", { label: productName });
         setUnlocked(true);
       } else {

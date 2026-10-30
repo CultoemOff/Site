@@ -67,6 +67,7 @@ export default function Analytics({ gaId, pixelId }: { gaId: string; pixelId: st
     /* eslint-enable */
     // lido de novo pela janela: o TypeScript não sabe que o trecho acima acabou de criar o fbq
     const fbq = (window as Window).fbq;
+    window.__metaPixelId = pixelId;
     fbq?.("init", pixelId);
     fbq?.("track", "PageView");
     // eventos que aconteceram antes de o pixel iniciar (ex.: ViewContent da página do curso)
