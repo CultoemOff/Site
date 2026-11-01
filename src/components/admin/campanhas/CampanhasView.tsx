@@ -37,6 +37,13 @@ const META_FIELDS: (keyof MetaDay)[] = [
   "engagementRank",
   "conversionRank",
   "attribution",
+  "comments",
+  "likes",
+  "shares",
+  "retention",
+  "results",
+  "resultIndicator",
+  "adId",
 ];
 
 const NUMERIC = new Set<keyof MetaDay>([
@@ -53,6 +60,11 @@ const NUMERIC = new Set<keyof MetaDay>([
   "checkouts",
   "purchasesMeta",
   "purchaseValueMeta",
+  "comments",
+  "likes",
+  "shares",
+  "retention",
+  "results",
 ]);
 
 function pickMeta(d: Record<string, unknown>): MetaDay {
@@ -117,6 +129,12 @@ export default async function CampanhasView({ initPageResult, params, searchPara
     buyerEmail: maskEmail(d.buyerEmail ?? ""),
     buyerState: d.buyerState ?? "",
     mainTransaction: d.mainTransaction ?? "",
+    offerCode: d.offerCode ?? "",
+    offerName: d.offerName ?? "",
+    saleTool: d.saleTool ?? "",
+    channel: d.channel ?? "",
+    chargeType: d.chargeType ?? "",
+    buyerTaxes: d.buyerTaxes ?? 0,
     test: tests.has(String(d.buyerEmail ?? "").toLowerCase()),
   }));
   const imports: ImportLog[] = (importsRes.docs as unknown as (ImportLog & { createdAt: string })[]).map((d) => ({

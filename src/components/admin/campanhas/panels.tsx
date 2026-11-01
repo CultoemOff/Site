@@ -326,7 +326,23 @@ const GROUPS: { title: string; fields: Field[] }[] = [
   },
 ];
 
-export function SettingsPanel({ settings, onClose, onSaved }: { settings: CampaignSettings; onClose: () => void; onSaved: () => void }) {
+export type CampaignCourse = { campaign: string; auto: { id: string; how: "premissa" | "nome" | "padrão" | "" } };
+
+export function SettingsPanel({
+  settings,
+  onClose,
+  onSaved,
+  campaigns = [],
+  products = [],
+}: {
+  settings: CampaignSettings;
+  onClose: () => void;
+  onSaved: () => void;
+  /** campanhas do Meta e o curso que o painel deduz para cada uma */
+  campaigns?: CampaignCourse[];
+  /** cursos (produtos da Hotmart) */
+  products?: { id: string; short: string }[];
+}) {
   const [form, setForm] = useState<Record<string, string>>(() => {
     const f: Record<string, string> = {};
     for (const g of GROUPS) for (const k of g.fields) f[k.key] = String(settings[k.key]);
@@ -337,6 +353,10 @@ export function SettingsPanel({ settings, onClose, onSaved }: { settings: Campai
     return f;
   });
   const [map, setMap] = useState(settings.campaignMap);
+  // curso de cada campanha: "" = automático (pelo nome; senão o curso mais antigo)
+  const [courses, setCourses] = useState<Record<string, string>>(() =>
+    Object.fromEntries(settings.campaignProducts.map((x) => [x.campaign, x.product])),
+  );
   const [state, setState] = useState<"idle" | "saving" | "error">("idle");
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -346,7 +366,13 @@ export function SettingsPanel({ settings, onClose, onSaved }: { settings: Campai
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, campaignMap: map }),
+      body: JSON.stringify({
+        ...form,
+        campaignMap: map,
+        campaignProducts: Object.entries(courses)
+          .filter(([, product]) => product)
+          .map(([campaign, product]) => ({ campaign, product })),
+      }),
     });
     if (res.ok) onSaved();
     else setState("error");
@@ -417,6 +443,33 @@ export function SettingsPanel({ settings, onClose, onSaved }: { settings: Campai
           <input type="text" value={form.adOrigins} onChange={(e) => set("adOrigins", e.target.value)} />
         </label>
       </fieldset>
+      {products.length > 1 && campaigns.length > 0 && (
+        <fieldset className="cmp-form">
+          <legend>Curso de cada campanha</legend>
+          <p className="cmp-muted">Usado no filtro “Curso”. No automático, o painel procura o nome do curso na campanha (ex.: “REDES”); se não achar, conta como o curso mais antigo.</p>
+          {campaigns.map((c) => {
+            const autoName = products.find((p) => p.id === c.auto.id)?.short ?? "—";
+            return (
+              <label key={c.campaign} className="cmp-field">
+                <span>
+                  {c.campaign || "(sem campanha)"}
+                  <small>{c.auto.how === "nome" ? `automático pelo nome: ${autoName}` : `automático (sem pista no nome): ${autoName}`}</small>
+                </span>
+                <span className="cmp-field__input">
+                  <select value={courses[c.campaign] ?? ""} onChange={(e) => setCourses((m) => ({ ...m, [c.campaign]: e.target.value }))}>
+                    <option value="">Automático ({autoName})</option>
+                    {products.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.short}
+                      </option>
+                    ))}
+                  </select>
+                </span>
+              </label>
+            );
+          })}
+        </fieldset>
+      )}
       <fieldset className="cmp-form">
         <legend>Conjunto → campanha</legend>
         <p className="cmp-muted">Usado quando o CSV do Meta vem sem a coluna “Nome da campanha”.</p>

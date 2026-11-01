@@ -101,6 +101,8 @@ function num(raw: string | undefined, delimiter: string): number {
 function numOrNull(raw: string | undefined, delimiter: string): number | null {
   const v = (raw ?? "").trim();
   if (v === "–" || v === "") return null;
+  // texto no lugar do número (ex.: "Usando orçamento da campanha") = sem valor próprio
+  if (!/\d/.test(v)) return null;
   return num(v, delimiter);
 }
 
@@ -133,6 +135,20 @@ function brDateTime(raw: string): { iso: string; day: string; hour: number; week
 
 /* ---------------- Meta ---------------- */
 
+/** "actions:offsite_conversion.fb_pixel_purchase" → "Compra" (o que a campanha otimiza) */
+function indicatorLabel(raw: string): string {
+  if (!raw) return "";
+  const k = raw.toLowerCase();
+  if (k.includes("purchase")) return "Compra";
+  if (k.includes("initiate_checkout") || k.includes("initiatecheckout")) return "Finalização iniciada";
+  if (k.includes("landing_page_view")) return "Visualização da página";
+  if (k.includes("link_click")) return "Clique no link";
+  if (k.includes("lead")) return "Lead";
+  if (k.includes("video_view") || k.includes("thruplay")) return "Visualização do vídeo";
+  if (k.includes("reach")) return "Alcance";
+  return raw.replace(/^actions:/, "");
+}
+
 export function parseMeta(csv: string): ParseResult<MetaDay> {
   const { header, rows, delimiter } = parseCsv(csv);
   const col = columns(header);
@@ -144,7 +160,7 @@ export function parseMeta(csv: string): ParseResult<MetaDay> {
     ad: col("Nome do anúncio"),
     adset: col("Nome do conjunto de anúncios"),
     campaign: col("Nome da campanha"),
-    delivery: col("Veiculação de anúncio", "Veiculação do anúncio"),
+    delivery: col("Veiculação de anúncio", "Veiculação do anúncio", "Veiculação do conjunto de anúncios"),
     spend: col("Valor gasto (BRL)", "Valor usado (BRL)"),
     impressions: col("Impressões"),
     reach: col("Alcance"),
@@ -165,6 +181,13 @@ export function parseMeta(csv: string): ParseResult<MetaDay> {
     engagement: col("Classificação da taxa de engajamento"),
     conversion: col("Classificação da taxa de conversão"),
     attribution: col("Configuração de atribuição"),
+    comments: col("Comentários no post"),
+    likes: col("Curtidas do Facebook"),
+    shares: col("Compartilhamentos do post"),
+    retention: col("Taxa de retenção"),
+    results: col("Resultados"),
+    resultIndicator: col("Indicador de resultados"),
+    adId: col("Identificação do anúncio", "ID do anúncio"),
   };
   const required: [keyof typeof c, string][] = [
     ["start", "Início dos relatórios"],
@@ -173,7 +196,9 @@ export function parseMeta(csv: string): ParseResult<MetaDay> {
     ["spend", "Valor gasto (BRL)"],
     ["impressions", "Impressões"],
   ];
-  for (const [k, label] of required) if (c[k] < 0) errors.push(`Coluna obrigatória ausente: "${label}".`);
+  if (c.ad < 0 && c.adset >= 0)
+    errors.push('Este relatório está no nível "Conjuntos de anúncios". No Gerenciador, abra a aba "Anúncios" e exporte de lá (por dia).');
+  else for (const [k, label] of required) if (c[k] < 0) errors.push(`Coluna obrigatória ausente: "${label}".`);
   if (errors.length) return { kind: "meta", rows: [], ignored: 0, errors, warnings };
 
   const g = (r: string[], i: number) => (i >= 0 ? r[i] : undefined);
@@ -217,12 +242,19 @@ export function parseMeta(csv: string): ParseResult<MetaDay> {
       purchasesMeta: num(g(r, c.purchases), delimiter),
       purchaseValueMeta: num(g(r, c.value), delimiter),
       budget: numOrNull(g(r, c.budget), delimiter),
-      budgetType: text(g(r, c.budgetType)),
+      budgetType: ((t) => (t === "0" ? "" : t))(text(g(r, c.budgetType))),
       endDate: isoDay(g(r, c.endDate) ?? ""),
       qualityRank: text(g(r, c.quality)),
       engagementRank: text(g(r, c.engagement)),
       conversionRank: text(g(r, c.conversion)),
       attribution: text(g(r, c.attribution)),
+      comments: num(g(r, c.comments), delimiter),
+      likes: num(g(r, c.likes), delimiter),
+      shares: num(g(r, c.shares), delimiter),
+      retention: num(g(r, c.retention), delimiter),
+      results: num(g(r, c.results), delimiter),
+      resultIndicator: indicatorLabel(text(g(r, c.resultIndicator))),
+      adId: text(g(r, c.adId)),
     });
   }
   if (notDaily > 0) {
@@ -270,6 +302,12 @@ export function parseHotmart(csv: string): ParseResult<Sale> {
     email: col("Email do(a) Comprador(a)", "Email do Comprador", "Email"),
     state: col("Estado / Província", "Estado"),
     main: col("Transação do Produto Principal"),
+    offerCode: col("Código do preço", "Código da oferta"),
+    offerName: col("Nome deste preço", "Nome da oferta"),
+    saleTool: col("Ferramenta de Venda"),
+    channel: col("Canal usado para venda"),
+    chargeType: col("Tipo de cobrança"),
+    buyerTaxes: col("Impostos locais de compra + Taxa de parcelamento"),
   };
   if (c.id < 0) errors.push('Coluna obrigatória ausente: "Código da transação".');
   if (c.status < 0) errors.push('Coluna obrigatória ausente: "Status da transação".');
@@ -326,6 +364,12 @@ export function parseHotmart(csv: string): ParseResult<Sale> {
       buyerEmail: text(g(r, c.email)).toLowerCase(),
       buyerState: text(g(r, c.state)),
       mainTransaction: ((m) => (m && m !== id ? m : ""))(text(g(r, c.main))),
+      offerCode: text(g(r, c.offerCode)),
+      offerName: text(g(r, c.offerName)),
+      saleTool: text(g(r, c.saleTool)),
+      channel: text(g(r, c.channel)),
+      chargeType: text(g(r, c.chargeType)),
+      buyerTaxes: num(g(r, c.buyerTaxes), delimiter),
     });
   }
   return { kind: "hotmart", rows: out, ignored, errors, warnings };

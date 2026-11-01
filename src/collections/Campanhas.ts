@@ -45,6 +45,13 @@ export const MetaAdDays: CollectionConfig = {
     t("engagementRank"),
     t("conversionRank"),
     t("attribution"),
+    n("comments"),
+    n("likes"),
+    n("shares"),
+    n("retention"),
+    n("results"),
+    t("resultIndicator"),
+    t("adId"),
   ],
 };
 
@@ -83,6 +90,13 @@ export const HotmartSales: CollectionConfig = {
     t("buyerState"),
     // order bump: aponta para a transação do produto principal
     t("mainTransaction"),
+    // oferta, ferramenta, canal e cobrança (colunas da Hotmart)
+    t("offerCode"),
+    t("offerName"),
+    t("saleTool"),
+    t("channel"),
+    t("chargeType"),
+    n("buyerTaxes"),
   ],
 };
 
@@ -145,6 +159,15 @@ export const CampaignSettingsGlobal: GlobalConfig = {
       fields: [
         { name: "adset", type: "text" },
         { name: "campaign", type: "text" },
+      ],
+    },
+    {
+      // curso (código do produto da Hotmart) de cada campanha, para o filtro por curso
+      name: "campaignProducts",
+      type: "array",
+      fields: [
+        { name: "campaign", type: "text" },
+        { name: "product", type: "text" },
       ],
     },
   ],

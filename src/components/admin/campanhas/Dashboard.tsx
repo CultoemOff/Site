@@ -1,11 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { fullDay, labelDay, presetRange, previousRange, PRESETS, shortDay, type PeriodPreset } from "@/lib/campanhas/dates";
 import { brl, int, pct, roas } from "@/lib/campanhas/format";
 import {
   breakdown,
+  campaignProduct,
   dailySeries,
   derive,
   enrichSales,
@@ -14,6 +15,7 @@ import {
   funnel,
   groupRows,
   heatmap,
+  productsOf,
   sumMeta,
   sumSales,
   type Alert,
@@ -50,7 +52,7 @@ type Props = {
   query: Record<string, string>;
 };
 
-type State = Filters & { preset: PeriodPreset; compare: boolean };
+type State = Filters & { preset: PeriodPreset; compare: boolean; products: string[] };
 
 const list = (v: string | undefined) => (v ? v.split("~").map(decodeURIComponent).filter(Boolean) : []);
 const enc = (v: string[]) => v.map(encodeURIComponent).join("~");
@@ -63,6 +65,7 @@ function initialState(q: Record<string, string>, today: string, launch: string):
     preset,
     from: preset === "custom" && custom ? q.de : (r?.from ?? today),
     to: preset === "custom" && custom ? q.ate : (r?.to ?? today),
+    products: list(q.cur),
     campaigns: list(q.camp),
     adsets: list(q.cj),
     ads: list(q.an),
@@ -80,6 +83,7 @@ function toQuery(s: State): string {
     q.set("de", s.from);
     q.set("ate", s.to);
   }
+  if (s.products.length) q.set("cur", enc(s.products));
   if (s.campaigns.length) q.set("camp", enc(s.campaigns));
   if (s.adsets.length) q.set("cj", enc(s.adsets));
   if (s.ads.length) q.set("an", enc(s.ads));
@@ -137,6 +141,14 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
   const [noteDay, setNoteDay] = useState<string | null>(null);
 
   const salesX = useMemo(() => enrichSales(sales, settings), [sales, settings]);
+  // cursos (produtos da Hotmart) e o curso de cada campanha do Meta
+  const products = useMemo(() => productsOf(salesX), [salesX]);
+  const campInfo = useMemo(() => {
+    const m = new Map<string, ReturnType<typeof campaignProduct>>();
+    for (const c of new Set(meta.map((r) => r.campaign))) m.set(c, campaignProduct(c, settings, products));
+    return m;
+  }, [meta, settings, products]);
+  const productName = useCallback((id: string) => products.find((p) => p.id === id)?.short ?? (id || "—"), [products]);
   const launch = useMemo(() => {
     if (settings.launchDate) return settings.launchDate;
     const firstSale = salesX.filter((x) => !x.isTest && x.group === "approved").map((x) => x.day).sort()[0];
@@ -167,8 +179,12 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
   /* ---------- dados filtrados ---------- */
   const v = useMemo(() => {
     const { from, to } = st;
-    const metaF = filterMeta(meta, st);
-    const salesF = filterSales(salesX, st);
+    // filtro por curso: campanhas do curso (premissas/nome) e vendas do funil do curso
+    const byProduct = st.products.length > 0;
+    const metaC = byProduct ? meta.filter((r) => st.products.includes(campInfo.get(r.campaign)?.id ?? "")) : meta;
+    const salesC = byProduct ? salesX.filter((x) => st.products.includes(x.funnelProduct)) : salesX;
+    const metaF = filterMeta(metaC, st);
+    const salesF = filterSales(salesC, st);
     const inR = (d: string, a: string, b: string) => d >= a && d <= b;
     const crossTo = metaLast && metaLast < to ? metaLast : to;
     const calc = (a: string, b: string) => {
@@ -202,9 +218,19 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
       byButton: breakdown(salesP, (x) => x.button || "—"),
       byCoupon: breakdown(salesP, (x) => x.coupon || "sem cupom"),
       byPayment: breakdown(salesP, (x) => x.paymentMethod || "—"),
+      byProduct: breakdown(salesP, (x) => x.productId, (k) => productName(k), { bumps: true }),
+      byOffer: breakdown(salesP, (x) => x.offerName || (x.offerCode ? `código ${x.offerCode}` : ""), (k) => k || "sem dado (reimporte a Hotmart)", { bumps: true }),
+      byTool: breakdown(
+        salesP,
+        (x) => x.saleTool || (x.isBump ? "Produto order bump" : "Produto principal"),
+        (k) => k,
+        { bumps: true },
+      ),
+      byCharge: breakdown(salesP, (x) => x.chargeType || "", (k) => k || "sem dado (reimporte a Hotmart)"),
+      byChannel: breakdown(salesP, (x) => x.channel || "", (k) => k || "checkout", { bumps: true }),
       heat: heatmap(salesP),
     };
-  }, [st, meta, salesX, settings, today, metaLast]);
+  }, [st, meta, salesX, settings, today, metaLast, campInfo, productName]);
 
   const headRow = [...v.daily].reverse().find((r) => !r.metaMissing);
   const headSignal: Signal = headRow?.signal ?? { code: "aguardar", label: "Aguardar", reason: "Sem investimento no período", basis: "Hotmart" };
@@ -230,7 +256,7 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
 
   /* ---------- opções dos filtros ---------- */
   const opt = useMemo(() => {
-    const camps = [...new Set(meta.map((r) => r.campaign))].sort();
+    const camps = [...new Set(meta.map((r) => r.campaign))].filter((c) => !st.products.length || st.products.includes(campInfo.get(c)?.id ?? "")).sort();
     const adsets = [...new Set(meta.filter((r) => !st.campaigns.length || st.campaigns.includes(r.campaign)).map((r) => r.adset))].sort();
     const ads = [
       ...new Set(meta.filter((r) => (!st.campaigns.length || st.campaigns.includes(r.campaign)) && (!st.adsets.length || st.adsets.includes(r.adset))).map((r) => r.ad)),
@@ -239,9 +265,9 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
     const coupons = [...new Set(salesX.filter((x) => !x.isTest && x.coupon).map((x) => x.coupon))].sort();
     const pays = [...new Set(salesX.filter((x) => !x.isTest).map((x) => x.paymentMethod).filter(Boolean))].sort();
     return { camps, adsets, ads, origins, coupons, pays };
-  }, [meta, salesX, st.campaigns, st.adsets]);
+  }, [meta, salesX, st.campaigns, st.adsets, st.products, campInfo]);
 
-  const activeFilters = st.campaigns.length + st.adsets.length + st.ads.length + st.origins.length + st.payments.length + (st.coupon ? 1 : 0);
+  const activeFilters = st.products.length + st.campaigns.length + st.adsets.length + st.ads.length + st.origins.length + st.payments.length + (st.coupon ? 1 : 0);
   const metaFiltered = st.campaigns.length + st.adsets.length + st.ads.length > 0;
   const salesFiltered = st.origins.length + st.payments.length + (st.coupon ? 1 : 0) > 0;
 
@@ -275,7 +301,7 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
         <div className="cmp-hero__text">
           <p className="cmp-kicker">
             <span className="cmp-live" aria-hidden="true" />
-            Meta Ads × Hotmart · Redes para Igrejas
+            Meta Ads × Hotmart · {st.products.length ? st.products.map(productName).join(" + ") : products.length > 1 ? "todos os cursos" : (products[0]?.short ?? "")}
           </p>
           <h1>Campanhas</h1>
           <p className="cmp-hero__meta">
@@ -332,6 +358,15 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
           </label>
         </div>
         <div className="cmp-filters__row">
+          {products.length > 1 && (
+            <MultiSelect
+              label="Curso"
+              options={products.map((p) => ({ id: p.id, label: p.short, hint: `${p.sales} venda(s)` }))}
+              value={st.products}
+              onChange={(products) => patch({ products, campaigns: [], adsets: [], ads: [] })}
+              all="Todos"
+            />
+          )}
           <MultiSelect label="Campanha" options={opt.camps.map((c) => ({ id: c, label: c || "(sem campanha)" }))} value={st.campaigns} onChange={(campaigns) => patch({ campaigns, adsets: [], ads: [] })} all="Todas" />
           <MultiSelect label="Conjunto" options={opt.adsets.map((c) => ({ id: c, label: c }))} value={st.adsets} onChange={(adsets) => patch({ adsets, ads: [] })} />
           <MultiSelect label="Anúncio" options={opt.ads.map((c) => ({ id: c, label: c }))} value={st.ads} onChange={(ads) => patch({ ads })} />
@@ -357,11 +392,22 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
           </label>
           <MultiSelect label="Pagamento" options={opt.pays.map((p) => ({ id: p, label: p }))} value={st.payments} onChange={(payments) => patch({ payments })} />
           {activeFilters > 0 && (
-            <button type="button" className="cmp-clear" onClick={() => patch({ campaigns: [], adsets: [], ads: [], origins: [], coupon: "", payments: [] })}>
+            <button type="button" className="cmp-clear" onClick={() => patch({ products: [], campaigns: [], adsets: [], ads: [], origins: [], coupon: "", payments: [] })}>
               Limpar filtros ({activeFilters})
             </button>
           )}
         </div>
+        {st.products.length > 0 && (
+          <p className="cmp-filters__note">
+            Curso: as vendas são as do curso (o order bump entra no curso da venda principal) e o Meta mostra só as campanhas desse curso.{" "}
+            {(() => {
+              const guessed = [...campInfo.entries()].filter(([, i]) => i.how === "padrão").map(([c]) => c || "(sem campanha)");
+              return guessed.length
+                ? `Sem curso definido, ${guessed.length === 1 ? "a campanha" : "as campanhas"} ${guessed.join(", ")} ${guessed.length === 1 ? "conta" : "contam"} como ${products[0]?.short ?? "o 1º curso"}: ajuste em Premissas.`
+                : "";
+            })()}
+          </p>
+        )}
         {(metaFiltered || salesFiltered) && (
           <p className="cmp-filters__note">
             {metaFiltered && "Campanha/conjunto/anúncio filtram os dados do Meta; a Hotmart não sabe de qual anúncio veio cada venda. "}
@@ -551,6 +597,35 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
                 </div>
               </div>
             </Card>
+            <Card kicker="Hotmart" title="Curso, oferta, ferramenta e cobrança">
+              <div className="cmp-quad">
+                <div>
+                  <p className="cmp-sub">Curso vendido</p>
+                  <BarList items={v.byProduct} />
+                </div>
+                <div>
+                  <p className="cmp-sub">Oferta (preço)</p>
+                  <BarList items={v.byOffer} />
+                </div>
+                <div>
+                  <p className="cmp-sub">Ferramenta de venda</p>
+                  <BarList items={v.byTool} />
+                </div>
+                <div>
+                  <p className="cmp-sub">Tipo de cobrança</p>
+                  <BarList items={v.byCharge} />
+                </div>
+              </div>
+              {v.byChannel.some((c) => c.key) && (
+                <p className="cmp-muted">
+                  Canal: {v.byChannel.map((c) => `${c.label} ${c.count}`).join(" · ")}
+                </p>
+              )}
+              <p className="cmp-muted">Aqui o order bump conta (em curso, oferta, ferramenta e canal). Vendas importadas antes desta versão aparecem como “sem dado” até você importar a Hotmart de novo.</p>
+            </Card>
+          </div>
+
+          <div className="cmp-single">
             <Card kicker="Quando compram" title="Horário das vendas">
               <HourBars grid={v.heat} />
               <p className="cmp-sub">Dia da semana × hora</p>
@@ -617,7 +692,19 @@ export default function Dashboard({ meta, sales, settings, imports, notes: initi
           }}
         />
       )}
-      {dialog === "settings" && <SettingsPanel settings={settings} onClose={() => setDialog(null)} onSaved={refresh} />}
+      {dialog === "settings" && (
+        <SettingsPanel
+          settings={settings}
+          onClose={() => setDialog(null)}
+          onSaved={refresh}
+          products={products}
+          campaigns={[...campInfo.keys()].sort().map((campaign) => ({
+            campaign,
+            // o que o painel deduz sem a premissa (para mostrar no "Automático")
+            auto: campaignProduct(campaign, { ...settings, campaignProducts: [] }, products),
+          }))}
+        />
+      )}
     </div>
   );
 }

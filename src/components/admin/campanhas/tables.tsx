@@ -3,7 +3,7 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { fullDay, labelDay } from "@/lib/campanhas/dates";
 import { brl, dec, int, pct, roas } from "@/lib/campanhas/format";
-import type { DayRow, GroupRow, SaleX } from "@/lib/campanhas/metrics";
+import { shortProduct, type DayRow, type GroupRow, type SaleX } from "@/lib/campanhas/metrics";
 import { ORIGIN_LABEL, type CampaignSettings } from "@/lib/campanhas/types";
 import { Sparkline } from "./charts";
 import { SignalBadge } from "./ui";
@@ -106,6 +106,32 @@ export function GroupTable({ rows, settings, level }: { rows: GroupRow[]; settin
     { key: "cpc", label: "CPC", get: (r) => r.d.cpc, show: (r) => brl(r.d.cpc), num: true },
     { key: "hook", label: "Gancho", get: (r) => r.d.hook, show: (r) => pct(r.d.hook), num: true, title: "Vídeo 3 s ÷ impressões" },
     { key: "ret", label: "Ret. 50%", get: (r) => r.d.ret50, show: (r) => pct(r.d.ret50, 0), num: true, title: "50% do vídeo ÷ vídeo 3 s" },
+    {
+      key: "retm",
+      label: "Retenção",
+      get: (r) => r.d.retention,
+      show: (r) => pct(r.d.retention, 0),
+      num: true,
+      title: "Taxa de retenção do vídeo, como o Meta informa (média ponderada pelas reproduções)",
+    },
+    {
+      key: "eng",
+      label: "Engaj.",
+      get: (r) => r.d.engagement,
+      show: (r) =>
+        r.d.engagement ? (
+          <span className="cmp-eng" title={`${r.meta.likes} curtida(s) · ${r.meta.comments} comentário(s) · ${r.meta.shares} compartilhamento(s)`}>
+            {int(r.d.engagement)}
+            <small>
+              {r.meta.likes} curt. · {r.meta.comments} coment. · {r.meta.shares} comp.
+            </small>
+          </span>
+        ) : (
+          "—"
+        ),
+      num: true,
+      title: "Curtidas + comentários + compartilhamentos do post",
+    },
     { key: "pm", label: "Compras Meta", get: (r) => r.meta.purchasesMeta, show: (r) => int(r.meta.purchasesMeta), num: true },
     {
       key: "cpa",
@@ -119,6 +145,7 @@ export function GroupTable({ rows, settings, level }: { rows: GroupRow[]; settin
       ),
       num: true,
     },
+    { key: "cpm", label: "CPM", get: (r) => r.d.cpm, show: (r) => brl(r.d.cpm), num: true, title: "Custo por mil impressões" },
     { key: "freq", label: "Freq.", get: (r) => r.d.frequency, show: (r) => dec(r.d.frequency), num: true },
     { key: "sig", label: "Sinal (3 d)", get: (r) => r.signal.code, show: (r) => <SignalBadge signal={r.signal} /> },
     {
@@ -390,6 +417,7 @@ export function SalesList({ sales }: { sales: SaleX[] }) {
             <tr>
               <th>Quando</th>
               <th>Comprador</th>
+              <th>Curso · oferta</th>
               <th>Origem</th>
               <th>Cupom</th>
               <th>Pagamento</th>
@@ -412,6 +440,16 @@ export function SalesList({ sales }: { sales: SaleX[] }) {
                     </div>
                   </td>
                   <td>
+                    <div className="cmp-name">
+                      <strong>{shortProduct(x.productName) || "—"}</strong>
+                      <small>
+                        {x.offerName || (x.offerCode ? `código ${x.offerCode}` : "oferta —")}
+                        {x.saleTool && !/principal/i.test(x.saleTool) && !x.isBump && <> · {x.saleTool}</>}
+                        {x.channel && <> · {x.channel}</>}
+                      </small>
+                    </div>
+                  </td>
+                  <td>
                     <span className={`cmp-origin cmp-origin--${x.originGroup}`}>{ORIGIN_LABEL[x.origin] ?? x.origin ?? "—"}</span>
                     {x.button && <small className="cmp-muted"> · {x.button}</small>}
                     {x.adName && <small className="cmp-muted"> · {x.adName}</small>}
@@ -429,6 +467,12 @@ export function SalesList({ sales }: { sales: SaleX[] }) {
                   <td className="cmp-nowrap">
                     {x.paymentMethod || "—"}
                     {x.installments > 1 && <small className="cmp-muted"> {x.installments}×</small>}
+                    {(x.buyerTaxes ?? 0) > 0 && (
+                      <small className="cmp-muted" title="Impostos locais + juros do parcelamento, pagos pelo comprador">
+                        {" "}
+                        +{brl(x.buyerTaxes ?? 0)} juros
+                      </small>
+                    )}
                   </td>
                   <td className="is-num">
                     {brl(x.net)}

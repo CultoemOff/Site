@@ -264,6 +264,13 @@ export const campaignEndpoints: Endpoint[] = [
         youtubeCoupons: strList(b.youtubeCoupons).map((code) => ({ code: code.toUpperCase() })),
         adOrigins: strList(b.adOrigins).map((code) => ({ code: code.toLowerCase() })),
         campaignMap: Array.isArray(b.campaignMap) ? readMap(b.campaignMap) : cur.campaignMap,
+        campaignProducts: Array.isArray(b.campaignProducts)
+          ? (b.campaignProducts as unknown[])
+              .map((x) => (x && typeof x === "object" ? (x as Record<string, unknown>) : {}))
+              .map((x) => ({ campaign: String(x.campaign ?? "").trim().slice(0, 300), product: String(x.product ?? "").trim().slice(0, 60) }))
+              .filter((x) => x.campaign && x.product)
+              .slice(0, 200)
+          : cur.campaignProducts,
       };
       await req.payload.updateGlobal({ slug: "campaign-settings", data: data as never, depth: 0 });
       return json({ ok: true });

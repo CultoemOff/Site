@@ -31,19 +31,89 @@ export type SaleX = Sale & {
   youtube: boolean;
   /** order bump (não conta como venda nova; soma no faturamento) */
   isBump: boolean;
+  /**
+   * curso do funil (código do produto): o da própria venda ou, no order bump, o do produto principal
+   * (o bump entra no faturamento do curso que trouxe o comprador)
+   */
+  funnelProduct: string;
 };
 
 export function enrichSales(sales: Sale[], s: CampaignSettings): SaleX[] {
   const tests = new Set(s.testEmails.map((e) => e.toLowerCase()));
   const yt = new Set(s.youtubeCoupons.map((c) => c.toUpperCase()));
-  return sales.map((x) => ({
-    ...x,
-    group: statusGroup(x.status),
-    originGroup: originGroup(x.origin, s.adOrigins),
-    isTest: Boolean(x.test) || tests.has(x.buyerEmail.toLowerCase()),
-    youtube: Boolean(x.coupon) && yt.has(x.coupon.toUpperCase()),
-    isBump: Boolean(x.mainTransaction),
-  }));
+  const productOf = new Map(sales.map((x) => [x.transactionId, x.productId]));
+  return sales.map((x) => {
+    const isBump = Boolean(x.mainTransaction) || /order ?bump/i.test(x.saleTool ?? "");
+    return {
+      ...x,
+      group: statusGroup(x.status),
+      originGroup: originGroup(x.origin, s.adOrigins),
+      isTest: Boolean(x.test) || tests.has(x.buyerEmail.toLowerCase()),
+      youtube: Boolean(x.coupon) && yt.has(x.coupon.toUpperCase()),
+      isBump,
+      funnelProduct: (isBump && x.mainTransaction && productOf.get(x.mainTransaction)) || x.productId,
+    };
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* cursos (produtos da Hotmart)                                        */
+/* ------------------------------------------------------------------ */
+
+export type Product = { id: string; name: string; short: string; first: string; sales: number };
+
+/** "Redes para Igrejas: do zero ao NDI…" → "Redes para Igrejas" */
+export function shortProduct(name: string): string {
+  const n = name.split(/[:|–—]/)[0].trim();
+  return n.length > 40 ? `${n.slice(0, 38)}…` : n || name;
+}
+
+/** cursos que aparecem nas vendas (sem compras de teste), do mais antigo para o mais novo */
+export function productsOf(sales: SaleX[]): Product[] {
+  const m = new Map<string, Product>();
+  for (const x of sales) {
+    if (x.isTest || !x.productId) continue;
+    const p = m.get(x.productId);
+    if (p) {
+      p.sales++;
+      if (x.day < p.first) p.first = x.day;
+    } else m.set(x.productId, { id: x.productId, name: x.productName, short: shortProduct(x.productName), first: x.day, sales: 1 });
+  }
+  return [...m.values()].sort((a, b) => (a.first < b.first ? -1 : a.first > b.first ? 1 : 0));
+}
+
+const plain = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
+
+/** palavras que ligam o nome da campanha a um curso (além da 1ª palavra do nome do curso) */
+const COURSE_HINTS: [RegExp, RegExp][] = [
+  // "CAV" = Culto ao Vivo (sigla usada nas campanhas)
+  [/\b(cav\b|obs\b|live\b|culto ao vivo|transmiss)/, /(obs|culto ao vivo|live|transmiss)/],
+  [/\b(rede|ndi)/, /(rede)/],
+  [/\b(companion|stream ?deck)/, /(companion)/],
+];
+
+/**
+ * Curso de uma campanha: o que está nas premissas; senão, pelo nome (ex.: "... REDES" → Redes para Igrejas);
+ * senão, o curso mais antigo (as campanhas anteriores ao 2º curso eram todas dele).
+ */
+export function campaignProduct(campaign: string, s: CampaignSettings, products: Product[]): { id: string; how: "premissa" | "nome" | "padrão" | "" } {
+  const set = s.campaignProducts.find((x) => x.campaign === campaign);
+  if (set) return { id: set.product, how: "premissa" };
+  const c = plain(campaign);
+  for (const p of products) {
+    const first = plain(p.short).split(/\s+/)[0] ?? "";
+    if (first.length >= 4 && c.includes(first)) return { id: p.id, how: "nome" };
+  }
+  for (const [inCampaign, inProduct] of COURSE_HINTS) {
+    if (!inCampaign.test(c)) continue;
+    const p = products.find((x) => inProduct.test(plain(x.name)));
+    if (p) return { id: p.id, how: "nome" };
+  }
+  return products[0] ? { id: products[0].id, how: "padrão" } : { id: "", how: "" };
 }
 
 export function filterMeta(rows: MetaDay[], f: Pick<Filters, "campaigns" | "adsets" | "ads">): MetaDay[] {
@@ -89,6 +159,12 @@ export type MetaTotals = {
   checkouts: number;
   purchasesMeta: number;
   purchaseValueMeta: number;
+  comments: number;
+  likes: number;
+  shares: number;
+  /** soma de (taxa de retenção × reproduções de 3 s) e a base, para a média ponderada */
+  retentionW: number;
+  retentionBase: number;
 };
 
 const ZERO_META: MetaTotals = {
@@ -105,6 +181,11 @@ const ZERO_META: MetaTotals = {
   checkouts: 0,
   purchasesMeta: 0,
   purchaseValueMeta: 0,
+  comments: 0,
+  likes: 0,
+  shares: 0,
+  retentionW: 0,
+  retentionBase: 0,
 };
 
 export function sumMeta(rows: MetaDay[]): MetaTotals {
@@ -123,6 +204,15 @@ export function sumMeta(rows: MetaDay[]): MetaTotals {
     t.checkouts += r.checkouts;
     t.purchasesMeta += r.purchasesMeta;
     t.purchaseValueMeta += r.purchaseValueMeta;
+    t.comments += r.comments || 0;
+    t.likes += r.likes || 0;
+    t.shares += r.shares || 0;
+    if (r.retention > 0) {
+      // pesa pela quantidade de reproduções (sem vídeo, pelas impressões)
+      const w = r.video3s > 0 ? r.video3s : r.impressions;
+      t.retentionW += r.retention * w;
+      t.retentionBase += w;
+    }
   }
   t.spend = round2(t.spend);
   return t;
@@ -244,6 +334,10 @@ export type Derived = {
   ret50: number | null;
   ret75: number | null;
   ret100: number | null;
+  /** "Taxa de retenção" do Meta (média ponderada, 0–1) */
+  retention: number | null;
+  /** curtidas + comentários + compartilhamentos */
+  engagement: number;
   lpvRate: number | null;
   cpaMeta: number | null;
   roasMeta: number | null;
@@ -270,6 +364,8 @@ export function derive(m: MetaTotals, s: SalesTotals): Derived {
     ret50: div(m.p50, m.video3s),
     ret75: div(m.p75, m.video3s),
     ret100: div(m.p100, m.video3s),
+    retention: m.retentionBase > 0 ? m.retentionW / m.retentionBase / 100 : null,
+    engagement: m.comments + m.likes + m.shares,
     lpvRate: div(m.landingPageViews, m.linkClicks),
     cpaMeta: div(m.spend, m.purchasesMeta),
     roasMeta: div(m.purchaseValueMeta, m.spend),
@@ -642,10 +738,15 @@ export function funnel(m: MetaTotals, s: SalesTotals): FunnelStep[] {
 
 export type Slice = { key: string; label: string; count: number; net: number };
 
-export function breakdown(rows: SaleX[], keyOf: (x: SaleX) => string, labelOf: (k: string) => string = (k) => k || "—"): Slice[] {
+export function breakdown(
+  rows: SaleX[],
+  keyOf: (x: SaleX) => string,
+  labelOf: (k: string) => string = (k) => k || "—",
+  opts: { bumps?: boolean } = {},
+): Slice[] {
   const m = new Map<string, Slice>();
   for (const x of rows) {
-    if (x.group !== "approved" || x.isBump) continue;
+    if (x.group !== "approved" || (x.isBump && !opts.bumps)) continue;
     const k = keyOf(x);
     const b = m.get(k) ?? { key: k, label: labelOf(k), count: 0, net: 0 };
     b.count++;

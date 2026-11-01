@@ -30,6 +30,17 @@ export type MetaDay = {
   engagementRank: string;
   conversionRank: string;
   attribution: string;
+  /** engajamento do post (colunas novas do relatório do Meta) */
+  comments: number;
+  likes: number;
+  shares: number;
+  /** "Taxa de retenção" do vídeo, em % (média do Meta para a linha) */
+  retention: number;
+  /** "Resultados" e "Indicador de resultados" (o evento que a campanha otimiza) */
+  results: number;
+  resultIndicator: string;
+  /** "Identificação do anúncio" (não muda quando o anúncio é renomeado) */
+  adId: string;
 };
 
 export type SaleStatusGroup = "approved" | "refund" | "pending" | "other";
@@ -65,6 +76,17 @@ export type Sale = {
   buyerState: string;
   /** order bump: código da transação do produto principal (vazio quando é a venda principal) */
   mainTransaction?: string;
+  /** oferta da Hotmart ("Código do preço" e "Nome deste preço", ex.: Black November) */
+  offerCode?: string;
+  offerName?: string;
+  /** "Ferramenta de Venda" (Produto principal, Produto order bump, Hotmart Recomenda…) */
+  saleTool?: string;
+  /** "Canal usado para venda" (ex.: Página de Obrigado) */
+  channel?: string;
+  /** "Tipo de cobrança" (à vista, parcelamento padrão…) */
+  chargeType?: string;
+  /** "Impostos locais de compra + Taxa de parcelamento" (pago pelo comprador) */
+  buyerTaxes?: number;
   /** compra de teste (calculado no servidor, pelos e-mails das premissas; o e-mail chega mascarado ao navegador) */
   test?: boolean;
 };
@@ -87,6 +109,8 @@ export type CampaignSettings = {
   youtubeCoupons: string[];
   adOrigins: string[];
   campaignMap: { adset: string; campaign: string }[];
+  /** curso de cada campanha (código do produto da Hotmart); sem item, o painel tenta pelo nome da campanha */
+  campaignProducts: { campaign: string; product: string }[];
 };
 
 export const DEFAULT_SETTINGS: CampaignSettings = {
@@ -107,6 +131,7 @@ export const DEFAULT_SETTINGS: CampaignSettings = {
   youtubeCoupons: ["OFF20"],
   adOrigins: ["fb", "ig", "an", "msg"],
   campaignMap: [],
+  campaignProducts: [],
 };
 
 /** junta o que veio do banco com os padrões (campos vazios ficam com o padrão) */
@@ -151,6 +176,12 @@ export function withDefaults(raw: Partial<Record<keyof CampaignSettings | "updat
       .map((x) => (x && typeof x === "object" ? (x as Record<string, unknown>) : {}))
       .map((x) => ({ adset: String(x.adset ?? "").trim(), campaign: String(x.campaign ?? "").trim() }))
       .filter((x) => x.adset && x.campaign);
+  }
+  if (Array.isArray(raw.campaignProducts)) {
+    s.campaignProducts = raw.campaignProducts
+      .map((x) => (x && typeof x === "object" ? (x as Record<string, unknown>) : {}))
+      .map((x) => ({ campaign: String(x.campaign ?? "").trim(), product: String(x.product ?? "").trim() }))
+      .filter((x) => x.campaign && x.product);
   }
   return s;
 }
