@@ -133,8 +133,9 @@ export const COURSES: Course[] = [
     // (depoimentos só entram se o painel não tiver nenhum). O resto do painel fica como está.
     // rev 12: módulos novos (10 módulos, 54 aulas) + "inclui" com a comunidade
     // rev 13: relação final de aulas (10 módulos, 44 vídeos) + certificado de 6 h no "inclui"
-    rev: 13,
-    revScope: ["href", "testimonials", "hours", "topics", "includes"],
+    // rev 14: só o link de compra (pedido do Jonas em 01/11/2026); o resto do painel fica como está
+    rev: 14,
+    revScope: "href",
     // Depoimentos de alunos reais, com uso do nome autorizado (confirmado pelo Jonas em 07/10/2026; texto como ele mandou).
     // Depois de publicados, quem manda é o painel.
     testimonials: [
@@ -174,7 +175,7 @@ export const COURSES: Course[] = [
     status: "inscricoes-abertas",
     featured: true,
     // página de pagamento da Hotmart (todos os botões de compra usam este link)
-    href: "https://pay.hotmart.com/W107866343I",
+    href: "https://pay.hotmart.com/W107866343I?checkoutMode=10",
   },
   {
     id: "audio-mesa-analogica",
