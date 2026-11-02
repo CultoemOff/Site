@@ -110,7 +110,8 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {preSale && label !== ctaLabel ? "Avise-me" : label}
     </ArrowButton>
   );
-  const testimonials = page.showTestimonials === false ? [] : (course.testimonials ?? []);
+  // provas reais escritas na página têm prioridade; senão, os depoimentos do painel (quando a seção está ligada)
+  const testimonials = page.proofs?.length ? page.proofs : page.showTestimonials === false ? [] : (course.testimonials ?? []);
   // selos de resumo (topo e conteúdo), cada um com ícone
   const facts = (
     <>
@@ -422,7 +423,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {testimonials.length > 0 && (
         <section className="sp-section sp-section--paper" aria-labelledby="sp-depoimentos" data-track-view="depoimentos">
           <div className="sp-section__inner">
-            <Kicker icon="quote">Quem já fez</Kicker>
+            <Kicker icon="quote">{page.proofs?.length ? "Provas reais" : "Quem já fez"}</Kicker>
             <h2 id="sp-depoimentos" className="swp-title">
               O que os alunos dizem.
             </h2>
