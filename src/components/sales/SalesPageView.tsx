@@ -111,6 +111,8 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
     </ArrowButton>
   );
   // provas reais escritas na página têm prioridade; senão, os depoimentos do painel (quando a seção está ligada)
+  // nota do aluno (só as provas reais têm); 0 = sem estrelas
+  const stars = (t: object) => ("rating" in t && typeof t.rating === "number" ? Math.max(0, Math.min(5, Math.round(t.rating))) : 0);
   const testimonials = page.proofs?.length ? page.proofs : page.showTestimonials === false ? [] : (course.testimonials ?? []);
   // selos de resumo (topo e conteúdo), cada um com ícone
   const facts = (
@@ -431,6 +433,15 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               {testimonials.map((t, i) => (
                 <li key={`${t.name}-${i}`} data-reveal style={{ "--i": i % 3 } as React.CSSProperties}>
                   <blockquote>
+                    {stars(t) > 0 && (
+                      <p className="sp-quotes__stars" aria-label={`Nota ${stars(t)} de 5`}>
+                        {Array.from({ length: 5 }, (_, k) => (
+                          <svg key={k} viewBox="0 0 20 20" aria-hidden="true" className={k < stars(t) ? "is-on" : ""}>
+                            <path d="M10 1.8l2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.7l-5.1 2.8 1.1-5.7-4.3-4 5.8-.7z" />
+                          </svg>
+                        ))}
+                      </p>
+                    )}
                     {t.title && <p className="sp-quotes__title">“{t.title}”</p>}
                     <p>{t.text}</p>
                   </blockquote>

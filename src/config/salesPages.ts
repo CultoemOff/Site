@@ -164,7 +164,7 @@ export type SalesPage = {
    * "Provas reais": depoimentos de alunos escritos aqui no código (com o nome autorizado pelo Jonas).
    * Quando existem, a seção mostra só estes (os depoimentos do painel ficam de fora).
    */
-  proofs?: { title?: string; text: string; name: string; role?: string }[];
+  proofs?: { title?: string; text: string; name: string; role?: string; /** nota que o aluno deu (1 a 5) */ rating?: number }[];
   /** faixa de números abaixo do topo (visualizações, vídeos, aulas, garantia); false = some */
   showProof?: boolean;
   /** seção "Você se reconhece?" (hoje × depois da formação); false = some */
@@ -402,22 +402,25 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     },
     // seção "Quem já fez" retirada a pedido do Jonas (09/10/2026); os depoimentos continuam no painel
     showTestimonials: false,
-    // provas reais (enviadas pelo Jonas em 02/11/2026; só a ortografia corrigida, palavras do aluno)
+    // provas reais (enviadas pelo Jonas em 02/11/2026; só a ortografia corrigida, palavras do aluno; nota 5 confirmada pelo Jonas)
     proofs: [
       {
         title: "Aprendi muita coisa que nunca imaginei que conseguiria.",
         text: "Muito bom! Aprendi muita coisa que nunca imaginei que conseguiria, pois achava que era só para profissionais de T.I.",
         name: "Nathalia Dantas",
+        rating: 5,
       },
       {
         title: "Até me interessei pelo tema e comecei a estudar outras coisas.",
         text: "Legal demais, até me interessei pelo tema e comecei a estudar outras coisas.",
         name: "Adilson L.",
+        rating: 5,
       },
       {
         title: "O Jonas responde as dúvidas muito rapidamente.",
         text: "Muito bom, inclusive o Jonas responde as dúvidas muito rapidamente.",
         name: "Ricardo M.",
+        rating: 5,
       },
     ],
     // seção "Para quem é" retirada (10/10/2026): o conteúdo foi para o FAQ; o professor fica ao lado do FAQ
@@ -888,22 +891,25 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     notForWho: ["Quem procura produção de vídeo profissional para TV."],
     showForWho: false,
     showTestimonials: false,
-    // provas reais (enviadas pelo Jonas em 02/11/2026; só a ortografia corrigida, palavras do aluno)
+    // provas reais (enviadas pelo Jonas em 02/11/2026; só a ortografia corrigida, palavras do aluno; nota 5 confirmada pelo Jonas)
     proofs: [
       {
         title: "Consegui entender o sistema que uma empresa montou na minha igreja.",
         text: "Muito bom! Consegui entender o sistema que uma empresa montou na minha igreja e já implementei algumas melhorias.",
         name: "Daniel F.",
+        rating: 5,
       },
       {
         title: "Refiz todas as minhas cenas no OBS Studio.",
         text: "Muito bom, refiz todas as minhas cenas no OBS Studio.",
         name: "José A.",
+        rating: 5,
       },
       {
         title: "Muito melhor que outros mais caros.",
         text: "Curso muito completo. Muito melhor que outros mais caros que são gravados no improviso e na pressa.",
         name: "AD TI",
+        rating: 5,
       },
     ],
     // faixa de números abaixo do topo: removida a pedido do Jonas (29/10/2026)

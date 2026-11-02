@@ -4243,3 +4243,18 @@ body:has(.promo-bar) .sp-offer {
   grid-template-columns: minmax(0, 1fr);
   max-width: 820px;
 }
+
+/* provas reais: estrelas da nota do aluno */
+.sp-quotes__stars {
+  display: flex;
+  gap: 3px;
+  margin: 0 0 10px;
+}
+.sp-quotes__stars svg {
+  width: 18px;
+  height: 18px;
+  fill: rgba(120, 130, 150, 0.35);
+}
+.sp-quotes__stars svg.is-on {
+  fill: #f5b301;
+}
