@@ -39,6 +39,8 @@ export type SalesPage = {
   videoVertical?: boolean;
   /** arte animada no lugar do vídeo enquanto ele não existe ("streamdeck" = painel de botões com palco e OBS) */
   heroArt?: "streamdeck";
+  /** sem vídeo nem ilustração no topo (no celular e no computador): o topo fica só com o texto */
+  hideVideo?: boolean;
   /** cor de destaque da página ("red" = vermelho, como a marca do Companion); sem isso, azul */
   theme?: "red";
   /** logo oficial do produto (arquivo enviado pelo Jonas, em /public/images/formacoes/); aparece no topo */
@@ -666,6 +668,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     // vídeo de vendas enviado pelo Jonas em 29/10/2026 (46 MB, 1080x1920), convertido para a web:
     // 720x1280, 30 fps, H.264 + AAC, ~10 MB, em /public/videos/
     videoUrl: "/videos/culto-ao-vivo.mp4",
+    // vídeo fora do ar a pedido do Jonas (02/11/2026): para voltar, apague o hideVideo abaixo
+    hideVideo: true,
     // capa do player: quadro de 0:37 (escolhido pelo Jonas)
     videoPoster: "/images/formacoes/culto-video-capa.jpg",
     videoVertical: true,

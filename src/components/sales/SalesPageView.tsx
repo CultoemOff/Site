@@ -195,7 +195,9 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       )}
 
       {/* ---------- topo ---------- */}
-      <header className={`sp-hero${promoOn ? " sp-hero--promo" : ""}${page.videoVertical ? " sp-hero--vertical" : ""}`}>
+      <header
+        className={`sp-hero${promoOn ? " sp-hero--promo" : ""}${page.hideVideo ? " sp-hero--novideo" : page.videoVertical ? " sp-hero--vertical" : ""}`}
+      >
         {/* a página não tem o menu do site: só a marca, sem link */}
         <p className="sp-brand">
           <Image src={LOGO_SRC} alt="" width={36} height={36} priority />
@@ -238,6 +240,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           </div>
 
           {/* vídeo de vendas (no celular vem primeiro; em pé, ocupa quase a tela toda) */}
+          {!page.hideVideo && (
           <div
             className={`sp-video${page.videoVertical ? " sp-video--vertical" : ""}`}
             style={
@@ -281,6 +284,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               </a>
             )}
           </div>
+          )}
         </div>
       </header>
 

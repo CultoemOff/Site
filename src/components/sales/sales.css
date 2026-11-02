@@ -4237,3 +4237,9 @@ body:has(.promo-bar) .sp-offer {
     padding-left: 36px;
   }
 }
+
+/* topo sem vídeo: só o texto, numa coluna */
+.sp-hero--novideo .sp-hero__inner {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 820px;
+}
