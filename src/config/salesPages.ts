@@ -826,8 +826,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         items: [
           "Como funciona o controle PTZ",
           "Planejando os presets do culto",
-          "NEOiD Mini: conexão e configuração",
-          "NEOiD Mini na operação do culto",
+          "Controle físico: conexão e configuração (exemplo: NEOiD Mini)",
+          "Controle físico na operação do culto",
           "Plugin PTZ para OBS",
         ],
       },
@@ -835,17 +835,27 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         title: "Encoder, bitrate e plataformas",
         icon: "wifi",
         tag: "Aulas práticas",
-        // títulos das aulas ainda não definidos
-        items: [],
-        count: 5,
+        items: [
+          "Sua internet aguenta?",
+          "Encoder: qual usar",
+          "Bitrate, resolução e fps",
+          "Transmitindo no YouTube",
+          "Facebook e várias plataformas ao mesmo tempo",
+          "Gravação local junto com a live",
+        ],
       },
       {
         title: "Operação no domingo e plano B",
         icon: "clipboardCheck",
         tag: "Aulas práticas",
-        // títulos das aulas ainda não definidos
-        items: [],
-        count: 3,
+        items: [
+          "Checklist pré-culto",
+          "Operando durante o culto",
+          "Monitorando a live",
+          "Quando algo dá errado",
+          "Pós-culto",
+          "Fechamento: a estrutura ideal por porte de igreja",
+        ],
       },
     ],
     forWho: [
