@@ -7,6 +7,7 @@ import { hasSalesPage } from "@/config/salesPages";
 import Countdown from "@/components/sales/Countdown";
 import { resolvePrice } from "@/lib/pricing";
 import { GUARANTEE_DAYS } from "@/config/site";
+import ComboBanner from "./ComboBanner";
 import CourseDiagramView from "./CourseDiagrams";
 import "./courses.css";
 
@@ -260,6 +261,8 @@ export default function Courses({ courses, showMoreButton = true, pair = false }
             <CourseCard key={c.id} course={c} index={i} plain={pair} />
           ))}
         </div>
+
+        {pair && <ComboBanner courses={courses} />}
 
         {showMoreButton && (
           <div className="courses__more" data-reveal>

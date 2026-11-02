@@ -7,6 +7,7 @@ import { hasSalesPage } from "@/config/salesPages";
 import { resolvePrice } from "@/lib/pricing";
 import { SITE_PROMO_COURSE_ID } from "@/config/site";
 import CourseDiagramView from "./CourseDiagrams";
+import ComboBanner from "./ComboBanner";
 import { CoursesTrust } from "./Courses";
 import "./courses.css";
 import "./catalog.css";
@@ -155,6 +156,8 @@ export default function CourseCatalog({ courses }: { courses: Course[] }) {
             <CatalogCard key={c.id} course={c} index={i} />
           ))}
         </ul>
+
+        <ComboBanner courses={courses} />
 
         <CoursesTrust />
       </div>

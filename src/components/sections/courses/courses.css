@@ -975,3 +975,93 @@
 .courses__grid--pair .course__visual > .cd svg {
   max-height: 100%;
 }
+
+/* ---------- combo: os dois cursos ---------- */
+.combo {
+  display: grid;
+  gap: 18px 28px;
+  align-items: center;
+  margin-top: 22px;
+  padding: clamp(20px, 3vw, 28px) clamp(20px, 3vw, 32px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 212, 59, 0.55);
+  background:
+    radial-gradient(ellipse 60% 120% at 100% 50%, rgba(255, 212, 59, 0.14), transparent 70%),
+    rgba(14, 22, 52, 0.9);
+  box-shadow: 0 24px 50px -30px rgba(255, 190, 40, 0.55);
+}
+@media (min-width: 760px) {
+  .combo {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+.combo__kicker {
+  margin: 0 0 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffd43b;
+}
+.combo__title {
+  margin: 0;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: #f4f7ff;
+}
+.combo__note {
+  margin: 8px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--muted-on-dark);
+}
+.combo__offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 22px;
+}
+.combo__price {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  color: #f4f7ff;
+}
+.combo__from {
+  font-size: 0.82rem;
+  color: var(--muted-on-dark);
+}
+.combo__price strong {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffd43b;
+  line-height: 1.1;
+}
+.combo__save {
+  font-size: 0.8rem;
+  color: #9fe4ff;
+}
+.combo__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 22px;
+  border-radius: 12px;
+  background: #ffd43b;
+  color: #1a1400;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s var(--ease-out);
+}
+.combo__btn:hover {
+  background: #ffe066;
+  transform: translateY(-1px);
+}
+.combo__btn:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+}

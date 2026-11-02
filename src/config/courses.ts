@@ -340,3 +340,14 @@ export const COURSES: Course[] = [
     href: "",
   },
 ];
+
+/**
+ * Combo: o checkout do curso principal já oferece o outro curso como order bump (marcado; a pessoa pode desmarcar).
+ * Preço do order bump conferido nas vendas da Hotmart (R$ 19,00 em 30/10 a 01/11/2026). Se mudar na Hotmart, mude aqui.
+ * Para tirar o combo do site, deixe COMBO = null.
+ */
+export const COMBO: { main: string; bump: string; bumpPrice: number } | null = {
+  main: "culto-ao-vivo-com-excelencia",
+  bump: "redes-para-igrejas",
+  bumpPrice: 19,
+};

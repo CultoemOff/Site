@@ -355,3 +355,7 @@
     transition: none;
   }
 }
+
+.catalog .combo {
+  margin: 0 0 30px;
+}
