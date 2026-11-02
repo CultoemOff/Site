@@ -117,6 +117,12 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
   // selos de resumo (topo e conteúdo), cada um com ícone
   const facts = (
     <>
+      {page.studentsLabel && (
+        <li>
+          <Icon name="users" size={15} />
+          {page.studentsLabel}
+        </li>
+      )}
       <li>
         <Icon name="play" size={15} />
         {moduleFacts}

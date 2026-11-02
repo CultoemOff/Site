@@ -160,6 +160,8 @@ export type SalesPage = {
   showForWho?: boolean;
   /** false = esconde a seção de depoimentos ("Quem já fez"), mesmo com depoimentos no painel */
   showTestimonials?: boolean;
+  /** número de alunos no topo (ex.: "+60 alunos"); use só número real, conferido nas vendas */
+  studentsLabel?: string;
   /**
    * "Provas reais": depoimentos de alunos escritos aqui no código (com o nome autorizado pelo Jonas).
    * Quando existem, a seção mostra só estes (os depoimentos do painel ficam de fora).
@@ -402,6 +404,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     },
     // seção "Quem já fez" retirada a pedido do Jonas (09/10/2026); os depoimentos continuam no painel
     showTestimonials: false,
+    // 67 vendas aprovadas do Redes na Hotmart até 01/11/2026 (sem compras de teste)
+    studentsLabel: "+60 alunos",
     // provas reais (enviadas pelo Jonas em 02/11/2026; só a ortografia corrigida, palavras do aluno; nota 5 confirmada pelo Jonas)
     proofs: [
       {
