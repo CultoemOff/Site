@@ -20,6 +20,17 @@ const nextConfig = {
       ],
     };
   },
+  // imagens e vídeos da pasta public: o navegador guarda por 1 dia e, depois, mostra a cópia guardada enquanto
+  // busca a nova (até 7 dias). Os nomes dos arquivos não mudam quando a imagem é trocada, por isso não é 1 ano.
+  async headers() {
+    const cache = [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }];
+    return [
+      { source: "/images/:path*", headers: cache },
+      { source: "/videos/:path*", headers: cache },
+      { source: "/partners/:path*", headers: cache },
+      { source: "/textures/:path*", headers: cache },
+    ];
+  },
   images: {
     // AVIF primeiro (menor), WebP como alternativa
     formats: ["image/avif", "image/webp"],
