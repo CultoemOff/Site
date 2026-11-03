@@ -134,8 +134,9 @@ export const COURSES: Course[] = [
     // rev 12: módulos novos (10 módulos, 54 aulas) + "inclui" com a comunidade
     // rev 13: relação final de aulas (10 módulos, 44 vídeos) + certificado de 6 h no "inclui"
     // rev 14: só o link de compra (pedido do Jonas em 01/11/2026); o resto do painel fica como está
-    rev: 14,
-    revScope: "href",
+    // rev 15: preço R$ 53, sem parcelamento até conferir o valor (o escopo "price" também regrava o status, que não mudou)
+    rev: 15,
+    revScope: "price",
     // Depoimentos de alunos reais, com uso do nome autorizado (confirmado pelo Jonas em 07/10/2026; texto como ele mandou).
     // Depois de publicados, quem manda é o painel.
     testimonials: [
@@ -160,10 +161,10 @@ export const COURSES: Course[] = [
     ],
     diagram: "network",
     // Os valores precisam ser iguais aos do checkout da Hotmart.
-    // Parcelamento conferido pelo Jonas com o checkout da Hotmart em 07/10/2026 (8x de R$ 8,58).
-    price: 59,
+    // R$ 53 desde 02/11/2026 (antes R$ 59). O parcelamento antigo (8x de R$ 8,58) era do preço de R$ 59:
+    // fica fora do site até o Jonas conferir o novo valor da parcela no checkout da Hotmart.
+    price: 53,
     priceFrom: 138.8,
-    installments: { count: 8, value: 8.58 },
     instructor: "jonas-silva",
     includes: [
       "Apostila de comandos e dicas rápidas para imprimir e consultar depois",
