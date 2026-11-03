@@ -75,7 +75,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
   const teacher = getInstructor(course.instructor);
   // cada item de módulo é uma aula; o módulo extra fica fora da contagem
   const lessons = lessonCount(page.modules);
-  const moduleFacts = `${page.modules.length} módulos · ${lessons} aulas`;
+  const moduleFacts = `${page.modules.length} módulos · ${lessons} aulas${page.extraModule?.label ? ` + ${page.extraModule.label}` : ""}`;
   // duração total, quando os módulos trazem os minutos (ex.: "7h35 de aula")
   const totalMin = page.modules.reduce((n, m) => n + (m.minutes ?? 0), 0);
   const totalTime = totalMin > 0 ? `${Math.floor(totalMin / 60)}h${String(totalMin % 60).padStart(2, "0")} de aula` : "";
@@ -545,7 +545,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
         <div className="sp-section__inner">
           <Kicker icon="book">Conteúdo</Kicker>
           <h2 id="sp-modulos" className="swp-title">
-            {page.modules.length} módulos, {lessons} aulas.
+            {page.modules.length} módulos, {lessons} aulas{page.extraModule?.label ? ` + ${page.extraModule.label}` : ""}.
           </h2>
           <ul className="sp-hero__facts sp-facts--modules sp-facts--icons" aria-label="Formato">
             {facts}
@@ -727,6 +727,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                 </span>
                 {lessons} videoaulas em {page.modules.length} módulos
                 {course.format.hours > 0 ? ` (${course.format.hours} horas)` : ""}
+                {page.extraModule?.label ? ` + ${page.extraModule.label}` : ""}
               </li>
               {page.modules.some((m) => m.tag) && (
                 <li>
@@ -984,7 +985,7 @@ function ModuleItem({ m, num, star, open, extra, note }: { m: SalesModule; num: 
             <small className="sp-module__count">
               {moduleLessons(m)} aulas{m.minutes ? ` · ${m.minutes} min` : ""}{note ? ` · ${note}` : ""}
             </small>
-            {m.tag && <em className={`sp-module__tag${/^(Projeto|Módulo extra)/.test(m.tag) ? " sp-module__tag--project" : ""}`}>{m.tag}</em>}
+            {m.tag && <em className={`sp-module__tag${/^(Projeto|Módulo extra|Bônus)/.test(m.tag) ? " sp-module__tag--project" : ""}`}>{m.tag}</em>}
           </span>
           <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
             <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />

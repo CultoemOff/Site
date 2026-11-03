@@ -108,7 +108,8 @@ export type SalesPage = {
   /** detalhe de cada módulo (mesma ordem de course.topics); tag opcional, ex.: "Aula prática" */
   modules: SalesModule[];
   /** módulo bônus lançado depois do curso principal: aparece à parte e não entra na contagem de módulos e aulas */
-  extraModule?: SalesModule & { note: string };
+  /** módulo bônus/extra (fora da contagem); `label` aparece junto da contagem de aulas (ex.: "bônus Reaper") */
+  extraModule?: SalesModule & { note: string; label?: string };
   /** projeto prático do último módulo, em destaque dentro da lista de módulos */
   capstone?: {
     badge: string;
@@ -891,12 +892,13 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         ],
       },
     ],
-    // módulo extra (fora da contagem dos 8 módulos), enviado pelo Jonas em 03/11/2026
+    // bônus (fora da contagem dos 8 módulos), enviado pelo Jonas em 03/11/2026
     extraModule: {
       title: "Utilizando o Reaper na mixagem do áudio da live",
       icon: "sliders",
-      tag: "Módulo extra",
-      note: "módulo extra",
+      tag: "Bônus",
+      note: "bônus",
+      label: "bônus Reaper",
       items: [
         "Por que o áudio da live é ruim",
         "Conectando a mesa de som no PC do Reaper",
