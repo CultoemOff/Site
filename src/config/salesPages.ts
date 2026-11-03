@@ -854,11 +854,11 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         icon: "presentation",
         tag: "Aulas práticas",
         items: [
-          "Como funciona o controle PTZ",
-          "Planejando os presets do culto",
-          "Controle físico: conexão e configuração (exemplo: NEOiD Mini)",
-          "Controle físico na operação do culto",
-          "Plugin PTZ para OBS",
+          // títulos da área de membros, enviados pelo Jonas em 03/11/2026
+          "Como controlar a PTZ + plugin do Culto em Off",
+          "Usando controle de videogame",
+          "Controle PTZ físico",
+          "Outra opção de plugin PTZ",
         ],
       },
       {
@@ -879,15 +879,27 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         icon: "clipboardCheck",
         tag: "Aulas práticas",
         items: [
+          // títulos da área de membros, enviados pelo Jonas em 03/11/2026
           "Checklist pré-culto",
           "Operando durante o culto",
-          "Monitorando a live",
           "Quando algo dá errado",
-          "Pós-culto",
-          "Fechamento: a estrutura ideal por porte de igreja",
+          "Projeto de acordo com o tamanho da igreja",
         ],
       },
     ],
+    // módulo extra (fora da contagem dos 8 módulos), enviado pelo Jonas em 03/11/2026
+    extraModule: {
+      title: "Utilizando o Reaper na mixagem do áudio da live",
+      icon: "sliders",
+      tag: "Módulo extra",
+      note: "módulo extra",
+      items: [
+        "Por que o áudio da live é ruim",
+        "Conectando a mesa de som no PC do Reaper",
+        "Mixagem básica no Reaper",
+        "Enviando o sinal do Reaper para o OBS Studio",
+      ],
+    },
     forWho: [
       { icon: "video", text: "Quem cuida da transmissão, das câmeras, da projeção ou do som." },
       { icon: "users", text: "Líderes de mídia e pastores que cuidam da estrutura." },
