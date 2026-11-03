@@ -691,7 +691,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     ],
   },
   // Culto ao Vivo com Excelência: vendas abertas, listada em /formacoes desde 23/10/2026 (substitui "Áudio para Live").
-  // Black November: R$ 77 (preço padrão R$ 117). Link de compra da Hotmart em src/config/courses.ts.
+  // Black November: R$ 67 (preço padrão R$ 117). Link de compra da Hotmart em src/config/courses.ts.
   "culto-ao-vivo-com-excelencia": {
     headline: "Sua live do culto, estável e bonita.",
     subheadline: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.",

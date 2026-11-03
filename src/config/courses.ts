@@ -284,11 +284,11 @@ export const COURSES: Course[] = [
     ],
     appliedTo: ["OBS Studio", "NDI", "Câmeras PTZ", "Placas de captura", "Holyrics", "SPresenter", "YouTube", "Facebook"],
     diagram: "live",
-    // Black November (29/10/2026): R$ 77; preço padrão R$ 117.
-    // Parcelamento conferido pelo Jonas no checkout da Hotmart em 02/11/2026 (12x de R$ 7,96).
-    price: 77,
+    // Black November: R$ 67 desde 02/11/2026 (antes R$ 77); preço padrão R$ 117.
+    // Parcelamento conferido pelo Jonas na Hotmart em 02/11/2026 (12x de R$ 6,93).
+    price: 67,
     priceFrom: 117,
-    installments: { count: 12, value: 7.96 },
+    installments: { count: 12, value: 6.93 },
     // rev 1: grava no banco preço, módulos/aplicações e o que está incluso
     // rev 2: preço da Black November, inscrições abertas e link de compra da Hotmart
     // rev 3: link de compra trocado (pedido do Jonas em 29/10/2026)
@@ -296,7 +296,8 @@ export const COURSES: Course[] = [
     // rev 5: módulos com os títulos da área de membros (43 aulas)
     // rev 6: aulas dos módulos 6 a 8 (47 aulas)
     // rev 7: parcelamento (12x de R$ 7,96); o escopo "price" também regrava preço e status, que não mudaram
-    rev: 7,
+    // rev 8: preço R$ 67 (12x de R$ 6,93)
+    rev: 8,
     revScope: "price",
     instructor: "jonas-silva",
     includes: [
