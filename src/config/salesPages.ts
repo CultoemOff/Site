@@ -806,6 +806,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
           "PTZ + NDI",
           "Outras categorias de câmeras",
           "Configurações da câmera: exposição, abertura, foco, FPS e resolução",
+          // aulas práticas acrescentadas pelo Jonas em 03/11/2026
+          "Configurando e testando: webcam USB",
+          "Configurando e testando: DJI Action 4",
+          "Configurando e testando: Sony ZV-E10",
         ],
       },
       {

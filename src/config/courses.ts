@@ -270,9 +270,9 @@ export const COURSES: Course[] = [
     title: "Culto ao Vivo com Excelência",
     tagline: "Transmissão de cultos com OBS Studio, do zero ao avançado.",
     summary:
-      "Transmita cultos com OBS Studio na realidade de igrejas pequenas e médias: PC simples, poucas câmeras, internet de operadora e equipe voluntária. São 44 aulas em 8 módulos, das câmeras e conexões ao áudio da live, cenas, controle PTZ e operação no domingo, com demonstrações reais na tela do OBS, e mais um módulo extra de mixagem do áudio da live no Reaper.",
+      "Transmita cultos com OBS Studio na realidade de igrejas pequenas e médias: PC simples, poucas câmeras, internet de operadora e equipe voluntária. São 47 aulas em 8 módulos, das câmeras e conexões ao áudio da live, cenas, controle PTZ e operação no domingo, com demonstrações reais na tela do OBS, e mais um módulo extra de mixagem do áudio da live no Reaper.",
     question: "Por que a live trava, se a internet da igreja é boa?",
-    topicsTitle: "8 módulos · 44 aulas + módulo extra",
+    topicsTitle: "8 módulos · 47 aulas + módulo extra",
     topics: [
       "O sistema de transmissão + hardware do computador",
       "Câmeras para igrejas",
@@ -300,7 +300,8 @@ export const COURSES: Course[] = [
     // rev 7: parcelamento (12x de R$ 7,96); o escopo "price" também regrava preço e status, que não mudaram
     // rev 8: preço R$ 67 (12x de R$ 6,93)
     // rev 9: aulas dos módulos 6 e 8 + módulo extra do Reaper (44 aulas + extra); só módulos/resumo
-    rev: 9,
+    // rev 10: 3 aulas práticas no módulo 2 (webcam, DJI Action 4, Sony ZV-E10): 47 aulas + extra
+    rev: 10,
     revScope: "topics",
     instructor: "jonas-silva",
     includes: [
