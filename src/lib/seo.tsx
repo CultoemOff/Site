@@ -2,8 +2,14 @@ import type { Course } from "@/config/courses";
 import { LOGO_SRC, SITE_DESCRIPTION, SITE_NAME, type SiteSettingsData } from "@/config/site";
 import { resolvePrice } from "@/lib/pricing";
 
-/** URL pública do site (defina NEXT_PUBLIC_SITE_URL no ambiente de produção). */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+/**
+ * URL pública do site (canonical, og:image, sitemap…). Vem de NEXT_PUBLIC_SITE_URL; sem ela, o domínio oficial
+ * (no computador, com `npm run dev`, fica o localhost). Antes, sem a variável, a produção saía com localhost:3000
+ * e quebrava a prévia dos links no WhatsApp e no Instagram.
+ */
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || (process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://cultoemoff.com.br")
+).replace(/\/$/, "");
 export const OG_IMAGE = "/og-image.jpg";
 
 export const absoluteUrl = (path = "/") => (path.startsWith("http") ? path : `${SITE_URL}${path.startsWith("/") ? "" : "/"}${path}`);

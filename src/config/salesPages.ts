@@ -161,6 +161,12 @@ export type SalesPage = {
   showForWho?: boolean;
   /** false = esconde a seção de depoimentos ("Quem já fez"), mesmo com depoimentos no painel */
   showTestimonials?: boolean;
+  /** texto do preço à vista (ex.: "no Pix" → "R$ 67 no Pix ou 12x de R$ 6,93"); sem ele, "à vista ou 12x … no cartão" */
+  cashLabel?: string;
+  /** um texto só em todos os botões de compra: "Quero por R$ 67" (o valor acompanha o preço da formação) */
+  ctaWithPrice?: boolean;
+  /** selos de garantia e certificado no bloco de preço */
+  seals?: boolean;
   /** número de alunos no topo (ex.: "+60 alunos"); use só número real, conferido nas vendas */
   studentsLabel?: string;
   /**
@@ -710,7 +716,11 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     ogImage: "/images/formacoes/culto-ao-vivo-og.jpg",
     exitPitch: "Você está a um passo de colocar o culto no ar sem susto.",
     heroNote: { icon: "monitorPlay", text: "Feito para PC simples, poucas câmeras, internet de operadora e equipe voluntária." },
-    promo: { label: "Preço Black November" },
+    // Black November até 30/11/2026 (pedido do Jonas em 05/11/2026: "até 30/11" junto do selo)
+    promo: { label: "Preço Black November · até 30/11" },
+    cashLabel: "no Pix",
+    ctaWithPrice: true,
+    seals: true,
     highlights: [
       {
         icon: "video",

@@ -4,7 +4,7 @@ import SalesTracking from "@/components/analytics/SalesTracking";
 import UtmifyPixel from "@/components/analytics/UtmifyPixel";
 import ArrowButton from "@/components/ui/ArrowButton";
 import Icon, { type IconName } from "@/components/ui/Icon";
-import { formatInstallments, formatPrice, type Course } from "@/config/courses";
+import { COMBO, COURSES, formatInstallments, formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
 import { lessonCount, moduleLessons, type SalesModule, type SalesPage } from "@/config/salesPages";
 import { GUARANTEE_DAYS, LOGO_SRC, type SiteSettingsData } from "@/config/site";
@@ -95,7 +95,15 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
   const preSale = !hasLink && Boolean(dm);
   const ctaHref = hasLink ? course.href! : preSale ? dm : "#oferta";
   const pitch = page.exitPitch ?? "Você está a um passo de entender a rede da sua igreja.";
-  const ctaLabel = preSale ? "Quero ser avisado" : promoOn ? "Comprar com desconto" : "Comprar agora";
+  // "R$ 67" (sem centavos quando o valor é redondo), para o texto dos botões
+  const priceShort = Number.isInteger(price) ? `R$ ${price}` : formatPrice(price);
+  // um texto só em todos os botões (quando a página pede): "Quero por R$ 67"
+  const buyLabel = page.ctaWithPrice && hasLink ? `Quero por ${priceShort}` : "";
+  const ctaLabel = preSale ? "Quero ser avisado" : buyLabel || (promoOn ? "Comprar com desconto" : "Comprar agora");
+  // combo: o checkout desta formação já oferece a outra como order bump
+  const combo = COMBO && COMBO.main === course.id ? COMBO : null;
+  const comboWith = combo ? COURSES.find((c) => c.id === combo.bump) : undefined;
+  const comboNote = combo && comboWith && hasLink ? `No checkout, leve também o ${comboWith.title.split(":")[0]} por ${Number.isInteger(combo.bumpPrice) ? `R$ ${combo.bumpPrice}` : formatPrice(combo.bumpPrice)}.` : "";
   const cta = (location: string, variant: "primary" | "ghost" = "primary", label = ctaLabel) => (
     <ArrowButton
       href={ctaHref}
@@ -178,7 +186,15 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       {priceFrom && <em className="sp-price__off">{off}% OFF</em>}
       {installments ? (
         <span className="sp-price__parcel">
-          à vista ou <b>{formatInstallments(installments)}</b> no cartão
+          {page.cashLabel ? (
+            <>
+              {page.cashLabel} ou <b>{formatInstallments(installments)}</b> no cartão
+            </>
+          ) : (
+            <>
+              à vista ou <b>{formatInstallments(installments)}</b> no cartão
+            </>
+          )}
         </span>
       ) : (
         page.installmentsNote && <span className="sp-price__parcel">à vista ou {page.installmentsNote}</span>
@@ -196,8 +212,8 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           off={off}
           endsAt={endsAt}
           href={ctaHref}
-          cta={preSale ? "Quero ser avisado" : "Comprar agora"}
-          ctaShort={preSale ? "Avise-me" : "Comprar"}
+          cta={preSale ? "Quero ser avisado" : buyLabel || "Comprar agora"}
+          ctaShort={preSale ? "Avise-me" : buyLabel || "Comprar"}
           external={hasLink || preSale}
           track={{ label: course.title, id: course.id, location: "faixa amarela (página do curso)", value: hasLink ? price : undefined }}
         />
@@ -242,7 +258,9 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             <div className="sp-hero__actions">
               {cta("topo")}
               <div className="sp-hero__price">
+                {promoOn && page.ctaWithPrice && <span className="sp-hero__promo">{page.promo!.label}</span>}
                 {priceTag()}
+                {comboNote && <span className="sp-combo-note">{comboNote}</span>}
                 <span>Acesso imediato · {GUARANTEE_DAYS} dias de garantia · Compra segura pela Hotmart</span>
               </div>
             </div>
@@ -788,6 +806,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             {/* sem prazo, o selo acima (ex.: "Preço Black November") já diz tudo: não repete o título */}
             {(!promoOn || endsAt) && <p className="sp-buy__title">{promoOn ? "Preço promocional por tempo limitado" : "Investimento"}</p>}
             {priceTag("sp-price--big")}
+            {comboNote && <p className="sp-combo-note sp-combo-note--buy">{comboNote}</p>}
             <p className="sp-buy__note">{installments ? "acesso imediato após a confirmação do pagamento" : "pagamento único · acesso imediato"}</p>
             {endsAt && (
               <div className="sp-buy__timer">
@@ -799,6 +818,24 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               </div>
             )}
             <div className="sp-buy__cta">{cta("oferta")}</div>
+            {page.seals && (
+              <ul className="sp-seals" aria-label="Garantias">
+                <li>
+                  <Icon name="shield" size={22} />
+                  <span>
+                    <strong>{GUARANTEE_DAYS} dias</strong> de garantia
+                  </span>
+                </li>
+                {course.includes?.some((x) => /certificado/i.test(x)) && (
+                  <li>
+                    <Icon name="graduation" size={22} />
+                    <span>
+                      <strong>Certificado</strong> de conclusão
+                    </span>
+                  </li>
+                )}
+              </ul>
+            )}
             <p className="sp-buy__safe">
               <Icon name="lock" size={16} />
               Compra segura pela Hotmart · {GUARANTEE_DAYS} dias de garantia
@@ -924,7 +961,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           </strong>
           <span>{endsAt ? <>acaba em <Countdown endsAt={endsAt} variant="inline" /></> : `${GUARANTEE_DAYS} dias de garantia`}</span>
         </p>
-        {cta("barra do celular", "primary", "Comprar")}
+        {cta("barra do celular", "primary", buyLabel || "Comprar")}
       </div>
 
       {/* ---------- aviso ao sair da página ---------- */}
@@ -953,7 +990,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           price={formatPrice(price)}
           endsAt={preSale ? undefined : endsAt}
           ctaHref={ctaHref}
-          ctaLabel={preSale ? "Quero ser avisado" : "Quero aproveitar o desconto"}
+          ctaLabel={preSale ? "Quero ser avisado" : buyLabel || "Quero aproveitar o desconto"}
           external={hasLink || preSale}
           trackEvent={preSale ? "join_waitlist" : undefined}
           location={preSale ? "popup de saída (pré-venda)" : undefined}
