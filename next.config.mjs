@@ -2,6 +2,11 @@ import { withPayload } from "@payloadcms/next/withPayload";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    // CSS dentro do próprio HTML (sem os arquivos .css que bloqueavam o primeiro desenho da página no celular).
+    // Se algo estranho aparecer no visual, apagar esta linha volta ao normal.
+    inlineCss: true,
+  },
   // URLs do site antigo (WordPress) → blog novo, preservando o SEO
   async redirects() {
     return [
