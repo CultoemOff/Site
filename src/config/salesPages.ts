@@ -706,12 +706,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     // subtítulo anterior: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.")
     headline: "Monte e opere a live do culto no OBS, do zero ao avançado.",
     subheadline: "Câmeras, áudio, cenas, letras e controle PTZ, na realidade de igrejas pequenas e médias.",
-    // vídeo de vendas enviado pelo Jonas em 29/10/2026 (46 MB, 1080x1920), convertido para a web:
-    // 720x1280, 30 fps, H.264 + AAC, ~10 MB, em /public/videos/
-    videoUrl: "/videos/culto-ao-vivo.mp4",
-    // vídeo fora do ar a pedido do Jonas (02/11/2026): para voltar, apague o hideVideo abaixo
-    hideVideo: true,
-    // capa do player: quadro de 0:37 (escolhido pelo Jonas)
+    // vídeo de vendas 2 (anúncio do site), enviado pelo Jonas em 05/11/2026 (103 MB, 1080x1920, 61 s),
+    // convertido para a web: 720x1280, 30 fps, H.264 + AAC, ~7,7 MB, em /public/videos/
+    videoUrl: "/videos/culto-ao-vivo-2.mp4",
+    // capa do player: quadro de 0:01 (a cabine com os monitores)
     videoPoster: "/images/formacoes/culto-video-capa.jpg",
     videoVertical: true,
     videoSize: { width: 720, height: 1280 },
