@@ -167,6 +167,8 @@ export type SalesPage = {
   ctaWithPrice?: boolean;
   /** selos de garantia e certificado no bloco de preço */
   seals?: boolean;
+  /** barra fixa do celular só com o botão, na largura toda: "<preço> • <texto>" (ex.: "R$ 67 • Quero me inscrever") */
+  stickyLabel?: string;
   /** número de alunos no topo (ex.: "+60 alunos"); use só número real, conferido nas vendas */
   studentsLabel?: string;
   /**
@@ -700,8 +702,10 @@ export const SALES_PAGES: Record<string, SalesPage> = {
   // Culto ao Vivo com Excelência: vendas abertas, listada em /formacoes desde 23/10/2026 (substitui "Áudio para Live").
   // Black November: R$ 67 (preço padrão R$ 117). Link de compra da Hotmart em src/config/courses.ts.
   "culto-ao-vivo-com-excelencia": {
-    headline: "Sua live do culto, estável e bonita.",
-    subheadline: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.",
+    // título em teste desde 05/11/2026, igual à promessa do reel (o anterior era "Sua live do culto, estável e bonita.";
+    // subtítulo anterior: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.")
+    headline: "Monte e opere a live do culto no OBS, do zero ao avançado.",
+    subheadline: "Câmeras, áudio, cenas, letras e controle PTZ, na realidade de igrejas pequenas e médias.",
     // vídeo de vendas enviado pelo Jonas em 29/10/2026 (46 MB, 1080x1920), convertido para a web:
     // 720x1280, 30 fps, H.264 + AAC, ~10 MB, em /public/videos/
     videoUrl: "/videos/culto-ao-vivo.mp4",
@@ -721,6 +725,7 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     cashLabel: "no Pix",
     ctaWithPrice: true,
     seals: true,
+    stickyLabel: "Quero me inscrever",
     highlights: [
       {
         icon: "video",

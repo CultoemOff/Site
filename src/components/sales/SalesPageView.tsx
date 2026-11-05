@@ -954,15 +954,20 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
       </section>
 
       {/* ---------- barra fixa (celular) ---------- */}
-      <div className="sp-sticky">
-        <p>
-          <strong>
-            {priceFrom && <s>{formatPrice(priceFrom)}</s>} {formatPrice(price)}
-          </strong>
-          <span>{endsAt ? <>acaba em <Countdown endsAt={endsAt} variant="inline" /></> : `${GUARANTEE_DAYS} dias de garantia`}</span>
-        </p>
-        {cta("barra do celular", "primary", buyLabel || "Comprar")}
-      </div>
+      {page.stickyLabel && hasLink ? (
+        // só o botão, na largura toda: "R$ 67 • Quero me inscrever"
+        <div className="sp-sticky sp-sticky--full">{cta("barra do celular", "primary", `${priceShort} • ${page.stickyLabel}`)}</div>
+      ) : (
+        <div className="sp-sticky">
+          <p>
+            <strong>
+              {priceFrom && <s>{formatPrice(priceFrom)}</s>} {formatPrice(price)}
+            </strong>
+            <span>{endsAt ? <>acaba em <Countdown endsAt={endsAt} variant="inline" /></> : `${GUARANTEE_DAYS} dias de garantia`}</span>
+          </p>
+          {cta("barra do celular", "primary", buyLabel || "Comprar")}
+        </div>
+      )}
 
       {/* ---------- aviso ao sair da página ---------- */}
       {promoOn && (

@@ -4320,3 +4320,13 @@ body:has(.promo-bar) .sp-offer {
   display: block;
   font-size: 0.98rem;
 }
+
+/* barra fixa do celular só com o botão, na largura toda */
+@media (max-width: 760px) {
+  .sp-sticky--full .btn {
+    flex: 1;
+    justify-content: center;
+    min-height: 50px;
+    font-size: 1rem;
+  }
+}
