@@ -11,6 +11,8 @@ import { youTubeId } from "@/lib/youtubeId";
  * - Link do YouTube (inclusive Shorts): só carrega o player ao tocar no play.
  * `vertical` = vídeo em pé (9:16); no celular ele ocupa quase a tela toda, com o aviso para rolar logo abaixo.
  * Medição (Google Analytics): video_start ao dar play e, no .mp4, video_progress em 25/50/75% e video_complete.
+ * Desempenho (.mp4): o vídeo só começa a baixar no toque (sem `src` antes disso) e a capa é uma imagem
+ * otimizada com prioridade alta — ela costuma ser o maior elemento da tela (LCP) no celular.
  * `autoplayMobile` (só .mp4): no celular o vídeo começa sozinho, SEM som (os navegadores bloqueiam autoplay com som);
  * um toque liga o som e volta o vídeo para o começo.
  */
@@ -67,7 +69,11 @@ export default function SalesVideo({
       void v.play().catch(() => undefined);
       return;
     }
-    if (!ytId) requestAnimationFrame(() => void videoRef.current?.play().catch(() => undefined));
+    if (!ytId && v) {
+      // o arquivo só é pedido agora (no toque): play() dentro do toque mantém o som liberado
+      if (!v.getAttribute("src")) v.src = src;
+      void v.play().catch(() => undefined);
+    }
   };
 
   const onTime = () => {
@@ -99,11 +105,10 @@ export default function SalesVideo({
         {!ytId && (
           <video
             ref={videoRef}
-            src={src}
-            poster={poster}
+            src={autoplayMobile ? src : undefined}
             controls={playing}
             playsInline
-            preload={autoplayMobile ? "auto" : "metadata"}
+            preload={autoplayMobile ? "auto" : "none"}
             muted={preview || undefined}
             onTimeUpdate={onTime}
             onEnded={() => track("video_complete", { label: title, location: "topo" })}
@@ -126,7 +131,15 @@ export default function SalesVideo({
 
         {!playing && !preview && (
           <button type="button" className="sp-player__poster" onClick={start}>
-            {cover && ytId && <Image src={cover} alt="" fill sizes={vertical ? "(max-width: 760px) 90vw, 360px" : "(max-width: 960px) 100vw, 600px"} />}
+            {cover && (
+              <Image
+                src={cover}
+                alt=""
+                fill
+                priority
+                sizes={vertical ? "(max-width: 760px) 90vw, 360px" : "(max-width: 960px) 100vw, 600px"}
+              />
+            )}
             <span className="sp-video__play" aria-hidden="true">
               <svg viewBox="0 0 24 24">
                 <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
