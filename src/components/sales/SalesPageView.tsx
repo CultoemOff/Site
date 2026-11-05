@@ -287,6 +287,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                 poster={page.videoPoster}
                 vertical={page.videoVertical}
                 title={`Apresentação da formação ${course.title}`}
+                autoplayMobile={page.videoAutoplay}
               />
             ) : (
               <div className="sp-video__placeholder" role="img" aria-label="Vídeo de apresentação em breve">

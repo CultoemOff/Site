@@ -4330,3 +4330,50 @@ body:has(.promo-bar) .sp-offer {
     font-size: 1rem;
   }
 }
+
+/* vídeo tocando sozinho sem som (celular): a tela toda vira o botão "Toque para ouvir" */
+.sp-player__unmute {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  /* no meio do vídeo: embaixo, o aviso de cookies cobriria o botão */
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+.sp-player__unmute-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: rgba(5, 10, 24, 0.82);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(255, 255, 255, 0.85);
+  animation: sp-unmute-pulse 1.8s ease-in-out infinite;
+}
+.sp-player__unmute-btn svg {
+  width: 24px;
+  height: 24px;
+}
+.sp-player__unmute:focus-visible .sp-player__unmute-btn {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+}
+@keyframes sp-unmute-pulse {
+  50% {
+    transform: scale(1.06);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp-player__unmute-btn {
+    animation: none;
+  }
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { track } from "@/components/analytics/track";
 import { youTubeId } from "@/lib/youtubeId";
 
@@ -11,27 +11,62 @@ import { youTubeId } from "@/lib/youtubeId";
  * - Link do YouTube (inclusive Shorts): só carrega o player ao tocar no play.
  * `vertical` = vídeo em pé (9:16); no celular ele ocupa quase a tela toda, com o aviso para rolar logo abaixo.
  * Medição (Google Analytics): video_start ao dar play e, no .mp4, video_progress em 25/50/75% e video_complete.
+ * `autoplayMobile` (só .mp4): no celular o vídeo começa sozinho, SEM som (os navegadores bloqueiam autoplay com som);
+ * um toque liga o som e volta o vídeo para o começo.
  */
 export default function SalesVideo({
   src,
   poster,
   vertical,
   title,
+  autoplayMobile,
 }: {
   src: string;
   poster?: string;
   vertical?: boolean;
   title: string;
+  autoplayMobile?: boolean;
 }) {
   const [playing, setPlaying] = useState(false);
+  // tocando sozinho, sem som (celular)
+  const [preview, setPreview] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const marks = useRef(new Set<number>());
   const ytId = /\.(mp4|webm|mov)(\?|$)/i.test(src) ? null : youTubeId(src);
   const shape = vertical ? "sp-player sp-player--vertical" : "sp-player";
 
+  // autoplay sem som no celular (não liga com "reduzir movimento" nem com economia de dados)
+  useEffect(() => {
+    if (!autoplayMobile || ytId) return;
+    const v = videoRef.current;
+    if (!v) return;
+    const mobile = window.matchMedia("(max-width: 760px)").matches;
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const saveData = Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
+    if (!mobile || calm || saveData) return;
+    v.muted = true;
+    v.loop = true;
+    v.play()
+      .then(() => {
+        setPreview(true);
+        track("video_autoplay", { label: title, location: "topo", only: "ga" });
+      })
+      .catch(() => undefined);
+  }, [autoplayMobile, ytId, title]);
+
   const start = () => {
     setPlaying(true);
     track("video_start", { label: title, location: "topo" });
+    const v = videoRef.current;
+    if (!ytId && v && preview) {
+      // estava tocando sem som: liga o som e começa do início
+      setPreview(false);
+      v.loop = false;
+      v.muted = false;
+      v.currentTime = 0;
+      void v.play().catch(() => undefined);
+      return;
+    }
     if (!ytId) requestAnimationFrame(() => void videoRef.current?.play().catch(() => undefined));
   };
 
@@ -68,14 +103,28 @@ export default function SalesVideo({
             poster={poster}
             controls={playing}
             playsInline
-            preload="metadata"
+            preload={autoplayMobile ? "auto" : "metadata"}
+            muted={preview || undefined}
             onTimeUpdate={onTime}
             onEnded={() => track("video_complete", { label: title, location: "topo" })}
             aria-label={title}
           />
         )}
 
-        {!playing && (
+        {!playing && preview && (
+          <button type="button" className="sp-player__unmute" onClick={start}>
+            <span className="sp-player__unmute-btn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
+                <path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+              Toque para ouvir
+            </span>
+            <span className="sr-only">Ligar o som e assistir do começo: {title}</span>
+          </button>
+        )}
+
+        {!playing && !preview && (
           <button type="button" className="sp-player__poster" onClick={start}>
             {cover && ytId && <Image src={cover} alt="" fill sizes={vertical ? "(max-width: 760px) 90vw, 360px" : "(max-width: 960px) 100vw, 600px"} />}
             <span className="sp-video__play" aria-hidden="true">
