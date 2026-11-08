@@ -841,7 +841,8 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               <Icon name="lock" size={16} />
               Compra segura pela Hotmart · {GUARANTEE_DAYS} dias de garantia
             </p>
-            {dm && <DirectButton href={dm} location="oferta" compact />}
+            {/* botão de dúvida no direct: só na pré-venda (com venda aberta, as conversas não viravam compra; pedido do Jonas em 08/11/2026) */}
+            {dm && !hasLink && <DirectButton href={dm} location="oferta" compact />}
           </div>
         </div>
       </section>
@@ -874,7 +875,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
               <p>{teacher.bio}</p>
             </aside>
             )}
-            {dm && (
+            {dm && !hasLink && (
               <div className="sp-direct-box">
                 <p>Ficou com dúvida? Me chama no direct.</p>
                 <DirectButton href={dm} location="duvidas" />
