@@ -141,7 +141,7 @@ export const guiaTransmitirCulto: SeedPost = {
     { hr: true },
     { h2: "Quer aprender tudo isso na prática?" },
     {
-      p: `No curso [Culto ao Vivo com Excelência](${OBS}), cada etapa deste guia vira aula prática, gravada na tela do OBS e na cabine de uma igreja de verdade: câmeras e PTZ, NDI, o mix da live, cenas, letras com Holyrics e SPresenter, encoder, plataformas e o plano B do domingo.`,
+      p: `No **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), cada etapa deste guia vira aula prática, gravada na tela do OBS e na cabine de uma igreja de verdade: câmeras e PTZ, NDI, o mix da live, cenas, letras com Holyrics e SPresenter, encoder, plataformas e o plano B do domingo.`,
     },
   ],
 };
@@ -233,7 +233,7 @@ export const guiaCameraCulto: SeedPost = {
     { hr: true },
     { h2: "Veja cada câmera funcionando" },
     {
-      p: `No curso [Culto ao Vivo com Excelência](${OBS}), o módulo de câmeras mostra os tipos lado a lado e tem aulas práticas configurando e testando uma webcam USB, a DJI Action 4 e a Sony ZV-E10 no OBS, além da PTZ com NDI.`,
+      p: `No **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), o módulo de câmeras mostra os tipos lado a lado e tem aulas práticas configurando e testando uma webcam USB, a DJI Action 4 e a Sony ZV-E10 no OBS, além da PTZ com NDI.`,
     },
   ],
 };
@@ -310,7 +310,7 @@ export const guiaPtzIgreja: SeedPost = {
     { hr: true },
     { h2: "Aprenda a operar a PTZ no culto" },
     {
-      p: `O curso [Culto ao Vivo com Excelência](${OBS}) tem um módulo inteiro de controle PTZ: o plugin do Culto em Off, controle de videogame, controle físico e outro plugin. E se a sua dúvida é a rede por trás das câmeras, o curso [Redes para Igrejas](${REDES}) explica NDI, PoE, IP e switch do zero.`,
+      p: `O **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), tem um módulo inteiro de controle PTZ: o plugin do Culto em Off, controle de videogame, controle físico e outro plugin. E se a sua dúvida é a rede por trás das câmeras, o [curso de redes para igrejas](${REDES}) **Redes para Igrejas** explica NDI, PoE, IP e switch do zero.`,
     },
   ],
 };
@@ -371,7 +371,7 @@ export const guiaWifiIgreja: SeedPost = {
     { hr: true },
     { h2: "Entenda a rede da sua igreja de verdade" },
     {
-      p: `O curso [Redes para Igrejas](${REDES}) explica do zero, com exemplos da cabine técnica: IP, DHCP, máscara, gateway, switch, PoE, Wi-Fi, NDI e câmeras PTZ, com roteadores na prática e um projeto final com OBS, NDI e PTZ. Feito para quem não é de TI.`,
+      p: `O [curso de redes para igrejas](${REDES}) **Redes para Igrejas** explica do zero, com exemplos da cabine técnica: IP, DHCP, máscara, gateway, switch, PoE, Wi-Fi, NDI e câmeras PTZ, com roteadores na prática e um projeto final com OBS, NDI e PTZ. Feito para quem não é de TI.`,
     },
   ],
 };
@@ -451,7 +451,7 @@ export const guiaLiveTravando: SeedPost = {
     { hr: true },
     { h2: "Uma live que não trava no domingo" },
     {
-      p: `O curso [Culto ao Vivo com Excelência](${OBS}) tem um módulo de encoder, bitrate e plataformas (\"Sua internet aguenta?\", encoder, bitrate, resolução e fps) e outro de operação no domingo e plano B. E o curso [Redes para Igrejas](${REDES}) ajuda a resolver a rede por trás da live.`,
+      p: `O **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), tem um módulo de encoder, bitrate e plataformas (\"Sua internet aguenta?\", encoder, bitrate, resolução e fps) e outro de operação no domingo e plano B. E o [curso de redes para igrejas](${REDES}) **Redes para Igrejas** ajuda a resolver a rede por trás da live.`,
     },
   ],
 };

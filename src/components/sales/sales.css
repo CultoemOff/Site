@@ -54,6 +54,9 @@
   text-transform: uppercase;
   color: var(--signal);
 }
+h1.swp-hero__channel {
+  font-weight: 400;
+}
 .sp-hero__title {
   margin: 8px 0 14px;
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;

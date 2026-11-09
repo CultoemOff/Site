@@ -56,6 +56,7 @@ export default async function CourseSalesPage({ params }: Props) {
           "@context": "https://schema.org",
           "@type": "Course",
           name: course.title,
+          ...(page.seo?.kicker ? { alternateName: page.seo.kicker } : {}),
           description: page.seo?.description ?? page.subheadline,
           url: `${SITE_URL}/formacoes/${slug}`,
           inLanguage: "pt-BR",

@@ -99,7 +99,7 @@ export const guiaFilmarCulto: SeedPost = {
     { hr: true },
     { h2: "Aprenda a montar e operar as câmeras do culto" },
     {
-      p: `No curso [Culto ao Vivo com Excelência](${OBS}), o módulo **Câmeras para igrejas** mostra os tipos de câmera, as configurações de exposição, abertura, foco, fps e resolução, e testes práticos com webcam USB, DJI Action 4 e Sony ZV-E10. Depois, você coloca tudo no OBS e opera o culto com PTZ.`,
+      p: `No **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), o módulo **Câmeras para igrejas** mostra os tipos de câmera, as configurações de exposição, abertura, foco, fps e resolução, e testes práticos com webcam USB, DJI Action 4 e Sony ZV-E10. Depois, você coloca tudo no OBS e opera o culto com PTZ.`,
     },
   ],
 };
@@ -176,7 +176,7 @@ export const guiaQuantasCameras: SeedPost = {
     { hr: true },
     { h2: "Monte o sistema certo para o tamanho da sua igreja" },
     {
-      p: `O curso [Culto ao Vivo com Excelência](${OBS}) tem a aula **Projeto de acordo com o tamanho da igreja**, além dos módulos de câmeras, conexões (placas de captura, mesa de corte e NDI) e controle PTZ.`,
+      p: `O **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), tem a aula **Projeto de acordo com o tamanho da igreja**, além dos módulos de câmeras, conexões (placas de captura, mesa de corte e NDI) e controle PTZ.`,
     },
   ],
 };
@@ -250,7 +250,7 @@ export const guiaIluminacao: SeedPost = {
     { hr: true },
     { h2: "Ajuste a câmera para a luz do seu templo" },
     {
-      p: `No curso [Culto ao Vivo com Excelência](${OBS}), a aula **Configurações da câmera: exposição, abertura, foco, FPS e resolução** mostra como travar os ajustes para a imagem não mudar a cada luz do palco.`,
+      p: `No **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), a aula **Configurações da câmera: exposição, abertura, foco, FPS e resolução** mostra como travar os ajustes para a imagem não mudar a cada luz do palco.`,
     },
   ],
 };
@@ -318,7 +318,7 @@ export const guiaObsVmix: SeedPost = {
     { hr: true },
     { h2: "Domine o OBS Studio do zero ao avançado" },
     {
-      p: `O curso [Culto ao Vivo com Excelência](${OBS}) tem o módulo **OBS Studio: do zero à live**, com cenas, fontes, câmeras NDI e HDMI, Modo Estúdio, letras e avisos com Holyrics e SPresenter, câmera de Libras e backup das cenas.`,
+      p: `O **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), tem o módulo **OBS Studio: do zero à live**, com cenas, fontes, câmeras NDI e HDMI, Modo Estúdio, letras e avisos com Holyrics e SPresenter, câmera de Libras e backup das cenas.`,
     },
   ],
 };
@@ -390,7 +390,7 @@ export const guiaMesaDeCorte: SeedPost = {
     { hr: true },
     { h2: "Entenda cada caminho antes de comprar" },
     {
-      p: `O curso [Culto ao Vivo com Excelência](${OBS}) tem o módulo **Conexões, placas de captura, mesa de corte e NDI**: conversores HDMI e SDI, placas de captura, vídeo pela rede, DistroAV no OBS e a aula de mesa de corte. Para montar a rede das câmeras NDI, veja o curso [Redes para Igrejas](${REDES}).`,
+      p: `O **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), tem o módulo **Conexões, placas de captura, mesa de corte e NDI**: conversores HDMI e SDI, placas de captura, vídeo pela rede, DistroAV no OBS e a aula de mesa de corte. Para montar a rede das câmeras NDI, veja o [curso de redes para igrejas](${REDES}) **Redes para Igrejas**.`,
     },
   ],
 };
@@ -467,7 +467,7 @@ export const guiaVariasPlataformas: SeedPost = {
     { hr: true },
     { h2: "Aprenda a configurar cada plataforma" },
     {
-      p: `O curso [Culto ao Vivo com Excelência](${OBS}) tem o módulo **Encoder, bitrate e plataformas**, com as aulas \"Sua internet aguenta?\", \"Transmitindo no YouTube\", \"Facebook e várias plataformas ao mesmo tempo\" e \"Gravação local junto com a live\".`,
+      p: `O **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), tem o módulo **Encoder, bitrate e plataformas**, com as aulas \"Sua internet aguenta?\", \"Transmitindo no YouTube\", \"Facebook e várias plataformas ao mesmo tempo\" e \"Gravação local junto com a live\".`,
     },
   ],
 };
@@ -552,7 +552,7 @@ export const guiaMinisterioMidia: SeedPost = {
     { hr: true },
     { h2: "Forme a equipe de mídia da sua igreja" },
     {
-      p: `O curso [Culto ao Vivo com Excelência](${OBS}) é pensado para voluntários: começa nos fundamentos e termina no módulo **Operação no domingo e plano B**, com checklist pré-culto e o que fazer quando algo dá errado. Um bom material para treinar quem está chegando na mídia.`,
+      p: `O **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), é pensado para voluntários: começa nos fundamentos e termina no módulo **Operação no domingo e plano B**, com checklist pré-culto e o que fazer quando algo dá errado. Um bom material para treinar quem está chegando na mídia.`,
     },
   ],
 };
@@ -621,7 +621,7 @@ export const guiaPodcastIgreja: SeedPost = {
     { hr: true },
     { h2: "O mesmo Reaper e OBS do culto" },
     {
-      p: `O curso [Culto ao Vivo com Excelência](${OBS}) tem o módulo **Áudio na transmissão** e o bônus **Utilizando o Reaper na mixagem do áudio da live**, que ensinam a ligar a mesa de som no computador, mixar no Reaper e levar o sinal para o OBS. É a mesma base do podcast da igreja.`,
+      p: `O **Culto ao Vivo com Excelência**, nosso [curso de OBS Studio para igrejas](${OBS}), tem o módulo **Áudio na transmissão** e o bônus **Utilizando o Reaper na mixagem do áudio da live**, que ensinam a ligar a mesa de som no computador, mixar no Reaper e levar o sinal para o OBS. É a mesma base do podcast da igreja.`,
     },
   ],
 };

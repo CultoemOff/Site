@@ -202,6 +202,8 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
     </p>
   );
 
+  const SeoH1 = page.seo?.kicker ? "h1" : "p";
+  const Headline = page.seo?.kicker ? "p" : "h1";
   return (
     <div className={`sp-page${page.theme ? ` sp-page--${page.theme}` : ""}`}>
       {/* ---------- faixa da promoção: fixa no topo, acima do menu ---------- */}
@@ -232,12 +234,14 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
         </p>
         <div className="sp-hero__inner">
           <div className="sp-hero__text" id="sp-inicio">
-            <p className="swp-hero__channel">
+            {/* com a linha de SEO (ex.: "Curso de OBS Studio para igrejas"), ela é o H1 da página e a frase grande
+                fica como texto; o visual não muda */}
+            <SeoH1 className="swp-hero__channel">
               <span aria-hidden="true" />
               {page.seo?.kicker ?? "Formação Culto em Off"}
               {course.status === "lancamento-em-breve" ? " · Lançamento em breve" : ""}
               {course.status === "inscricoes-abertas" ? " · Inscrições abertas" : ""}
-            </p>
+            </SeoH1>
             {page.productLogo ? (
               <p className="sp-hero__course sp-hero__course--logo">
                 <Image src={page.productLogo.src} alt={page.productLogo.alt} width={page.productLogo.width} height={page.productLogo.height} priority />
@@ -245,7 +249,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
             ) : (
               <p className="sp-hero__course">{course.title}</p>
             )}
-            <h1 className="sp-hero__title">{page.headline}</h1>
+            <Headline className="sp-hero__title">{page.headline}</Headline>
             <p className="sp-hero__sub">{page.subheadline}</p>
             {page.heroNote && (
               <p className="sp-hero__note">

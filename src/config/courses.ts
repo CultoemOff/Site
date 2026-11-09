@@ -39,7 +39,7 @@ export const formatPrice = (value: number) =>
 /** Parcelamento: { count: 8, value: 10.03 } → "8x de R$ 10,03" */
 export const formatInstallments = (i: { count: number; value: number }) => `${i.count}x de ${formatPrice(i.value)}`;
 
-export type CourseRevScope = "price" | "href" | "testimonials" | "hours" | "topics" | "includes" | "question";
+export type CourseRevScope = "price" | "href" | "testimonials" | "hours" | "topics" | "includes" | "question" | "tagline";
 
 export type CourseDiagram = "network" | "analog" | "live" | "companion" | "dmx";
 
@@ -268,7 +268,8 @@ export const COURSES: Course[] = [
   {
     id: "culto-ao-vivo-com-excelencia",
     title: "Culto ao Vivo com Excelência",
-    tagline: "Transmissão de cultos com OBS Studio, do zero ao avançado.",
+    // SEO (09/11/2026): o card diz o que o curso é, com o termo buscado "curso de OBS Studio para igrejas"
+    tagline: "Curso de OBS Studio para igrejas: a live do culto do zero ao avançado.",
     summary:
       "Transmita cultos com OBS Studio na realidade de igrejas pequenas e médias: PC simples, poucas câmeras, internet de operadora e equipe voluntária. São 47 aulas em 8 módulos, das câmeras e conexões ao áudio da live, cenas, controle PTZ e operação no domingo, com demonstrações reais na tela do OBS, e um bônus de mixagem do áudio da live no Reaper.",
     question: "Por que a live trava, se a internet da igreja é boa?",
@@ -302,8 +303,9 @@ export const COURSES: Course[] = [
     // rev 9: aulas dos módulos 6 e 8 + módulo extra do Reaper (44 aulas + extra); só módulos/resumo
     // rev 10: 3 aulas práticas no módulo 2 (webcam, DJI Action 4, Sony ZV-E10): 47 aulas + extra
     // rev 11: "47 aulas + bônus Reaper"
-    rev: 11,
-    revScope: "topics",
+    // rev 12: subtítulo do card com "Curso de OBS Studio para igrejas" (só o subtítulo)
+    rev: 12,
+    revScope: "tagline",
     instructor: "jonas-silva",
     includes: [
       "Certificado de conclusão",
