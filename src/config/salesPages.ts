@@ -168,8 +168,6 @@ export type SalesPage = {
    * a linha acima do título da página e os assuntos do curso nos dados estruturados.
    */
   seo?: { title: string; description: string; kicker?: string; keywords?: string[] };
-  /** guias do blog sobre o tema da formação, listados depois das perguntas frequentes (links internos para SEO) */
-  guides?: { title: string; href: string }[];
   /** texto do preço à vista (ex.: "no Pix" → "R$ 67 no Pix ou 12x de R$ 6,93"); sem ele, "à vista ou 12x … no cartão" */
   cashLabel?: string;
   /** um texto só em todos os botões de compra: "Quero por R$ 67" (o valor acompanha o preço da formação) */
@@ -214,13 +212,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         "roteador Vivo Claro TP-Link",
       ],
     },
-    guides: [
-      { title: "Wi-Fi na igreja: como montar uma rede que não cai no culto", href: "/blog/wi-fi-na-igreja-rede-que-nao-cai-no-culto" },
-      { title: "Câmera PTZ para igreja: o que é, se vale a pena e como escolher", href: "/blog/camera-ptz-para-igreja-vale-a-pena" },
-      { title: "Live do culto travando? 7 causas e como resolver", href: "/blog/live-do-culto-travando-causas-e-solucoes" },
-      { title: "Mesa de corte na igreja: ATEM Mini vale a pena? Como ligar com o OBS", href: "/blog/mesa-de-corte-na-igreja-atem-mini-vale-a-pena" },
-      { title: "Como transmitir o culto ao vivo no YouTube com OBS Studio", href: "/blog/como-transmitir-o-culto-ao-vivo-com-obs-studio" },
-    ],
     // pixel da UTMify (script enviado pelo Jonas em 20/10/2026); carrega sempre
     utmifyPixelId: "6ad77e62256bb057ce2da149",
     headline: "Pare de reiniciar tudo e torcer para funcionar.",
@@ -773,16 +764,6 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         "ministério de mídia",
       ],
     },
-    guides: [
-      { title: "Como transmitir o culto ao vivo no YouTube com OBS Studio", href: "/blog/como-transmitir-o-culto-ao-vivo-com-obs-studio" },
-      { title: "Qual câmera comprar para transmitir o culto: do celular à PTZ", href: "/blog/qual-camera-comprar-para-transmitir-o-culto" },
-      { title: "Câmera PTZ para igreja: o que é, se vale a pena e como escolher", href: "/blog/camera-ptz-para-igreja-vale-a-pena" },
-      { title: "Como filmar o culto: posições das câmeras, enquadramento e luz", href: "/blog/como-filmar-o-culto-posicoes-enquadramento-e-luz" },
-      { title: "OBS Studio ou vMix: qual usar na transmissão do culto?", href: "/blog/obs-studio-ou-vmix-qual-usar-na-igreja" },
-      { title: "Mesa de corte na igreja: ATEM Mini vale a pena? Como ligar com o OBS", href: "/blog/mesa-de-corte-na-igreja-atem-mini-vale-a-pena" },
-      { title: "Como transmitir o culto no YouTube, Facebook e Instagram ao mesmo tempo", href: "/blog/transmitir-o-culto-no-youtube-facebook-e-instagram-ao-mesmo-tempo" },
-      { title: "Live do culto travando? 7 causas e como resolver", href: "/blog/live-do-culto-travando-causas-e-solucoes" },
-    ],
     // título em teste desde 05/11/2026, igual à promessa do reel (o anterior era "Sua live do culto, estável e bonita.";
     // subtítulo anterior: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.")
     headline: "Monte e opere a live do culto no OBS, do zero ao avançado.",

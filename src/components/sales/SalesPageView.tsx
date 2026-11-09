@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import CourseDiagramView from "@/components/sections/courses/CourseDiagrams";
 import SalesTracking from "@/components/analytics/SalesTracking";
 import UtmifyPixel from "@/components/analytics/UtmifyPixel";
@@ -897,21 +896,6 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
                 <p>{f.answer}</p>
               </details>
             ))}
-            {/* guias gratuitos do blog sobre o tema (links internos para SEO) */}
-            {page.guides && page.guides.length > 0 && (
-              <nav className="sp-guides" aria-labelledby="sp-guias">
-                <h3 id="sp-guias" className="sp-guides__title">Guias gratuitos no blog</h3>
-                <ul>
-                  {page.guides.map((g) => (
-                    <li key={g.href}>
-                      <Link href={g.href} data-track="select_content" data-track-label={g.title} data-track-location="guias do blog">
-                        {g.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            )}
           </div>
         </div>
       </section>
