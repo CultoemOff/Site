@@ -168,6 +168,8 @@ export type SalesPage = {
    * a linha acima do título da página e os assuntos do curso nos dados estruturados.
    */
   seo?: { title: string; description: string; kicker?: string; keywords?: string[] };
+  /** guias do blog sobre o tema da formação, listados depois das perguntas frequentes (links internos para SEO) */
+  guides?: { title: string; href: string }[];
   /** texto do preço à vista (ex.: "no Pix" → "R$ 67 no Pix ou 12x de R$ 6,93"); sem ele, "à vista ou 12x … no cartão" */
   cashLabel?: string;
   /** um texto só em todos os botões de compra: "Quero por R$ 67" (o valor acompanha o preço da formação) */
@@ -196,10 +198,29 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     seo: {
       title: "Curso de Redes para Igrejas: Wi-Fi, NDI e câmeras PTZ",
       description:
-        "Curso de redes para igrejas: IP, DHCP, switch, roteador e Wi-Fi explicados do zero, com NDI, câmeras PTZ e OBS na rede da igreja. Online, com certificado de 6 horas.",
+        "Curso de redes para igrejas e iniciantes: IP, DHCP, switch, roteador e Wi-Fi que não cai no culto, explicados do zero, com NDI, câmera IP PTZ e OBS Studio na rede. Online, com certificado de 6 horas.",
       kicker: "Curso de redes para igrejas",
-      keywords: ["curso de redes", "redes para igrejas", "Wi-Fi para igreja", "NDI", "câmera PTZ na rede", "switch PoE", "rede para transmissão de culto"],
+      keywords: [
+        "curso de redes",
+        "curso de redes para iniciantes",
+        "redes para igrejas",
+        "Wi-Fi para igreja",
+        "Wi-Fi caindo no culto",
+        "NDI",
+        "OBS NDI",
+        "câmera IP PTZ",
+        "switch PoE",
+        "rede para transmissão de culto",
+        "roteador Vivo Claro TP-Link",
+      ],
     },
+    guides: [
+      { title: "Wi-Fi na igreja: como montar uma rede que não cai no culto", href: "/blog/wi-fi-na-igreja-rede-que-nao-cai-no-culto" },
+      { title: "Câmera PTZ para igreja: o que é, se vale a pena e como escolher", href: "/blog/camera-ptz-para-igreja-vale-a-pena" },
+      { title: "Live do culto travando? 7 causas e como resolver", href: "/blog/live-do-culto-travando-causas-e-solucoes" },
+      { title: "Mesa de corte na igreja: ATEM Mini vale a pena? Como ligar com o OBS", href: "/blog/mesa-de-corte-na-igreja-atem-mini-vale-a-pena" },
+      { title: "Como transmitir o culto ao vivo no YouTube com OBS Studio", href: "/blog/como-transmitir-o-culto-ao-vivo-com-obs-studio" },
+    ],
     // pixel da UTMify (script enviado pelo Jonas em 20/10/2026); carrega sempre
     utmifyPixelId: "6ad77e62256bb057ce2da149",
     headline: "Pare de reiniciar tudo e torcer para funcionar.",
@@ -484,6 +505,18 @@ export const SALES_PAGES: Record<string, SalesPage> = {
         answer: "Como introdução: o módulo 7 tem duas aulas de Bitfocus Companion (o que é e uma demonstração prática) e o módulo 9 tem uma introdução ao Dante. Os dois terão formações próprias, mais completas.",
       },
       {
+        question: "O curso ajuda com o Wi-Fi da igreja que cai no culto?",
+        answer: "Sim. O módulo 5 é todo de Wi-Fi na igreja: 2,4 GHz x 5 GHz, canais e sinal, repetidor x mesh x access point e a separação entre a rede de membros e visitantes e a rede principal da técnica.",
+      },
+      {
+        question: "Ensina a ligar câmera IP PTZ e NDI no OBS Studio?",
+        answer: "Sim. O módulo 6 explica o NDI (Full, HX2 e HX3) e as câmeras PTZ e mostra como configurar uma PTZ no OBS Studio com plugin de controle remoto. O projeto final monta uma cena no OBS com áudio e vídeo NDI.",
+      },
+      {
+        question: "Mostra como configurar o roteador?",
+        answer: "Sim. O módulo 8 configura na prática o roteador/modem da Vivo, o da Claro e um roteador TP-Link: acesso, DHCP, reserva de IP, portas, Wi-Fi e modo bridge.",
+      },
+      {
         question: "Preciso de algum equipamento?",
         answer: "Só um computador e a rede de casa ou da igreja.",
       },
@@ -717,12 +750,39 @@ export const SALES_PAGES: Record<string, SalesPage> = {
   // Black November: R$ 67 (preço padrão R$ 117). Link de compra da Hotmart em src/config/courses.ts.
   "culto-ao-vivo-com-excelencia": {
     seo: {
-      title: "Curso de OBS Studio para igrejas: transmissão de culto ao vivo",
+      title: "Curso de OBS Studio para igrejas: transmissão de culto ao vivo no YouTube",
       description:
-        "Curso de OBS Studio para transmitir o culto ao vivo: câmeras e PTZ, NDI, áudio da live, cenas, letras com Holyrics e SPresenter, YouTube e plano B. Online, com certificado.",
+        "Curso de OBS Studio para fazer a live do culto no YouTube e no Facebook: câmeras e câmera PTZ, NDI, mesa de corte, áudio da mesa de som, cenas, letras com Holyrics e SPresenter, e plano B. Online, com certificado.",
       kicker: "Curso de OBS Studio para igrejas",
-      keywords: ["curso de OBS Studio", "transmissão de culto", "live de igreja", "transmissão ao vivo", "câmera PTZ para igreja", "NDI", "OBS para igreja", "como transmitir o culto"],
+      keywords: [
+        "curso de OBS Studio",
+        "curso de OBS",
+        "como configurar o OBS",
+        "transmissão de culto",
+        "culto ao vivo",
+        "live de igreja",
+        "live no YouTube",
+        "transmissão ao vivo",
+        "câmera PTZ para igreja",
+        "câmera para igreja",
+        "NDI",
+        "OBS NDI",
+        "mesa de corte",
+        "OBS para igreja",
+        "como transmitir o culto",
+        "ministério de mídia",
+      ],
     },
+    guides: [
+      { title: "Como transmitir o culto ao vivo no YouTube com OBS Studio", href: "/blog/como-transmitir-o-culto-ao-vivo-com-obs-studio" },
+      { title: "Qual câmera comprar para transmitir o culto: do celular à PTZ", href: "/blog/qual-camera-comprar-para-transmitir-o-culto" },
+      { title: "Câmera PTZ para igreja: o que é, se vale a pena e como escolher", href: "/blog/camera-ptz-para-igreja-vale-a-pena" },
+      { title: "Como filmar o culto: posições das câmeras, enquadramento e luz", href: "/blog/como-filmar-o-culto-posicoes-enquadramento-e-luz" },
+      { title: "OBS Studio ou vMix: qual usar na transmissão do culto?", href: "/blog/obs-studio-ou-vmix-qual-usar-na-igreja" },
+      { title: "Mesa de corte na igreja: ATEM Mini vale a pena? Como ligar com o OBS", href: "/blog/mesa-de-corte-na-igreja-atem-mini-vale-a-pena" },
+      { title: "Como transmitir o culto no YouTube, Facebook e Instagram ao mesmo tempo", href: "/blog/transmitir-o-culto-no-youtube-facebook-e-instagram-ao-mesmo-tempo" },
+      { title: "Live do culto travando? 7 causas e como resolver", href: "/blog/live-do-culto-travando-causas-e-solucoes" },
+    ],
     // título em teste desde 05/11/2026, igual à promessa do reel (o anterior era "Sua live do culto, estável e bonita.";
     // subtítulo anterior: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.")
     headline: "Monte e opere a live do culto no OBS, do zero ao avançado.",
@@ -989,6 +1049,26 @@ export const SALES_PAGES: Record<string, SalesPage> = {
       {
         question: "Serve para Mac?",
         answer: "O OBS Studio funciona no Windows e no Mac, e a lógica do curso vale para os dois.",
+      },
+      {
+        question: "O curso ensina a fazer live no YouTube e no Facebook?",
+        answer: "Sim. O módulo 7 tem as aulas \"Transmitindo no YouTube\" e \"Facebook e várias plataformas ao mesmo tempo\", além de encoder, bitrate, resolução e gravação local junto com a live.",
+      },
+      {
+        question: "Ensina câmera PTZ e NDI no OBS Studio?",
+        answer: "Sim. O módulo 2 mostra por que a PTZ é a melhor câmera para igrejas e como ela funciona com NDI, o módulo 3 configura o NDI e o DistroAV no OBS Studio, e o módulo 6 é todo de controle PTZ, com o plugin do Culto em Off, controle de videogame e controle físico.",
+      },
+      {
+        question: "Quais câmeras aparecem no curso?",
+        answer: "Os tipos de câmera para igreja e as configurações de exposição, foco, FPS e resolução, com aulas práticas configurando e testando uma webcam USB, a DJI Action 4 e a Sony ZV-E10 no OBS, além da câmera PTZ.",
+      },
+      {
+        question: "Tem aula de mesa de corte e placa de captura?",
+        answer: "Sim. O módulo 3 tem aulas de conversores HDMI e SDI, placas de captura, vídeo pela rede e mesa de corte.",
+      },
+      {
+        question: "Funciona com a mesa de som da minha igreja?",
+        answer: "O módulo 4 explica por que o áudio fica melhor na igreja do que na live e tem aula com mesa de som analógica, mixer e filtros do OBS e sincronia de áudio e vídeo. O bônus de Reaper mostra como ligar a mesa de som no computador e levar o áudio para o OBS, uma lógica que vale também para mesas de som digitais com USB.",
       },
       {
         question: "Quanto tempo de acesso eu tenho?",
