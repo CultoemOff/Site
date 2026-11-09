@@ -10,9 +10,9 @@ import "@/components/blog/blog.css";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Blog: transmissão de culto, câmeras, OBS Studio e mídia na igreja",
   description:
-    "Artigos sobre áudio, vídeo, iluminação, redes, transmissão e automação para voluntários de igreja.",
+    "Guias para a equipe de mídia da igreja: como transmitir o culto ao vivo, câmeras e câmera PTZ, OBS Studio e vMix, mesa de corte, iluminação, Wi-Fi, som e podcast.",
   alternates: { canonical: "/blog" },
 };
 

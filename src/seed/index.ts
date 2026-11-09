@@ -13,7 +13,7 @@ import { OFFERS } from "../config/offers";
 import type { InstructorId } from "../config/instructors";
 import { DEFAULT_SETTINGS } from "../config/site";
 import { toLexical, type SeedPost } from "../content/lexical";
-import { GUIDE_POSTS, SEED_POSTS } from "../content/posts";
+import { GUIDE_POSTS, GUIDE_POSTS_2, SEED_POSTS } from "../content/posts";
 
 const payload = await getPayload({ config });
 
@@ -302,6 +302,11 @@ for (const post of seedPosts ? SEED_POSTS : []) await createPost(post);
 if (!(seedState as Partial<Record<string, boolean>>)?.postsGuias2026) {
   for (const post of GUIDE_POSTS) await createPost(post);
   await retry(() => payload.updateGlobal({ slug: "seed-state", data: { postsGuias2026: true } as never }));
+}
+// Segunda leva de guias (09/11/2026): mesma regra, com controle próprio.
+if (!(seedState as Partial<Record<string, boolean>>)?.postsGuias2026b) {
+  for (const post of GUIDE_POSTS_2) await createPost(post);
+  await retry(() => payload.updateGlobal({ slug: "seed-state", data: { postsGuias2026b: true } as never }));
 }
 
 payload.logger.info(
