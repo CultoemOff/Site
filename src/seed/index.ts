@@ -13,7 +13,7 @@ import { OFFERS } from "../config/offers";
 import type { InstructorId } from "../config/instructors";
 import { DEFAULT_SETTINGS } from "../config/site";
 import { toLexical, type SeedPost } from "../content/lexical";
-import { SEED_POSTS } from "../content/posts";
+import { GUIDE_POSTS, SEED_POSTS } from "../content/posts";
 
 const payload = await getPayload({ config });
 
@@ -223,6 +223,8 @@ if (!currentSettings?.updatedAt) {
 
 /** Envia uma imagem para Mídias: baixa da URL de origem; se não conseguir, usa o arquivo em /public. */
 async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: string }) {
+  // caminho do próprio site (ex.: "/blog/guias/x.jpg"): é arquivo da pasta public, não URL para baixar
+  if (img.sourceUrl?.startsWith("/")) img = { ...img, localPath: img.localPath ?? img.sourceUrl, sourceUrl: undefined };
   if (img.sourceUrl) {
     try {
       const res = await fetch(img.sourceUrl);
@@ -257,10 +259,11 @@ const firstUser = await payload.find({ collection: "users", limit: 1, depth: 0 }
 const authorId = firstUser.docs[0]?.id;
 
 let postsCreated = 0;
-const seedPosts = await firstTime("posts");
-for (const post of seedPosts ? SEED_POSTS : []) {
+
+/** Cria um post do código no painel (com capa e imagens do texto), se ainda não existir esse endereço. */
+async function createPost(post: SeedPost) {
   const exists = await payload.find({ collection: "posts", where: { slug: { equals: post.slug } }, limit: 1, draft: true });
-  if (exists.totalDocs > 0) continue;
+  if (exists.totalDocs > 0) return;
   const cover = post.cover ? await uploadCover(post.cover) : null;
   // imagens dentro do texto
   const images = new Map<string, string | number>();
@@ -289,6 +292,16 @@ for (const post of seedPosts ? SEED_POSTS : []) {
     },
   }));
   postsCreated++;
+}
+
+const seedPosts = await firstTime("posts");
+for (const post of seedPosts ? SEED_POSTS : []) await createPost(post);
+
+// Guias do blog de 11/2026 (SEO): entram uma vez só, mesmo com o blog já em uso.
+// Se algum for apagado no painel depois, não volta.
+if (!(seedState as Partial<Record<string, boolean>>)?.postsGuias2026) {
+  for (const post of GUIDE_POSTS) await createPost(post);
+  await retry(() => payload.updateGlobal({ slug: "seed-state", data: { postsGuias2026: true } as never }));
 }
 
 payload.logger.info(

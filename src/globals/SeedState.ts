@@ -15,5 +15,7 @@ export const SeedState: GlobalConfig = {
     { name: "offers", type: "checkbox", defaultValue: false },
     { name: "equipment", type: "checkbox", defaultValue: false },
     { name: "posts", type: "checkbox", defaultValue: false },
+    // guias do blog de 11/2026 (SEO): entram uma vez; se forem apagados no painel, não voltam
+    { name: "postsGuias2026", type: "checkbox", defaultValue: false },
   ],
 };
