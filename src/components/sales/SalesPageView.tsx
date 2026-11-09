@@ -234,7 +234,8 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
           <div className="sp-hero__text" id="sp-inicio">
             <p className="swp-hero__channel">
               <span aria-hidden="true" />
-              Formação Culto em Off{course.status === "lancamento-em-breve" ? " · Lançamento em breve" : ""}
+              {page.seo?.kicker ?? "Formação Culto em Off"}
+              {course.status === "lancamento-em-breve" ? " · Lançamento em breve" : ""}
               {course.status === "inscricoes-abertas" ? " · Inscrições abertas" : ""}
             </p>
             {page.productLogo ? (

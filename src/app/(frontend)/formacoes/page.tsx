@@ -11,9 +11,9 @@ import { JsonLd, coursesJsonLd } from "@/lib/seo";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Formações",
+  title: "Cursos para igrejas: OBS Studio, transmissão de culto, redes e som",
   description:
-    "Formações técnicas para voluntários de igreja: redes, transmissão de cultos com OBS, mixagem, Bitfocus Companion e iluminação com grandMA2. Online e com preço acessível.",
+    "Cursos online para equipes de mídia de igreja: OBS Studio e transmissão de culto ao vivo, redes e Wi-Fi para igrejas, câmeras PTZ, NDI, mixagem e iluminação. Com certificado e preço acessível.",
   alternates: { canonical: "/formacoes" },
 };
 

@@ -163,6 +163,11 @@ export type SalesPage = {
   showForWho?: boolean;
   /** false = esconde a seção de depoimentos ("Quem já fez"), mesmo com depoimentos no painel */
   showTestimonials?: boolean;
+  /**
+   * SEO: título e descrição que aparecem no Google (com os termos que as pessoas pesquisam),
+   * a linha acima do título da página e os assuntos do curso nos dados estruturados.
+   */
+  seo?: { title: string; description: string; kicker?: string; keywords?: string[] };
   /** texto do preço à vista (ex.: "no Pix" → "R$ 67 no Pix ou 12x de R$ 6,93"); sem ele, "à vista ou 12x … no cartão" */
   cashLabel?: string;
   /** um texto só em todos os botões de compra: "Quero por R$ 67" (o valor acompanha o preço da formação) */
@@ -188,6 +193,13 @@ export type SalesPage = {
 
 export const SALES_PAGES: Record<string, SalesPage> = {
   "redes-para-igrejas": {
+    seo: {
+      title: "Curso de Redes para Igrejas: Wi-Fi, NDI e câmeras PTZ",
+      description:
+        "Curso de redes para igrejas: IP, DHCP, switch, roteador e Wi-Fi explicados do zero, com NDI, câmeras PTZ e OBS na rede da igreja. Online, com certificado de 6 horas.",
+      kicker: "Curso de redes para igrejas",
+      keywords: ["curso de redes", "redes para igrejas", "Wi-Fi para igreja", "NDI", "câmera PTZ na rede", "switch PoE", "rede para transmissão de culto"],
+    },
     // pixel da UTMify (script enviado pelo Jonas em 20/10/2026); carrega sempre
     utmifyPixelId: "6ad77e62256bb057ce2da149",
     headline: "Pare de reiniciar tudo e torcer para funcionar.",
@@ -704,6 +716,13 @@ export const SALES_PAGES: Record<string, SalesPage> = {
   // Culto ao Vivo com Excelência: vendas abertas, listada em /formacoes desde 23/10/2026 (substitui "Áudio para Live").
   // Black November: R$ 67 (preço padrão R$ 117). Link de compra da Hotmart em src/config/courses.ts.
   "culto-ao-vivo-com-excelencia": {
+    seo: {
+      title: "Curso de OBS Studio para igrejas: transmissão de culto ao vivo",
+      description:
+        "Curso de OBS Studio para transmitir o culto ao vivo: câmeras e PTZ, NDI, áudio da live, cenas, letras com Holyrics e SPresenter, YouTube e plano B. Online, com certificado.",
+      kicker: "Curso de OBS Studio para igrejas",
+      keywords: ["curso de OBS Studio", "transmissão de culto", "live de igreja", "transmissão ao vivo", "câmera PTZ para igreja", "NDI", "OBS para igreja", "como transmitir o culto"],
+    },
     // título em teste desde 05/11/2026, igual à promessa do reel (o anterior era "Sua live do culto, estável e bonita.";
     // subtítulo anterior: "Transmissão de cultos com OBS Studio, do zero ao avançado, para a realidade de igrejas pequenas e médias.")
     headline: "Monte e opere a live do culto no OBS, do zero ao avançado.",
