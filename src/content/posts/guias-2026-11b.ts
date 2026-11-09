@@ -155,7 +155,7 @@ export const guiaQuantasCameras: SeedPost = {
     { h2: "O que pesa além das câmeras" },
     {
       ul: [
-        "**Conexão**: cada câmera precisa chegar ao computador. Por HDMI, cada uma pede uma placa de captura ou uma entrada de mesa de corte. Pela rede (NDI), todas chegam pelo mesmo switch. Veja [Mesa de corte na igreja: ATEM Mini vale a pena?](" + b(SLUG_ATEM) + ").",
+        "**Conexão**: cada câmera precisa chegar ao computador. Por HDMI, cada uma pede uma placa de captura ou uma entrada de mesa de corte. Pela rede (NDI), todas chegam pelo mesmo switch e entram no OBS com o plugin DistroAV. Veja [Mesa de corte na igreja: ATEM Mini vale a pena?](" + b(SLUG_ATEM) + ").",
         "**Computador**: mais fontes de vídeo no OBS pedem mais processador e placa de vídeo.",
         "**Rede**: câmeras NDI precisam de uma rede cabeada bem feita. O guia [Wi-Fi na igreja](" + b(SLUG_WIFI) + ") ajuda a entender por quê.",
         "**Combinar as câmeras**: modelos diferentes têm cores diferentes. Ajuste o balanço de branco de todas igual.",
@@ -275,7 +275,9 @@ export const guiaObsVmix: SeedPost = {
       ul: [
         "**Gratuito e de código aberto**, para Windows, Mac e Linux.",
         "**Comunidade enorme**: muitos tutoriais, plugins e respostas para quase qualquer problema.",
-        "**Flexível**: cenas, fontes, filtros de áudio e vídeo, e plugins para NDI (DistroAV), controle de câmeras PTZ, várias plataformas e muito mais.",
+        "**Flexível**: cenas, fontes, filtros de áudio e vídeo, e plugins do OBS para NDI (DistroAV), controle de câmeras PTZ, multistream, tela vertical e muito mais.",
+        "**Câmera virtual**: o botão \"Iniciar câmera virtual\" envia a imagem do OBS para o Zoom ou o Google Meet, útil em reuniões e cultos online.",
+        "**Convidados remotos**: com o VDO.Ninja (antigo OBS.Ninja), alguém de fora entra na live pelo navegador.",
         "**Ponto de atenção**: algumas funções dependem de plugins, e é preciso organizar bem as cenas para a operação ficar simples.",
       ],
     },
@@ -288,6 +290,10 @@ export const guiaObsVmix: SeedPost = {
         "**Títulos prontos e editáveis**, além de recursos como replay e convidados remotos nas edições mais altas.",
         "**Ponto de atenção**: a interface é mais técnica, e há menos material em português.",
       ],
+    },
+    { h3: "E o Streamlabs?" },
+    {
+      p: "O Streamlabs Desktop (antigo Streamlabs OBS) é baseado no OBS e mais voltado para quem faz live de jogos, com alertas e overlays prontos. Para o culto, o OBS Studio puro costuma ser mais leve e suficiente.",
     },
     { h2: "O que importa para a igreja" },
     { h3: "Quem vai operar" },
@@ -329,7 +335,7 @@ export const guiaMesaDeCorte: SeedPost = {
   cover: { localPath: `${G}/mesa-de-corte-atem-capa.jpg`, alt: "Mesa de corte na igreja: ATEM Mini vale a pena" },
   blocks: [
     {
-      p: "A **mesa de corte** (ou switcher de vídeo) recebe várias câmeras e escolhe qual vai para o ar, com cortes e transições. Na igreja, ela costuma aparecer quando a mídia quer usar mais de uma câmera HDMI sem comprar uma placa de captura para cada uma.",
+      p: "A **mesa de corte** (switcher de vídeo, ou video switcher em inglês) recebe várias câmeras e escolhe qual vai para o ar, com cortes e transições. Na igreja, ela costuma aparecer quando a mídia quer usar mais de uma câmera HDMI sem comprar uma placa de captura para cada uma.",
     },
     {
       p: "A mais conhecida em igrejas é a família **ATEM Mini**, da Blackmagic Design.",
@@ -361,7 +367,7 @@ export const guiaMesaDeCorte: SeedPost = {
     { h2: "Quando a ATEM Mini vale a pena" },
     {
       ul: [
-        "Você tem ou vai ter **duas a quatro câmeras HDMI** perto da cabine.",
+        "Você tem ou vai ter **duas a quatro câmeras HDMI** perto da cabine (mirrorless, filmadoras ou PTZ com HDMI).",
         "Quer **botões físicos** para cortar, mais fáceis para voluntários.",
         "Quer aliviar o computador, que recebe um só sinal de vídeo.",
       ],
@@ -395,16 +401,16 @@ export const guiaVariasPlataformas: SeedPost = {
   slug: SLUG_PLATAFORMAS,
   title: "Como transmitir o culto no YouTube, Facebook e Instagram ao mesmo tempo",
   excerpt:
-    "Três caminhos para levar a mesma live do culto a várias plataformas: plugin no OBS, serviço de envio ou uma plataforma principal. Quanto de internet cada um pede e os cuidados com o Instagram.",
+    "Três caminhos para levar a mesma live do culto a várias plataformas: multistream no OBS, serviço de envio ou uma plataforma principal. Quanto de internet cada um pede e os cuidados com Instagram e TikTok.",
   publishedAt: "2026-11-09T22:30:00.000Z",
   tags: ["Transmissão", "OBS Studio", "YouTube"],
   cover: { localPath: `${G}/transmitir-varias-plataformas-capa.jpg`, alt: "Transmitir o culto no YouTube, Facebook e Instagram ao mesmo tempo" },
   blocks: [
     {
-      p: "Parte da igreja assiste pelo YouTube, outra parte pelo Facebook, e os mais jovens estão no Instagram. Dá para transmitir o mesmo culto em todas ao mesmo tempo, mas cada caminho tem um custo: na internet, no computador ou no bolso.",
+      p: "Parte da igreja assiste à live no YouTube, outra parte pelo Facebook Live, e os mais jovens estão no Instagram e no TikTok. Dá para transmitir o mesmo culto em todas ao mesmo tempo, mas cada caminho tem um custo: na internet, no computador ou no bolso.",
     },
     { img: { sourceUrl: `${G}/transmitir-varias-plataformas-caminhos.jpg`, alt: "Três caminhos: plugin no OBS, serviço de envio e plataforma principal" } },
-    { h2: "Caminho 1: plugin no OBS" },
+    { h2: "Caminho 1: multistream no OBS (plugin)" },
     {
       p: "O OBS envia para uma plataforma por padrão. Com um plugin de várias saídas RTMP, ele envia para várias ao mesmo tempo, cada uma com a sua chave de transmissão.",
     },
@@ -436,7 +442,11 @@ export const guiaVariasPlataformas: SeedPost = {
     },
     { h2: "E o Instagram?" },
     {
-      p: "O Instagram é diferente: a live é **vertical**, e transmitir pelo computador depende de a conta ter a opção de chave de transmissão liberada, o que não acontece em todas as contas. Por isso, muitas igrejas fazem a live do Instagram pelo celular ou publicam cortes do culto depois. Se for transmitir pelo OBS, monte cenas em formato vertical (há plugins que criam uma tela vertical separada).",
+      p: "O Instagram é diferente: a live é **vertical**, e transmitir pelo computador depende de a conta ter a opção de chave de transmissão liberada, o que não acontece em todas as contas. Por isso, muitas igrejas fazem a live do Instagram pelo celular ou publicam cortes do culto depois. Se for transmitir pelo OBS, monte cenas em formato vertical: plugins como o **Aitum Vertical** criam uma tela vertical separada no mesmo OBS.",
+    },
+    { h2: "E a live no TikTok?" },
+    {
+      p: "A live no TikTok também é vertical. Pelo computador, o TikTok oferece o **TikTok LIVE Studio** e, para algumas contas, uma chave de transmissão para usar no OBS. Os requisitos para liberar a live (como número de seguidores e idade) mudam com o tempo e não valem para todas as contas, então confira no próprio aplicativo. Para muitas igrejas, os cortes curtos do culto funcionam melhor no TikTok do que a live inteira.",
     },
     { h2: "Configurações que valem para todas" },
     {
@@ -574,14 +584,14 @@ export const guiaPodcastIgreja: SeedPost = {
     },
     { h2: "2. Gravando cada voz separada" },
     {
-      p: "Se a mesa é digital com **USB multipista**, ela envia cada canal separado para o computador. No **Reaper**, cada microfone vira uma trilha. Assim, se uma pessoa tossir ou falar mais alto, você corrige só a voz dela.",
+      p: "Se a **mesa de som digital** tem **USB multipista** (como a Behringer X32 e outras mesas digitais), ela envia cada canal separado para o computador. No **Reaper**, cada microfone vira uma trilha. Assim, se uma pessoa tossir ou falar mais alto, você corrige só a voz dela.",
     },
     {
-      p: "Com mesa analógica, dá para gravar a saída estéreo da mesa por uma interface de áudio. Funciona, mas a mixagem precisa ficar boa na hora, porque não dá para separar as vozes depois.",
+      p: "Com **mesa de som analógica**, dá para gravar a saída estéreo da mesa por uma interface de áudio. Funciona, mas a mixagem precisa ficar boa na hora, porque não dá para separar as vozes depois.",
     },
     { h2: "3. Vídeo (opcional)" },
     {
-      p: "Para o videocast no YouTube, use as câmeras da igreja no **OBS**, só gravando (sem transmitir). Um plano aberto com todos e um plano de cada pessoa já dão uma boa edição. Grave em alta qualidade, e o OBS também consegue gravar faixas de áudio separadas no mesmo arquivo.",
+      p: "Para o videocast no YouTube, use as câmeras da igreja no **OBS**, só gravando (sem transmitir): o OBS também é um gravador de vídeo. Um plano aberto com todos e um plano de cada pessoa já dão uma boa edição. Grave em alta qualidade, e o OBS também consegue gravar faixas de áudio separadas no mesmo arquivo.",
     },
     {
       p: "Para ajudar a sincronizar áudio e vídeo na edição, bata uma palma na frente das câmeras no início da gravação.",

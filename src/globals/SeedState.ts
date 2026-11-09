@@ -19,5 +19,7 @@ export const SeedState: GlobalConfig = {
     { name: "postsGuias2026", type: "checkbox", defaultValue: false },
     // segunda leva (câmeras, OBS × vMix, ATEM, plataformas, ministério de mídia, podcast)
     { name: "postsGuias2026b", type: "checkbox", defaultValue: false },
+    // atualização única do texto dos 5 primeiros guias (termos do Google Trends), se já estavam publicados
+    { name: "postsGuiasTermos", type: "checkbox", defaultValue: false },
   ],
 };

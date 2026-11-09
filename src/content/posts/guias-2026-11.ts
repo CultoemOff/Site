@@ -19,17 +19,21 @@ export const SLUG_TRAVANDO = "live-do-culto-travando-causas-e-solucoes";
 
 export const guiaTransmitirCulto: SeedPost = {
   slug: SLUG_TRANSMITIR,
-  title: "Como transmitir o culto ao vivo com OBS Studio: guia completo para igrejas",
+  title: "Como transmitir o culto ao vivo no YouTube com OBS Studio: guia completo para igrejas",
   excerpt:
-    "O passo a passo para colocar o culto no ar com o OBS Studio: o que você precisa, como ligar câmeras e som, como montar as cenas e como configurar a transmissão para o YouTube.",
+    "Como fazer a live do culto no YouTube com o OBS Studio: o que é o OBS, onde baixar, como ligar câmeras e a mesa de som, como montar as cenas e como configurar o OBS para a transmissão ao vivo.",
   publishedAt: "2026-11-09T15:00:00.000Z",
-  tags: ["Transmissão", "OBS Studio"],
+  tags: ["Transmissão", "OBS Studio", "YouTube"],
   cover: { localPath: `${G}/transmitir-culto-obs-capa.jpg`, alt: "Como transmitir o culto ao vivo com OBS Studio" },
   blocks: [
     {
       p: "Transmitir o culto ao vivo deixou de ser coisa de igreja grande. Com um computador, uma câmera e o **OBS Studio**, que é gratuito, dá para levar o culto a quem está em casa, no hospital ou viajando. O que separa uma live que funciona de uma que trava, chia ou fica escura não é o preço do equipamento: é entender o caminho que o vídeo e o som percorrem até chegar no celular de quem assiste.",
     },
-    { p: "Este guia mostra esse caminho do começo ao fim, na realidade de igrejas pequenas e médias." },
+    { p: "Este guia mostra esse caminho do começo ao fim, na realidade de igrejas pequenas e médias de qualquer denominação: igreja batista, presbiteriana, Assembleia de Deus, pentecostal, e também paróquias que transmitem a missa." },
+    { h2: "O que é o OBS Studio" },
+    {
+      p: "O **OBS Studio** (Open Broadcaster Software) é um programa gratuito e de código aberto para transmitir ao vivo e gravar vídeo. Ele junta câmeras, som, imagens, letras e vídeos em **cenas** e envia o resultado para o YouTube, o Facebook ou outra plataforma. Também funciona como gravador: dá para gravar o culto ou a tela do computador sem transmitir.",
+    },
     { h2: "O caminho da transmissão" },
     {
       p: "Toda transmissão de culto tem as mesmas peças: as **câmeras**, o **som** (que sai da mesa), as **letras e avisos**, o **computador com o OBS** juntando tudo e a **internet** enviando para o YouTube ou o Facebook.",
@@ -42,7 +46,7 @@ export const guiaTransmitirCulto: SeedPost = {
     {
       ul: [
         "**Um computador** com placa de vídeo dedicada ou processador recente. Ele não precisa ser de última geração, mas não pode ser o mesmo que roda a projeção com muitas outras tarefas.",
-        "**OBS Studio**, gratuito, para Windows, Mac e Linux, baixado do site oficial (obsproject.com).",
+        "**OBS Studio**, gratuito, para Windows, Mac e Linux. Faça o download do OBS Studio só no site oficial (obsproject.com): sites que oferecem \"baixar OBS\" com instalador próprio podem trazer outros programas junto.",
         "**Uma câmera** e um jeito de ligá-la no computador. Se ainda não tem, veja o nosso guia [qual câmera comprar para transmitir o culto](/blog/qual-camera-comprar-para-transmitir-o-culto).",
         "**Uma saída de áudio da mesa de som** para o computador.",
         "**Internet com upload estável**, de preferência por cabo.",
@@ -69,7 +73,7 @@ export const guiaTransmitirCulto: SeedPost = {
     {
       ul: [
         "Use uma **saída auxiliar** da mesa só para a transmissão, com um mix pensado para fone e celular.",
-        "Leve esse sinal para o computador por uma **interface de áudio** USB ou, em mesas digitais, pela própria USB da mesa.",
+        "Com **mesa de som analógica**, leve esse sinal para o computador por uma **interface de áudio** USB. Na **mesa de som digital**, a própria USB da mesa costuma funcionar como placa de áudio: mesas como a **Behringer X32** enviam vários canais separados para o computador.",
         "No OBS, ajuste os níveis no **mixer de áudio**: a voz deve ficar na faixa amarela nos picos, sem encostar no vermelho.",
         "Filtros simples ajudam muito: **compressor** e **limitador** evitam picos que estouram.",
       ],
@@ -93,7 +97,7 @@ export const guiaTransmitirCulto: SeedPost = {
     {
       p: "Use o **Modo Estúdio** do OBS: você prepara a próxima cena na prévia, sem ninguém ver, e só passa para o ar quando estiver pronta. As letras podem vir do Holyrics ou do SPresenter, direto para o OBS.",
     },
-    { h2: "5. Configure a transmissão" },
+    { h2: "5. Como configurar o OBS para a live no YouTube" },
     {
       p: "Antes de mexer no OBS, meça a velocidade de **upload** da igreja no horário do culto, com outras pessoas conectadas. A regra prática é usar no máximo uns 60% a 70% desse upload para a live.",
     },
@@ -102,12 +106,24 @@ export const guiaTransmitirCulto: SeedPost = {
         "**Resolução e quadros**: 1080p a 30 fps se o upload passa de uns 10 Mbps; com menos, 720p a 30 fps costuma ser mais seguro.",
         "**Controle de taxa**: CBR (taxa constante), como o YouTube recomenda.",
         "**Intervalo de quadro-chave**: 2 segundos.",
-        "**Encoder**: se o computador tem placa de vídeo, use o encoder dela (NVENC na NVIDIA, AMF na AMD, QuickSync no Intel). Isso alivia o processador.",
+        "**Encoder**: se o computador tem placa de vídeo, use o encoder dela (NVENC na NVIDIA, AMF na AMD, QuickSync na Intel). Isso alivia o processador.",
         "**Áudio**: AAC a 128 kbps é o que o YouTube indica para estéreo.",
       ],
     },
     {
       p: "Faça sempre uma **transmissão de teste** como não listada ou privada, de pelo menos 15 minutos, antes do primeiro domingo.",
+    },
+    { h3: "Primeira live no YouTube" },
+    {
+      p: "Antes da primeira live, o canal precisa ter a transmissão ao vivo ativada no **YouTube Studio**, e essa liberação pode levar até 24 horas. Faça isso com antecedência. Depois, copie a **chave de transmissão** do YouTube Studio para o OBS (Configurações > Transmissão), ou conecte a sua conta direto pelo OBS.",
+    },
+    { h3: "E fazer live no YouTube pelo celular?" },
+    {
+      p: "Dá para fazer live no YouTube pelo celular, direto no aplicativo, mas o YouTube pede requisitos mínimos do canal para isso, e o celular sozinho não junta câmeras, som da mesa e letras. Para o culto, o caminho mais completo é fazer a live pelo computador com o OBS, usando o celular como câmera, se precisar (veja o guia [Qual câmera comprar para transmitir o culto](/blog/qual-camera-comprar-para-transmitir-o-culto)).",
+    },
+    { h3: "OBS ou Streamlabs?" },
+    {
+      p: "O Streamlabs Desktop (antigo Streamlabs OBS) é outro programa baseado no OBS, mais voltado para quem faz live de jogos, com alertas e overlays prontos. Para o culto, o OBS Studio puro é mais leve e tem tudo o que a igreja precisa. Comparando com programas pagos? Veja [OBS Studio ou vMix: qual usar na igreja](/blog/obs-studio-ou-vmix-qual-usar-na-igreja).",
     },
     { h2: "6. No domingo: checklist rápido" },
     {
@@ -136,7 +152,7 @@ export const guiaCameraCulto: SeedPost = {
   slug: SLUG_CAMERA,
   title: "Qual câmera comprar para transmitir o culto: do celular à PTZ",
   excerpt:
-    "Celular, webcam, câmera de ação, mirrorless ou PTZ: o que cada tipo de câmera resolve na live da igreja, os cuidados de cada um e por onde começar com o orçamento que você tem.",
+    "Celular, webcam, câmera de ação, mirrorless, DSLR, filmadora ou PTZ: o que cada câmera resolve na live da igreja, os cuidados de cada uma e por onde começar o equipamento para live com o orçamento que você tem.",
   publishedAt: "2026-11-09T14:00:00.000Z",
   tags: ["Câmeras", "Transmissão"],
   cover: { localPath: `${G}/camera-culto-capa.jpg`, alt: "Qual câmera comprar para transmitir o culto" },
@@ -155,7 +171,7 @@ export const guiaCameraCulto: SeedPost = {
     },
     { h2: "Degrau 1: o celular" },
     {
-      p: "O celular que já está no bolso de alguém da equipe é um ótimo começo. Aplicativos ligam o celular ao OBS pela rede Wi-Fi ou por cabo.",
+      p: "O celular que já está no bolso de alguém da equipe é um ótimo começo. Aplicativos como **DroidCam** e **Iriun Webcam** transformam o celular em webcam no OBS, pela rede Wi-Fi ou por cabo. Outra opção é o **VDO.Ninja** (antigo OBS.Ninja), que leva a câmera do celular para o OBS pelo navegador.",
     },
     {
       ul: [
@@ -182,7 +198,7 @@ export const guiaCameraCulto: SeedPost = {
     },
     { h2: "Degrau 4: mirrorless com placa de captura" },
     {
-      p: "Uma câmera mirrorless, como a Sony ZV-E10, dá aquela imagem com fundo desfocado e cores bonitas. Ela entra no computador pela saída HDMI, com uma placa de captura.",
+      p: "Uma câmera mirrorless, como a Sony ZV-E10, dá aquela imagem com fundo desfocado e cores bonitas. Ela entra no computador pela saída HDMI, com uma placa de captura. O mesmo vale para outras mirrorless e DSLR (de marcas como Sony, Canon, Panasonic, Nikon e Fujifilm) e para filmadoras com saída HDMI.",
     },
     {
       ul: [
@@ -197,7 +213,7 @@ export const guiaCameraCulto: SeedPost = {
     {
       ul: [
         "**Bom para**: igrejas que querem vários ângulos sem ter um operador em cada câmera.",
-        "**Cuidados**: escolha o zoom pela distância até o púlpito e prefira modelos com saída pela rede (NDI) e alimentação pelo cabo de rede (PoE).",
+        "**Cuidados**: escolha o zoom pela distância até o púlpito e prefira uma câmera IP PTZ com saída pela rede (NDI) e alimentação pelo cabo de rede (PoE).",
       ],
     },
     {
@@ -226,7 +242,7 @@ export const guiaCameraCulto: SeedPost = {
 
 export const guiaPtzIgreja: SeedPost = {
   slug: SLUG_PTZ,
-  title: "Câmera PTZ para igreja: vale a pena? Como escolher e controlar",
+  title: "Câmera PTZ para igreja: o que é, se vale a pena e como escolher",
   excerpt:
     "O que é uma câmera PTZ, por que ela é a câmera ideal para muitas igrejas, como escolher o zoom e as conexões, e como controlar com presets, joystick ou plugin no OBS.",
   publishedAt: "2026-11-09T13:00:00.000Z",
@@ -234,7 +250,7 @@ export const guiaPtzIgreja: SeedPost = {
   cover: { localPath: `${G}/camera-ptz-igreja-capa.jpg`, alt: "Câmera PTZ para igreja" },
   blocks: [
     {
-      p: "PTZ vem de **pan, tilt e zoom**: a câmera gira para os lados, inclina para cima e para baixo e aproxima a imagem, tudo por controle remoto. Para a igreja, isso resolve o maior problema da transmissão: ter poucos voluntários para muitas câmeras.",
+      p: "A câmera PTZ (em inglês, PTZ camera) tem esse nome por causa de **pan, tilt e zoom**: ela gira para os lados, inclina para cima e para baixo e aproxima a imagem, tudo por controle remoto. Para a igreja, isso resolve o maior problema da transmissão: ter poucos voluntários para muitas câmeras.",
     },
     { h2: "Por que a PTZ combina com a igreja" },
     {
@@ -263,8 +279,12 @@ export const guiaPtzIgreja: SeedPost = {
       ul: [
         "**USB**: simples, mas com limite de distância.",
         "**HDMI / SDI**: precisa de placa de captura no computador; SDI vai mais longe.",
-        "**NDI pela rede**: o vídeo chega ao OBS pelo cabo de rede, sem placa. Há o NDI completo (mais qualidade, mais banda) e o NDI|HX (comprimido, mais leve para a rede).",
+        "**NDI pela rede**: o vídeo chega ao OBS pelo cabo de rede, sem placa. Há o NDI completo (mais qualidade, mais banda) e o NDI|HX (comprimido, mais leve para a rede). No OBS, o NDI entra com o plugin DistroAV.",
       ],
+    },
+    { h3: "Câmera IP PTZ: cuidado com as câmeras de segurança" },
+    {
+      p: "**Câmera IP PTZ** é a PTZ que se liga à rede: recebe um endereço IP, é controlada pela rede e envia o vídeo por NDI, RTSP ou SRT. Câmeras de segurança também são vendidas como \"IP PTZ\", mas muitas só têm RTSP, com atraso e imagem pensados para vigilância, não para transmissão. Para a live do culto, prefira modelos feitos para transmissão ao vivo, com NDI ou saída HDMI/SDI. Há opções de marcas como Sony e Panasonic e de fabricantes mais acessíveis.",
     },
     { h3: "PoE" },
     {

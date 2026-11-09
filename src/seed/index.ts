@@ -297,6 +297,45 @@ async function createPost(post: SeedPost) {
 const seedPosts = await firstTime("posts");
 for (const post of seedPosts ? SEED_POSTS : []) await createPost(post);
 
+/** Imagem já enviada para Mídias com o mesmo nome de arquivo; se não houver, envia. */
+async function findOrUploadImage(img: { sourceUrl?: string; localPath?: string; alt: string }) {
+  const name = (img.localPath ?? img.sourceUrl ?? "").split("/").pop();
+  if (name) {
+    const found = await payload.find({ collection: "media", where: { filename: { equals: name } }, limit: 1, depth: 0 });
+    if (found.docs[0]) return found.docs[0];
+  }
+  return uploadImage(img);
+}
+
+/** Atualiza título, resumo, tags e texto de um post do código que já está no painel (a capa fica como está). */
+async function refreshPost(post: SeedPost) {
+  const found = await payload.find({ collection: "posts", where: { slug: { equals: post.slug } }, limit: 1, depth: 0, draft: true });
+  const doc = found.docs[0];
+  if (!doc) return createPost(post);
+  const images = new Map<string, string | number>();
+  for (const block of post.blocks) {
+    if ("img" in block && !images.has(block.img.sourceUrl)) {
+      const media = await findOrUploadImage(block.img);
+      if (media) images.set(block.img.sourceUrl, media.id);
+    }
+  }
+  await retry(() => payload.update({
+    collection: "posts",
+    id: doc.id,
+    data: {
+      title: post.title,
+      excerpt: post.excerpt,
+      tags: post.tags,
+      content: toLexical(post.blocks.filter((b) => !("img" in b) || images.has(b.img.sourceUrl)), images),
+      _status: "published",
+    },
+  }));
+  payload.logger.info(`Post atualizado: ${post.slug}`);
+}
+
+// os 5 primeiros guias já estavam no painel antes desta publicação?
+const guiasJaExistiam = Boolean((seedState as Partial<Record<string, boolean>>)?.postsGuias2026);
+
 // Guias do blog de 11/2026 (SEO): entram uma vez só, mesmo com o blog já em uso.
 // Se algum for apagado no painel depois, não volta.
 if (!(seedState as Partial<Record<string, boolean>>)?.postsGuias2026) {
@@ -307,6 +346,12 @@ if (!(seedState as Partial<Record<string, boolean>>)?.postsGuias2026) {
 if (!(seedState as Partial<Record<string, boolean>>)?.postsGuias2026b) {
   for (const post of GUIDE_POSTS_2) await createPost(post);
   await retry(() => payload.updateGlobal({ slug: "seed-state", data: { postsGuias2026b: true } as never }));
+}
+// Termos do Google Trends (09/11/2026) incluídos nos 5 primeiros guias: se eles já estavam publicados,
+// atualiza o texto uma vez. Depois disso, quem manda no texto é o painel.
+if (!(seedState as Partial<Record<string, boolean>>)?.postsGuiasTermos) {
+  if (guiasJaExistiam) for (const post of GUIDE_POSTS) await refreshPost(post);
+  await retry(() => payload.updateGlobal({ slug: "seed-state", data: { postsGuiasTermos: true } as never }));
 }
 
 payload.logger.info(
