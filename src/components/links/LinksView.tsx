@@ -27,7 +27,7 @@ const FEATURES: Record<string, { subtitle: string; text: string }> = {
   },
   "redes-para-igrejas": {
     subtitle: "Roteador, Switch, IP, NDI na prática",
-    text: "IP, DHCP, switch, roteador e Wi-Fi explicados do zero, com exemplos da cabine técnica da igreja: câmeras PTZ, NDI, OBS e mesa digital funcionando na mesma rede.",
+    text: "Do zero, sem precisar ser de TI: Wi-Fi que não cai no culto e câmeras, mesa digital e PC da live funcionando juntos na rede da igreja.",
   },
 };
 
