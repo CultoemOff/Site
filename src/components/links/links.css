@@ -255,7 +255,7 @@
   font-size: 1.35rem;
   line-height: 1.2;
 }
-.lk__feature-body > span:not(.lk__kicker):not(.lk__feature-cta) {
+.lk__feature-body > span:not(.lk__kicker):not(.lk__feature-actions) {
   font-size: 0.92rem;
   line-height: 1.55;
   color: #dbe6ff;
@@ -274,6 +274,27 @@
 }
 .lk__feature-cta .lk__arrow {
   color: currentColor;
+}
+.lk__feature-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.lk__feature-actions .lk__feature-cta {
+  margin-top: 0;
+}
+.lk__tag {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #ffd43b;
+  color: #0b0d12;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* vídeos mais recentes do canal */

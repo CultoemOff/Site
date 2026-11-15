@@ -67,9 +67,13 @@ function FeatureCard({ course, position }: { course: Course; position: number })
         <span className="lk__kicker">Formação</span>
         <strong>{course.title}</strong>
         <span>{f.text}</span>
-        <span className="lk__feature-cta">
-          Saiba mais
-          <Arrow />
+        <span className="lk__feature-actions">
+          <span className="lk__feature-cta">
+            Saiba mais
+            <Arrow />
+          </span>
+          {/* tag amarela da Black November ao lado do botão (some quando a promoção acaba) */}
+          {promo && /black november/i.test(promo.label) && <span className="lk__tag">Black November</span>}
         </span>
       </span>
     </a>
