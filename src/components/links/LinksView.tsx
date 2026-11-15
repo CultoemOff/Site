@@ -18,21 +18,15 @@ const THUMBS = {
   spresenter: "/images/links/spresenter.png",
 };
 
-/** Cards das formações em destaque (imagem e texto de cada uma). Formações fora desta lista não aparecem. */
-const FEATURES: Record<string, { image: string; alt: string; width: number; height: number; position?: string; text: string }> = {
+/** Cards das formações em destaque (subtítulo e texto de cada uma). Formações fora desta lista não aparecem.
+ *  Sem miniatura desde 15/11/2026 (pedido do Jonas): título, "Formação" e subtítulo em destaque. */
+const FEATURES: Record<string, { subtitle: string; text: string }> = {
   "culto-ao-vivo-com-excelencia": {
-    image: "/images/formacoes/culto-aula-operacao.jpg",
-    alt: "Operador na cabine de transmissão com o OBS, a mixagem da live e o controle das câmeras",
-    width: 1600,
-    height: 900,
-    position: "70% center",
-    text: "Transmissão de cultos com OBS Studio, do zero ao avançado: câmeras, conexões, NDI, áudio da live, cenas, letras e controle PTZ, na realidade da igreja pequena e média.",
+    subtitle: "Curso de OBS Studio para igrejas",
+    text: "A live do culto do zero ao avançado: câmeras, conexões, NDI, áudio da live, cenas, letras e controle PTZ, na realidade da igreja pequena e média.",
   },
   "redes-para-igrejas": {
-    image: "/images/links/formacao-redes.jpg",
-    alt: "Diagrama da cabine técnica na mesma rede: internet, roteador, switch PoE, câmeras PTZ, mesa digital, PCs e Wi-Fi",
-    width: 640,
-    height: 480,
+    subtitle: "Roteador, Switch, IP, NDI na prática",
     text: "IP, DHCP, switch, roteador e Wi-Fi explicados do zero, com exemplos da cabine técnica da igreja: câmeras PTZ, NDI, OBS e mesa digital funcionando na mesma rede.",
   },
 };
@@ -41,7 +35,7 @@ const FEATURES: Record<string, { image: string; alt: string; width: number; heig
 function FeatureCard({ course, position }: { course: Course; position: number }) {
   const f = FEATURES[course.id];
   if (!f) return null;
-  const { promo, price, priceFrom, off, installments } = resolvePrice(course);
+  const { price, priceFrom, off, installments } = resolvePrice(course);
   // "R$ 67" em vez de "R$ 67,00" quando o valor é redondo
   const money = (v: number) => (Number.isInteger(v) ? `R$ ${v}` : formatPrice(v));
   return (
@@ -53,22 +47,11 @@ function FeatureCard({ course, position }: { course: Course; position: number })
       data-track-location="links"
       data-track-position={position}
     >
-      <span className="lk__feature-media">
-        <Image
-          src={f.image}
-          alt={f.alt}
-          width={f.width}
-          height={f.height}
-          sizes="(min-width: 600px) 528px, 100vw"
-          priority={position === 2}
-          style={f.position ? { objectPosition: f.position } : undefined}
-        />
-        {promo && <span className="lk__sale">{promo.label}</span>}
-      </span>
       <span className="lk__feature-body">
         <span className="lk__kicker">Formação</span>
-        <strong>{course.title}</strong>
-        <span>{f.text}</span>
+        <strong className="lk__feature-title">{course.title}</strong>
+        <span className="lk__feature-sub">{f.subtitle}</span>
+        <span className="lk__feature-text">{f.text}</span>
         <span className="lk__feature-actions">
           <span className="lk__feature-cta">
             Saiba mais
