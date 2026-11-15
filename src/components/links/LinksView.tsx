@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import CopyCouponButton from "@/components/sections/partners/CopyCouponButton";
 import SocialIcon from "@/components/ui/SocialIcon";
-import type { Course } from "@/config/courses";
+import { formatInstallments, formatPrice, type Course } from "@/config/courses";
 import { LOGO_SRC, MAIN_SITE_URL, SITE_NAME, type SiteSettingsData } from "@/config/site";
 import { resolvePrice } from "@/lib/pricing";
 import type { YouTubeVideo } from "@/lib/youtube";
@@ -41,7 +41,9 @@ const FEATURES: Record<string, { image: string; alt: string; width: number; heig
 function FeatureCard({ course, position }: { course: Course; position: number }) {
   const f = FEATURES[course.id];
   if (!f) return null;
-  const { promo } = resolvePrice(course);
+  const { promo, price, priceFrom, off, installments } = resolvePrice(course);
+  // "R$ 67" em vez de "R$ 67,00" quando o valor é redondo
+  const money = (v: number) => (Number.isInteger(v) ? `R$ ${v}` : formatPrice(v));
   return (
     <a
       className="lk__feature"
@@ -72,8 +74,19 @@ function FeatureCard({ course, position }: { course: Course; position: number })
             Saiba mais
             <Arrow />
           </span>
-          {/* tag amarela da Black November ao lado do botão (some quando a promoção acaba) */}
-          {promo && /black november/i.test(promo.label) && <span className="lk__tag">Black November</span>}
+          {/* preço atual ao lado do botão: de/por, desconto e parcelas (some o "de" quando a promoção acaba) */}
+          {price > 0 && (
+            <span className="lk__price">
+              {priceFrom && (
+                <span className="lk__price-from">
+                  de <s>{money(priceFrom)}</s>
+                  {off > 0 && <b className="lk__price-off">-{off}%</b>}
+                </span>
+              )}
+              <strong className="lk__price-now">{money(price)}</strong>
+              {installments && <span className="lk__price-parcel">ou {formatInstallments(installments)}</span>}
+            </span>
+          )}
         </span>
       </span>
     </a>

@@ -279,22 +279,43 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 10px 16px;
   margin-top: 8px;
 }
 .lk__feature-actions .lk__feature-cta {
   margin-top: 0;
 }
-.lk__tag {
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: #ffd43b;
-  color: #0b0d12;
-  font-family: var(--font-mono), ui-monospace, monospace;
+.lk__price {
+  display: grid;
+  gap: 1px;
+  line-height: 1.1;
+}
+.lk__price-from {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #c7d6ff;
+}
+.lk__price-off {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #ef4444;
+  color: #fff;
   font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: 800;
+}
+.lk__price-now {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffd43b;
+}
+.lk__price-parcel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #eaf0ff;
 }
 
 /* vídeos mais recentes do canal */
