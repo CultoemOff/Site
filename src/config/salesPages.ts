@@ -185,6 +185,8 @@ export type SalesPage = {
   proofs?: { title?: string; text: string; name: string; role?: string; /** nota que o aluno deu (1 a 5) */ rating?: number }[];
   /** faixa de números abaixo do topo (visualizações, vídeos, aulas, garantia); false = some */
   showProof?: boolean;
+  /** faixa de confiança logo abaixo do topo: nota dos alunos, acesso vitalício e garantia */
+  trust?: { rating: string };
   /** seção "Você se reconhece?" (hoje × depois da formação); false = some */
   showCompare?: boolean;
   notForWho: string[];
@@ -227,6 +229,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     promo: { label: "Preço Black November" },
     // faixa de números e seção "Você se reconhece?": removidas a pedido do Jonas (29/10/2026)
     showProof: false,
+    // faixa de confiança (pedido do Jonas em 17/11/2026; nota informada por ele)
+    trust: { rating: "4.9" },
     showCompare: false,
     compare: [
       { icon: "plug", illo: "cable", before: "Usa cabo HDMI ou USB longo, com extensão, e não sabe por que a câmera fica travando.", after: "Conhece o limite de cada tipo de cabo e passa a levar as câmeras pela rede, com NDI." },
@@ -1012,6 +1016,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     ],
     // faixa de números abaixo do topo: removida a pedido do Jonas (29/10/2026)
     showProof: false,
+    // faixa de confiança (pedido do Jonas em 17/11/2026; nota informada por ele)
+    trust: { rating: "4.9" },
     // seção "Você se reconhece?": removida a pedido do Jonas (29/10/2026)
     showCompare: false,
     faq: [

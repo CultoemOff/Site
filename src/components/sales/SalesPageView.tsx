@@ -321,6 +321,29 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
         </div>
       </header>
 
+      {/* ---------- faixa de confiança: nota, acesso vitalício e garantia ---------- */}
+      {page.trust && (
+        <div className="sp-trust" aria-label="Por que comprar com segurança">
+          <ul className="sp-trust__list">
+            <li>
+              <b className="sp-trust__star" aria-hidden="true">★</b>
+              <strong>{page.trust.rating}</strong>
+              <span>nota dos alunos</span>
+            </li>
+            <li>
+              <Icon name="infinity" size={22} />
+              <strong>Vitalício</strong>
+              <span>acesso às aulas</span>
+            </li>
+            <li>
+              <Icon name="shield" size={22} />
+              <strong>{GUARANTEE_DAYS} dias</strong>
+              <span>de garantia</span>
+            </li>
+          </ul>
+        </div>
+      )}
+
       {/* ---------- prova / autoridade rápida ---------- */}
       {page.showProof !== false && (
       <div className="sp-proof" aria-label="Números do Culto em Off">

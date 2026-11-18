@@ -199,6 +199,46 @@ h1.swp-hero__channel {
   color: var(--muted-on-dark);
 }
 
+/* faixa de confiança (nota, acesso vitalício, garantia) */
+.sp-trust {
+  padding: 18px 16px;
+  background: #050a18;
+  border-block: 1px solid rgba(110, 150, 255, 0.16);
+}
+.sp-trust__list {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  text-align: center;
+}
+.sp-trust__list li {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 2px;
+  color: #8fb6ff;
+}
+.sp-trust__list strong {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  line-height: 1.15;
+  color: #fff;
+}
+.sp-trust__star {
+  font-size: 22px;
+  line-height: 22px;
+  height: 22px;
+  color: #ffd43b;
+}
+.sp-trust__list li > span {
+  font-size: 0.78rem;
+  color: var(--muted-on-dark);
+}
+
 /* seções */
 .sp-section {
   padding: clamp(64px, 9vw, 110px) 20px;
@@ -1191,11 +1231,13 @@ h1.swp-hero__channel {
     radial-gradient(ellipse 40% 60% at 82% 30%, rgba(59, 140, 255, 0.22), transparent 70%),
     linear-gradient(180deg, #050608 0%, #0b0d12 100%);
 }
-.sp-proof {
+.sp-proof,
+.sp-trust {
   background: #15171c;
   border-block-color: #2a2d36;
 }
-.sp-proof__list span {
+.sp-proof__list span,
+.sp-trust__list li > span {
   color: #a4a9b6;
 }
 .sp-final {
