@@ -375,3 +375,327 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================
+   PTZ Control Web 0.9.0: capturas oficiais, seções e popup de download
+   ========================================================== */
+.ptzp-hero__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(32px, 5vw, 56px);
+}
+.ptzp-hero .swp-hero__desc {
+  max-width: 760px;
+}
+.ptzp-hero__fine {
+  margin: 14px 0 0;
+  font-size: 0.82rem;
+  color: #9fb0d6;
+}
+.ptzp-shot {
+  margin: 0;
+  border-radius: 18px;
+  border: 1px solid rgba(110, 150, 255, 0.25);
+  overflow: hidden;
+  background: #0b1020;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9), 0 0 60px -24px rgba(59, 140, 255, 0.55);
+}
+.ptzp-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ptzp-shot--tall,
+.ptzp-shot--photo {
+  max-width: 420px;
+  justify-self: center;
+}
+.ptzp-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+.ptzp-split--reverse > figure {
+  order: -1;
+}
+.ptzp-url {
+  margin: 18px 0 0;
+}
+.ptzp-url code,
+.dl-url code {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #071029;
+  border: 1px solid rgba(140, 170, 230, 0.35);
+  color: #a6e8ff;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.92rem;
+}
+.ptzp-list {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0 0 0 20px;
+  color: var(--muted-on-dark);
+  line-height: 1.55;
+}
+.ptzp-list b {
+  color: #fff;
+}
+.ptzp-req {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+.ptzp-steps {
+  grid-template-columns: 1fr;
+}
+.ptzp-note {
+  margin: 20px 0 0;
+  font-size: 0.92rem;
+  color: var(--muted-on-dark);
+}
+.ptzp-note b {
+  color: #dbe6ff;
+}
+.ptzp-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(110, 150, 255, 0.22);
+  background: #0a1433;
+  font-size: 0.92rem;
+}
+.ptzp-table th,
+.ptzp-table td {
+  padding: 14px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(110, 150, 255, 0.14);
+  line-height: 1.45;
+}
+.ptzp-table tr:last-child th,
+.ptzp-table tr:last-child td {
+  border-bottom: 0;
+}
+.ptzp-table th {
+  width: 40%;
+  color: #8fb6ff;
+  font-weight: 600;
+}
+.ptzp-table td {
+  color: #e6ecff;
+}
+.ptzp-changelog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin: clamp(28px, 4vw, 40px) 0 0;
+}
+.ptzp-changelog > div {
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(110, 150, 255, 0.2);
+  background: rgba(10, 20, 52, 0.6);
+}
+.ptzp-changelog dt {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffd43b;
+}
+.ptzp-changelog dd {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--muted-on-dark);
+}
+.ptzp-final {
+  text-align: center;
+}
+.ptzp-final .swp-title,
+.ptzp-final .swp-lead {
+  margin-inline: auto;
+}
+.ptzp-final__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+.ptzp-credits {
+  max-width: 680px;
+  margin: 36px auto 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #8f9cbd;
+}
+.ptzp-credits a {
+  color: #cfe0ff;
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+/* botão que abre o popup */
+.dl-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+.dl-open svg,
+.dl-get svg,
+.dl-tutorial svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* popup */
+.dl-modal {
+  width: min(520px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: var(--text-on-dark);
+  overflow: visible;
+}
+.dl-modal::backdrop {
+  background: rgba(2, 5, 14, 0.78);
+  backdrop-filter: blur(4px);
+}
+.dl-modal__box {
+  position: relative;
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  border-radius: 22px;
+  background: #0a1434;
+}
+.dl-modal .gate {
+  border-radius: 22px;
+  background: linear-gradient(180deg, #0f1d48, #0a1434);
+}
+.dl-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #dbe6ff;
+  cursor: pointer;
+}
+.dl-modal__close svg {
+  width: 18px;
+  height: 18px;
+}
+.dl-modal__kicker {
+  margin: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ffd43b;
+}
+.dl-modal .gate__title {
+  margin: 0;
+  padding-right: 36px;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+.dl-optional {
+  font-weight: 400;
+  color: #9fb0d6;
+}
+.dl-submit {
+  justify-self: stretch;
+  justify-content: center;
+  min-height: 52px;
+  font-size: 1.05rem;
+}
+.dl-modal .gate__fine a {
+  color: #9fc2ff;
+  text-underline-offset: 3px;
+}
+.dl-done {
+  justify-items: stretch;
+}
+.dl-done .gate__check {
+  justify-self: start;
+}
+.dl-get {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.dl-steps {
+  display: grid;
+  gap: 14px;
+  margin: 4px 0 0;
+  padding: 0 0 0 22px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #c9d6f2;
+}
+.dl-steps b {
+  color: #fff;
+}
+.dl-steps code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.84rem;
+  color: #a6e8ff;
+}
+.dl-url {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.dl-copy {
+  padding: 6px 12px;
+  border: 1px solid rgba(140, 170, 230, 0.45);
+  border-radius: 8px;
+  background: transparent;
+  color: #dbe6ff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dl-tutorial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.dl-tutorial.is-soon {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (max-width: 900px) {
+  .ptzp-split,
+  .ptzp-req {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ptzp-split--reverse > figure {
+    order: 0;
+  }
+}

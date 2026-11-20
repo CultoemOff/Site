@@ -36,21 +36,16 @@ export const SOFTWARE: Software[] = [
     id: "ptz-control-web",
     name: "PTZ Control Web",
     area: "Câmeras",
-    tagline: "Controle de câmeras PTZ pensado para o culto.",
+    // textos do briefing do Jonas para a versão 0.9.0 (19/11/2026): não citar SPresenter nem vMix
+    tagline: "Controle gratuito de câmeras PTZ pelo navegador.",
     description:
-      "Facilita a operação de câmeras PTZ em igrejas e transmissões, direto do navegador. Compatível com OBS, vMix, SPresenter ou qualquer outro software de transmissão de cultos.",
-    features: [
-      "Pan, tilt, zoom e foco",
-      "Presets",
-      "Múltiplas câmeras",
-      "Controle por gamepad",
-      "Integração com o Companion",
-      "Diferentes protocolos de câmera",
-    ],
-    worksWith: ["OBS", "vMix", "SPresenter", "Qualquer software de transmissão"],
+      "Controle até 8 câmeras PTZ (pan, tilt, zoom, foco e presets com nome) dentro do OBS Studio, direto no navegador ou em qualquer software com fonte de navegador. Funciona com câmeras de rede (VISCA, ONVIF), seriais e USB como a OBSBOT Tiny 2, e aceita controle de videogame e Stream Deck.",
+    features: [],
+    worksWith: ["OBS Studio", "Navegador", "Software com fonte de navegador"],
+    platforms: ["Windows 10 e 11 (64 bits)"],
     learnMoreUrl: "",
-    // Link padrão do download (liberado após o cadastro). Pode ser trocado no admin → Configurações do site → Softwares.
-    downloadUrl: "https://github.com/CultoemOff/PTZ-Control-Web/releases/latest",
+    // sempre o instalador da versão mais recente (liberado depois do cadastro no popup da página)
+    downloadUrl: "https://github.com/CultoemOff/PTZ-Control-Web-Releases/releases/latest/download/PTZ-Control-Web-Setup.exe",
     pageUrl: "/softwares/ptz-control-web",
     visual: "ptz",
   },

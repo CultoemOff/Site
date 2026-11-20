@@ -57,3 +57,21 @@ export function validateLead(input: LeadInput): LeadErrors {
   if (!input.consent) errors.consent = "Para liberar o download, é preciso aceitar.";
   return errors;
 }
+
+/* ---------- cadastro do download (nome, e-mail e igreja opcional) ---------- */
+
+/** Aviso mostrado no cadastro do download (sem caixa de seleção: baixar = aceitar receber novidades por e-mail). */
+export const DOWNLOAD_NOTICE_TEXT =
+  "Ao baixar, você aceita receber novidades e conteúdos do Culto em Off por e-mail. Você pode sair da lista a qualquer momento.";
+
+export type DownloadLeadInput = { name: string; email: string; church: string; source: string };
+export type DownloadLeadErrors = Partial<Record<"name" | "email" | "church" | "form", string>>;
+
+export function validateDownloadLead(input: DownloadLeadInput): DownloadLeadErrors {
+  const errors: DownloadLeadErrors = {};
+  const name = input.name.trim();
+  if (name.length < 2 || name.length > 100) errors.name = "Informe seu nome.";
+  if (!isValidEmail(input.email)) errors.email = "Informe um e-mail válido.";
+  if (input.church.trim().length > 120) errors.church = "Use até 120 caracteres.";
+  return errors;
+}

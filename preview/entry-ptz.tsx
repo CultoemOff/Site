@@ -7,12 +7,12 @@ import Navbar from "../src/components/layout/Navbar";
 import PtzControlWebView from "../src/components/software-page/PtzControlWebView";
 import { SOFTWARE } from "../src/config/software";
 import { DEFAULT_SETTINGS } from "../src/config/site";
-import { validateLead, type LeadInput } from "../src/lib/leads";
+import { validateDownloadLead, type DownloadLeadInput } from "../src/lib/leads";
 
 // Prévia: o cadastro não é salvo (sem servidor); só valida o formato e libera o link.
-async function mockAction(input: LeadInput) {
+async function mockAction(input: DownloadLeadInput) {
   await new Promise((r) => setTimeout(r, 500));
-  const errors = validateLead(input);
+  const errors = validateDownloadLead(input);
   return Object.keys(errors).length ? { ok: false as const, errors } : { ok: true as const };
 }
 

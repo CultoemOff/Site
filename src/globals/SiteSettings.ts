@@ -99,7 +99,9 @@ export const SiteSettings: GlobalConfig = {
               label: "Link de download do PTZ Control Web",
               admin: {
                 description:
-                  "Liberado depois do cadastro na página do software. Se vazio, usa o link padrão (GitHub → releases/latest).",
+                  "Não é mais usado: desde 19/11/2026 o link fica no código e baixa sempre o instalador mais recente do GitHub.",
+                // escondido: o link agora é fixo (releases/latest/download/PTZ-Control-Web-Setup.exe)
+                hidden: true,
               },
             },
           ],

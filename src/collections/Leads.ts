@@ -10,7 +10,7 @@ export const Leads: CollectionConfig = {
   admin: {
     useAsTitle: "email",
     group: "Site",
-    defaultColumns: ["name", "email", "phoneFull", "source", "createdAt"],
+    defaultColumns: ["name", "email", "church", "phoneFull", "source", "createdAt"],
     description: "Pessoas que se cadastraram para baixar softwares ou entrar na lista de espera das formações. Todas aceitaram receber ofertas e novidades.",
   },
   defaultSort: "-createdAt",
@@ -23,6 +23,7 @@ export const Leads: CollectionConfig = {
   fields: [
     { name: "name", type: "text", label: "Nome", required: true },
     { name: "email", type: "email", label: "E-mail", required: true, index: true },
+    { name: "church", type: "text", label: "Igreja", admin: { description: "Opcional (cadastro do download do PTZ Control Web)" } },
     {
       type: "row",
       fields: [
