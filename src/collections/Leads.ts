@@ -10,7 +10,7 @@ export const Leads: CollectionConfig = {
   admin: {
     useAsTitle: "email",
     group: "Site",
-    defaultColumns: ["name", "email", "church", "phoneFull", "source", "createdAt"],
+    defaultColumns: ["name", "email", "church", "state", "country", "source", "createdAt"],
     description: "Pessoas que se cadastraram para baixar softwares ou entrar na lista de espera das formações. Todas aceitaram receber ofertas e novidades.",
   },
   defaultSort: "-createdAt",
@@ -28,6 +28,7 @@ export const Leads: CollectionConfig = {
       type: "row",
       fields: [
         { name: "country", type: "text", label: "País (ISO)" },
+        { name: "state", type: "text", label: "UF" },
         { name: "dial", type: "text", label: "DDI" },
         { name: "phone", type: "text", label: "Telefone" },
       ],

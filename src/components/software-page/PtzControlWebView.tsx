@@ -63,6 +63,7 @@ export default function PtzControlWebView({ downloadUrl, action }: Props) {
       location={location}
       variant={variant}
       label={label}
+      sideImage={{ src: `${IMG}/gamepad-obsbot.webp`, alt: "Controle de videogame movendo uma OBSBOT Tiny 2", width: 810, height: 1080 }}
     />
   );
 

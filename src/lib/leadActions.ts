@@ -62,8 +62,12 @@ export async function submitDownloadLead(input: DownloadLeadInput): Promise<Down
     name: String(input.name ?? ""),
     email: String(input.email ?? ""),
     church: String(input.church ?? ""),
+    country: String(input.country ?? ""),
+    state: String(input.state ?? ""),
     source: String(input.source || "").slice(0, 60),
   };
+  if (!COUNTRIES.some((c) => c.iso === data.country)) return { ok: false, errors: { country: "Escolha o país." } };
+  if (data.country !== "BR") data.state = "";
   const errors = validateDownloadLead(data);
   if (Object.keys(errors).length) return { ok: false, errors };
 
@@ -81,6 +85,8 @@ export async function submitDownloadLead(input: DownloadLeadInput): Promise<Down
         name: data.name.trim(),
         email: data.email.trim().toLowerCase(),
         church: data.church.trim() || undefined,
+        country: data.country,
+        state: data.state || undefined,
         source: data.source,
         consent: { accepted: true, text: DOWNLOAD_NOTICE_TEXT, at: new Date().toISOString() },
       },

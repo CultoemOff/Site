@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { setMetaUserData, track } from "@/components/analytics/track";
 import "@/components/ui/button.css";
-import { DOWNLOAD_NOTICE_TEXT, validateDownloadLead, type DownloadLeadErrors, type DownloadLeadInput } from "@/lib/leads";
+import { COUNTRIES } from "@/config/countries";
+import { BR_STATES, DOWNLOAD_NOTICE_TEXT, validateDownloadLead, type DownloadLeadErrors, type DownloadLeadInput } from "@/lib/leads";
 
 type Result = { ok: true } | { ok: false; errors: DownloadLeadErrors };
 
@@ -25,6 +27,8 @@ type Props = {
   /** onde o botão está (Analytics) */
   location: string;
   variant?: "primary" | "ghost";
+  /** imagem da coluna lateral do popup (no computador) */
+  sideImage?: { src: string; alt: string; width: number; height: number };
 };
 
 const storageKey = (source: string) => `coe-download:${source}`;
@@ -34,14 +38,15 @@ const storageKey = (source: string) => `coe-download:${source}`;
  * Depois do cadastro, o mesmo popup libera o download e mostra os passos de instalação.
  * Quem já se cadastrou neste navegador vai direto para o download.
  */
-export default function DownloadModal({ source, productName, downloadUrl, panelUrl, tutorialUrl = "", action, label = "Baixe aqui", location, variant = "primary" }: Props) {
+export default function DownloadModal({ source, productName, downloadUrl, panelUrl, tutorialUrl = "", action, label = "Baixe aqui", location, variant = "primary", sideImage }: Props) {
   const uid = useId();
   const dialog = useRef<HTMLDialogElement>(null);
   const [unlocked, setUnlocked] = useState(false);
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
   const [errors, setErrors] = useState<DownloadLeadErrors>({});
-  const [form, setForm] = useState({ name: "", email: "", church: "" });
+  // Brasil e São Paulo já vêm escolhidos (primeiros das listas)
+  const [form, setForm] = useState({ name: "", email: "", church: "", country: "BR", state: "SP" });
 
   useEffect(() => {
     try {
@@ -66,7 +71,7 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
     const local = validateDownloadLead(input);
     if (Object.keys(local).length) {
       setErrors(local);
-      const first = (["name", "email", "church"] as const).find((k) => local[k]);
+      const first = (["name", "email", "church", "country", "state"] as const).find((k) => local[k]);
       if (first) document.getElementById(`${uid}-${first}`)?.focus();
       return;
     }
@@ -121,7 +126,13 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
       </button>
 
       <dialog ref={dialog} className="dl-modal" aria-labelledby={`${uid}-title`} onClick={(e) => e.target === e.currentTarget && close()}>
-        <div className="dl-modal__box">
+        <div className={`dl-modal__box${sideImage ? " dl-modal__box--side" : ""}`}>
+          {sideImage && (
+            <div className="dl-modal__side" aria-hidden="true">
+              <Image src={sideImage.src} alt="" width={sideImage.width} height={sideImage.height} sizes="400px" />
+            </div>
+          )}
+          <div className="dl-modal__content">
           <button type="button" className="dl-modal__close" onClick={close} aria-label="Fechar">
             <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
               <path d="M5 5l10 10M15 5 5 15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
@@ -154,6 +165,43 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
                 </label>
                 <input id={`${uid}-church`} type="text" autoComplete="organization" value={form.church} onChange={(e) => set("church", e.target.value)} aria-invalid={!!errors.church} aria-describedby={describe("church")} maxLength={120} />
                 {err("church")}
+              </div>
+
+              <div className="dl-row">
+                <div className="gate__field">
+                  <label htmlFor={`${uid}-country`}>País</label>
+                  <select
+                    id={`${uid}-country`}
+                    autoComplete="country"
+                    value={form.country}
+                    onChange={(e) => {
+                      const c = e.target.value;
+                      setForm((f) => ({ ...f, country: c, state: c === "BR" ? f.state || "SP" : "" }));
+                    }}
+                    aria-invalid={!!errors.country}
+                    aria-describedby={describe("country")}
+                  >
+                    {COUNTRIES.map((c) => (
+                      <option key={c.iso} value={c.iso}>
+                        {c.flag} {c.name}
+                      </option>
+                    ))}
+                  </select>
+                  {err("country")}
+                </div>
+                {form.country === "BR" && (
+                  <div className="gate__field">
+                    <label htmlFor={`${uid}-state`}>UF</label>
+                    <select id={`${uid}-state`} autoComplete="address-level1" value={form.state} onChange={(e) => set("state", e.target.value)} aria-invalid={!!errors.state} aria-describedby={describe("state")}>
+                      {BR_STATES.map((s) => (
+                        <option key={s.uf} value={s.uf}>
+                          {s.name}
+                        </option>
+                      ))}
+                    </select>
+                    {err("state")}
+                  </div>
+                )}
               </div>
 
               {errors.form && (
@@ -222,6 +270,7 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
               )}
             </div>
           )}
+          </div>
         </div>
       </dialog>
     </>

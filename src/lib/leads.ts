@@ -64,8 +64,39 @@ export function validateLead(input: LeadInput): LeadErrors {
 export const DOWNLOAD_NOTICE_TEXT =
   "Ao baixar, você aceita receber novidades e conteúdos do Culto em Off por e-mail. Você pode sair da lista a qualquer momento.";
 
-export type DownloadLeadInput = { name: string; email: string; church: string; source: string };
-export type DownloadLeadErrors = Partial<Record<"name" | "email" | "church" | "form", string>>;
+/** Estados do Brasil: São Paulo primeiro, os demais em ordem alfabética. */
+export const BR_STATES: { uf: string; name: string }[] = [
+  { uf: "SP", name: "São Paulo" },
+  { uf: "AC", name: "Acre" },
+  { uf: "AL", name: "Alagoas" },
+  { uf: "AP", name: "Amapá" },
+  { uf: "AM", name: "Amazonas" },
+  { uf: "BA", name: "Bahia" },
+  { uf: "CE", name: "Ceará" },
+  { uf: "DF", name: "Distrito Federal" },
+  { uf: "ES", name: "Espírito Santo" },
+  { uf: "GO", name: "Goiás" },
+  { uf: "MA", name: "Maranhão" },
+  { uf: "MT", name: "Mato Grosso" },
+  { uf: "MS", name: "Mato Grosso do Sul" },
+  { uf: "MG", name: "Minas Gerais" },
+  { uf: "PA", name: "Pará" },
+  { uf: "PB", name: "Paraíba" },
+  { uf: "PR", name: "Paraná" },
+  { uf: "PE", name: "Pernambuco" },
+  { uf: "PI", name: "Piauí" },
+  { uf: "RJ", name: "Rio de Janeiro" },
+  { uf: "RN", name: "Rio Grande do Norte" },
+  { uf: "RS", name: "Rio Grande do Sul" },
+  { uf: "RO", name: "Rondônia" },
+  { uf: "RR", name: "Roraima" },
+  { uf: "SC", name: "Santa Catarina" },
+  { uf: "SE", name: "Sergipe" },
+  { uf: "TO", name: "Tocantins" },
+];
+
+export type DownloadLeadInput = { name: string; email: string; church: string; country: string; state: string; source: string };
+export type DownloadLeadErrors = Partial<Record<"name" | "email" | "church" | "country" | "state" | "form", string>>;
 
 export function validateDownloadLead(input: DownloadLeadInput): DownloadLeadErrors {
   const errors: DownloadLeadErrors = {};
@@ -73,5 +104,7 @@ export function validateDownloadLead(input: DownloadLeadInput): DownloadLeadErro
   if (name.length < 2 || name.length > 100) errors.name = "Informe seu nome.";
   if (!isValidEmail(input.email)) errors.email = "Informe um e-mail válido.";
   if (input.church.trim().length > 120) errors.church = "Use até 120 caracteres.";
+  if (!/^[A-Z]{2}$/.test(input.country)) errors.country = "Escolha o país.";
+  if (input.country === "BR" && !BR_STATES.some((s) => s.uf === input.state)) errors.state = "Escolha o estado.";
   return errors;
 }
