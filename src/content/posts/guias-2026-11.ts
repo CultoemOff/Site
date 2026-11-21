@@ -66,6 +66,9 @@ export const guiaTransmitirCulto: SeedPost = {
     {
       p: "No OBS, a câmera entra como uma **fonte** (\"Dispositivo de captura de vídeo\" para USB e placas, ou a fonte do NDI). Ajuste a resolução da fonte para a mesma da transmissão, normalmente 1920×1080 ou 1280×720.",
     },
+    {
+      p: "Usa câmera PTZ? Veja [como controlar câmeras PTZ no OBS Studio](/blog/controlar-camera-ptz-obs-studio) com um painel gratuito, presets e controle de videogame.",
+    },
     { h2: "3. O som da live não é o som do templo" },
     {
       p: "Esse é o erro mais comum. O som que soa bem no templo chega ruim na live porque a mesa está mixada para o ambiente: a caixa do louvor e a acústica do salão completam o que falta. Em casa, a pessoa ouve só o que sai do cabo.",
@@ -298,10 +301,13 @@ export const guiaPtzIgreja: SeedPost = {
     {
       ul: [
         "**Controle remoto IR** que vem com a câmera: serve para configurar, não para operar o culto.",
-        "**Plugin no OBS**: controla a câmera e chama presets sem sair do OBS. O Culto em Off tem o próprio controle gratuito, o [PTZ Control Web](/softwares/ptz-control-web).",
+        "**Painel no OBS**: controla a câmera e chama presets sem sair do OBS. O Culto em Off tem o próprio controle gratuito, o [PTZ Control Web](/softwares/ptz-control-web).",
         "**Controle de videogame**: uma solução barata e surpreendentemente boa para movimentos suaves.",
         "**Joystick dedicado**: o mais confortável para quem opera todo domingo, com botões físicos para presets e várias câmeras.",
       ],
+    },
+    {
+      p: "Passo a passo completo, do cadastro das câmeras ao controle de videogame: [como controlar câmeras PTZ no OBS Studio com o PTZ Control Web](/blog/controlar-camera-ptz-obs-studio).",
     },
     { h2: "Então, vale a pena?" },
     {

@@ -9,8 +9,8 @@ const PTZ = SOFTWARE.find((s) => s.id === "ptz-control-web")!;
 
 /** endereço do painel (para colar no OBS ou abrir no navegador) */
 export const PTZ_PANEL_URL = "http://127.0.0.1:8765/obs";
-/** vídeo tutorial de instalação: vazio = botão "em breve" no popup */
-export const PTZ_TUTORIAL_URL = "";
+/** vídeo tutorial (enviado pelo Jonas em 21/11/2026); vazio = botão "em breve" no popup */
+export const PTZ_TUTORIAL_URL = "https://www.youtube.com/watch?v=ISkOzuhff04";
 const VERSION = "0.9.0";
 const IMG = "/images/softwares/ptz-control-web";
 const YOUTUBE = "https://www.youtube.com/@CultoemOff";
@@ -32,8 +32,8 @@ const FEATURES: { title: string; text: string; icon: string }[] = [
 
 const REQUIREMENTS: [string, string][] = [
   ["Sistema", "Windows 10 ou 11, 64 bits"],
-  ["Teclas de atalho no OBS", "OBS Studio 31 ou mais recente (plugin instalado junto)"],
-  ["Troca de câmera pela cena", "OBS Studio 28 ou mais recente, com WebSocket ativado"],
+  ["OBS Studio", "Versão 33 ou mais nova (o painel também abre direto no navegador)"],
+  ["Troca de câmera pela cena", "WebSocket do OBS ativado"],
   ["Câmeras", "VISCA over IP (UDP/TCP), VISCA Serial, ONVIF ou USB (UVC)"],
   ["Internet", "Só para baixar e atualizar; o controle das câmeras é local"],
 ];
@@ -128,7 +128,7 @@ export default function PtzControlWebView({ downloadUrl, action }: Props) {
             </p>
             <ul className="ptzp-list">
               <li>
-                <b>OBS Studio</b>, como doca (Docks → Custom Browser Docks).
+                <b>OBS Studio</b>, como painel (Painéis › Painéis personalizáveis com URL…).
               </li>
               <li>
                 <b>Direto no navegador</b>, abrindo o mesmo endereço.
@@ -191,7 +191,7 @@ export default function PtzControlWebView({ downloadUrl, action }: Props) {
               <li>
                 <span>01</span>
                 <h3>Baixe e abra o instalador</h3>
-                <p>Cadastre-se, baixe o PTZ-Control-Web-Setup.exe e abra o arquivo.</p>
+                <p>Cadastre-se, baixe o PTZ-Control-Web-Setup.exe e abra o arquivo. Se o Windows mostrar o SmartScreen, clique em Mais informações › Executar assim mesmo.</p>
               </li>
               <li>
                 <span>02</span>
@@ -206,6 +206,10 @@ export default function PtzControlWebView({ downloadUrl, action }: Props) {
             </ol>
             <p className="ptzp-note">
               Atualizações: <b>Configurações → Sobre → Procurar atualizações → Baixar e instalar</b>.
+            </p>
+            <p className="ptzp-note">
+              Passo a passo completo, com imagens:{" "}
+              <a href="/blog/controlar-camera-ptz-obs-studio">como controlar câmeras PTZ no OBS Studio com o PTZ Control Web</a>.
             </p>
           </div>
           <table className="ptzp-table">
@@ -252,9 +256,9 @@ export default function PtzControlWebView({ downloadUrl, action }: Props) {
             <a href={YOUTUBE} target="_blank" rel="noopener noreferrer">
               Culto em Off
             </a>
-            . Projeto criado por Daniel e Jonas. Jonas é o criador do Culto em Off, projeto voltado a compartilhar
-            conhecimento, ferramentas e soluções para áudio, vídeo, transmissão e tecnologia em igrejas. Daniel é designer e
-            desenvolvedor, contribuindo com o desenvolvimento e a experiência do PTZ Control Web.
+            . Projeto criado por Jonas Silva e Daniel Frizzatti. Jonas é o criador do Culto em Off, projeto voltado a
+            compartilhar conhecimento, ferramentas e soluções para áudio, vídeo, transmissão e tecnologia em igrejas. Daniel é
+            designer e desenvolvedor, contribuindo com o desenvolvimento e a experiência do PTZ Control Web.
           </p>
         </div>
       </section>

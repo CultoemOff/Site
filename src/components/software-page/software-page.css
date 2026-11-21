@@ -461,6 +461,11 @@
 .ptzp-note b {
   color: #dbe6ff;
 }
+.ptzp-note a {
+  color: #9fc2ff;
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
 .ptzp-table {
   width: 100%;
   border-collapse: collapse;

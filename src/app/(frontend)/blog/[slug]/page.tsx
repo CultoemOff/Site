@@ -11,6 +11,8 @@ import { LOGO_SRC, SITE_NAME } from "@/config/site";
 import { getPost, getSiteSettings } from "@/lib/cms";
 import { JsonLd, OG_IMAGE, absoluteUrl } from "@/lib/seo";
 import { formatVideoDate } from "@/lib/youtube";
+import { postFaq, postHeadings } from "@/lib/postToc";
+import { POST_EXTRA_SCHEMA } from "@/content/posts/schema";
 import "@/components/blog/blog.css";
 
 export const revalidate = 3600;
@@ -61,9 +63,27 @@ export default async function PostPage({ params }: Props) {
     keywords: post.tags.join(", ") || undefined,
   };
 
+  // índice clicável (a partir de 3 seções) e dados estruturados extras
+  const toc = postHeadings(post.content);
+  const showToc = toc.length >= 3;
+  const faq = postFaq(post.content);
+  const extra = POST_EXTRA_SCHEMA[post.slug] ?? [];
+
   return (
     <>
       <JsonLd data={jsonLd} />
+      {faq.length > 0 && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faq.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer.replace(/\*\*|`/g, "") } })),
+          }}
+        />
+      )}
+      {extra.map((d, i) => (
+        <JsonLd key={i} data={d} />
+      ))}
       <Navbar />
       <main id="conteudo" tabIndex={-1}>
         <article className="post">
@@ -94,7 +114,22 @@ export default async function PostPage({ params }: Props) {
             </div>
           )}
 
-          <div className="post__body">
+          <div className={`post__body${showToc ? " post__body--toc" : ""}`}>
+            {showToc && (
+              <nav className="post-toc" aria-labelledby="post-toc-title">
+                <details className="post-toc__box" open>
+                  <summary id="post-toc-title">Neste guia</summary>
+                  <ol>
+                    {toc.map((h) => (
+                      <li key={h.id}>
+                        <a href={`#${h.id}`}>{h.text}</a>
+                      </li>
+                    ))}
+                  </ol>
+                </details>
+              </nav>
+            )}
+            <div className="post__content">
             <RichTextContent data={post.content} />
 
             <aside className="post__cta" aria-label="Formações Culto em Off">
@@ -102,6 +137,7 @@ export default async function PostPage({ params }: Props) {
               <p>Conheça as formações do Culto em Off, pensadas para voluntários de igreja.</p>
               <ArrowButton href="/#formacoes">Ver formações</ArrowButton>
             </aside>
+            </div>
           </div>
         </article>
       </main>

@@ -323,7 +323,8 @@
 .post-prose h3 {
   font-size: 1.4rem;
 }
-.post-prose p {
+/* :where() deixa o espaçamento entre blocos (> * + *) valer também entre parágrafos */
+.post-prose :where(p) {
   margin-block: 0;
 }
 .post-prose a {
@@ -492,4 +493,285 @@
 .blog-grid--home {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 380px));
   justify-content: center;
+}
+
+/* ==========================================================
+   Guias longos: índice clicável, tabelas, caixas de destaque,
+   passos numerados e perguntas frequentes
+   ========================================================== */
+.post__body--toc {
+  display: grid;
+  grid-template-columns: minmax(0, 240px) minmax(0, 720px);
+  justify-content: center;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+.post__body--toc .post-prose {
+  margin: 0;
+}
+.post__body--toc .post__cta {
+  margin-left: 0;
+}
+.post-toc {
+  position: sticky;
+  top: calc(var(--nav-h) + 20px);
+  max-height: calc(100vh - var(--nav-h) - 40px);
+  overflow-y: auto;
+}
+.post-toc__box {
+  padding: 18px 18px 14px;
+  border-radius: 16px;
+  border: 1px solid #d6dff0;
+  background: #fff;
+  box-shadow: 0 16px 40px -28px rgba(15, 42, 120, 0.45);
+}
+.post-toc summary {
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--royal);
+}
+.post-toc summary::-webkit-details-marker {
+  display: none;
+}
+.post-toc ol {
+  counter-reset: toc;
+  display: grid;
+  gap: 2px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.post-toc li {
+  counter-increment: toc;
+}
+.post-toc a {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  color: #33405e;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  text-decoration: none;
+}
+.post-toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: #8a96b3;
+  padding-top: 2px;
+}
+.post-toc a:hover,
+.post-toc a:focus-visible {
+  background: #eef3fd;
+  color: var(--royal);
+}
+.post-prose h2[id] {
+  scroll-margin-top: calc(var(--nav-h) + 20px);
+  padding-top: 1.2em;
+  border-top: 1px solid #e1e8f5;
+}
+.post-prose > h2[id]:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* passos numerados (listas numeradas) */
+.post-prose ol {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+.post-prose ol > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 46px;
+  min-height: 32px;
+}
+.post-prose ol > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #2563eb, #1d4ed8);
+  color: #fff;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  box-shadow: 0 6px 14px -6px rgba(29, 78, 216, 0.7);
+}
+.post-prose ol > li + li {
+  margin-top: 0.8em;
+}
+
+/* tabelas */
+.post-table {
+  margin: 1.6em 0;
+}
+.post-table__scroll {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid #d6dff0;
+  background: #fff;
+}
+.post-table__scroll:focus-visible {
+  outline: 2px solid var(--electric);
+  outline-offset: 2px;
+}
+.post-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+.post-table thead th {
+  padding: 12px 16px;
+  background: #0f2a78;
+  color: #fff;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+.post-table tbody th,
+.post-table tbody td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid #e3e9f5;
+}
+.post-table tbody th {
+  font-weight: 600;
+  color: var(--ink);
+}
+.post-table tbody tr:nth-child(even) {
+  background: #f6f9ff;
+}
+.post-table code {
+  word-break: break-word;
+}
+.post-table figcaption {
+  margin-top: 8px;
+  font-size: 0.86rem;
+  color: #5a6582;
+}
+
+/* caixas de destaque */
+.post-callout {
+  margin: 1.6em 0;
+  padding: 16px 20px 16px 18px;
+  border-radius: 14px;
+  border: 1px solid #bcd3ff;
+  border-left: 5px solid var(--royal);
+  background: #eef4ff;
+}
+.post-callout p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+.post-callout__title {
+  margin-bottom: 4px !important;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.74rem !important;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--royal);
+}
+.post-callout--atencao {
+  border-color: #f5d27a;
+  border-left-color: #e0a100;
+  background: #fff8e3;
+}
+.post-callout--atencao .post-callout__title {
+  color: #9a6a00;
+}
+.post-callout--info {
+  border-color: #b9e6d2;
+  border-left-color: #12936a;
+  background: #ecfaf3;
+}
+.post-callout--info .post-callout__title {
+  color: #0d7354;
+}
+.post-callout__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+  color: #fff !important;
+  font-weight: 700;
+  text-decoration: none !important;
+  box-shadow: 0 14px 30px -14px rgba(29, 78, 216, 0.9);
+}
+.post-callout__btn:hover {
+  filter: brightness(1.08);
+}
+
+/* perguntas frequentes */
+.post-faq {
+  display: grid;
+  gap: 10px;
+  margin: 1.4em 0;
+}
+.post-faq__item {
+  border-radius: 14px;
+  border: 1px solid #d6dff0;
+  background: #fff;
+}
+.post-faq__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.post-faq__item summary::-webkit-details-marker {
+  display: none;
+}
+.post-faq__item summary svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--royal);
+  transition: transform 0.25s ease;
+}
+.post-faq__item[open] summary svg {
+  transform: rotate(45deg);
+}
+.post-faq__item p {
+  margin: 0;
+  padding: 0 18px 16px;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 1000px) {
+  .post__body--toc {
+    grid-template-columns: minmax(0, 720px);
+  }
+  .post-toc {
+    position: static;
+    max-height: none;
+  }
 }

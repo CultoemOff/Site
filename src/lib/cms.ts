@@ -309,7 +309,7 @@ export const getPost = cache(async (slug: string): Promise<PostFull | null> => {
   if (!payload) {
     const p = STATIC_POSTS.find((x) => x.slug === slug);
     return p
-      ? { ...staticSummary(p), content: toLexical(p.blocks), authorName: "Jonas Silva", seo: { image: p.cover?.localPath } }
+      ? { ...staticSummary(p), content: toLexical(p.blocks), authorName: "Jonas Silva", seo: { ...p.seo, image: p.cover?.localPath } }
       : null;
   }
   try {

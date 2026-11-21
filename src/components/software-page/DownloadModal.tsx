@@ -240,10 +240,10 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
 
               <ol className="dl-steps">
                 <li>
-                  <b>Abra o arquivo baixado</b> (<code>PTZ-Control-Web-Setup.exe</code>) e instale o programa. A pasta de plugins do OBS sugerida serve para a maioria das instalações.
+                  <b>Abra o arquivo baixado</b> (<code>PTZ-Control-Web-Setup.exe</code>) e instale o programa. Se o Windows mostrar o SmartScreen, clique em <b>Mais informações</b> › <b>Executar assim mesmo</b>. A pasta de plugins do OBS sugerida serve para a maioria das instalações.
                 </li>
                 <li>
-                  <b>No OBS Studio</b>, abra <b>Docks → Custom Browser Docks</b> e adicione este endereço:
+                  <b>No OBS Studio 33 ou mais novo</b>, abra <b>Painéis › Painéis personalizáveis com URL…</b>, dê o nome <code>PTZ Control Web</code> e cole este endereço:
                   <span className="dl-url">
                     <code>{panelUrl}</code>
                     <button type="button" onClick={copyPanel} className="dl-copy">

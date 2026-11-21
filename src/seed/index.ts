@@ -13,7 +13,7 @@ import { OFFERS } from "../config/offers";
 import type { InstructorId } from "../config/instructors";
 import { DEFAULT_SETTINGS } from "../config/site";
 import { toLexical, type SeedPost } from "../content/lexical";
-import { GUIDE_POSTS, GUIDE_POSTS_2, SEED_POSTS } from "../content/posts";
+import { GUIDE_POSTS, GUIDE_POSTS_2, SEED_POSTS, guiaPtzControlWebObs } from "../content/posts";
 
 const payload = await getPayload({ config });
 
@@ -223,7 +223,7 @@ if (!currentSettings?.updatedAt) {
 
 
 /** Envia uma imagem para Mídias: baixa da URL de origem; se não conseguir, usa o arquivo em /public. */
-async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: string }) {
+async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: string; caption?: string }) {
   // caminho do próprio site (ex.: "/blog/guias/x.jpg"): é arquivo da pasta public, não URL para baixar
   if (img.sourceUrl?.startsWith("/")) img = { ...img, localPath: img.localPath ?? img.sourceUrl, sourceUrl: undefined };
   if (img.sourceUrl) {
@@ -235,7 +235,7 @@ async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: s
       return await retry(() =>
         payload.create({
           collection: "media",
-          data: { alt: img.alt },
+          data: { alt: img.alt, ...(img.caption ? { caption: img.caption } : {}) },
           file: { data, mimetype: res.headers.get("content-type") || "image/png", name, size: data.length },
         }),
       );
@@ -246,7 +246,7 @@ async function uploadImage(img: { sourceUrl?: string; localPath?: string; alt: s
   if (img.localPath) {
     const local = path.resolve(process.cwd(), "public" + img.localPath);
     if (fs.existsSync(local)) {
-      return retry(() => payload.create({ collection: "media", data: { alt: img.alt }, filePath: local }));
+      return retry(() => payload.create({ collection: "media", data: { alt: img.alt, ...(img.caption ? { caption: img.caption } : {}) }, filePath: local }));
     }
   }
   return null;
@@ -289,6 +289,7 @@ async function createPost(post: SeedPost) {
       ),
       ...(cover ? { coverImage: cover.id } : {}),
       ...(authorId ? { author: authorId } : {}),
+      ...(post.seo ? { seo: { metaTitle: post.seo.title, metaDescription: post.seo.description } } : {}),
       _status: "published",
     },
   }));
@@ -353,6 +354,16 @@ if (!(seedState as Partial<Record<string, boolean>>)?.postsGuias2026b) {
 if (!(seedState as Partial<Record<string, boolean>>)?.postsGuiasTermos) {
   if (guiasJaExistiam) for (const post of GUIDE_POSTS) await refreshPost(post);
   await retry(() => payload.updateGlobal({ slug: "seed-state", data: { postsGuiasTermos: true } as never }));
+}
+// Guia do PTZ Control Web (21/11/2026): cria o post uma vez e atualiza uma vez os guias de PTZ e de
+// transmissão (que ganharam link para ele), se já estavam publicados. Depois disso, quem manda é o painel.
+if (!(seedState as Partial<Record<string, boolean>>)?.postPtzObs) {
+  await createPost(guiaPtzControlWebObs);
+  if (guiasJaExistiam) {
+    for (const post of GUIDE_POSTS.filter((p) => ["camera-ptz-para-igreja-vale-a-pena", "como-transmitir-o-culto-ao-vivo-com-obs-studio"].includes(p.slug)))
+      await refreshPost(post);
+  }
+  await retry(() => payload.updateGlobal({ slug: "seed-state", data: { postPtzObs: true } as never }));
 }
 
 payload.logger.info(

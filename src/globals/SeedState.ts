@@ -21,5 +21,7 @@ export const SeedState: GlobalConfig = {
     { name: "postsGuias2026b", type: "checkbox", defaultValue: false },
     // atualização única do texto dos 5 primeiros guias (termos do Google Trends), se já estavam publicados
     { name: "postsGuiasTermos", type: "checkbox", defaultValue: false },
+    // guia do PTZ Control Web (21/11/2026) + links para ele nos guias de PTZ e de transmissão
+    { name: "postPtzObs", type: "checkbox", defaultValue: false },
   ],
 };

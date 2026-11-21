@@ -6,6 +6,9 @@ import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { pt } from "@payloadcms/translations/languages/pt";
 import { buildConfig } from "payload";
 import sharp from "sharp";
+import { CalloutBlock } from "./blocks/Callout";
+import { FaqBlock } from "./blocks/Faq";
+import { TableBlock } from "./blocks/Table";
 import { YouTubeBlock } from "./blocks/YouTube";
 import { CampaignImports, CampaignNotes, CampaignSettingsGlobal, HotmartSales, MetaAdDays } from "./collections/Campanhas";
 import { Courses } from "./collections/Courses";
@@ -63,7 +66,7 @@ export default buildConfig({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
       FixedToolbarFeature(),
-      BlocksFeature({ blocks: [YouTubeBlock] }),
+      BlocksFeature({ blocks: [YouTubeBlock, TableBlock, CalloutBlock, FaqBlock] }),
     ],
   }),
   secret: process.env.PAYLOAD_SECRET || "",
