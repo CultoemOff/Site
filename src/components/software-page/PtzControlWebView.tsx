@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { SOFTWARE } from "@/config/software";
 import type { DownloadLeadErrors, DownloadLeadInput } from "@/lib/leads";
 import DownloadModal from "./DownloadModal";
@@ -209,7 +210,7 @@ export default function PtzControlWebView({ downloadUrl, action }: Props) {
             </p>
             <p className="ptzp-note">
               Passo a passo completo, com imagens:{" "}
-              <a href="/blog/controlar-camera-ptz-obs-studio">como controlar câmeras PTZ no OBS Studio com o PTZ Control Web</a>.
+              <Link href="/blog/controlar-camera-ptz-obs-studio">como controlar câmeras PTZ no OBS Studio com o PTZ Control Web</Link>.
             </p>
           </div>
           <table className="ptzp-table">
