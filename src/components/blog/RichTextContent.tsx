@@ -8,6 +8,7 @@ import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical
 import { LinkJSXConverter, RichText, type JSXConvertersFunction } from "@payloadcms/richtext-lexical/react";
 import YouTubeEmbed from "./YouTubeEmbed";
 import { localMediaPath } from "@/lib/mediaPath";
+import { publicMediaFallback } from "@/content/posts/mediaFallback";
 import { headingId, nodeText } from "@/lib/postToc";
 
 type YouTubeFields = { url: string; caption?: string | null; blockType: "youtube" };
@@ -82,9 +83,11 @@ const converters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => 
         </figure>
       );
     }
-    const src = localMediaPath(media.sizes?.wide?.url || media.url);
-    const width = media.sizes?.wide?.width || media.width || 1600;
-    const height = media.sizes?.wide?.height || media.height || 900;
+    // imagens que vieram do código: cópia de /public (o arquivo enviado pelo seed pode não existir no servidor)
+    const fallback = publicMediaFallback(media.url);
+    const src = fallback ?? localMediaPath(media.sizes?.wide?.url || media.url);
+    const width = (fallback ? media.width : media.sizes?.wide?.width || media.width) || 1600;
+    const height = (fallback ? media.height : media.sizes?.wide?.height || media.height) || 900;
     return (
       <figure className="post-media">
         <Image src={src} alt={media.alt || ""} width={width} height={height} sizes="(max-width: 800px) 100vw, 760px" />

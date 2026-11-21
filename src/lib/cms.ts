@@ -13,6 +13,7 @@ import { DEFAULT_SETTINGS, type SiteSettingsData } from "@/config/site";
 import { toLexical, type SeedPost } from "@/content/lexical";
 import { SEED_POSTS } from "@/content/posts";
 import { localMediaPath } from "@/lib/mediaPath";
+import { publicMediaFallback } from "@/content/posts/mediaFallback";
 
 /**
  * Camada de dados do site.
@@ -31,7 +32,8 @@ export function mediaUrl(v: unknown, size: "card" | "wide" = "card"): string | u
   const m = obj(v);
   const sized = obj(obj(m.sizes)[size]);
   const url = str(sized.url) || str(m.url);
-  return url ? localMediaPath(url) : undefined;
+  // imagens que vieram do código: usa a cópia de /public (ver src/content/posts/mediaFallback.ts)
+  return url ? (publicMediaFallback(url) ?? localMediaPath(url)) : undefined;
 }
 export function mediaAlt(v: unknown) {
   return str(obj(v).alt);
