@@ -41,9 +41,9 @@ export default function HomeView({ courses, settings, offers, youtube, latestPos
         {youtube}
         <Partners settings={settings} />
         <Faq items={settings.faq} />
-        {latestPosts}
-        {/* produtos que recomendamos: última seção da home (pedido do Jonas em 23/11/2026) */}
+        {/* produtos que recomendamos: penúltima seção, antes do blog (pedido do Jonas em 23/11/2026) */}
         <OffersHome offers={offers} />
+        {latestPosts}
       </main>
       <Footer settings={settings} />
       <ViewportFx />
