@@ -32,7 +32,7 @@ const FEATURES: { title: string; text: string; icon: string }[] = [
 ];
 
 const REQUIREMENTS: [string, string][] = [
-  ["Sistema", "Windows 10 ou 11, 64 bits"],
+  ["Sistema", "Windows 10 ou 11 (64 bits) ou macOS 13.5 ou mais novo (Apple Silicon e Intel)"],
   ["OBS Studio", "Versão 33 ou mais nova (o painel também abre direto no navegador)"],
   ["Troca de câmera pela cena", "WebSocket do OBS ativado"],
   ["Câmeras", "VISCA over IP (UDP/TCP), VISCA Serial, ONVIF ou USB (UVC)"],
@@ -48,24 +48,31 @@ const CHANGELOG: [string, string][] = [
 
 type Props = {
   downloadUrl: string;
+  /** instalador do macOS */
+  downloadUrlMac: string;
   action: (input: DownloadLeadInput) => Promise<{ ok: true } | { ok: false; errors: DownloadLeadErrors }>;
 };
 
 /** Página do PTZ Control Web (versão 0.9.0): apresentação, recursos, onde usar, requisitos e download com cadastro em popup. */
-export default function PtzControlWebView({ downloadUrl, action }: Props) {
-  const download = (location: string, variant: "primary" | "ghost" = "primary", label?: string) => (
-    <DownloadModal
-      source={PTZ.id}
-      productName={PTZ.name}
-      downloadUrl={downloadUrl}
-      panelUrl={PTZ_PANEL_URL}
-      tutorialUrl={PTZ_TUTORIAL_URL}
-      action={action}
-      location={location}
-      variant={variant}
-      label={label}
-      sideImage={{ src: `${IMG}/gamepad-obsbot.webp`, alt: "Controle de videogame movendo uma OBSBOT Tiny 2", width: 810, height: 1080 }}
-    />
+export default function PtzControlWebView({ downloadUrl, downloadUrlMac, action }: Props) {
+  // um botão por sistema: cada um abre o cadastro e, depois, o passo a passo daquele sistema
+  const download = (location: string) => (
+    <div className="dl-group">
+      {(["windows", "mac"] as const).map((platform) => (
+        <DownloadModal
+          key={platform}
+          platform={platform}
+          source={PTZ.id}
+          productName={PTZ.name}
+          downloadUrl={platform === "mac" ? downloadUrlMac : downloadUrl}
+          panelUrl={PTZ_PANEL_URL}
+          tutorialUrl={PTZ_TUTORIAL_URL}
+          action={action}
+          location={location}
+          sideImage={{ src: `${IMG}/gamepad-obsbot.webp`, alt: "Controle de videogame movendo uma OBSBOT Tiny 2", width: 810, height: 1080 }}
+        />
+      ))}
+    </div>
   );
 
   return (
@@ -86,7 +93,7 @@ export default function PtzControlWebView({ downloadUrl, action }: Props) {
                 Ver recursos
               </a>
             </div>
-            <p className="ptzp-hero__fine">Windows 10 e 11 · Gratuito</p>
+            <p className="ptzp-hero__fine">Windows 10 e 11 · macOS 13.5+ · Gratuito</p>
           </div>
           <figure className="ptzp-shot ptzp-shot--wide">
             <Image src={`${IMG}/horizontal-pt.webp`} alt="Painel do PTZ Control Web com 4 câmeras, controles de movimento e zoom e 15 presets com nome" width={1600} height={543} priority sizes="(max-width: 1240px) 100vw, 1200px" />
@@ -191,18 +198,21 @@ export default function PtzControlWebView({ downloadUrl, action }: Props) {
             <ol className="swp-steps ptzp-steps">
               <li>
                 <span>01</span>
-                <h3>Baixe e abra o instalador</h3>
-                <p>Cadastre-se, baixe o PTZ-Control-Web-Setup.exe e abra o arquivo. Se o Windows mostrar o SmartScreen, clique em Mais informações › Executar assim mesmo.</p>
+                <h3>Baixe o instalador do seu sistema</h3>
+                <p>Escolha Windows ou macOS, cadastre-se e baixe. O passo a passo de cada sistema aparece junto com o download.</p>
               </li>
               <li>
                 <span>02</span>
-                <h3>Confirme a pasta do OBS</h3>
-                <p>A pasta de plugins sugerida serve para a maioria das instalações.</p>
+                <h3>Instale</h3>
+                <p>
+                  No Windows, se aparecer o SmartScreen: Mais informações › Executar assim mesmo. No Mac, na primeira vez: Ajustes do
+                  Sistema › Privacidade e Segurança › Abrir Mesmo Assim.
+                </p>
               </li>
               <li>
                 <span>03</span>
-                <h3>Pronto</h3>
-                <p>O programa inicia com o Windows e o atalho na área de trabalho abre o painel.</p>
+                <h3>Coloque no OBS</h3>
+                <p>O programa inicia junto com o computador. No OBS, adicione o painel em Painéis › Painéis personalizáveis com URL….</p>
               </li>
             </ol>
             <p className="ptzp-note">
@@ -250,7 +260,7 @@ export default function PtzControlWebView({ downloadUrl, action }: Props) {
           <h2 id="download-title" className="swp-title">
             Baixe o {PTZ.name}.
           </h2>
-          <p className="swp-lead">Gratuito, para Windows 10 e 11. Você se cadastra em 10 segundos e o download é liberado na hora.</p>
+          <p className="swp-lead">Gratuito, para Windows e macOS. Você se cadastra em 10 segundos e o download é liberado na hora.</p>
           <div className="ptzp-final__cta">{download("rodapé")}</div>
           <p className="ptzp-credits">
             Desenvolvido por{" "}

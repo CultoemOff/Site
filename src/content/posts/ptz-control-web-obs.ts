@@ -33,7 +33,7 @@ export const guiaPtzControlWebObs: SeedPost = {
     { p: "Neste guia você vai aprender, passo a passo:" },
     {
       ul: [
-        "a instalar o PTZ Control Web no Windows;",
+        "a instalar o PTZ Control Web no Windows ou no Mac;",
         "a adicionar o painel de controle das câmeras no OBS Studio;",
         "a cadastrar câmeras de rede, USB (como a OBSBOT Tiny 2) ou serial;",
         "a operar as câmeras com um controle de videogame;",
@@ -54,13 +54,13 @@ export const guiaPtzControlWebObs: SeedPost = {
 
     { h2: "O que você precisa" },
     {
-      p: "Basta um computador com Windows, o OBS Studio 33 ou mais novo e uma câmera PTZ compatível. Não é preciso internet para controlar câmeras da rede local.",
+      p: "Basta um computador com Windows ou Mac, o OBS Studio 33 ou mais novo e uma câmera PTZ compatível. Não é preciso internet para controlar câmeras da rede local.",
     },
     {
       table: {
         rows: [
           ["Item", "Requisito"],
-          ["Computador", "Windows 10 ou 11, 64 bits"],
+          ["Computador", "Windows 10 ou 11, 64 bits, ou macOS 13.5 ou mais novo (Apple Silicon e Intel)"],
           ["OBS Studio", "Versão 33 ou mais nova (o painel também abre direto no navegador)"],
           ["Câmeras de rede", "VISCA over IP (UDP ou TCP) e ONVIF, como PTZOptics, AVer, Telycam e Sony"],
           ["Câmeras USB", "Webcams PTZ no padrão UVC, como a OBSBOT Tiny 2"],
@@ -77,7 +77,7 @@ export const guiaPtzControlWebObs: SeedPost = {
     },
     {
       ol: [
-        `Acesse a [página do PTZ Control Web](${PAGE}), faça o cadastro rápido e baixe o arquivo \`PTZ-Control-Web-Setup.exe\`.`,
+        `Acesse a [página do PTZ Control Web](${PAGE}), escolha **Windows**, faça o cadastro rápido e baixe o arquivo \`PTZ-Control-Web-Setup.exe\`.`,
         "Execute o instalador.",
         "Na tela da pasta de plugins do OBS, mantenha a sugerida (`C:\\ProgramData\\obs-studio\\plugins`). Troque apenas se você usa o OBS portátil ou uma instalação personalizada.",
         "Deixe marcada a opção **Criar atalho na área de trabalho**.",
@@ -93,6 +93,33 @@ export const guiaPtzControlWebObs: SeedPost = {
     },
     {
       p: "Pronto: o painel abre no navegador e o servidor passa a iniciar sozinho junto com o Windows. Nas próximas vezes, use o atalho da área de trabalho para abrir o painel fora do OBS. O instalador também coloca o plugin de teclas de atalho do OBS, explicado mais abaixo.",
+    },
+
+    { h2: "Como instalar o PTZ Control Web no Mac" },
+    {
+      p: "Há instalador para **macOS 13.5 ou mais novo**. O mesmo arquivo serve para Mac com Apple Silicon (M1, M2, M3, M4…) e com Intel.",
+    },
+    {
+      ol: [
+        `Na [página do PTZ Control Web](${PAGE}), escolha **macOS**, faça o cadastro rápido e baixe o arquivo \`PTZ-Control-Web-macOS.pkg\`.`,
+        "Dê dois cliques no arquivo. Na primeira vez, o macOS mostra um aviso dizendo que não conseguiu verificar o arquivo. Clique em **Concluído** (não em Mover para o Lixo).",
+        "Abra **Ajustes do Sistema** › **Privacidade e Segurança**. Role até o fim da página e clique em **Abrir Mesmo Assim** ao lado do nome do instalador. Confirme com a sua senha ou o Touch ID.",
+        "O instalador abre. Siga as telas: ele pede a senha de administrador do Mac.",
+        "Pronto. O app PTZ Control Web fica na pasta Aplicativos, abre o painel no navegador e passa a iniciar sozinho junto com o Mac.",
+      ],
+    },
+    {
+      callout: {
+        kind: "info",
+        title: "Por que aparece o aviso no Mac?",
+        text: "O macOS mostra esse aviso para todo instalador que não tem a assinatura paga da Apple (Apple Developer ID). Isso não significa que o arquivo tenha problema: o PTZ Control Web é gratuito e o instalador é publicado direto pelo Culto em Off. O aviso aparece só na primeira instalação.",
+      },
+    },
+    {
+      callout: {
+        kind: "dica",
+        text: "No Mac, depois de adicionar o painel no OBS (passo a passo abaixo), **reinicie o OBS uma vez** para carregar as teclas de atalho do PTZ Control Web.",
+      },
     },
 
     { h2: "Como adicionar o controle PTZ no OBS Studio" },
@@ -301,7 +328,10 @@ export const guiaPtzControlWebObs: SeedPost = {
           question: "Quais câmeras PTZ são compatíveis?",
           answer: "Qualquer câmera que aceite VISCA over IP (UDP ou TCP), VISCA Serial, ONVIF ou USB no padrão UVC. Isso inclui a maior parte das câmeras PTZ usadas em igrejas e a OBSBOT Tiny 2.",
         },
-        { question: "Funciona no Mac ou no Linux?", answer: "O instalador é para Windows 10 e 11, de 64 bits. As câmeras USB também dependem do Windows." },
+        {
+          question: "Funciona no Mac?",
+          answer: "Sim. Há instalador para macOS 13.5 ou mais novo, em Mac com Apple Silicon (M1, M2, M3, M4…) ou Intel, e para Windows 10 e 11, de 64 bits.",
+        },
         { question: "Preciso de internet para usar?", answer: "Não. Tudo roda no próprio computador, e a internet só é usada para procurar atualizações." },
         {
           question: "O painel aparece em branco no OBS. O que fazer?",
@@ -328,7 +358,7 @@ export const guiaPtzControlWebObs: SeedPost = {
         kind: "info",
         title: "Download gratuito",
         text: "Com o painel no OBS, as câmeras cadastradas e alguns presets salvos, um voluntário já opera a transmissão inteira sem sair do OBS.",
-        button: { label: "Baixe o PTZ Control Web grátis para Windows", url: PAGE },
+        button: { label: "Baixe o PTZ Control Web grátis para Windows ou macOS", url: PAGE },
       },
     },
     {

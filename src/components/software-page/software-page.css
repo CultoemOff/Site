@@ -613,9 +613,12 @@
 .dl-modal__content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   min-height: 0;
   overflow-y: auto;
+}
+/* centraliza quando sobra espaço; quando o conteúdo é maior (passo a passo do Mac), começa do topo e rola */
+.dl-modal__content > .gate {
+  margin-block: auto;
 }
 .dl-modal .gate {
   border: 0;
@@ -773,4 +776,36 @@
   .ptzp-split--reverse > figure {
     order: 0;
   }
+}
+
+/* botões de download por sistema (Windows e macOS) */
+.dl-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ptzp-final .dl-group {
+  justify-content: center;
+}
+.dl-open svg {
+  width: 20px;
+  height: 20px;
+}
+.dl-req {
+  margin: 0;
+  font-size: 0.84rem;
+  color: #a6e8ff;
+}
+.dl-note {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 212, 59, 0.35);
+  background: rgba(255, 212, 59, 0.08);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: #dbe6ff;
+}
+.dl-note b {
+  color: #ffd43b;
 }

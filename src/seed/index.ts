@@ -365,6 +365,11 @@ if (!(seedState as Partial<Record<string, boolean>>)?.postPtzObs) {
   }
   await retry(() => payload.updateGlobal({ slug: "seed-state", data: { postPtzObs: true } as never }));
 }
+// Guia do PTZ com a versão para macOS (23/11/2026): atualiza o texto uma vez (cria, se ainda não existir).
+if (!(seedState as Partial<Record<string, boolean>>)?.postPtzMac) {
+  await refreshPost(guiaPtzControlWebObs);
+  await retry(() => payload.updateGlobal({ slug: "seed-state", data: { postPtzMac: true } as never }));
+}
 
 payload.logger.info(
   `Seed concluído: ${created} formação(ões) criada(s) e ${updated} atualizada(s), ${equipmentCreated} equipamento(s), ${offersCreated} oferta(s) e ${postsCreated} post(s) criados${settingsSeeded ? "; configurações iniciais gravadas" : ""}.`,

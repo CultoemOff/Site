@@ -27,6 +27,8 @@ export type Software = {
   status?: SoftwareStatus;
   learnMoreUrl: string;
   downloadUrl: string;
+  /** instalador do macOS (quando houver) */
+  downloadUrlMac?: string;
   pageUrl?: string;
   visual: "ptz" | "light-remote";
 };
@@ -42,10 +44,12 @@ export const SOFTWARE: Software[] = [
       "Controle até 8 câmeras PTZ (pan, tilt, zoom, foco e presets com nome) dentro do OBS Studio, direto no navegador ou em qualquer software com fonte de navegador. Funciona com câmeras de rede (VISCA, ONVIF), seriais e USB como a OBSBOT Tiny 2, e aceita controle de videogame e Stream Deck.",
     features: [],
     worksWith: ["OBS Studio", "Navegador", "Software com fonte de navegador"],
-    platforms: ["Windows 10 e 11 (64 bits)"],
+    platforms: ["Windows 10 e 11 (64 bits)", "macOS 13.5 ou mais novo"],
     learnMoreUrl: "",
     // sempre o instalador da versão mais recente (liberado depois do cadastro no popup da página)
     downloadUrl: "https://github.com/CultoemOff/PTZ-Control-Web-Releases/releases/latest/download/PTZ-Control-Web-Setup.exe",
+    // macOS 13.5+ (Apple Silicon e Intel), versão mais recente; enviado pelo Jonas em 23/11/2026
+    downloadUrlMac: "https://github.com/CultoemOff/PTZ-Control-Web-Releases/releases/latest/download/PTZ-Control-Web-macOS.pkg",
     pageUrl: "/softwares/ptz-control-web",
     visual: "ptz",
   },

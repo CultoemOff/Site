@@ -21,7 +21,7 @@ createRoot(document.getElementById("root")!).render(
   <>
     <Navbar />
     <main id="conteudo" tabIndex={-1}>
-      <PtzControlWebView downloadUrl={SOFTWARE[0].downloadUrl} action={mockAction} />
+      <PtzControlWebView downloadUrl={SOFTWARE[0].downloadUrl} downloadUrlMac={SOFTWARE[0].downloadUrlMac ?? ""} action={mockAction} />
     </main>
     <Footer settings={DEFAULT_SETTINGS} />
     <ViewportFx />

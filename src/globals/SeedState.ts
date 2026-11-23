@@ -23,5 +23,7 @@ export const SeedState: GlobalConfig = {
     { name: "postsGuiasTermos", type: "checkbox", defaultValue: false },
     // guia do PTZ Control Web (21/11/2026) + links para ele nos guias de PTZ e de transmissão
     { name: "postPtzObs", type: "checkbox", defaultValue: false },
+    // guia do PTZ atualizado com a versão para macOS (23/11/2026)
+    { name: "postPtzMac", type: "checkbox", defaultValue: false },
   ],
 };

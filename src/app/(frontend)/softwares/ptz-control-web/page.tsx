@@ -15,7 +15,7 @@ const PTZ = SOFTWARE.find((s) => s.id === "ptz-control-web")!;
 export const metadata: Metadata = {
   title: "PTZ Control Web: controle gratuito de câmeras PTZ pelo navegador e no OBS Studio",
   description:
-    "Controle gratuito de até 8 câmeras PTZ dentro do OBS Studio ou no navegador: pan, tilt, zoom, foco e presets com nome. VISCA, ONVIF, USB (OBSBOT Tiny 2), controle de videogame e Stream Deck. Para Windows.",
+    "Controle gratuito de até 8 câmeras PTZ dentro do OBS Studio ou no navegador: pan, tilt, zoom, foco e presets com nome. VISCA, ONVIF, USB (OBSBOT Tiny 2), controle de videogame e Stream Deck. Para Windows e macOS.",
   alternates: { canonical: "/softwares/ptz-control-web" },
 };
 
@@ -23,6 +23,7 @@ export default async function PtzControlWebPage() {
   const settings = await getSiteSettings();
   // link fixo do instalador mais recente (o campo antigo do painel não é mais usado)
   const downloadUrl = PTZ.downloadUrl;
+  const downloadUrlMac = PTZ.downloadUrlMac ?? "";
   return (
     <>
       <JsonLd
@@ -31,7 +32,7 @@ export default async function PtzControlWebPage() {
           "@type": "SoftwareApplication",
           name: PTZ.name,
           applicationCategory: "MultimediaApplication",
-          operatingSystem: "Windows 10, Windows 11",
+          operatingSystem: "Windows 10, Windows 11, macOS 13.5",
           softwareVersion: "0.9.0",
           offers: { "@type": "Offer", price: "0", priceCurrency: "BRL" },
           description: PTZ.description,
@@ -41,7 +42,7 @@ export default async function PtzControlWebPage() {
       />
       <Navbar />
       <main id="conteudo" tabIndex={-1}>
-        <PtzControlWebView downloadUrl={downloadUrl} action={submitDownloadLead} />
+        <PtzControlWebView downloadUrl={downloadUrl} downloadUrlMac={downloadUrlMac} action={submitDownloadLead} />
       </main>
       <Footer settings={settings} />
       <ViewportFx />

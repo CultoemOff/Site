@@ -29,7 +29,25 @@ type Props = {
   variant?: "primary" | "ghost";
   /** imagem da coluna lateral do popup (no computador) */
   sideImage?: { src: string; alt: string; width: number; height: number };
+  /** sistema do instalador: muda o arquivo, o botão e o passo a passo */
+  platform?: "windows" | "mac";
 };
+
+const FILE = { windows: "PTZ-Control-Web-Setup.exe", mac: "PTZ-Control-Web-macOS.pkg" } as const;
+const OS_NAME = { windows: "Windows", mac: "macOS" } as const;
+
+/** ícones genéricos (sem logotipo de marca): monitor para Windows, notebook para macOS */
+function OsIcon({ platform }: { platform: "windows" | "mac" }) {
+  return platform === "mac" ? (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M5 6h14v9H5zM3 18h18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ) : (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4 5h16v11H4zM9 20h6M12 16v4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 const storageKey = (source: string) => `coe-download:${source}`;
 
@@ -38,7 +56,9 @@ const storageKey = (source: string) => `coe-download:${source}`;
  * Depois do cadastro, o mesmo popup libera o download e mostra os passos de instalação.
  * Quem já se cadastrou neste navegador vai direto para o download.
  */
-export default function DownloadModal({ source, productName, downloadUrl, panelUrl, tutorialUrl = "", action, label = "Baixe aqui", location, variant = "primary", sideImage }: Props) {
+export default function DownloadModal({ source, productName, downloadUrl, panelUrl, tutorialUrl = "", action, label, location, variant = "primary", sideImage, platform = "windows" }: Props) {
+  const os = OS_NAME[platform];
+  const buttonLabel = label ?? `Baixar para ${os}`;
   const uid = useId();
   const dialog = useRef<HTMLDialogElement>(null);
   const [unlocked, setUnlocked] = useState(false);
@@ -54,6 +74,10 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
     } catch {
       /* navegação privada */
     }
+    // cadastro feito em outro botão da página (ex.: Windows) libera também este (ex.: macOS)
+    const onUnlock = (e: Event) => (e as CustomEvent<string>).detail === source && setUnlocked(true);
+    window.addEventListener("coe-download-unlocked", onUnlock);
+    return () => window.removeEventListener("coe-download-unlocked", onUnlock);
   }, [source]);
 
   // o clique no botão já vira evento pelo data-track ("click_download_button")
@@ -86,8 +110,9 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
           /* ok */
         }
         setMetaUserData({ email: form.email, name: form.name });
-        track("generate_lead", { label: productName, location });
+        track("generate_lead", { label: `${productName} (${os})`, location });
         setUnlocked(true);
+        window.dispatchEvent(new CustomEvent("coe-download-unlocked", { detail: source }));
       } else {
         setErrors(res.errors);
       }
@@ -118,11 +143,9 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
 
   return (
     <>
-      <button type="button" className={`btn btn--${variant} dl-open`} onClick={open} data-track="click_download_button" data-track-label={productName} data-track-location={location}>
-        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-          <path d="M10 3v10m0 0-4-4m4 4 4-4M4 16h12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <span>{label}</span>
+      <button type="button" className={`btn btn--${variant} dl-open`} onClick={open} data-track="click_download_button" data-track-label={`${productName} (${os})`} data-track-location={location}>
+        <OsIcon platform={platform} />
+        <span>{buttonLabel}</span>
       </button>
 
       <dialog ref={dialog} className="dl-modal" aria-labelledby={`${uid}-title`} onClick={(e) => e.target === e.currentTarget && close()}>
@@ -143,7 +166,7 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
             <form className="gate dl-form" onSubmit={onSubmit} noValidate>
               <p className="dl-modal__kicker">Download gratuito</p>
               <h2 id={`${uid}-title`} className="gate__title">
-                Cadastre-se para baixar o {productName}
+                Cadastre-se para baixar o {productName} para {os}
               </h2>
               <p className="gate__text">Leva 10 segundos. O download é liberado na hora.</p>
 
@@ -229,19 +252,34 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
                 </svg>
               </span>
               <h2 id={`${uid}-title`} className="gate__title">
-                Download liberado!
+                Download liberado para {os}!
               </h2>
-              <a className="btn btn--primary dl-get" href={downloadUrl} data-track="download_software" data-track-label={productName} data-track-location={location}>
+              <a className="btn btn--primary dl-get" href={downloadUrl} data-track="download_software" data-track-label={`${productName} (${os})`} data-track-location={location}>
                 <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                   <path d="M10 3v10m0 0-4-4m4 4 4-4M4 16h12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span>Baixar o {productName}</span>
+                <span>Baixar para {os}</span>
               </a>
+              {platform === "mac" && <p className="dl-req">macOS 13.5 ou mais novo · Mac com Apple Silicon (M1, M2, M3, M4…) ou Intel</p>}
 
               <ol className="dl-steps">
-                <li>
-                  <b>Abra o arquivo baixado</b> (<code>PTZ-Control-Web-Setup.exe</code>) e instale o programa. Se o Windows mostrar o SmartScreen, clique em <b>Mais informações</b> › <b>Executar assim mesmo</b>. A pasta de plugins do OBS sugerida serve para a maioria das instalações.
-                </li>
+                {platform === "mac" ? (
+                  <>
+                    <li>
+                      <b>Dê dois cliques no arquivo baixado</b> (<code>{FILE.mac}</code>). Na primeira vez, o macOS avisa que não conseguiu verificar o arquivo: clique em <b>Concluído</b> (não em Mover para o Lixo).
+                    </li>
+                    <li>
+                      Abra <b>Ajustes do Sistema › Privacidade e Segurança</b>, role até o fim e clique em <b>Abrir Mesmo Assim</b> ao lado do nome do instalador. Confirme com a sua senha ou o Touch ID.
+                    </li>
+                    <li>
+                      <b>Siga as telas do instalador</b> (ele pede a senha de administrador do Mac). O app fica na pasta Aplicativos, abre o painel no navegador e passa a iniciar junto com o Mac.
+                    </li>
+                  </>
+                ) : (
+                  <li>
+                    <b>Abra o arquivo baixado</b> (<code>{FILE.windows}</code>) e instale o programa. Se o Windows mostrar o SmartScreen, clique em <b>Mais informações</b> › <b>Executar assim mesmo</b>. A pasta de plugins do OBS sugerida serve para a maioria das instalações.
+                  </li>
+                )}
                 <li>
                   <b>No OBS Studio 33 ou mais novo</b>, abra <b>Painéis › Painéis personalizáveis com URL…</b>, dê o nome <code>PTZ Control Web</code> e cole este endereço:
                   <span className="dl-url">
@@ -252,9 +290,22 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
                   </span>
                 </li>
                 <li>
-                  <b>Pronto:</b> o programa inicia com o Windows e o painel aparece dentro do OBS.
+                  {platform === "mac" ? (
+                    <>
+                      <b>Reinicie o OBS uma vez</b> para carregar as teclas de atalho do PTZ Control Web. Pronto: o painel aparece dentro do OBS.
+                    </>
+                  ) : (
+                    <>
+                      <b>Pronto:</b> o programa inicia com o Windows e o painel aparece dentro do OBS.
+                    </>
+                  )}
                 </li>
               </ol>
+              {platform === "mac" && (
+                <p className="dl-note">
+                  <b>Por que aparece o aviso?</b> O macOS mostra esse aviso para instaladores sem a assinatura paga da Apple (Developer ID). Não significa que o arquivo tenha problema: ele é publicado pelo Culto em Off no GitHub, e o aviso aparece só na primeira instalação.
+                </p>
+              )}
 
               {tutorialUrl ? (
                 <a className="btn btn--ghost dl-tutorial" href={tutorialUrl} target="_blank" rel="noopener noreferrer" data-track="select_content" data-track-label={`Tutorial ${productName}`} data-track-location={location}>
