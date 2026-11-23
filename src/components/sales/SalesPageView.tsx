@@ -344,6 +344,32 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
         </div>
       )}
 
+      {/* ---------- o que você vai aprender: promessa simples + temas ---------- */}
+      {page.learn && (
+        <section className="sp-section sp-section--ink sp-learn" aria-labelledby="sp-learn">
+          <div className="sp-section__inner">
+            <Kicker icon="book">O que você vai aprender</Kicker>
+            <h2 id="sp-learn" className="swp-title">
+              {page.learn.title}
+            </h2>
+            <ul className="sp-learn__list">
+              {page.learn.items.map((t) => (
+                <li key={t}>
+                  <Icon name="check" size={16} />
+                  {t}
+                </li>
+              ))}
+              {page.learn.bonus && (
+                <li className="sp-learn__bonus">
+                  <Icon name="gift" size={16} />
+                  {page.learn.bonus}
+                </li>
+              )}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* ---------- prova / autoridade rápida ---------- */}
       {page.showProof !== false && (
       <div className="sp-proof" aria-label="Números do Culto em Off">

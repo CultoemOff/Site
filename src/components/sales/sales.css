@@ -239,6 +239,65 @@ h1.swp-hero__channel {
   color: var(--muted-on-dark);
 }
 
+/* o que você vai aprender */
+.sp-learn {
+  padding-block: clamp(44px, 6vw, 72px);
+}
+.sp-learn__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.sp-learn__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--sp-card-border, rgba(110, 150, 255, 0.2));
+  background: var(--sp-card, rgba(12, 24, 60, 0.6));
+  color: var(--sp-text, #e6e8ee);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.sp-learn__list li svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--sp-accent, #5bd0ff);
+}
+.sp-learn__list .sp-learn__bonus {
+  border-color: rgba(255, 212, 59, 0.55);
+  background: rgba(255, 212, 59, 0.1);
+  font-weight: 600;
+}
+.sp-learn__list .sp-learn__bonus svg {
+  color: #ffd43b;
+}
+@media (max-width: 960px) {
+  .sp-learn__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .sp-learn__list {
+    gap: 6px;
+  }
+  .sp-learn__list li {
+    gap: 6px;
+    padding: 9px 10px;
+    font-size: 0.82rem;
+    line-height: 1.3;
+  }
+  .sp-learn__list li svg {
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
+  }
+}
+
 /* seções */
 .sp-section {
   padding: clamp(64px, 9vw, 110px) 20px;

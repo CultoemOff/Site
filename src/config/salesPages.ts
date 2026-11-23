@@ -187,6 +187,8 @@ export type SalesPage = {
   showProof?: boolean;
   /** faixa de confiança logo abaixo do topo: nota dos alunos, acesso vitalício e garantia */
   trust?: { rating: string };
+  /** "O que você vai aprender": promessa simples + lista de temas, logo abaixo da faixa de confiança */
+  learn?: { title: string; items: string[]; bonus?: string };
   /** seção "Você se reconhece?" (hoje × depois da formação); false = some */
   showCompare?: boolean;
   notForWho: string[];
@@ -229,6 +231,27 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     promo: { label: "Preço Black November" },
     // faixa de números e seção "Você se reconhece?": removidas a pedido do Jonas (29/10/2026)
     showProof: false,
+    // promessa + temas (prévia aprovada pelo Jonas antes de publicar)
+    learn: {
+      title: "Aprenda a rede da igreja do zero, sem ser de TI.",
+      items: [
+        "Como a rede da igreja funciona",
+        "IP, DHCP, máscara e gateway",
+        "IP fixo ou automático",
+        "Comandos ipconfig e ping",
+        "Roteador, switch e access point",
+        "Cabos de rede e limites de HDMI, USB e SDI",
+        "PoE: energia e dados no mesmo cabo",
+        "Wi-Fi 2,4 GHz e 5 GHz e canais",
+        "Rede de visitantes separada da técnica",
+        "NDI Full, HX2 e HX3",
+        "Câmera PTZ na rede e no OBS",
+        "OBS pelo WebSocket e Bitfocus Companion",
+        "Roteadores Vivo, Claro e TP-Link na prática",
+        "Planejar a rede da igreja e introdução ao Dante",
+        "Projeto final: OBS, NDI e PTZ",
+      ],
+    },
     // faixa de confiança (pedido do Jonas em 17/11/2026; nota informada por ele)
     trust: { rating: "4.9" },
     showCompare: false,
@@ -1016,6 +1039,28 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     ],
     // faixa de números abaixo do topo: removida a pedido do Jonas (29/10/2026)
     showProof: false,
+    // promessa + temas (prévia aprovada pelo Jonas antes de publicar)
+    learn: {
+      title: "Aprenda a transmitir o culto no OBS, do zero ao avançado.",
+      items: [
+        "Instalar e configurar o OBS Studio",
+        "O PC certo para a transmissão",
+        "Webcam, câmera de ação e Sony ZV-E10 na live",
+        "Câmera PTZ com NDI",
+        "Placas de captura e conversores HDMI/SDI",
+        "Mesa de corte",
+        "Som da mesa na live",
+        "Filtros e sincronia de áudio",
+        "Cenas, Modo Estúdio e vídeos de pré-culto",
+        "Letras e avisos com Holyrics e SPresenter",
+        "Câmera de Libras",
+        "PTZ com joystick e controle de videogame",
+        "Encoder, bitrate e a sua internet",
+        "YouTube e Facebook ao mesmo tempo",
+        "Checklist e plano B do domingo",
+      ],
+      bonus: "Bônus: o áudio da live no Reaper",
+    },
     // faixa de confiança (pedido do Jonas em 17/11/2026; nota informada por ele)
     trust: { rating: "4.9" },
     // seção "Você se reconhece?": removida a pedido do Jonas (29/10/2026)
