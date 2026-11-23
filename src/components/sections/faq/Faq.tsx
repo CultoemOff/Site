@@ -10,7 +10,7 @@ export default function Faq({ items }: { items: FaqItem[] }) {
     <section id="duvidas" className="section section--paper faq" aria-labelledby="duvidas-title">
       <div className="section__inner faq__layout">
         <div className="faq__intro">
-          <SectionHeader channel="CH 07 · Dúvidas" id="duvidas-title" title="Perguntas frequentes.">
+          <SectionHeader channel="CH 06 · Dúvidas" id="duvidas-title" title="Perguntas frequentes.">
             <p>O que costumam perguntar antes de começar uma formação.</p>
           </SectionHeader>
           <div data-reveal style={{ "--i": 3 } as React.CSSProperties}>

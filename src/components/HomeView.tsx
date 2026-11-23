@@ -37,12 +37,13 @@ export default function HomeView({ courses, settings, offers, youtube, latestPos
         {/* "Bastidores reais" saiu em 23/11/2026: o manifesto abre a home, seguido das formações em uma tela */}
         <Manifesto />
         <HomeCourses courses={homeCourses} />
-        <OffersHome offers={offers} />
         <SoftwareSection />
         {youtube}
         <Partners settings={settings} />
         <Faq items={settings.faq} />
         {latestPosts}
+        {/* produtos que recomendamos: última seção da home (pedido do Jonas em 23/11/2026) */}
+        <OffersHome offers={offers} />
       </main>
       <Footer settings={settings} />
       <ViewportFx />

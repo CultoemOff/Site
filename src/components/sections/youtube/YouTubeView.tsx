@@ -10,7 +10,7 @@ export default function YouTubeView({ videos, channelUrl }: { videos: YouTubeVid
     <section id="conteudo-gratuito" className="section section--paper yt" aria-labelledby="yt-title">
       <div className="section__inner">
         <div className="yt__head">
-          <SectionHeader channel="CH 05 · Conteúdo gratuito" id="yt-title" title="E ainda tem muito conteúdo gratuito.">
+          <SectionHeader channel="CH 04 · Conteúdo gratuito" id="yt-title" title="Nos acompanhe no YouTube.">
             <p>
               Tutoriais, testes, configurações, equipamentos e experiências práticas estão disponíveis gratuitamente no
               canal Culto em Off.
