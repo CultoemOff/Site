@@ -4,7 +4,6 @@ import Hero from "@/components/hero/Hero";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import HomeCourses from "@/components/sections/courses/HomeCourses";
-import Faq from "@/components/sections/faq/Faq";
 import Manifesto from "@/components/sections/manifesto/Manifesto";
 import OffersHome from "@/components/sections/offers-home/OffersHome";
 import Partners from "@/components/sections/partners/Partners";
@@ -40,7 +39,6 @@ export default function HomeView({ courses, settings, offers, youtube, latestPos
         <SoftwareSection />
         {youtube}
         <Partners settings={settings} />
-        <Faq items={settings.faq} />
         {/* produtos que recomendamos: penúltima seção, antes do blog (pedido do Jonas em 23/11/2026) */}
         <OffersHome offers={offers} />
         {latestPosts}
