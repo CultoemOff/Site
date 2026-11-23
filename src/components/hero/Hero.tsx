@@ -42,7 +42,7 @@ export default function Hero() {
         </ul>
       </div>
 
-      <a href="#problemas" className="hero__scroll" aria-label="Rolar para a próxima seção">
+      <a href="#manifesto" className="hero__scroll" aria-label="Rolar para a próxima seção">
         <span aria-hidden="true" />
       </a>
     </section>

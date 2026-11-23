@@ -3,12 +3,11 @@ import ViewportFx from "@/components/fx/ViewportFx";
 import Hero from "@/components/hero/Hero";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
-import Courses from "@/components/sections/courses/Courses";
+import HomeCourses from "@/components/sections/courses/HomeCourses";
 import Faq from "@/components/sections/faq/Faq";
 import Manifesto from "@/components/sections/manifesto/Manifesto";
 import OffersHome from "@/components/sections/offers-home/OffersHome";
 import Partners from "@/components/sections/partners/Partners";
-import Problems from "@/components/sections/problems/Problems";
 import SoftwareSection from "@/components/sections/software/SoftwareSection";
 import type { Course } from "@/config/courses";
 import type { Offer } from "@/config/offers";
@@ -35,9 +34,9 @@ export default function HomeView({ courses, settings, offers, youtube, latestPos
       <Navbar />
       <main id="conteudo" tabIndex={-1}>
         <Hero />
-        <Problems />
+        {/* "Bastidores reais" saiu em 23/11/2026: o manifesto abre a home, seguido das formações em uma tela */}
         <Manifesto />
-        <Courses courses={homeCourses} pair showMoreButton={false} />
+        <HomeCourses courses={homeCourses} />
         <OffersHome offers={offers} />
         <SoftwareSection />
         {youtube}

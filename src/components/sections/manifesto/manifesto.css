@@ -5,7 +5,7 @@
 .manifesto {
   position: relative;
   overflow: hidden;
-  padding: clamp(96px, 13vw, 170px) 20px;
+  padding: clamp(72px, 10vw, 130px) 20px;
   color: #fff;
   text-align: center;
   background:
@@ -188,5 +188,28 @@
 @media (prefers-reduced-motion: reduce) {
   .manifesto__wave-track {
     animation: none;
+  }
+}
+
+/* pilares em linha, logo abaixo do manifesto (home sem a seção de problemas e sem o mapa) */
+.manifesto__how--row {
+  position: relative;
+  max-width: 1200px;
+  margin: clamp(40px, 6vw, 64px) auto 0;
+  justify-items: center;
+  text-align: left;
+}
+.manifesto__how--row .manifesto__pillars {
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 900px) {
+  .manifesto__how--row .manifesto__pillars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 420px) {
+  .manifesto__how--row .manifesto__pillars {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
