@@ -62,7 +62,7 @@ function DirectButton({ href, location, compact }: { href: string; location: str
 }
 
 /** rótulo pequeno acima do título da seção, com ícone */
-const Kicker = ({ icon, children }: { icon: IconName; children: React.ReactNode }) => (
+export const Kicker = ({ icon, children }: { icon: IconName; children: React.ReactNode }) => (
   <p className="swp-kicker sp-kicker">
     <Icon name={icon} size={16} />
     {children}
@@ -1066,7 +1066,7 @@ export default function SalesPageView({ course, page, audience, instagram }: Pro
 }
 
 /** um módulo da lista (acordeão), com a contagem de aulas no título */
-function ModuleItem({ m, num, star, open, extra, note }: { m: SalesModule; num: string; star?: boolean; open?: boolean; extra?: boolean; note?: string }) {
+export function ModuleItem({ m, num, star, open, extra, note }: { m: SalesModule; num: string; star?: boolean; open?: boolean; extra?: boolean; note?: string }) {
   const cls = `sp-module${star ? " sp-module--star" : ""}${extra ? " sp-module--extra" : ""}`;
   return (
     <li>
