@@ -57,7 +57,7 @@ export default function ComboPageView({ main, bump }: Props) {
       <span className="sp-price__parcel">à vista ou parcelado no cartão</span>
     </p>
   );
-  const howItWorks = `No checkout do ${short(main.course)}, o ${short(bump.course)} já vem no carrinho por ${money(bumpPrice)}.`;
+  const howItWorks = `No checkout do ${short(main.course)}, o ${short(bump.course)} já vem no carrinho por ${money(bumpPrice)}. Se quiser só um curso, é só desmarcar o ${short(bump.course)} no carrinho.`;
 
   const course = (item: Item, n: number, lessons: number) => (
     <section
@@ -72,23 +72,6 @@ export default function ComboPageView({ main, bump }: Props) {
         <h2 id={`cb-${item.course.id}`} className="swp-title">
           {item.course.title}
         </h2>
-        {item.page.learn && <p className="swp-lead">{item.page.learn.title}</p>}
-        {item.page.learn && (
-          <ul className="sp-learn__list">
-            {item.page.learn.items.map((t) => (
-              <li key={t}>
-                <Icon name="check" size={16} />
-                {t}
-              </li>
-            ))}
-            {item.page.learn.bonus && (
-              <li className="sp-learn__bonus">
-                <Icon name="gift" size={16} />
-                {item.page.learn.bonus}
-              </li>
-            )}
-          </ul>
-        )}
         <h3 className="cb-course__modules-title">
           {item.page.modules.length} módulos, {lessons} aulas{item.page.extraModule?.label ? ` + ${item.page.extraModule.label}` : ""}
         </h3>
@@ -355,7 +338,10 @@ export default function ComboPageView({ main, bump }: Props) {
           </div>
           <div className="sp-faq__list">
             {[
-              { question: "Como funciona o combo?", answer: `${howItWorks} Você paga uma vez só e recebe o acesso aos dois cursos.` },
+              {
+                question: "Como funciona o combo?",
+                answer: `No checkout do ${short(main.course)}, o ${short(bump.course)} já vem no carrinho por ${money(bumpPrice)}. Com os dois, você paga uma vez só e recebe o acesso aos dois cursos. Se preferir só um, é só desmarcar o ${short(bump.course)} no carrinho.`,
+              },
               { question: "Preciso saber alguma coisa antes?", answer: "Não. Os dois cursos começam do zero, com exemplos reais de culto. Não precisa ser de TI nem profissional de vídeo." },
               { question: "Em que ordem eu faço?", answer: `Como preferir. A maioria começa pelo ${short(main.course)}, para colocar a live no ar, e segue para o ${short(bump.course)} para deixar a rede estável.` },
               { question: "Tem certificado?", answer: "Sim, um certificado para cada curso concluído." },
