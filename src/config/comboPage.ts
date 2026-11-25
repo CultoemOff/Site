@@ -6,8 +6,21 @@
  */
 export const COMBO_PAGE = {
   slug: "combo-culto-ao-vivo-e-redes",
-  /** link da oferta do combo na Hotmart. PENDENTE: o Jonas vai criar (25/11/2026); até lá o botão usa o link do Culto ao Vivo */
-  checkoutUrl: "",
+  /** link da oferta do combo na Hotmart (enviado pelo Jonas em 25/11/2026) */
+  checkoutUrl: "https://pay.hotmart.com/S108668812U",
   /** preço do combo (oferta própria), pedido do Jonas em 25/11/2026; 0 = Culto ao Vivo + valor do Redes no carrinho */
   price: 82,
+  /** vídeo do topo (reel do combo, enviado pelo Jonas em 25/11/2026; provisório até ele mandar outro) */
+  video: {
+    src: "/videos/combo-culto-ao-vivo-e-redes.mp4",
+    poster: "/images/formacoes/combo-video-capa.jpg",
+    width: 720,
+    height: 1280,
+  } as { src: string; poster: string; width: number; height: number } | null,
+  /** provas reais mostradas no combo (títulos das provas das páginas de cada curso), nesta ordem */
+  proofTitles: [
+    "O Jonas responde as dúvidas muito rapidamente.",
+    "Muito melhor que outros mais caros.",
+    "Consegui entender o sistema que uma empresa montou na minha igreja.",
+  ],
 };

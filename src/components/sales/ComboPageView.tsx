@@ -11,6 +11,7 @@ import { resolvePrice } from "@/lib/pricing";
 import "@/components/sections/courses/courses.css";
 import "@/components/software-page/software-page.css";
 import { Kicker, ModuleItem } from "./SalesPageView";
+import SalesVideo from "./SalesVideo";
 import "./sales.css";
 
 type Item = { course: Course; page: SalesPage };
@@ -38,7 +39,13 @@ export default function ComboPageView({ main, bump }: Props) {
   const lessonsMain = lessonCount(main.page.modules);
   const lessonsBump = lessonCount(bump.page.modules);
   const label = `Combo ${short(main.course)} + ${short(bump.course)}`;
-  const proofs = [...(main.page.proofs ?? []), ...(bump.page.proofs ?? [])];
+  // provas reais escolhidas pelo Jonas (25/11/2026), nesta ordem
+  const all = [...(bump.page.proofs ?? []), ...(main.page.proofs ?? [])];
+  const proofs = COMBO_PAGE.proofTitles
+    .map((t) => all.find((p) => p.title === t))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+  // fotos das aulas dos dois cursos (as mesmas das páginas de cada curso)
+  const frames = [main, bump].flatMap((it) => (it.page.inside?.frames ?? []).filter((f) => f.src).map((f) => ({ ...f, course: short(it.course) })));
 
   const cta = (location: string, text = `Quero os dois por ${money(price)}`) => (
     <ArrowButton href={href} external={external} track={{ event: "begin_checkout", label, id: main.course.id, value: price, location }}>
@@ -63,36 +70,30 @@ export default function ComboPageView({ main, bump }: Props) {
     ? `Os dois cursos numa compra só, por ${money(price)}. Prefere só um? Cada curso também é vendido separado.`
     : `No checkout do ${short(main.course)}, o ${short(bump.course)} já vem no carrinho por ${money(bumpPrice)}. Se quiser só um curso, é só desmarcar o ${short(bump.course)} no carrinho.`;
 
+  // um curso: cabeçalho e módulos (no computador, os dois ficam lado a lado)
   const course = (item: Item, n: number, lessons: number) => (
-    <section
-      id={item.course.id}
-      className={`sp-section ${n === 1 ? "sp-section--ink" : "sp-section--graphite"} cb-course`}
-      aria-labelledby={`cb-${item.course.id}`}
-      data-track-view={`curso ${n}`}
-    >
-      <div className="sp-section__inner">
-        <p className="cb-course__num">Curso {n} de 2</p>
-        <Kicker icon={n === 1 ? "monitorPlay" : "network"}>{item.page.seo?.kicker ?? "Curso"}</Kicker>
-        <h2 id={`cb-${item.course.id}`} className="swp-title">
-          {item.course.title}
-        </h2>
-        <h3 className="cb-course__modules-title">
-          {item.page.modules.length} módulos, {lessons} aulas{item.page.extraModule?.label ? ` + ${item.page.extraModule.label}` : ""}
-        </h3>
-        <ol className="sp-modules">
-          {item.page.modules.map((m, i) => (
-            <ModuleItem key={m.title} m={m} num={String(i + 1).padStart(2, "0")} />
-          ))}
-          {item.page.extraModule && <ModuleItem m={item.page.extraModule} num="+" extra note={item.page.extraModule.note} />}
-        </ol>
-      </div>
-    </section>
+    <article id={item.course.id} className="cb-col" aria-labelledby={`cb-${item.course.id}`}>
+      <p className="cb-course__num">Curso {n} de 2</p>
+      <Kicker icon={n === 1 ? "monitorPlay" : "network"}>{item.page.seo?.kicker ?? "Curso"}</Kicker>
+      <h3 id={`cb-${item.course.id}`} className="cb-col__title">
+        {item.course.title}
+      </h3>
+      <p className="cb-course__modules-title">
+        {item.page.modules.length} módulos, {lessons} aulas{item.page.extraModule?.label ? ` + ${item.page.extraModule.label}` : ""}
+      </p>
+      <ol className="sp-modules">
+        {item.page.modules.map((m, i) => (
+          <ModuleItem key={m.title} m={m} num={String(i + 1).padStart(2, "0")} />
+        ))}
+        {item.page.extraModule && <ModuleItem m={item.page.extraModule} num="+" extra note={item.page.extraModule.note} />}
+      </ol>
+    </article>
   );
 
   return (
     <div className="sp-page cb-page">
       {/* ---------- topo (sem vídeo por enquanto) ---------- */}
-      <header className="sp-hero sp-hero--novideo">
+      <header className={`sp-hero${COMBO_PAGE.video ? " sp-hero--vertical" : " sp-hero--novideo"}`}>
         <p className="sp-brand">
           <Image src={LOGO_SRC} alt="" width={36} height={36} priority />
           <span>
@@ -139,6 +140,27 @@ export default function ComboPageView({ main, bump }: Props) {
               </div>
             </div>
           </div>
+
+          {/* vídeo do combo (em pé), carrega só quando a pessoa toca */}
+          {COMBO_PAGE.video && (
+            <div
+              className="sp-video sp-video--vertical"
+              style={
+                {
+                  "--video-ar": `${COMBO_PAGE.video.width} / ${COMBO_PAGE.video.height}`,
+                  "--video-r": COMBO_PAGE.video.width / COMBO_PAGE.video.height,
+                } as React.CSSProperties
+              }
+            >
+              <SalesVideo src={COMBO_PAGE.video.src} poster={COMBO_PAGE.video.poster} vertical title={`Apresentação do ${label}`} />
+              <a className="sp-scrollcue" href="#sp-inicio">
+                <span>Role para saber mais</span>
+                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            </div>
+          )}
         </div>
       </header>
 
@@ -170,30 +192,44 @@ export default function ComboPageView({ main, bump }: Props) {
         </ul>
       </div>
 
-      {/* ---------- por que os dois juntos ---------- */}
-      <section className="sp-highlights cb-highlights" aria-label="Por que os dois cursos juntos">
-        <ul className="sp-highlights__list">
-          {[
-            { icon: "monitorPlay" as const, title: "A live depende da rede.", text: "Câmeras NDI e PTZ, o computador da live e a internet conversam pela rede da igreja. Se ela falha, a transmissão cai." },
-            { icon: "wifi" as const, title: "Um curso cobre o OBS, o outro a rede.", text: "No primeiro, você monta e opera a live. No segundo, entende IP, switch, Wi-Fi e NDI para ela não travar." },
-            { icon: "tag" as const, title: `Os dois por ${money(price)}.`, text: off > 0 ? `Separados, sairiam por ${money(separate)}. No combo, você economiza ${money(separate - price)}.` : "Um preço só para os dois cursos." },
-          ].map((h, k) => (
-            <li key={h.title} className="sp-highlight" data-reveal style={{ "--i": k } as React.CSSProperties}>
-              <span className="sp-highlight__icon">
-                <Icon name={h.icon} size={28} />
-              </span>
-              <div>
-                <h2 className="sp-highlight__title">{h.title}</h2>
-                <p className="sp-highlight__text">{h.text}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* ---------- por dentro das aulas: fotos reais dos dois cursos ---------- */}
+      {frames.length > 0 && (
+        <section className="sp-section sp-section--ink" aria-labelledby="cb-inside" data-track-view="por dentro">
+          <div className="sp-section__inner">
+            <Kicker icon="monitorPlay">Por dentro das aulas</Kicker>
+            <h2 id="cb-inside" className="swp-title">
+              Gravado na cabine da igreja, com o equipamento de verdade.
+            </h2>
+            <ul className="cb-gallery">
+              {frames.map((f, k) => (
+                <li key={f.src} data-reveal style={{ "--i": k % 4 } as React.CSSProperties}>
+                  <figure>
+                    <Image src={f.src!} alt={f.alt} width={f.width} height={f.height} sizes="(min-width: 1100px) 290px, (min-width: 640px) 45vw, 92vw" />
+                    <figcaption>
+                      <span>{f.course}</span>
+                      <strong>{f.title}</strong>
+                    </figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
-      {/* ---------- os dois cursos: Culto ao Vivo primeiro ---------- */}
-      {course(main, 1, lessonsMain)}
-      {course(bump, 2, lessonsBump)}
+      {/* ---------- os dois cursos: Culto ao Vivo primeiro; no computador, lado a lado ---------- */}
+      <section id="cursos" className="sp-section sp-section--graphite cb-courses" aria-labelledby="cb-cursos" data-track-view="cursos">
+        <div className="sp-section__inner">
+          <Kicker icon="book">Conteúdo</Kicker>
+          <h2 id="cb-cursos" className="swp-title">
+            2 cursos, {lessonsMain + lessonsBump} aulas.
+          </h2>
+          <div className="cb-cols">
+            {course(main, 1, lessonsMain)}
+            {course(bump, 2, lessonsBump)}
+          </div>
+        </div>
+      </section>
 
       {/* ---------- provas reais ---------- */}
       {proofs.length > 0 && (
