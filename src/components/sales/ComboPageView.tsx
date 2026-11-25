@@ -57,7 +57,11 @@ export default function ComboPageView({ main, bump }: Props) {
       <span className="sp-price__parcel">à vista ou parcelado no cartão</span>
     </p>
   );
-  const howItWorks = `No checkout do ${short(main.course)}, o ${short(bump.course)} já vem no carrinho por ${money(bumpPrice)}. Se quiser só um curso, é só desmarcar o ${short(bump.course)} no carrinho.`;
+  // oferta própria do combo (preço definido em comboPage.ts) ou o Redes no carrinho do Culto ao Vivo (order bump)
+  const ownOffer = COMBO_PAGE.price > 0;
+  const howItWorks = ownOffer
+    ? `Os dois cursos numa compra só, por ${money(price)}. Prefere só um? Cada curso também é vendido separado.`
+    : `No checkout do ${short(main.course)}, o ${short(bump.course)} já vem no carrinho por ${money(bumpPrice)}. Se quiser só um curso, é só desmarcar o ${short(bump.course)} no carrinho.`;
 
   const course = (item: Item, n: number, lessons: number) => (
     <section
@@ -340,7 +344,9 @@ export default function ComboPageView({ main, bump }: Props) {
             {[
               {
                 question: "Como funciona o combo?",
-                answer: `No checkout do ${short(main.course)}, o ${short(bump.course)} já vem no carrinho por ${money(bumpPrice)}. Com os dois, você paga uma vez só e recebe o acesso aos dois cursos. Se preferir só um, é só desmarcar o ${short(bump.course)} no carrinho.`,
+                answer: ownOffer
+                  ? `Você compra os dois cursos juntos por ${money(price)}, num pagamento só, e recebe o acesso aos dois. Se preferir só um, o ${short(main.course)} e o ${short(bump.course)} também são vendidos separados, cada um na sua página.`
+                  : `No checkout do ${short(main.course)}, o ${short(bump.course)} já vem no carrinho por ${money(bumpPrice)}. Com os dois, você paga uma vez só e recebe o acesso aos dois cursos. Se preferir só um, é só desmarcar o ${short(bump.course)} no carrinho.`,
               },
               { question: "Preciso saber alguma coisa antes?", answer: "Não. Os dois cursos começam do zero, com exemplos reais de culto. Não precisa ser de TI nem profissional de vídeo." },
               { question: "Em que ordem eu faço?", answer: `Como preferir. A maioria começa pelo ${short(main.course)}, para colocar a live no ar, e segue para o ${short(bump.course)} para deixar a rede estável.` },
