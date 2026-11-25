@@ -18,12 +18,14 @@ export const metadata: Metadata = {
 };
 
 export default async function ComboPage() {
-  if (!COMBO) notFound();
+  // cópia local: dentro das funções de busca o TypeScript não mantém a checagem de "não é null"
+  const combo = COMBO;
+  if (!combo) notFound();
   const [courses, settings] = await Promise.all([getCourses(), getSiteSettings()]);
-  const mainCourse = courses.find((c) => c.id === COMBO.main);
-  const bumpCourse = courses.find((c) => c.id === COMBO.bump);
-  const mainPage = SALES_PAGES[COMBO.main];
-  const bumpPage = SALES_PAGES[COMBO.bump];
+  const mainCourse = courses.find((c) => c.id === combo.main);
+  const bumpCourse = courses.find((c) => c.id === combo.bump);
+  const mainPage = SALES_PAGES[combo.main];
+  const bumpPage = SALES_PAGES[combo.bump];
   if (!mainCourse || !bumpCourse || !mainPage || !bumpPage) notFound();
   return (
     <>
