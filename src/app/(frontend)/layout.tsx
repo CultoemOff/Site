@@ -62,7 +62,14 @@ export const metadata: Metadata = {
     "Behringer X32",
     "live no TikTok",
   ],
-  icons: { icon: ICON_SRC, apple: APPLE_ICON_SRC },
+  // ícone da aba: logo vertical (26/11/2026), em 32 px e 96 px
+  icons: {
+    icon: [
+      { url: "/images/brand/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: ICON_SRC, sizes: "96x96", type: "image/png" },
+    ],
+    apple: APPLE_ICON_SRC,
+  },
   // verificação do domínio no Meta Business (vai no <head> de todas as páginas, renderizado no servidor)
   verification: { other: { "facebook-domain-verification": "k574kq63f26dfor8p205bsp6m1e87x" } },
   alternates: { canonical: "/" },

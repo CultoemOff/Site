@@ -21,7 +21,7 @@ createRoot(document.getElementById("root")!).render(
   <>
     <Navbar />
     <main id="conteudo" tabIndex={-1}>
-      <ChurchLowerThirdsView downloadUrl={SOFTWARE.find((s) => s.id === "church-lower-thirds")!.downloadUrl} action={mockAction} />
+      <ChurchLowerThirdsView downloadUrl={SOFTWARE.find((s) => s.id === "church-lower-thirds")!.downloadUrl} downloadUrlMac={SOFTWARE.find((s) => s.id === "church-lower-thirds")!.downloadUrlMac ?? ""} action={mockAction} />
     </main>
     <Footer settings={DEFAULT_SETTINGS} />
     <ViewportFx />

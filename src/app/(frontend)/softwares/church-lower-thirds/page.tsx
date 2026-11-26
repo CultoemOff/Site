@@ -15,7 +15,7 @@ const CLT = SOFTWARE.find((s) => s.id === "church-lower-thirds")!;
 export const metadata: Metadata = {
   title: "Church Lower Thirds: lower thirds gratuitos para igrejas no OBS Studio",
   description:
-    "Nomes, ofertas com QR Code de PIX, avisos, agenda, redes sociais e contagem regressiva na transmissão do culto. 25 modelos, painel dentro do OBS e controle com prévia ao vivo. Gratuito, para Windows.",
+    "Nomes, ofertas com QR Code de PIX, avisos, agenda, redes sociais e contagem regressiva na transmissão do culto. 25 modelos, painel dentro do OBS e controle com prévia ao vivo. Gratuito, para Windows e macOS.",
   alternates: { canonical: "/softwares/church-lower-thirds" },
 };
 
@@ -29,7 +29,8 @@ export default async function ChurchLowerThirdsPage() {
           "@type": "SoftwareApplication",
           name: CLT.name,
           applicationCategory: "MultimediaApplication",
-          operatingSystem: "Windows 10, Windows 11",
+          operatingSystem: "Windows 10, Windows 11, macOS",
+          softwareVersion: "1.0.0",
           offers: { "@type": "Offer", price: "0", priceCurrency: "BRL" },
           description: CLT.description,
           url: `${SITE_URL}/softwares/church-lower-thirds`,
@@ -38,7 +39,7 @@ export default async function ChurchLowerThirdsPage() {
       />
       <Navbar />
       <main id="conteudo" tabIndex={-1}>
-        <ChurchLowerThirdsView downloadUrl={CLT.downloadUrl} action={submitDownloadLead} />
+        <ChurchLowerThirdsView downloadUrl={CLT.downloadUrl} downloadUrlMac={CLT.downloadUrlMac ?? ""} action={submitDownloadLead} />
       </main>
       <Footer settings={settings} />
       <ViewportFx />

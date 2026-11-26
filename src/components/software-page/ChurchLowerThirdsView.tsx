@@ -9,6 +9,8 @@ const CLT = SOFTWARE.find((s) => s.id === "church-lower-thirds")!;
 
 /** endereço do painel (dock) para colar no OBS */
 export const CLT_DOCK_URL = "http://127.0.0.1:8795/dock";
+const VERSION = "1.0.0";
+const FILE = { windows: "Church-Lower-Thirds-Setup-1.0.0.exe", mac: "Church-Lower-Thirds-macOS-1.0.0.pkg" } as const;
 const MEDIA = "/images/softwares/church-lower-thirds";
 
 /** os nove elementos (texto da página de divulgação enviada pelo Jonas em 26/11/2026) */
@@ -119,28 +121,40 @@ function HowDiagram() {
 
 type Props = {
   downloadUrl: string;
+  /** instalador do macOS */
+  downloadUrlMac: string;
   action: (input: DownloadLeadInput) => Promise<{ ok: true } | { ok: false; errors: DownloadLeadErrors }>;
 };
 
 /** Página do Church Lower Thirds (lançamento): o que vai para a tela, como funciona, painel, controle, modelos e download com cadastro. */
-export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
+export default function ChurchLowerThirdsView({ downloadUrl, downloadUrlMac, action }: Props) {
   const download = (location: string) => (
     <div className="dl-group">
+      {(["windows", "mac"] as const).map((platform) => (
       <DownloadModal
-        platform="windows"
+        key={platform}
+        platform={platform}
         source={CLT.id}
         productName={CLT.name}
-        downloadUrl={downloadUrl}
+        downloadUrl={platform === "mac" ? downloadUrlMac : downloadUrl}
+        macRequirements=""
         panelUrl={CLT_DOCK_URL}
         action={action}
         location={location}
         sideImage={{ src: `${MEDIA}/elementos.webp`, alt: "", width: 640, height: 360 }}
-        steps={(url) => (
+        steps={(url, os) => (
           <>
-            <li>
-              <b>Baixe o instalador</b> na página de versões (o arquivo do Windows da versão mais recente) e execute. Se o Windows mostrar o
-              SmartScreen, clique em <b>Mais informações</b> › <b>Executar assim mesmo</b>.
-            </li>
+            {os === "mac" ? (
+              <li>
+                <b>Dê dois cliques no arquivo baixado</b> (<code>{FILE.mac}</code>) e siga o instalador. Se o macOS não deixar abrir, vá em{" "}
+                <b>Ajustes do Sistema › Privacidade e Segurança</b> e clique em <b>Abrir Mesmo Assim</b>.
+              </li>
+            ) : (
+              <li>
+                <b>Abra o arquivo baixado</b> (<code>{FILE.windows}</code>) e instale. Se o Windows mostrar o SmartScreen, clique em{" "}
+                <b>Mais informações</b> › <b>Executar assim mesmo</b>.
+              </li>
+            )}
             <li>
               <b>Siga o assistente</b>: na primeira vez, ele explica cada passo e deixa tudo pronto.
             </li>
@@ -152,6 +166,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
           </>
         )}
       />
+      ))}
     </div>
   );
 
@@ -162,7 +177,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
           <div className="swp-hero__text">
             <p className="swp-hero__channel">
               <span aria-hidden="true" />
-              Software gratuito · Lançamento
+              Software gratuito · Versão {VERSION}
             </p>
             <h1 className="swp-hero__title">{CLT.name}</h1>
             <p className="swp-hero__tagline">Lower thirds para igrejas, direto no OBS Studio.</p>
@@ -176,7 +191,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
                 Ver o que vai para a tela
               </a>
             </div>
-            <p className="ptzp-hero__fine">Windows 10 e 11 · OBS Studio · Gratuito</p>
+            <p className="ptzp-hero__fine">Windows 10 e 11 · macOS · OBS Studio · Gratuito</p>
           </div>
           <Clip
             name="elementos"
@@ -284,7 +299,10 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
               <li>
                 <span>01</span>
                 <h3>Instale</h3>
-                <p>Baixe o instalador para Windows e execute. Se aparecer o SmartScreen: Mais informações › Executar assim mesmo.</p>
+                <p>
+                  Baixe o instalador do seu sistema e execute. No Windows, se aparecer o SmartScreen: Mais informações › Executar assim mesmo.
+                  No Mac, se ele não deixar abrir: Ajustes do Sistema › Privacidade e Segurança › Abrir Mesmo Assim.
+                </p>
               </li>
               <li>
                 <span>02</span>
@@ -324,7 +342,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
           <HowDiagram />
           <ul className="cltp-checks cltp-checks--grid">
             <li>
-              <b>O programa</b> fica em segundo plano e inicia com o Windows. Ele guarda as configurações e sabe o que deve estar no ar.
+              <b>O programa</b> fica em segundo plano e inicia com o computador. Ele guarda as configurações e sabe o que deve estar no ar.
             </li>
             <li>
               <b>Os gráficos</b> entram no OBS como fontes de navegador com fundo transparente. Há uma fonte com todos os elementos e uma para
@@ -351,7 +369,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
             Baixe o {CLT.name}.
           </h2>
           <p className="swp-lead">
-            Gratuito. Funciona com o OBS Studio no Windows 10 e 11, em português, inglês, espanhol, italiano e alemão. Você se
+            Gratuito. Funciona com o OBS Studio no Windows 10 e 11 e no macOS, em português, inglês, espanhol, italiano e alemão. Você se
             cadastra em 10 segundos e o download é liberado na hora.
           </p>
           <div className="ptzp-final__cta">{download("rodapé")}</div>

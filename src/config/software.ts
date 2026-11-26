@@ -62,11 +62,12 @@ export const SOFTWARE: Software[] = [
       "Nomes, ofertas com QR Code, avisos, agenda e redes sociais na transmissão do culto, com 25 modelos prontos e um painel dentro do OBS para colocar e tirar cada elemento da tela.",
     features: [],
     worksWith: ["OBS Studio", "Stream Deck", "Bitfocus Companion"],
-    platforms: ["Windows 10 e 11"],
+    platforms: ["Windows 10 e 11", "macOS"],
     status: "disponivel",
     learnMoreUrl: "",
-    // página de versões no GitHub (o Jonas enviou este link em 26/11/2026)
-    downloadUrl: "https://github.com/CultoemOff/Church-Lower-Thirds/releases",
+    // instaladores da versão 1.0.0 (links enviados pelo Jonas em 26/11/2026)
+    downloadUrl: "https://github.com/CultoemOff/Church-Lower-Thirds-Releases/releases/download/v1.0.0/Church-Lower-Thirds-Setup-1.0.0.exe",
+    downloadUrlMac: "https://github.com/CultoemOff/Church-Lower-Thirds-Releases/releases/download/v1.0.0/Church-Lower-Thirds-macOS-1.0.0.pkg",
     pageUrl: "/softwares/church-lower-thirds",
     visual: "ptz",
   },

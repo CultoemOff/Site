@@ -32,7 +32,9 @@ type Props = {
   /** sistema do instalador: muda o arquivo, o botão e o passo a passo */
   platform?: "windows" | "mac";
   /** passo a passo próprio de outro software (recebe o endereço do painel já com o botão Copiar); sem ele, o do PTZ Control Web */
-  steps?: (panelUrl: ReactNode) => ReactNode;
+  steps?: (panelUrl: ReactNode, platform: "windows" | "mac") => ReactNode;
+  /** linha de requisitos do macOS no popup (padrão: a do PTZ Control Web; vazio = não mostra) */
+  macRequirements?: string;
 };
 
 const FILE = { windows: "PTZ-Control-Web-Setup.exe", mac: "PTZ-Control-Web-macOS.pkg" } as const;
@@ -58,7 +60,7 @@ const storageKey = (source: string) => `coe-download:${source}`;
  * Depois do cadastro, o mesmo popup libera o download e mostra os passos de instalação.
  * Quem já se cadastrou neste navegador vai direto para o download.
  */
-export default function DownloadModal({ source, productName, downloadUrl, panelUrl, tutorialUrl = "", action, label, location, variant = "primary", sideImage, platform = "windows", steps }: Props) {
+export default function DownloadModal({ source, productName, downloadUrl, panelUrl, tutorialUrl = "", action, label, location, variant = "primary", sideImage, platform = "windows", steps, macRequirements = "macOS 13.5 ou mais novo · Mac com Apple Silicon (M1, M2, M3, M4…) ou Intel" }: Props) {
   const os = OS_NAME[platform];
   const buttonLabel = label ?? `Baixar para ${os}`;
   const uid = useId();
@@ -262,7 +264,7 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
                 </svg>
                 <span>Baixar para {os}</span>
               </a>
-              {platform === "mac" && <p className="dl-req">macOS 13.5 ou mais novo · Mac com Apple Silicon (M1, M2, M3, M4…) ou Intel</p>}
+              {platform === "mac" && macRequirements && <p className="dl-req">{macRequirements}</p>}
 
               {steps ? (
                 <ol className="dl-steps">
@@ -272,7 +274,7 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
                   <button type="button" onClick={copyPanel} className="dl-copy">
                     {copied ? "Copiado!" : "Copiar"}
                   </button>
-                </span>
+                </span>, platform
               
                   )}
                 </ol>

@@ -354,7 +354,7 @@ export function HomeSections({ courses, settings, offers, videos, posts }: Props
                 </div>
                 <div className="hm2-soft__text">
                   <p className="hm2-kicker">
-                    {clt.area} · <span className="hm2-free">Gratuito</span> · Lançamento
+                    {clt.area} · <span className="hm2-free">Gratuito</span> · Windows e macOS
                   </p>
                   <h3 id="hm2-clt" className="hm2-soft__name">
                     {clt.name}
