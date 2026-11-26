@@ -490,7 +490,7 @@ export default function StageBackdrop() {
         <image
           href={STAGE_SCREEN_LOGO_SRC}
           x="560"
-          y="336"
+          y="372"
           width="480"
           height="220"
           preserveAspectRatio="xMidYMid meet"

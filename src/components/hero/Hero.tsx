@@ -18,11 +18,6 @@ export default function Hero() {
           A escola técnica para voluntários <span className="hero__title-accent">que servem na Igreja.</span>
         </h1>
 
-        <p className="hero__lead">
-          O Culto em Off nasceu com um objetivo: tornar-se referência na formação de voluntários de igreja,
-          transformando conhecimento técnico em conteúdo simples, prático e acessível.
-        </p>
-
         <p className="hero__sub">
           Áudio, vídeo, iluminação, redes, transmissão, projeção e automação — conhecimento para quem faz o
           culto acontecer nos bastidores.
@@ -30,16 +25,8 @@ export default function Hero() {
 
         <div className="hero__ctas">
           <ArrowButton href="#formacoes">Explorar formações</ArrowButton>
-          <ArrowButton href="#manifesto" variant="ghost">
-            Conhecer o Culto em Off
-          </ArrowButton>
         </div>
 
-        <ul className="hero__pillars" aria-label="Nossos pilares">
-          <li>Conhecimento profissional</li>
-          <li>Linguagem acessível</li>
-          <li>Aplicação na igreja</li>
-        </ul>
       </div>
 
       <a href="#manifesto" className="hero__scroll" aria-label="Rolar para a próxima seção">

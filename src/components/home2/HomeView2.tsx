@@ -224,8 +224,9 @@ export function HomeSections({ courses, settings, offers, videos, posts }: Props
                   ))}
                 </h2>
                 <p className="hm2-manifesto__text" data-m="rise">
-                  Não importa se sua igreja tem uma grande estrutura ou uma equipe de três voluntários. Entender a tecnologia
-                  permite resolver problemas, tomar decisões melhores e servir com mais tranquilidade.
+                  O Culto em Off nasceu para ser referência na formação de voluntários de igreja, transformando conhecimento técnico
+                  em conteúdo simples, prático e acessível. Seja numa grande estrutura ou numa equipe de três voluntários, entender a
+                  tecnologia permite resolver problemas, tomar decisões melhores e servir com mais tranquilidade.
                 </p>
                 <p className="hm2-manifesto__sign" data-m="rise" style={{ "--d": "120ms" } as React.CSSProperties}>Esse é o Culto em Off.</p>
               </div>
