@@ -1,4 +1,3 @@
-import { STAGE_SCREEN_LOGO_SRC } from "@/config/site";
 
 /**
  * Palco estilizado (estático) em SVG — inspirado em um auditório de igreja
@@ -305,20 +304,6 @@ function Wedge({ x, flip = false }: { x: number; flip?: boolean }) {
   );
 }
 
-function Waveform() {
-  // linha de sinal (inspirada na vinheta do canal) atravessando o telão
-  const left =
-    "M470 446 H560 L570 440 L578 452 L588 446 H612 L620 380 L630 500 L640 432 L648 446 H680 L688 438 L696 452 L704 446 H720";
-  const right =
-    "M880 446 H896 L904 438 L912 452 L920 446 H952 L960 396 L970 492 L980 436 L988 446 H1016 L1024 440 L1032 452 L1040 446 H1130";
-  return (
-    <g className="stage-screen__wave" fill="none" stroke="#5b9dff" strokeWidth={1.6} strokeLinejoin="round">
-      <path d={left} pathLength={1} />
-      <path d={right} pathLength={1} />
-    </g>
-  );
-}
-
 export default function StageBackdrop() {
   return (
     <svg
@@ -485,18 +470,7 @@ export default function StageBackdrop() {
       {/* telão de LED */}
       <rect x="462" y="250" width="676" height="392" rx="4" fill="#020308" />
       <rect x="470" y="258" width="660" height="376" fill="url(#screenGrad)" />
-      <g className="stage-screen__content">
-        <Waveform />
-        <image
-          href={STAGE_SCREEN_LOGO_SRC}
-          x="560"
-          y="372"
-          width="480"
-          height="220"
-          preserveAspectRatio="xMidYMid meet"
-          className="stage-screen__logo"
-        />
-      </g>
+      {/* o conteúdo do telão (logo animado) fica em ScreenLogo, por cima deste desenho */}
       <rect x="470" y="258" width="660" height="376" fill="url(#ledGrid)" />
       <rect x="470" y="258" width="660" height="2" fill="#fff" opacity="0.05" />
 

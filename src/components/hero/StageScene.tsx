@@ -1,3 +1,4 @@
+import ScreenLogo from "./ScreenLogo";
 import StageBackdrop from "./StageBackdrop";
 import StageHaze from "./StageHaze";
 import StageLights from "./StageLights";
@@ -11,6 +12,7 @@ export default function StageScene() {
   return (
     <div className="stage" data-stage aria-hidden="true">
       <StageBackdrop />
+      <ScreenLogo />
       <StageLights />
       <StageHaze />
     </div>
