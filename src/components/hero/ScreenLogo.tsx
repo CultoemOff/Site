@@ -14,7 +14,8 @@ import { LOGO_H_SRC } from "@/config/site";
 const W = 1800;
 const H = 792;
 const REPEAT = 18;
-const BPM = 124;
+/** ritmo lento (modo "Worship" da animação original, ~68 BPM): pulso macio e onda que atravessa as barras */
+const BPM = 68;
 const SRC = "/images/brand/telao";
 const L = {
   text: { x: 695.6, y: 12.8, w: 1091, h: 713 },
@@ -58,11 +59,16 @@ const E = {
   inOutCubic: (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2),
 };
 
-function music(t: number) {
+function music(t: number, band = 0) {
   const beat = 60 / BPM;
   const ph = (t % beat) / beat;
   const n = Math.floor(t / beat) % 4;
-  return { kick: Math.exp(-ph * 7), snare: n === 1 || n === 3 ? Math.exp(-ph * 10) : 0, hat: Math.exp(-(((t * 2) % beat) / beat) * 14) };
+  const env = (1 - Math.exp(-ph * 18)) * Math.exp(-ph * 2.4);
+  return {
+    kick: env * (n === 0 ? 1 : n === 2 ? 0.7 : 0.4),
+    swell: 0.5 + 0.5 * Math.sin((t * 6.283) / (beat * 8) - 1.2),
+    wave: Math.sin(6.283 * (t / (beat * 4) - band * 1.25)),
+  };
 }
 
 const box = (a: { x: number; y: number; w: number; h: number }): React.CSSProperties => ({ left: a.x, top: a.y, width: a.w, height: a.h });
@@ -146,10 +152,11 @@ export default function ScreenLogo() {
         const el = barRefs.current[i];
         if (!el) return;
         const intro = E.outBack(prog(t, 0.02 + Math.abs(i - 7) * 0.018, 0.26 + Math.abs(i - 7) * 0.018), 2.2);
-        const spec = 0.5 + 0.5 * Math.sin(t * b.f1 * 6.283 + b.ph) * Math.sin(t * b.f2 * 2.1 + b.ph * 1.7);
-        const energy = m.kick * (1 - b.band) * 0.9 + m.snare * (0.35 + 0.4 * Math.sin(b.ph)) + m.hat * b.band * 0.5 + spec * 0.55;
+        const mm = music(t, b.band);
+        const spec = Math.sin(t * b.f1 * 0.45 + b.ph) * Math.sin(t * b.f2 * 0.2 + b.ph * 1.7);
+        const energy = 0.47 + mm.wave * 0.42 * (0.6 + 0.4 * mm.swell) + spec * 0.24 + mm.kick * 0.34 * (1 - b.band * 0.5);
         const target = clamp(1 + amp * (energy - 0.55), 0.28, 1.45);
-        b.sm += (target - b.sm) * (1 - Math.exp(-dt / 0.031));
+        b.sm += (target - b.sm) * (1 - Math.exp(-dt / 0.2));
         el.style.transform = `scaleY(${Math.max(0.001, b.sm * intro).toFixed(4)})`;
         if (i === bars.length - 1) el.style.opacity = String(clamp(prog(t, 2.05, 2.35)));
       });

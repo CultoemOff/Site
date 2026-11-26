@@ -11,7 +11,7 @@ import { MORE_COURSES_URL, formatInstallments, formatPrice, hasPrice, type Cours
 import { getInstructor } from "@/config/instructors";
 import { pickHomeOffers, type Offer } from "@/config/offers";
 import { SALES_PAGES, hasSalesPage } from "@/config/salesPages";
-import { GUARANTEE_DAYS, HOME_COURSE_IDS, LOGO_V_SIZE, LOGO_V_SRC, type SiteSettingsData } from "@/config/site";
+import { HOME_COURSE_IDS, LOGO_V_SIZE, LOGO_V_SRC, type SiteSettingsData } from "@/config/site";
 import { SOFTWARE } from "@/config/software";
 import type { PostSummary } from "@/lib/cms";
 import { resolvePrice } from "@/lib/pricing";
@@ -257,12 +257,7 @@ export function HomeSections({ courses, settings, offers, videos, posts }: Props
         {/* ================= formações + provas ================= */}
         <section id="formacoes" className="hm2-section hm2-courses" aria-labelledby="hm2-formacoes-title">
           <div className="hm2-wrap">
-            <Head n="02" label="Escola Culto em Off" id="hm2-formacoes-title" title="Formações para entender, não só apertar botões.">
-              <p>
-                Para voluntários, líderes e pastores, dos fundamentos à aplicação no culto. Online, com certificado e {GUARANTEE_DAYS} dias
-                de garantia.
-              </p>
-            </Head>
+            <Head n="02" label="Escola Culto em Off" id="hm2-formacoes-title" title="Formações para entender, não só apertar botões." />
             <ul className="hm2-courses__grid" aria-label="Formações">
               {homeCourses.map((c, i) => (
                 <CoursePanel key={c.id} course={c} delay={i * 110} />
@@ -302,9 +297,7 @@ export function HomeSections({ courses, settings, offers, videos, posts }: Props
         {/* ================= softwares ================= */}
         <section id="softwares" className="hm2-section hm2-soft" aria-labelledby="hm2-softwares-title">
           <div className="hm2-wrap">
-            <Head n="03" label="Softwares Culto em Off" id="hm2-softwares-title" title="Ferramentas feitas para a operação da igreja.">
-              <p>Além das formações, o Culto em Off desenvolve softwares, gratuitos e comerciais, para simplificar a operação técnica de quem serve.</p>
-            </Head>
+            <Head n="03" label="Softwares Culto em Off" id="hm2-softwares-title" title="Ferramentas feitas para a operação da igreja." />
             {ptz && (
               <article className="hm2-soft__main" data-m="rise" aria-labelledby="hm2-ptz">
                 <div className="hm2-soft__text">
@@ -425,9 +418,7 @@ export function HomeSections({ courses, settings, offers, videos, posts }: Props
         {/* ================= parceiros (compacto) ================= */}
         <section id="parceiros" className="hm2-section hm2-partners" aria-labelledby="hm2-parceiros-title">
           <div className="hm2-wrap">
-            <Head n="05" label="Parceiros" id="hm2-parceiros-title" title="Parceiros que recomendamos.">
-              <p>Softwares e lojas que usamos e indicamos para facilitar o dia a dia de quem serve na igreja.</p>
-            </Head>
+            <Head n="05" label="Parceiros" id="hm2-parceiros-title" title="Parceiros que recomendamos." />
             <ul className="hm2-partners__grid">
               <li className="partner--spresenter" data-m="rise">
                 <div className="partner__media hm2-partners__media">
