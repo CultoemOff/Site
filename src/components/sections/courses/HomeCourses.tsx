@@ -5,7 +5,6 @@ import { MORE_COURSES_URL, formatInstallments, formatPrice, hasPrice, type Cours
 import { hasSalesPage } from "@/config/salesPages";
 import { GUARANTEE_DAYS } from "@/config/site";
 import { resolvePrice } from "@/lib/pricing";
-import ComboBanner from "./ComboBanner";
 import "@/components/ui/button.css";
 import "./home-courses.css";
 
@@ -106,9 +105,6 @@ export default function HomeCourses({ courses }: { courses: Course[] }) {
             <HomeCourseCard key={c.id} course={c} index={i} />
           ))}
         </ul>
-
-        {/* combo dos dois cursos: leva para a página do combo */}
-        <ComboBanner courses={courses} compact location="combo (home)" />
 
         <p className="hc__more">
           <Link href="/formacoes">Ver todas as formações</Link>
