@@ -2102,3 +2102,23 @@ body:has(.promo-bar) .hm2-hero {
 .hm2-manifesto__cross {
   opacity: 0.045;
 }
+
+/* segundo software (Church Lower Thirds): vídeo à esquerda, texto à direita */
+.hm2-soft__main--alt {
+  margin-top: 18px;
+}
+@media (min-width: 960px) {
+  .hm2-soft__main--alt {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+}
+@media (max-width: 959px) {
+  .hm2-soft__main--alt .hm2-window {
+    order: 1;
+  }
+}
+.hm2-window .cltp-video {
+  display: block;
+  width: 100%;
+  height: auto;
+}

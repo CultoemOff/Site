@@ -54,6 +54,23 @@ export const SOFTWARE: Software[] = [
     visual: "ptz",
   },
   {
+    id: "church-lower-thirds",
+    name: "Church Lower Thirds",
+    area: "Transmissão",
+    tagline: "Lower thirds para igrejas, direto no OBS Studio.",
+    description:
+      "Nomes, ofertas com QR Code, avisos, agenda e redes sociais na transmissão do culto, com 25 modelos prontos e um painel dentro do OBS para colocar e tirar cada elemento da tela.",
+    features: [],
+    worksWith: ["OBS Studio", "Stream Deck", "Bitfocus Companion"],
+    platforms: ["Windows 10 e 11"],
+    status: "beta",
+    learnMoreUrl: "",
+    // página de versões no GitHub (o Jonas enviou este link em 26/11/2026)
+    downloadUrl: "https://github.com/CultoemOff/Church-Lower-Thirds/releases",
+    pageUrl: "/softwares/church-lower-thirds",
+    visual: "ptz",
+  },
+  {
     id: "remote-iluminacao",
     name: "Remote de Iluminação",
     area: "Iluminação",

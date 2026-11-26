@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { setMetaUserData, track } from "@/components/analytics/track";
 import "@/components/ui/button.css";
 import { COUNTRIES } from "@/config/countries";
@@ -31,6 +31,8 @@ type Props = {
   sideImage?: { src: string; alt: string; width: number; height: number };
   /** sistema do instalador: muda o arquivo, o botão e o passo a passo */
   platform?: "windows" | "mac";
+  /** passo a passo próprio de outro software (recebe o endereço do painel já com o botão Copiar); sem ele, o do PTZ Control Web */
+  steps?: (panelUrl: ReactNode) => ReactNode;
 };
 
 const FILE = { windows: "PTZ-Control-Web-Setup.exe", mac: "PTZ-Control-Web-macOS.pkg" } as const;
@@ -56,7 +58,7 @@ const storageKey = (source: string) => `coe-download:${source}`;
  * Depois do cadastro, o mesmo popup libera o download e mostra os passos de instalação.
  * Quem já se cadastrou neste navegador vai direto para o download.
  */
-export default function DownloadModal({ source, productName, downloadUrl, panelUrl, tutorialUrl = "", action, label, location, variant = "primary", sideImage, platform = "windows" }: Props) {
+export default function DownloadModal({ source, productName, downloadUrl, panelUrl, tutorialUrl = "", action, label, location, variant = "primary", sideImage, platform = "windows", steps }: Props) {
   const os = OS_NAME[platform];
   const buttonLabel = label ?? `Baixar para ${os}`;
   const uid = useId();
@@ -262,6 +264,19 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
               </a>
               {platform === "mac" && <p className="dl-req">macOS 13.5 ou mais novo · Mac com Apple Silicon (M1, M2, M3, M4…) ou Intel</p>}
 
+              {steps ? (
+                <ol className="dl-steps">
+                  {steps(
+                <span className="dl-url">
+                  <code>{panelUrl}</code>
+                  <button type="button" onClick={copyPanel} className="dl-copy">
+                    {copied ? "Copiado!" : "Copiar"}
+                  </button>
+                </span>
+              
+                  )}
+                </ol>
+              ) : (
               <ol className="dl-steps">
                 {platform === "mac" ? (
                   <>
@@ -301,6 +316,7 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
                   )}
                 </li>
               </ol>
+              )}
               {platform === "mac" && (
                 <p className="dl-note">
                   <b>Por que aparece o aviso?</b> O macOS mostra esse aviso para instaladores sem a assinatura paga da Apple (Developer ID). Não significa que o arquivo tenha problema: ele é publicado pelo Culto em Off no GitHub, e o aviso aparece só na primeira instalação.

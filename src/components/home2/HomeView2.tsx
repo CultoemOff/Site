@@ -21,6 +21,7 @@ import { EqBand, LogoCross, LogoMark } from "./LogoParts";
 import Motion from "./Motion";
 import PgmSwitcher from "./PgmSwitcher";
 import PtzDemo from "./PtzDemo";
+import LoopVideo from "@/components/software-page/LoopVideo";
 import { PresenterScreen, StoreScreen, VolunteersScreen } from "@/components/sections/partners/ToolScreens";
 import "@/components/sections/partners/partners.css";
 import "./home2.css";
@@ -197,6 +198,7 @@ export function HomeSections({ courses, settings, offers, videos, posts }: Props
     })
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
   const ptz = SOFTWARE.find((s) => s.id === "ptz-control-web");
+  const clt = SOFTWARE.find((s) => s.id === "church-lower-thirds");
   const soon = SOFTWARE.filter((s) => s.status === "em-desenvolvimento");
   const teacher = getInstructor("jonas-silva");
   const homeOffers = pickHomeOffers(offers);
@@ -329,6 +331,42 @@ export function HomeSections({ courses, settings, offers, videos, posts }: Props
                     <span>PTZ Control Web · demonstração</span>
                   </span>
                   <PtzDemo />
+                </div>
+              </article>
+            )}
+            {/* Church Lower Thirds: logo abaixo do PTZ Control Web (pedido do Jonas em 26/11/2026) */}
+            {clt && (
+              <article className="hm2-soft__main hm2-soft__main--alt" data-m="rise" aria-labelledby="hm2-clt">
+                <div className="hm2-window" data-m="rise" style={{ "--d": "120ms" } as React.CSSProperties}>
+                  <span className="hm2-window__bar" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                    <span>Church Lower Thirds · no ar</span>
+                  </span>
+                  <LoopVideo
+                    src="/images/softwares/church-lower-thirds/elementos.mp4"
+                    poster="/images/softwares/church-lower-thirds/elementos.webp"
+                    width={640}
+                    height={360}
+                    label="Elementos do Church Lower Thirds entrando na tela durante uma transmissão: selo, avisos, ofertas, nome e agenda"
+                  />
+                </div>
+                <div className="hm2-soft__text">
+                  <p className="hm2-kicker">
+                    {clt.area} · <span className="hm2-free">Gratuito</span> · Beta
+                  </p>
+                  <h3 id="hm2-clt" className="hm2-soft__name">
+                    {clt.name}
+                  </h3>
+                  <p className="hm2-soft__tagline">{clt.tagline}</p>
+                  <p className="hm2-soft__desc">{clt.description}</p>
+                  {clt.pageUrl && (
+                    <Link href={clt.pageUrl} className="hm2-btn hm2-btn--primary" data-track="select_item" data-track-label={clt.name} data-track-location="softwares da home">
+                      Conheça e baixe
+                      <Arrow />
+                    </Link>
+                  )}
                 </div>
               </article>
             )}
