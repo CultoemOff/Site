@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import { HOME_COURSE_CARD } from "@/components/sections/courses/HomeCourses";
@@ -17,7 +17,12 @@ import type { PostSummary } from "@/lib/cms";
 import { resolvePrice } from "@/lib/pricing";
 import { formatVideoDate, type YouTubeVideo } from "@/lib/youtube";
 import "@/components/sections/offers-home/offers-home.css";
-import Timecode from "./Timecode";
+import { EqBand, LogoCross, LogoMark } from "./LogoParts";
+import Motion from "./Motion";
+import PgmSwitcher from "./PgmSwitcher";
+import PtzDemo from "./PtzDemo";
+import { PresenterScreen, StoreScreen, VolunteersScreen } from "@/components/sections/partners/ToolScreens";
+import "@/components/sections/partners/partners.css";
 import "./home2.css";
 
 type Props = {
@@ -38,11 +43,20 @@ const Arrow = () => (
   </svg>
 );
 
+/** ícone do YouTube (botão vermelho com o play), para o link do canal */
+const YouTubeLogo = ({ className = "hm2-ytlogo" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 28 20" aria-hidden="true" focusable="false">
+    <path fill="#ff0033" d="M27.4 3.1A3.5 3.5 0 0 0 24.9.6C22.7 0 14 0 14 0S5.3 0 3.1.6A3.5 3.5 0 0 0 .6 3.1C0 5.3 0 10 0 10s0 4.7.6 6.9a3.5 3.5 0 0 0 2.5 2.5C5.3 20 14 20 14 20s8.7 0 10.9-.6a3.5 3.5 0 0 0 2.5-2.5C28 14.7 28 10 28 10s0-4.7-.6-6.9z" />
+    <path fill="#fff" d="M11.2 14.3 18.4 10l-7.2-4.3z" />
+  </svg>
+);
+
 /** cabeçalho de seção: número do canal + título (+ texto opcional à direita) */
 function Head({ n, label, id, title, children }: { n: string; label: string; id: string; title: ReactNode; children?: ReactNode }) {
   return (
-    <header className="hm2-head">
+    <header className="hm2-head" data-m="head">
       <p className="hm2-index">
+        <LogoCross className="hm2-index__cross" />
         <span>{n}</span>
         {label}
       </p>
@@ -54,13 +68,15 @@ function Head({ n, label, id, title, children }: { n: string; label: string; id:
   );
 }
 
-/** fotos reais das aulas no "multiview" abaixo do topo */
-const MULTIVIEW = [
-  { src: "/images/formacoes/culto-aula-gravacao.jpg", w: 1195, h: 672, label: "Cabine", alt: "Aula gravada na cabine de transmissão da igreja" },
+/** câmeras do "switcher" do topo: fotos reais das aulas (o monitor PGM corta entre elas; o multiview mostra todas) */
+const SHOTS = [
+  { src: "/images/formacoes/culto-aula-operacao.jpg", w: 1600, h: 900, label: "Cabine", alt: "Operador na cabine de transmissão da igreja, com o OBS, a mixagem da live e o controle das câmeras" },
+  { src: "/images/formacoes/culto-aula-obs-ptz.jpg", w: 1189, h: 669, label: "OBS + PTZ", alt: "Tela do OBS Studio com o controle das câmeras PTZ" },
   { src: "/images/formacoes/culto-aula-cameras.jpg", w: 825, h: 464, label: "Câmeras", alt: "Aula sobre câmeras para igrejas" },
-  { src: "/images/formacoes/redes-aula-regra-de-ouro.jpg", w: 1600, h: 900, label: "Redes", alt: "Slide de aula explicando o endereço IP com uma analogia de rua e casa" },
   { src: "/images/formacoes/redes-aula-ndi-obs.jpg", w: 1600, h: 899, label: "NDI", alt: "Câmeras NDI recebidas no OBS Studio durante a aula" },
 ];
+/** vídeo do monitor PGM (MP4 leve, sem som, horizontal, 8 a 12 s). Vazio = corta entre as fotos */
+const PGM_VIDEO: { src: string; poster: string } | null = null;
 
 const PILLARS = [
   { name: "Simples", text: "Sem jargão desnecessário: cada conceito explicado desde o começo." },
@@ -76,9 +92,7 @@ function VideoCard({ v, lead = false }: { v: YouTubeVideo; lead?: boolean }) {
         {/* direto do YouTube (sem passar pelo otimizador do site) */}
         <Image src={v.thumbnail} alt="" fill unoptimized sizes={lead ? "(max-width: 860px) 100vw, 680px" : "(max-width: 860px) 40vw, 180px"} />
         <span className="hm2-yt__play" aria-hidden="true">
-          <svg viewBox="0 0 24 24" focusable="false">
-            <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
-          </svg>
+          <YouTubeLogo className="hm2-yt__playlogo" />
         </span>
       </span>
       <span className="hm2-yt__meta">
@@ -107,17 +121,17 @@ function PostItem({ p, lead = false }: { p: PostSummary; lead?: boolean }) {
 
 /** foto do painel de cada formação na home2 (diferente da foto do topo) */
 const PANEL_PHOTO: Record<string, string> = {
-  "culto-ao-vivo-com-excelencia": "/images/formacoes/culto-aula-obs-ptz.jpg",
+  "culto-ao-vivo-com-excelencia": "/images/formacoes/culto-aula-gravacao.jpg",
 };
 
-function CoursePanel({ course }: { course: Course }) {
+function CoursePanel({ course, delay = 0 }: { course: Course; delay?: number }) {
   const c = HOME_COURSE_CARD[course.id];
   const href = hasSalesPage(course.id) ? `/formacoes/${course.id}` : course.href || MORE_COURSES_URL;
   const { price, priceFrom, off, promo, installments } = resolvePrice(course);
   const photo = PANEL_PHOTO[course.id] ?? course.image?.url ?? c?.photo;
   const facts = [/^\d/.test(course.topicsTitle) ? course.topicsTitle : "", course.includes?.some((i) => /certificado/i.test(i)) ? "Certificado" : "", course.format.access].filter(Boolean);
   return (
-    <li className="hm2-course">
+    <li className="hm2-course" data-m="course" style={{ "--d": `${delay}ms` } as React.CSSProperties}>
       <Link
         href={href}
         className="hm2-course__link"
@@ -198,17 +212,24 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
           <div className="hm2-wrap hm2-hero__grid">
             <div className="hm2-hero__text">
               <p className="hm2-eyebrow hm2-in" style={{ "--d": "0ms" } as React.CSSProperties}>
-                <span className="hm2-dot" aria-hidden="true" />
+                <LogoCross className="hm2-eyebrow__cross" />
                 Formação · Tecnologia · Igreja
               </p>
-              <h1 id="hm2-hero-title" className="hm2-hero__title hm2-in hm2-in--lead" style={{ "--d": "40ms" } as React.CSSProperties}>
-                A escola técnica para voluntários <span>que servem na Igreja.</span>
+              <h1 id="hm2-hero-title" className="hm2-hero__title" aria-label="A escola técnica para voluntários que servem na Igreja.">
+                {/* entrada palavra por palavra (sobe de dentro de uma máscara), uma vez */}
+                {["A", "escola", "técnica", "para", "voluntários", "que", "servem", "na", "Igreja."].map((w, i) => (
+                  <Fragment key={i}>
+                    <span className={`hm2-wl${i >= 5 ? " is-muted" : ""}`} aria-hidden="true">
+                      <span style={{ "--d": `${40 + Math.round(i * 46 - i * i * 1.6)}ms` } as React.CSSProperties}>{w}</span>
+                    </span>{" "}
+                  </Fragment>
+                ))}
               </h1>
-              <p className="hm2-hero__lead hm2-in" style={{ "--d": "140ms" } as React.CSSProperties}>
+              <p className="hm2-hero__lead hm2-in" style={{ "--d": "300ms" } as React.CSSProperties}>
                 O Culto em Off nasceu com um objetivo: tornar-se referência na formação de voluntários de igreja, transformando
                 conhecimento técnico em conteúdo simples, prático e acessível.
               </p>
-              <div className="hm2-hero__ctas hm2-in" style={{ "--d": "210ms" } as React.CSSProperties}>
+              <div className="hm2-hero__ctas hm2-in" style={{ "--d": "370ms" } as React.CSSProperties}>
                 <a className="hm2-btn hm2-btn--primary" href="#formacoes">
                   Explorar formações
                   <Arrow />
@@ -217,51 +238,31 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
                   Conhecer o Culto em Off
                 </a>
               </div>
-              <p className="hm2-hero__areas hm2-in hm2-in--fade" style={{ "--d": "280ms" } as React.CSSProperties}>
+              <p className="hm2-hero__areas hm2-in hm2-in--fade" style={{ "--d": "430ms" } as React.CSSProperties}>
                 Áudio · Vídeo · Iluminação · Redes · Transmissão · Projeção · Automação
               </p>
             </div>
 
-            {/* monitor de programa: foto real da cabine */}
-            <figure className="hm2-pgm hm2-in hm2-in--scale" style={{ "--d": "90ms" } as React.CSSProperties}>
-              <div className="hm2-pgm__screen">
-                <Image
-                  src="/images/formacoes/culto-aula-operacao.jpg"
-                  alt="Operador na cabine de transmissão da igreja, com o OBS, a mixagem da live e o controle das câmeras"
-                  fill
-                  priority
-                  sizes="(max-width: 960px) 100vw, 560px"
-                />
-                <span className="hm2-pgm__safe" aria-hidden="true" />
-                <span className="hm2-pgm__tag" aria-hidden="true">
-                  PGM
-                </span>
-                <span className="hm2-pgm__live" aria-hidden="true">
-                  <span className="hm2-tally" />
-                  Ao vivo
-                </span>
-              </div>
-              <figcaption className="hm2-pgm__bar">
-                <span>CAM 1 · Cabine de transmissão</span>
-                {/* medidor de áudio: as barras do logo */}
-                <span className="hm2-meter" aria-hidden="true">
-                  {[38, 62, 48, 80, 56, 92, 70, 44, 66, 30].map((h, i) => (
-                    <i key={i} style={{ height: `${h}%` }} />
-                  ))}
-                </span>
-                <Timecode />
-              </figcaption>
-            </figure>
+            {/* monitor de programa: corta entre as câmeras (fotos reais das aulas) */}
+            <div className="hm2-pgm-wrap">
+              {/* cruz e barras do logo, grandes, atrás do monitor */}
+              <LogoMark className="hm2-hero__mark hm2-in hm2-in--fade" live />
+              <figure className="hm2-pgm hm2-in hm2-in--scale" style={{ "--d": "150ms" } as React.CSSProperties}>
+                <PgmSwitcher shots={SHOTS.map(({ src, alt, label }) => ({ src, alt, label }))} video={PGM_VIDEO} />
+              </figure>
+            </div>
           </div>
 
+          {/* barras sonoras do logo tocando na base do topo */}
+          <EqBand count={72} className="hm2-hero__eq" />
           {/* multiview: fotos reais das aulas */}
           <div className="hm2-wrap">
-            <ul className="hm2-multi hm2-in hm2-in--fade" style={{ "--d": "320ms" } as React.CSSProperties} aria-label="Cenas das aulas">
-              {MULTIVIEW.map((m, i) => (
-                <li key={m.src}>
-                  <Image src={m.src} alt={m.alt} width={m.w} height={m.h} sizes="(max-width: 700px) 45vw, 290px" />
+            <ul className="hm2-multi" aria-label="Câmeras do switcher (cenas das aulas)">
+              {SHOTS.map((m, i) => (
+                <li key={m.src} data-live={i === 0 ? "" : undefined} style={{ "--i": i } as React.CSSProperties}>
+                  <Image src={m.src} alt="" width={m.w} height={m.h} sizes="(max-width: 700px) 45vw, 290px" />
                   <span>
-                    {String(i + 2).padStart(2, "0")} · {m.label}
+                    CAM {i + 1} · {m.label}
                   </span>
                 </li>
               ))}
@@ -271,23 +272,29 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
 
         {/* ================= manifesto ================= */}
         <section id="manifesto" className="hm2-section hm2-manifesto" aria-labelledby="hm2-manifesto-title">
+          <LogoCross className="hm2-manifesto__cross" />
           <div className="hm2-wrap">
             <div className="hm2-manifesto__grid">
               <div>
                 <p className="hm2-index">
+                  <LogoCross className="hm2-index__cross" />
                   <span>01</span>Manifesto
                 </p>
-                <h2 id="hm2-manifesto-title" className="hm2-manifesto__title">
-                  Quem serve também merece acesso a conhecimento de qualidade.
+                <h2 id="hm2-manifesto-title" className="hm2-manifesto__title" aria-label="Quem serve também merece acesso a conhecimento de qualidade.">
+                  {"Quem serve também merece acesso a conhecimento de qualidade.".split(" ").map((w, i) => (
+                    <span key={i} className="hm2-w" aria-hidden="true" style={{ "--w": i } as React.CSSProperties}>
+                      {w}{" "}
+                    </span>
+                  ))}
                 </h2>
-                <p className="hm2-manifesto__text">
+                <p className="hm2-manifesto__text" data-m="rise">
                   Não importa se sua igreja tem uma grande estrutura ou uma equipe de três voluntários. Entender a tecnologia
                   permite resolver problemas, tomar decisões melhores e servir com mais tranquilidade.
                 </p>
-                <p className="hm2-manifesto__sign">Esse é o Culto em Off.</p>
+                <p className="hm2-manifesto__sign" data-m="rise" style={{ "--d": "120ms" } as React.CSSProperties}>Esse é o Culto em Off.</p>
               </div>
               {teacher?.photoScene && (
-                <figure className="hm2-portrait">
+                <figure className="hm2-portrait" data-m="clip">
                   <Image src={teacher.photoScene} alt={`${teacher.name} na mesa de som`} width={800} height={1000} sizes="(max-width: 860px) 70vw, 380px" />
                   <figcaption>
                     <strong>{teacher.name}</strong>
@@ -296,9 +303,9 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
                 </figure>
               )}
             </div>
-            <ol className="hm2-pillars" aria-label="Como ensinamos">
+            <ol className="hm2-pillars" data-m="stagger" aria-label="Como ensinamos">
               {PILLARS.map((p, i) => (
-                <li key={p.name}>
+                <li key={p.name} style={{ "--d": `${[0, 90, 160, 210][i]}ms` } as React.CSSProperties}>
                   <span className="hm2-pillars__n">{String(i + 1).padStart(2, "0")}</span>
                   <strong>{p.name}</strong>
                   <span>{p.text}</span>
@@ -318,15 +325,15 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
               </p>
             </Head>
             <ul className="hm2-courses__grid" aria-label="Formações">
-              {homeCourses.map((c) => (
-                <CoursePanel key={c.id} course={c} />
+              {homeCourses.map((c, i) => (
+                <CoursePanel key={c.id} course={c} delay={i * 110} />
               ))}
             </ul>
 
             {proofs.length > 0 && (
-              <ul className="hm2-proofs" aria-label="O que os alunos dizem">
-                {proofs.map((p) => (
-                  <li key={p.title}>
+              <ul className="hm2-proofs" data-m="stagger" aria-label="O que os alunos dizem">
+                {proofs.map((p, i) => (
+                  <li key={p.title} style={{ "--d": `${[0, 100, 170][i] ?? 0}ms` } as React.CSSProperties}>
                     <blockquote>
                       {p.rating ? (
                         <p className="hm2-proofs__stars" aria-label={`Nota ${p.rating} de 5`}>
@@ -360,7 +367,7 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
               <p>Além das formações, o Culto em Off desenvolve softwares, gratuitos e comerciais, para simplificar a operação técnica de quem serve.</p>
             </Head>
             {ptz && (
-              <article className="hm2-soft__main" aria-labelledby="hm2-ptz">
+              <article className="hm2-soft__main" data-m="rise" aria-labelledby="hm2-ptz">
                 <div className="hm2-soft__text">
                   <p className="hm2-kicker">
                     {ptz.area} · <span className="hm2-free">Gratuito</span>
@@ -377,14 +384,14 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
                     </Link>
                   )}
                 </div>
-                <div className="hm2-window" aria-hidden="true">
-                  <span className="hm2-window__bar">
+                <div className="hm2-window" data-m="rise" style={{ "--d": "120ms" } as React.CSSProperties}>
+                  <span className="hm2-window__bar" aria-hidden="true">
                     <i />
                     <i />
                     <i />
-                    <span>PTZ Control Web</span>
+                    <span>PTZ Control Web · demonstração</span>
                   </span>
-                  <Image src="/images/softwares/ptz-control-web/horizontal-pt.webp" alt="" width={1600} height={543} sizes="(max-width: 960px) 100vw, 640px" />
+                  <PtzDemo />
                 </div>
               </article>
             )}
@@ -401,16 +408,25 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
         {/* ================= youtube ================= */}
         <section id="conteudo-gratuito" className="hm2-section hm2-yt" aria-labelledby="hm2-yt-title">
           <div className="hm2-wrap">
-            <Head n="04" label="Conteúdo gratuito" id="hm2-yt-title" title="Nos acompanhe no YouTube.">
+            <Head
+              n="04"
+              label="Conteúdo gratuito"
+              id="hm2-yt-title"
+              title={
+                <>
+                  Nos acompanhe no <span className="hm2-yt__word">YouTube</span>.
+                </>
+              }
+            >
               <p>Tutoriais, testes, configurações, equipamentos e experiências práticas, gratuitos no canal Culto em Off.</p>
-              <a className="hm2-link" href={settings.social.youtube} target="_blank" rel="noopener noreferrer" data-track="click_social" data-track-label="YouTube">
+              <a className="hm2-btn hm2-btn--yt" href={settings.social.youtube} target="_blank" rel="noopener noreferrer" data-track="click_social" data-track-label="YouTube">
+                <YouTubeLogo />
                 Ver o canal no YouTube
-                <Arrow />
                 <span className="sr-only"> (abre em nova aba)</span>
               </a>
             </Head>
             {lead ? (
-              <div className="hm2-yt__grid">
+              <div className="hm2-yt__grid" data-m="feed">
                 <VideoCard v={lead} lead />
                 {rest.length > 0 && (
                   <ul className="hm2-yt__side">
@@ -438,9 +454,15 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
               <p>Softwares e lojas que usamos e indicamos para facilitar o dia a dia de quem serve na igreja.</p>
             </Head>
             <ul className="hm2-partners__grid">
-              <li>
+              <li className="partner--spresenter" data-m="rise">
+                <div className="partner__media hm2-partners__media">
+                  <PresenterScreen src={spresenter.screen} />
+                </div>
                 <p className="hm2-kicker">Projeção</p>
-                <h3>SPresenter</h3>
+                <h3>
+                  <Image className="hm2-partners__logo" src="/images/logos/spresenter.png" alt="" width={240} height={240} />
+                  SPresenter
+                </h3>
                 <p>Apresentação para igrejas e eventos ao vivo, no Windows e no macOS: letras, Bíblia, vídeos e várias saídas, inclusive por NDI.</p>
                 {spresenter.coupon && (
                   <div className="hm2-coupon">
@@ -457,9 +479,15 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
                   <span className="sr-only"> (abre em nova aba)</span>
                 </a>
               </li>
-              <li>
+              <li className="partner--voluts" data-m="rise" style={{ "--d": "90ms" } as React.CSSProperties}>
+                <div className="partner__media hm2-partners__media">
+                  <VolunteersScreen src={voluts.screen} />
+                </div>
                 <p className="hm2-kicker">Voluntários</p>
-                <h3>Voluts</h3>
+                <h3>
+                  <Image className="hm2-partners__logo" src="/images/links/voluts.png" alt="" width={200} height={200} />
+                  Voluts
+                </h3>
                 <p>Escalas de todos os ministérios, estudo para ensaios com mudança de tom e letra sincronizada com o SPresenter.</p>
                 <p className="hm2-partners__note">
                   <strong>14 dias</strong> de teste grátis
@@ -470,9 +498,15 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
                   <span className="sr-only"> (abre em nova aba)</span>
                 </a>
               </li>
-              <li>
+              <li className="partner--dorn" data-m="rise" style={{ "--d": "160ms" } as React.CSSProperties}>
+                <div className="partner__media hm2-partners__media">
+                  <StoreScreen src={dorn.image} />
+                </div>
                 <p className="hm2-kicker">Câmeras e transmissão</p>
-                <h3>Loja da Dorn</h3>
+                <h3>
+                  <Image className="hm2-partners__logo" src="/images/links/dorn.jpg" alt="" width={200} height={200} />
+                  Loja da Dorn
+                </h3>
                 <p>Câmeras Full HD e 4K, zoom para a distância da sua igreja e controle PTZ físico, para montar ou ampliar a estrutura de vídeo.</p>
                 <a className="hm2-link" href={dorn.url} target="_blank" rel="noopener noreferrer" data-track="click_partner" data-track-label="Loja da Dorn">
                   Visitar a Loja da Dorn
@@ -496,7 +530,9 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
                   <Arrow />
                 </Link>
               </Head>
-              <OffersCarousel offers={homeOffers} />
+              <div data-m="rise">
+                <OffersCarousel offers={homeOffers} />
+              </div>
               <p className="hm2-fine">
                 Links de afiliado: comprando por eles, o Culto em Off pode receber uma comissão, sem custo extra para você. Preço e
                 disponibilidade são definidos pela loja.
@@ -515,7 +551,7 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
                   <Arrow />
                 </Link>
               </Head>
-              <div className="hm2-blog__grid">
+              <div className="hm2-blog__grid" data-m="feed">
                 <PostItem p={postLead} lead />
                 {postRest.length > 0 && (
                   <ul className="hm2-blog__side">
@@ -538,7 +574,8 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
               <span className="hm2-dot hm2-dot--ok" aria-hidden="true" />
               Sinal OK
             </p>
-            <Image className="hm2-outro__logo" src={LOGO_V_SRC} alt="Culto em Off" width={LOGO_V_SIZE.width} height={LOGO_V_SIZE.height} sizes="(max-width: 700px) 70vw, 380px" />
+            <EqBand count={56} className="hm2-outro__eq" />
+            <Image data-m="logo" className="hm2-outro__logo" src={LOGO_V_SRC} alt="Culto em Off" width={LOGO_V_SIZE.width} height={LOGO_V_SIZE.height} sizes="(max-width: 700px) 70vw, 380px" />
             <a className="hm2-btn hm2-btn--primary" href="#formacoes">
               Explorar formações
               <Arrow />
@@ -547,6 +584,7 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
         </section>
       </main>
       <Footer settings={settings} newLogo />
+      <Motion />
     </>
   );
 }
