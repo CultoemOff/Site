@@ -32,7 +32,11 @@ type Props = {
   /** sistema do instalador: muda o arquivo, o botão e o passo a passo */
   platform?: "windows" | "mac";
   /** passo a passo próprio de outro software (recebe o endereço do painel já com o botão Copiar); sem ele, o do PTZ Control Web */
-  steps?: (panelUrl: ReactNode, platform: "windows" | "mac") => ReactNode;
+  /**
+   * passo a passo próprio de outro software (sem ele, o do PTZ Control Web). São trechos prontos (não funções),
+   * porque a página é montada no servidor: instalação, passo extra (opcional) e o texto antes do endereço do painel.
+   */
+  steps?: { install: ReactNode; extra?: ReactNode; panel: ReactNode };
   /** linha de requisitos do macOS no popup (padrão: a do PTZ Control Web; vazio = não mostra) */
   macRequirements?: string;
 };
@@ -268,15 +272,17 @@ export default function DownloadModal({ source, productName, downloadUrl, panelU
 
               {steps ? (
                 <ol className="dl-steps">
-                  {steps(
-                <span className="dl-url">
-                  <code>{panelUrl}</code>
-                  <button type="button" onClick={copyPanel} className="dl-copy">
-                    {copied ? "Copiado!" : "Copiar"}
-                  </button>
-                </span>, platform
-              
-                  )}
+                  <li>{steps.install}</li>
+                  {steps.extra && <li>{steps.extra}</li>}
+                  <li>
+                    {steps.panel}
+                    <span className="dl-url">
+                      <code>{panelUrl}</code>
+                      <button type="button" onClick={copyPanel} className="dl-copy">
+                        {copied ? "Copiado!" : "Copiar"}
+                      </button>
+                    </span>
+                  </li>
                 </ol>
               ) : (
               <ol className="dl-steps">

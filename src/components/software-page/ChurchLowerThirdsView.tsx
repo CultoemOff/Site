@@ -142,29 +142,31 @@ export default function ChurchLowerThirdsView({ downloadUrl, downloadUrlMac, act
         action={action}
         location={location}
         sideImage={{ src: `${MEDIA}/elementos.webp`, alt: "", width: 640, height: 360 }}
-        steps={(url, os) => (
-          <>
-            {os === "mac" ? (
-              <li>
+        steps={{
+          install:
+            platform === "mac" ? (
+              <>
                 <b>Dê dois cliques no arquivo baixado</b> (<code>{FILE.mac}</code>) e siga o instalador. Se o macOS não deixar abrir, vá em{" "}
                 <b>Ajustes do Sistema › Privacidade e Segurança</b> e clique em <b>Abrir Mesmo Assim</b>.
-              </li>
+              </>
             ) : (
-              <li>
+              <>
                 <b>Abra o arquivo baixado</b> (<code>{FILE.windows}</code>) e instale. Se o Windows mostrar o SmartScreen, clique em{" "}
                 <b>Mais informações</b> › <b>Executar assim mesmo</b>.
-              </li>
-            )}
-            <li>
+              </>
+            ),
+          extra: (
+            <>
               <b>Siga o assistente</b>: na primeira vez, ele explica cada passo e deixa tudo pronto.
-            </li>
-            <li>
+            </>
+          ),
+          panel: (
+            <>
               <b>Ligue ao OBS</b>: em <b>OBS e atalhos</b>, o programa cria as fontes com um clique. Para o painel, abra <b>Painéis › Painéis
               personalizáveis com URL</b> e cole:
-              {url}
-            </li>
-          </>
-        )}
+            </>
+          ),
+        }}
       />
       ))}
     </div>
