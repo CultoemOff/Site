@@ -10,6 +10,7 @@ import { COMBO_PAGE } from "@/config/comboPage";
 import { resolvePrice } from "@/lib/pricing";
 import "@/components/sections/courses/courses.css";
 import "@/components/software-page/software-page.css";
+import PromoBar from "./PromoBar";
 import { Kicker, ModuleItem } from "./SalesPageView";
 import SalesVideo from "./SalesVideo";
 import "./sales.css";
@@ -92,8 +93,23 @@ export default function ComboPageView({ main, bump }: Props) {
 
   return (
     <div className="sp-page cb-page">
+      {/* ---------- faixa amarela da promoção (mesma da página do Culto ao Vivo): fixa no topo ---------- */}
+      {pMain.promo && off > 0 && (
+        <PromoBar
+          label={pMain.promo.label}
+          product="Combo Culto ao Vivo + Redes"
+          off={off}
+          endsAt={pMain.promo.endsAt}
+          href={href}
+          cta={`Quero os dois por ${money(price)}`}
+          ctaShort="Comprar"
+          external={external}
+          track={{ label, id: main.course.id, location: "faixa amarela (combo)", value: price }}
+        />
+      )}
+
       {/* ---------- topo (sem vídeo por enquanto) ---------- */}
-      <header className={`sp-hero${COMBO_PAGE.video ? " sp-hero--vertical" : " sp-hero--novideo"}`}>
+      <header className={`sp-hero${pMain.promo && off > 0 ? " sp-hero--promo" : ""}${COMBO_PAGE.video ? " sp-hero--vertical" : " sp-hero--novideo"}`}>
         <p className="sp-brand">
           <Image src={LOGO_SRC} alt="" width={36} height={36} priority />
           <span>
