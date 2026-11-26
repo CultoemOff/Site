@@ -12,7 +12,7 @@ import "./home-courses.css";
  * Formações na home (desde 23/11/2026): resumidas para caber numa tela de notebook.
  * O detalhe (módulos, professor, perguntas) fica na página de cada formação.
  */
-const CARD: Record<string, { photo: string; alt: string; subtitle: string; text: string }> = {
+export const HOME_COURSE_CARD: Record<string, { photo: string; alt: string; subtitle: string; text: string }> = {
   "culto-ao-vivo-com-excelencia": {
     photo: "/images/formacoes/culto-aula-operacao.jpg",
     alt: "Operador na cabine de transmissão com o OBS, a mixagem da live e o controle das câmeras",
@@ -31,7 +31,7 @@ const CARD: Record<string, { photo: string; alt: string; subtitle: string; text:
 const money = (v: number) => (Number.isInteger(v) ? `R$ ${v}` : formatPrice(v));
 
 function HomeCourseCard({ course, index }: { course: Course; index: number }) {
-  const c = CARD[course.id];
+  const c = HOME_COURSE_CARD[course.id];
   const href = hasSalesPage(course.id) ? `/formacoes/${course.id}` : course.href || MORE_COURSES_URL;
   const { price, priceFrom, off, promo, installments } = resolvePrice(course);
   const certificate = course.includes?.some((i) => /certificado/i.test(i));

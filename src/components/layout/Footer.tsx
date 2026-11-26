@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import SocialIcon from "@/components/ui/SocialIcon";
-import { LOGO_SRC, NAV_LINKS, SITE_NAME, SITE_TAGLINE, type SiteSettingsData } from "@/config/site";
+import { LOGO_H_SIZE, LOGO_H_SRC, LOGO_SRC, NAV_LINKS, SITE_NAME, SITE_TAGLINE, type SiteSettingsData } from "@/config/site";
 import ConsentLink from "@/components/analytics/ConsentLink";
 import { safeGaId, safePixelId } from "@/lib/seo";
 import "./footer.css";
@@ -10,7 +10,7 @@ import "./footer.css";
  * Rodapé do site. `minimal` = versão enxuta da página de venda: só a marca e os direitos,
  * sem links de navegação nem redes sociais, para a pessoa não sair antes da oferta.
  */
-export default function Footer({ settings, minimal = false }: { settings: SiteSettingsData; minimal?: boolean }) {
+export default function Footer({ settings, minimal = false, newLogo = false }: { settings: SiteSettingsData; minimal?: boolean; /** logo novo horizontal (por enquanto só na home2) */ newLogo?: boolean }) {
   const socials = (
     [
       { key: "youtube", label: "YouTube", href: settings.social.youtube },
@@ -48,10 +48,16 @@ export default function Footer({ settings, minimal = false }: { settings: SiteSe
       <div className="footer__inner">
         <div className="footer__brand">
           <Link href="/" className="footer__logo" aria-label={`${SITE_NAME} — início`}>
-            <Image src={LOGO_SRC} alt="" width={56} height={56} />
-            <span>
-              Culto em <strong>Off</strong>
-            </span>
+            {newLogo ? (
+              <Image className="footer__logo-h" src={LOGO_H_SRC} alt="" width={LOGO_H_SIZE.width} height={LOGO_H_SIZE.height} />
+            ) : (
+              <>
+                <Image src={LOGO_SRC} alt="" width={56} height={56} />
+                <span>
+                  Culto em <strong>Off</strong>
+                </span>
+              </>
+            )}
           </Link>
           <p>{SITE_TAGLINE}</p>
           {socials.length > 0 && (

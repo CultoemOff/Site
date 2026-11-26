@@ -10,6 +10,11 @@ export const SITE_DESCRIPTION =
 
 /** Logo principal (navbar, footer, metadados). */
 export const LOGO_SRC = "/images/logo-culto-em-off.png";
+/** logos novos (26/11/2026): horizontal no menu e no rodapé, vertical em destaques. Por enquanto só na home2 */
+export const LOGO_H_SRC = "/images/brand/logo-culto-em-off-horizontal-480.webp";
+export const LOGO_H_SIZE = { width: 480, height: 206 };
+export const LOGO_V_SRC = "/images/brand/logo-culto-em-off-vertical-1040.webp";
+export const LOGO_V_SIZE = { width: 1040, height: 1118 };
 
 /**
  * Imagem exibida (de forma discreta) no telão do palco do hero.

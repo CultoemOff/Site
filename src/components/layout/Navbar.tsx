@@ -3,14 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { LOGO_SRC, NAV_LINKS, SITE_NAME } from "@/config/site";
+import { LOGO_H_SIZE, LOGO_H_SRC, LOGO_SRC, NAV_LINKS, SITE_NAME } from "@/config/site";
 import "./navbar.css";
 
 /**
  * Menu principal. `base` só é usado quando a página está em outro endereço (ex.: ofertas.<domínio>):
  * aí os links apontam para o site principal em vez do endereço atual.
  */
-export default function Navbar({ base }: { base?: string } = {}) {
+export default function Navbar({ base, newLogo = false }: { base?: string; /** logo novo horizontal (por enquanto só na home2) */ newLogo?: boolean } = {}) {
   const prefix = base && base !== "/" ? base.replace(/\/$/, "") : "";
   const to = (href: string) => `${prefix}${href}`;
   const [scrolled, setScrolled] = useState(false);
@@ -34,10 +34,16 @@ export default function Navbar({ base }: { base?: string } = {}) {
     <header className={`nav${scrolled || open ? " nav--solid" : ""}`}>
       <div className="nav__inner">
         <Link href={to("/")} className="nav__brand" aria-label={`${SITE_NAME} — início`}>
-          <Image src={LOGO_SRC} alt="" width={40} height={40} priority />
-          <span className="nav__wordmark">
-            Culto em <strong>Off</strong>
-          </span>
+          {newLogo ? (
+            <Image className="nav__logo-h" src={LOGO_H_SRC} alt="" width={LOGO_H_SIZE.width} height={LOGO_H_SIZE.height} priority />
+          ) : (
+            <>
+              <Image src={LOGO_SRC} alt="" width={40} height={40} priority />
+              <span className="nav__wordmark">
+                Culto em <strong>Off</strong>
+              </span>
+            </>
+          )}
         </Link>
 
         <nav aria-label="Principal" className="nav__links">

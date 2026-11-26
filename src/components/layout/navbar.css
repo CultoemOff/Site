@@ -35,6 +35,17 @@
   height: 40px;
   filter: drop-shadow(0 0 12px rgba(59, 140, 255, 0.35));
 }
+/* logo novo horizontal (home2) */
+.nav__brand img.nav__logo-h {
+  width: auto;
+  height: 50px;
+  filter: none;
+}
+@media (max-width: 760px) {
+  .nav__brand img.nav__logo-h {
+    height: 42px;
+  }
+}
 .nav__wordmark {
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-size: 1.05rem;

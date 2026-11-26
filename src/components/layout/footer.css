@@ -20,6 +20,10 @@
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-size: 1.3rem;
 }
+.footer__logo-h {
+  width: auto;
+  height: 72px;
+}
 .footer__logo strong {
   color: #6aa5ff;
 }
