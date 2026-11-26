@@ -3,6 +3,8 @@ import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import Analytics from "@/components/analytics/Analytics";
 import CheckoutParams from "@/components/analytics/CheckoutParams";
 import SitePromoBar from "@/components/sales/SitePromoBar";
+import { COMBO_PAGE } from "@/config/comboPage";
+import { COMBO } from "@/config/courses";
 import { APPLE_ICON_SRC, ICON_SRC, SITE_DESCRIPTION, SITE_NAME, SITE_PROMO_COURSE_ID, SITE_TAGLINE } from "@/config/site";
 import { getCourses, getSiteSettings } from "@/lib/cms";
 import { resolvePrice } from "@/lib/pricing";
@@ -88,10 +90,16 @@ export const viewport: Viewport = {
 
 export default async function FrontendLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const [settings, courses] = await Promise.all([getSiteSettings(), getCourses()]);
-  // faixa amarela da formação em promoção (some sozinha quando o desconto acaba)
+  // faixa amarela: desde 26/11/2026 leva à página do combo (o prazo e o selo seguem a promoção do Culto ao Vivo)
   const promoCourse = courses.find((c) => c.id === SITE_PROMO_COURSE_ID);
   const promoPrice = promoCourse ? resolvePrice(promoCourse) : undefined;
-  const promoHref = promoCourse ? `${SITE_URL.includes("localhost") ? "" : SITE_URL}/formacoes/${promoCourse.id}` : "";
+  const combo = COMBO; // cópia local: dentro das buscas o TypeScript perde a checagem de "não é null"
+  const comboMain = combo ? courses.find((c) => c.id === combo.main) : undefined;
+  const comboBump = combo ? courses.find((c) => c.id === combo.bump) : undefined;
+  const comboFull =
+    comboMain && comboBump ? (resolvePrice(comboMain).priceFrom ?? comboMain.price) + (resolvePrice(comboBump).priceFrom ?? comboBump.price) : 0;
+  const comboOff = comboFull > COMBO_PAGE.price && COMBO_PAGE.price > 0 ? Math.round((1 - COMBO_PAGE.price / comboFull) * 100) : 0;
+  const promoHref = `${SITE_URL.includes("localhost") ? "" : SITE_URL}/formacoes/${COMBO_PAGE.slug}`;
   const gaId = safeGaId(settings.gaId);
   const pixelId = safePixelId(settings.metaPixelId);
 
@@ -109,13 +117,14 @@ export default async function FrontendLayout({ children }: Readonly<{ children: 
         <a href="#conteudo" className="skip-link">
           Pular para o conteúdo
         </a>
-        {promoCourse && promoPrice?.promo && (
+        {promoCourse && promoPrice?.promo && comboOff > 0 && (
           <SitePromoBar
             label={promoPrice.promo.label}
-            off={promoPrice.off}
+            off={comboOff}
             endsAt={promoPrice.promo.endsAt}
-            courseId={promoCourse.id}
-            title={promoCourse.title}
+            courseId={COMBO_PAGE.slug}
+            title="Combo Culto ao Vivo + Redes para Igrejas"
+            product="Combo Culto ao Vivo + Redes"
             href={promoHref}
           />
         )}

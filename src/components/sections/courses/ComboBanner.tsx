@@ -18,11 +18,14 @@ export default function ComboBanner({ courses, compact = false, location = "comb
   const main = courses.find((c) => c.id === combo.main);
   const bump = courses.find((c) => c.id === combo.bump);
   if (!main || !bump) return null;
-  const pMain = resolvePrice(main).price;
-  const pBump = resolvePrice(bump).price;
+  const rMain = resolvePrice(main);
+  const rBump = resolvePrice(bump);
+  const pMain = rMain.price;
+  const pBump = rBump.price;
   if (!(pMain > 0) || !(pBump > 0)) return null;
   const total = COMBO_PAGE.price || Math.round((pMain + combo.bumpPrice) * 100) / 100;
-  const separate = Math.round((pMain + pBump) * 100) / 100;
+  // preço cheio de cada curso, sem desconto
+  const separate = Math.round(((rMain.priceFrom ?? pMain) + (rBump.priceFrom ?? pBump)) * 100) / 100;
   const short = (c: Course) => c.title.split(":")[0];
   const href = `/formacoes/${COMBO_PAGE.slug}`;
   return (

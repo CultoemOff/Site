@@ -63,7 +63,7 @@ export const SOFTWARE: Software[] = [
     features: [],
     worksWith: ["OBS Studio", "Stream Deck", "Bitfocus Companion"],
     platforms: ["Windows 10 e 11"],
-    status: "beta",
+    status: "disponivel",
     learnMoreUrl: "",
     // página de versões no GitHub (o Jonas enviou este link em 26/11/2026)
     downloadUrl: "https://github.com/CultoemOff/Church-Lower-Thirds/releases",

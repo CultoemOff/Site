@@ -31,7 +31,8 @@ export default function ComboPageView({ main, bump }: Props) {
   const pBump = resolvePrice(bump.course);
   const bumpPrice = COMBO?.bumpPrice ?? pBump.price;
   const price = COMBO_PAGE.price || Math.round((pMain.price + bumpPrice) * 100) / 100;
-  const separate = Math.round((pMain.price + pBump.price) * 100) / 100;
+  // "separados": preço cheio de cada curso, sem desconto (pedido do Jonas em 26/11/2026: R$ 117 + R$ 138,80)
+  const separate = Math.round(((pMain.priceFrom ?? pMain.price) + (pBump.priceFrom ?? pBump.price)) * 100) / 100;
   const off = separate > price ? Math.round((1 - price / separate) * 100) : 0;
   const href = COMBO_PAGE.checkoutUrl || main.course.href || "#oferta";
   const external = /^https?:/.test(href);
@@ -306,7 +307,7 @@ export default function ComboPageView({ main, bump }: Props) {
                   <span>
                     <strong>{item.course.title}</strong>: {lessons} aulas em {item.page.modules.length} módulos
                     {item.page.extraModule?.label ? ` + ${item.page.extraModule.label}` : ""}
-                    {p.price > 0 && <span className="cb-offer__alone"> (sozinho: {money(p.price)})</span>}
+                    {p.price > 0 && <span className="cb-offer__alone"> (preço cheio: {money(p.priceFrom ?? p.price)})</span>}
                   </span>
                 </li>
               ))}

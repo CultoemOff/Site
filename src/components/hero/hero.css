@@ -697,3 +697,43 @@ body:has(.promo-bar) .hero__content {
   mix-blend-mode: screen;
   background: radial-gradient(closest-side, rgba(70, 150, 255, 0.55), rgba(40, 110, 255, 0.18) 55%, transparent);
 }
+
+/* ---------- Ajuste por altura de tela (26/11/2026) ----------
+   Computador: o palco desce o necessário para o logo do telão ficar entre o título (em cima)
+   e a frase com o botão (embaixo). O centro do telão vai para "metade da tela + 40px",
+   e o palco nunca sobe (só desce). Altura do palco = max(56,25vw, 100svh); centro do telão a 49,6% dela.
+   Telas altas: os textos de cima descem um pouco, acompanhando a altura. */
+/* (o cálculo vale para telas deitadas; em pé o palco tem outra largura) */
+@media (min-width: 768px) and (min-aspect-ratio: 1 / 1) {
+  .stage {
+    bottom: min(0px, calc(50svh - 40px - 0.504 * max(56.25vw, 100svh)));
+  }
+}
+@media (min-width: 768px) {
+  .hero__content,
+  body:has(.promo-bar) .hero__content {
+    padding-top: calc(var(--nav-h) + clamp(16px, calc((100svh - 700px) * 0.25), 130px));
+    padding-bottom: clamp(60px, 9svh, 96px);
+  }
+  body:has(.promo-bar) .hero__content {
+    padding-top: calc(var(--nav-h) + var(--promo-h) + clamp(16px, calc((100svh - 700px) * 0.25), 130px));
+  }
+  .hero__title {
+    font-size: clamp(2.2rem, min(4.3vw, 7.4svh), 3.9rem);
+  }
+}
+/* telas baixas (notebook): sem espaço para tudo, a frase de apoio sai e o indicador de rolagem também */
+@media (min-width: 768px) and (max-height: 760px) {
+  .hero__sub,
+  .hero__scroll {
+    display: none;
+  }
+  .hero__ctas {
+    margin-top: auto;
+  }
+}
+@media (min-width: 768px) and (max-height: 760px) and (min-aspect-ratio: 1 / 1) {
+  .stage {
+    bottom: min(0px, calc(50svh - 75px - 0.504 * max(56.25vw, 100svh)));
+  }
+}

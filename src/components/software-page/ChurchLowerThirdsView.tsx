@@ -122,7 +122,7 @@ type Props = {
   action: (input: DownloadLeadInput) => Promise<{ ok: true } | { ok: false; errors: DownloadLeadErrors }>;
 };
 
-/** Página do Church Lower Thirds (beta): o que vai para a tela, como funciona, painel, controle, modelos e download com cadastro. */
+/** Página do Church Lower Thirds (lançamento): o que vai para a tela, como funciona, painel, controle, modelos e download com cadastro. */
 export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
   const download = (location: string) => (
     <div className="dl-group">
@@ -162,7 +162,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
           <div className="swp-hero__text">
             <p className="swp-hero__channel">
               <span aria-hidden="true" />
-              Software gratuito · Versão beta
+              Software gratuito · Lançamento
             </p>
             <h1 className="swp-hero__title">{CLT.name}</h1>
             <p className="swp-hero__tagline">Lower thirds para igrejas, direto no OBS Studio.</p>
@@ -209,36 +209,8 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
         </div>
       </section>
 
-      <section className="swp-section swp-section--alt" aria-labelledby="clt-como">
-        <div className="swp-section__inner">
-          <p className="swp-kicker">Como funciona</p>
-          <h2 id="clt-como" className="swp-title">
-            Tudo roda no computador da transmissão.
-          </h2>
-          <HowDiagram />
-          <ul className="cltp-checks cltp-checks--grid">
-            <li>
-              <b>O programa</b> fica em segundo plano e inicia com o Windows. Ele guarda as configurações e sabe o que deve estar no ar.
-            </li>
-            <li>
-              <b>Os gráficos</b> entram no OBS como fontes de navegador com fundo transparente. Há uma fonte com todos os elementos e uma para
-              cada elemento, para quem prefere separar por cena.
-            </li>
-            <li>
-              <b>O painel</b> é um dock dentro do OBS. É ali que o operador liga e desliga cada elemento durante o culto.
-            </li>
-            <li>
-              <b>O controle</b> abre no navegador, com prévia ao vivo. É onde se preparam a aparência e o conteúdo antes do culto.
-            </li>
-          </ul>
-          <p className="ptzp-note">
-            O painel e o controle só mandam pedidos; quem atualiza os gráficos é o programa. Por isso o que se muda aparece na hora, sem
-            recarregar as fontes no OBS.
-          </p>
-        </div>
-      </section>
 
-      <section className="swp-section" aria-labelledby="clt-painel">
+      <section className="swp-section swp-section--alt" aria-labelledby="clt-painel">
         <div className="swp-section__inner cltp-split">
           <div>
             <p className="swp-kicker">O painel dentro do OBS</p>
@@ -258,7 +230,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
         </div>
       </section>
 
-      <section className="swp-section swp-section--alt" aria-labelledby="clt-controle">
+      <section className="swp-section" aria-labelledby="clt-controle">
         <div className="swp-section__inner cltp-split cltp-split--reverse">
           <div>
             <p className="swp-kicker">O controle</p>
@@ -278,7 +250,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
         </div>
       </section>
 
-      <section className="swp-section" aria-labelledby="clt-modelos">
+      <section className="swp-section swp-section--alt" aria-labelledby="clt-modelos">
         <div className="swp-section__inner cltp-split">
           <div>
             <p className="swp-kicker">Modelos e temas</p>
@@ -301,7 +273,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
         </div>
       </section>
 
-      <section className="swp-section swp-section--alt" aria-labelledby="clt-mais">
+      <section className="swp-section" aria-labelledby="clt-mais">
         <div className="swp-section__inner ptzp-req">
           <div>
             <p className="swp-kicker">Instalação</p>
@@ -343,6 +315,35 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
         </div>
       </section>
 
+      <section className="swp-section swp-section--alt" aria-labelledby="clt-como">
+        <div className="swp-section__inner">
+          <p className="swp-kicker">Como funciona</p>
+          <h2 id="clt-como" className="swp-title">
+            Tudo roda no computador da transmissão.
+          </h2>
+          <HowDiagram />
+          <ul className="cltp-checks cltp-checks--grid">
+            <li>
+              <b>O programa</b> fica em segundo plano e inicia com o Windows. Ele guarda as configurações e sabe o que deve estar no ar.
+            </li>
+            <li>
+              <b>Os gráficos</b> entram no OBS como fontes de navegador com fundo transparente. Há uma fonte com todos os elementos e uma para
+              cada elemento, para quem prefere separar por cena.
+            </li>
+            <li>
+              <b>O painel</b> é um dock dentro do OBS. É ali que o operador liga e desliga cada elemento durante o culto.
+            </li>
+            <li>
+              <b>O controle</b> abre no navegador, com prévia ao vivo. É onde se preparam a aparência e o conteúdo antes do culto.
+            </li>
+          </ul>
+          <p className="ptzp-note">
+            O painel e o controle só mandam pedidos; quem atualiza os gráficos é o programa. Por isso o que se muda aparece na hora, sem
+            recarregar as fontes no OBS.
+          </p>
+        </div>
+      </section>
+
       <section id="download" className="swp-section swp-download" aria-labelledby="clt-download">
         <div className="swp-section__inner ptzp-final">
           <p className="swp-kicker">Download gratuito</p>
@@ -350,7 +351,7 @@ export default function ChurchLowerThirdsView({ downloadUrl, action }: Props) {
             Baixe o {CLT.name}.
           </h2>
           <p className="swp-lead">
-            Versão beta, gratuita. Funciona com o OBS Studio no Windows 10 e 11, em português, inglês, espanhol, italiano e alemão. Você se
+            Gratuito. Funciona com o OBS Studio no Windows 10 e 11, em português, inglês, espanhol, italiano e alemão. Você se
             cadastra em 10 segundos e o download é liberado na hora.
           </p>
           <div className="ptzp-final__cta">{download("rodapé")}</div>
