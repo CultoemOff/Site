@@ -157,7 +157,7 @@ export default function CourseCatalog({ courses }: { courses: Course[] }) {
           ))}
         </ul>
 
-        <ComboBanner courses={courses} />
+        <ComboBanner courses={courses} location="combo (formações)" />
 
         <CoursesTrust />
       </div>
