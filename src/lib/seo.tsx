@@ -1,5 +1,5 @@
 import type { Course } from "@/config/courses";
-import { LOGO_SRC, SITE_DESCRIPTION, SITE_NAME, type SiteSettingsData } from "@/config/site";
+import { LOGO_SEO_SRC, SITE_DESCRIPTION, SITE_NAME, type SiteSettingsData } from "@/config/site";
 import { resolvePrice } from "@/lib/pricing";
 
 /**
@@ -24,7 +24,7 @@ export function organizationJsonLd(settings: SiteSettingsData) {
     "@type": "EducationalOrganization",
     name: SITE_NAME,
     url: SITE_URL,
-    logo: absoluteUrl(LOGO_SRC),
+    logo: absoluteUrl(LOGO_SEO_SRC),
     description: SITE_DESCRIPTION,
     sameAs: [settings.social.youtube, settings.social.instagram, settings.social.tiktok].filter(Boolean),
     founder: { "@type": "Person", name: "Jonas Silva" },

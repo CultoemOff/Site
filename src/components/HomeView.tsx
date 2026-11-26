@@ -1,47 +1,37 @@
-import type { ReactNode } from "react";
 import ViewportFx from "@/components/fx/ViewportFx";
 import Hero from "@/components/hero/Hero";
+import { HomeSections } from "@/components/home2/HomeView2";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
-import HomeCourses from "@/components/sections/courses/HomeCourses";
-import Manifesto from "@/components/sections/manifesto/Manifesto";
-import OffersHome from "@/components/sections/offers-home/OffersHome";
-import Partners from "@/components/sections/partners/Partners";
-import SoftwareSection from "@/components/sections/software/SoftwareSection";
 import type { Course } from "@/config/courses";
 import type { Offer } from "@/config/offers";
-import { HOME_COURSE_IDS, type SiteSettingsData } from "@/config/site";
+import type { SiteSettingsData } from "@/config/site";
+import type { PostSummary } from "@/lib/cms";
+import type { YouTubeVideo } from "@/lib/youtube";
 
 type Props = {
   courses: Course[];
   settings: SiteSettingsData;
   /** ofertas cadastradas no painel (a seção de equipamentos mostra as marcadas para a home) */
   offers: Offer[];
-  /** seção do YouTube (componente assíncrono no servidor) */
-  youtube: ReactNode;
-  /** últimos posts do blog (opcional) */
-  latestPosts?: ReactNode;
+  /** vídeos do YouTube já buscados no servidor */
+  videos: YouTubeVideo[];
+  /** últimos posts do blog */
+  posts: PostSummary[];
 };
 
-/** Composição da homepage (sem busca de dados). */
-export default function HomeView({ courses, settings, offers, youtube, latestPosts }: Props) {
-  // a faixa amarela da promoção vem do layout (todas as páginas); a home mostra só as duas formações, lado a lado, sem o botão "Ver mais formações"
-  const homeCourses = HOME_COURSE_IDS.map((id) => courses.find((c) => c.id === id)).filter((c): c is Course => Boolean(c));
-
+/**
+ * Composição da homepage (sem busca de dados).
+ * Desde 26/11/2026: o topo do palco continua o mesmo (só com o logo novo no telão) e,
+ * depois dele, entram as seções da home2 (manifesto, formações, softwares, YouTube, parceiros, equipamentos, blog e encerramento).
+ */
+export default function HomeView({ courses, settings, offers, videos, posts }: Props) {
   return (
     <>
       <Navbar />
       <main id="conteudo" tabIndex={-1}>
         <Hero />
-        {/* "Bastidores reais" saiu em 23/11/2026: o manifesto abre a home, seguido das formações em uma tela */}
-        <Manifesto />
-        <HomeCourses courses={homeCourses} />
-        <SoftwareSection />
-        {youtube}
-        <Partners settings={settings} />
-        {/* produtos que recomendamos: penúltima seção, antes do blog (pedido do Jonas em 23/11/2026) */}
-        <OffersHome offers={offers} />
-        {latestPosts}
+        <HomeSections courses={courses} settings={settings} offers={offers} videos={videos} posts={posts} />
       </main>
       <Footer settings={settings} />
       <ViewportFx />

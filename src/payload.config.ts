@@ -52,7 +52,7 @@ export default buildConfig({
     },
     meta: {
       titleSuffix: " — Culto em Off",
-      icons: [{ rel: "icon", url: "/images/logo-culto-em-off.png" }],
+      icons: [{ rel: "icon", url: "/images/brand/icon-96.png" }],
     },
   },
   i18n: {

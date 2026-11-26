@@ -3,7 +3,7 @@ import Link from "next/link";
 import CopyCouponButton from "@/components/sections/partners/CopyCouponButton";
 import SocialIcon from "@/components/ui/SocialIcon";
 import { formatInstallments, formatPrice, type Course } from "@/config/courses";
-import { LOGO_SRC, MAIN_SITE_URL, SITE_NAME, type SiteSettingsData } from "@/config/site";
+import { LOGO_V_SRC, MAIN_SITE_URL, SITE_NAME, type SiteSettingsData } from "@/config/site";
 import { resolvePrice } from "@/lib/pricing";
 import type { YouTubeVideo } from "@/lib/youtube";
 import LinksTracking from "./LinksTracking";
@@ -234,7 +234,7 @@ export default function LinksView({
       <div className="lk__inner">
         <header className="lk__head">
           <span className="lk__logo">
-            <Image src={LOGO_SRC} alt={SITE_NAME} width={192} height={192} sizes="96px" priority />
+            <Image src={LOGO_V_SRC} alt={SITE_NAME} width={1040} height={1118} sizes="96px" priority />
           </span>
           <h1 className="lk__name">{SITE_NAME}</h1>
           <p className="lk__bio">Tudo sobre os bastidores audiovisuais das igrejas</p>

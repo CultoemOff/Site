@@ -3,7 +3,7 @@
 export default function Logo() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-      <img src="/images/logo-culto-em-off.png" alt="" width={64} height={64} />
+      <img src="/images/brand/logo-culto-em-off-horizontal-480.webp" alt="" width={168} height={72} />
       <span style={{ fontSize: 24, fontWeight: 700 }}>Culto em Off · Admin</span>
     </div>
   );

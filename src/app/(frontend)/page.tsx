@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import LatestPosts from "@/components/blog/LatestPosts";
 import HomeView from "@/components/HomeView";
-import YouTube from "@/components/sections/youtube/YouTube";
 import { isListed } from "@/config/courses";
 import { getCourses, getOffers, getPosts, getSiteSettings } from "@/lib/cms";
 import { JsonLd, coursesJsonLd, organizationJsonLd } from "@/lib/seo";
+import { getSelectedVideos } from "@/lib/youtube";
+import { getLatestVideosWithFallback } from "@/lib/youtubeCache";
 
 // Revalida a cada 1 h (vídeos do YouTube). Alterações no admin atualizam na hora.
 export const revalidate = 3600;
@@ -26,17 +26,14 @@ export default async function Home() {
   ]);
   // formações fora da lista (só pelo link direto) não aparecem na home
   const courses = allCourses.filter(isListed);
+  // vídeos do YouTube: os escolhidos no painel ou os 4 mais recentes do canal
+  const selected = settings.videosMode === "selected" && settings.selectedVideos.length > 0;
+  const videos = selected ? await getSelectedVideos(settings.selectedVideos) : await getLatestVideosWithFallback(4);
   return (
     <>
       <JsonLd data={organizationJsonLd(settings)} />
       <JsonLd data={coursesJsonLd(courses)} />
-      <HomeView
-        courses={courses}
-        settings={settings}
-        offers={offers}
-        youtube={<YouTube settings={settings} />}
-        latestPosts={<LatestPosts posts={posts} />}
-      />
+      <HomeView courses={courses} settings={settings} offers={offers} videos={videos} posts={posts} />
     </>
   );
 }

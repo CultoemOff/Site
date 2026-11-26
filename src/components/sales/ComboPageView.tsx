@@ -5,7 +5,7 @@ import Icon from "@/components/ui/Icon";
 import { COMBO, formatPrice, type Course } from "@/config/courses";
 import { getInstructor } from "@/config/instructors";
 import { lessonCount, type SalesPage } from "@/config/salesPages";
-import { GUARANTEE_DAYS, LOGO_SRC } from "@/config/site";
+import { GUARANTEE_DAYS, LOGO_H_SRC, LOGO_H_SIZE } from "@/config/site";
 import { COMBO_PAGE } from "@/config/comboPage";
 import { resolvePrice } from "@/lib/pricing";
 import "@/components/sections/courses/courses.css";
@@ -111,10 +111,7 @@ export default function ComboPageView({ main, bump }: Props) {
       {/* ---------- topo (sem vídeo por enquanto) ---------- */}
       <header className={`sp-hero${pMain.promo && off > 0 ? " sp-hero--promo" : ""}${COMBO_PAGE.video ? " sp-hero--vertical" : " sp-hero--novideo"}`}>
         <p className="sp-brand">
-          <Image src={LOGO_SRC} alt="" width={36} height={36} priority />
-          <span>
-            Culto em <strong>Off</strong>
-          </span>
+          <Image className="sp-brand__logo" src={LOGO_H_SRC} alt="Culto em Off" width={LOGO_H_SIZE.width} height={LOGO_H_SIZE.height} priority />
         </p>
         <div className="sp-hero__inner">
           <div className="sp-hero__text" id="sp-inicio">

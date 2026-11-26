@@ -182,7 +182,8 @@ function CoursePanel({ course, delay = 0 }: { course: Course; delay?: number }) 
  * Mesmo conteúdo da home, com Parceiros compacto, Iluminação numa linha só e 3 provas reais abaixo das formações.
  * Movimento: só a entrada do topo (uma vez), resposta ao toque nos botões e hover só com mouse.
  */
-export default function HomeView2({ courses, settings, offers, videos, posts }: Props) {
+/** seções da home depois do topo (manifesto até o encerramento). Usada na home principal e na home2 */
+export function HomeSections({ courses, settings, offers, videos, posts }: Props) {
   const homeCourses = HOME_COURSE_IDS.map((id) => courses.find((c) => c.id === id)).filter((c): c is Course => Boolean(c));
   // provas reais já aprovadas (as mesmas do combo), com o nome do curso
   const proofs = COMBO_PAGE.proofTitles
@@ -204,72 +205,7 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
   const { spresenter, voluts, dorn } = settings;
 
   return (
-    <>
-      <Navbar newLogo />
-      <main id="conteudo" tabIndex={-1} className="hm2">
-        {/* ================= topo ================= */}
-        <section className="hm2-hero" aria-labelledby="hm2-hero-title">
-          <div className="hm2-wrap hm2-hero__grid">
-            <div className="hm2-hero__text">
-              <p className="hm2-eyebrow hm2-in" style={{ "--d": "0ms" } as React.CSSProperties}>
-                <LogoCross className="hm2-eyebrow__cross" />
-                Formação · Tecnologia · Igreja
-              </p>
-              <h1 id="hm2-hero-title" className="hm2-hero__title" aria-label="A escola técnica para voluntários que servem na Igreja.">
-                {/* entrada palavra por palavra (sobe de dentro de uma máscara), uma vez */}
-                {["A", "escola", "técnica", "para", "voluntários", "que", "servem", "na", "Igreja."].map((w, i) => (
-                  <Fragment key={i}>
-                    <span className={`hm2-wl${i >= 5 ? " is-muted" : ""}`} aria-hidden="true">
-                      <span style={{ "--d": `${40 + Math.round(i * 46 - i * i * 1.6)}ms` } as React.CSSProperties}>{w}</span>
-                    </span>{" "}
-                  </Fragment>
-                ))}
-              </h1>
-              <p className="hm2-hero__lead hm2-in" style={{ "--d": "300ms" } as React.CSSProperties}>
-                O Culto em Off nasceu com um objetivo: tornar-se referência na formação de voluntários de igreja, transformando
-                conhecimento técnico em conteúdo simples, prático e acessível.
-              </p>
-              <div className="hm2-hero__ctas hm2-in" style={{ "--d": "370ms" } as React.CSSProperties}>
-                <a className="hm2-btn hm2-btn--primary" href="#formacoes">
-                  Explorar formações
-                  <Arrow />
-                </a>
-                <a className="hm2-btn hm2-btn--ghost" href="#manifesto">
-                  Conhecer o Culto em Off
-                </a>
-              </div>
-              <p className="hm2-hero__areas hm2-in hm2-in--fade" style={{ "--d": "430ms" } as React.CSSProperties}>
-                Áudio · Vídeo · Iluminação · Redes · Transmissão · Projeção · Automação
-              </p>
-            </div>
-
-            {/* monitor de programa: corta entre as câmeras (fotos reais das aulas) */}
-            <div className="hm2-pgm-wrap">
-              {/* cruz e barras do logo, grandes, atrás do monitor */}
-              <LogoMark className="hm2-hero__mark hm2-in hm2-in--fade" live />
-              <figure className="hm2-pgm hm2-in hm2-in--scale" style={{ "--d": "150ms" } as React.CSSProperties}>
-                <PgmSwitcher shots={SHOTS.map(({ src, alt, label }) => ({ src, alt, label }))} video={PGM_VIDEO} />
-              </figure>
-            </div>
-          </div>
-
-          {/* barras sonoras do logo tocando na base do topo */}
-          <EqBand count={72} className="hm2-hero__eq" />
-          {/* multiview: fotos reais das aulas */}
-          <div className="hm2-wrap">
-            <ul className="hm2-multi" aria-label="Câmeras do switcher (cenas das aulas)">
-              {SHOTS.map((m, i) => (
-                <li key={m.src} data-live={i === 0 ? "" : undefined} style={{ "--i": i } as React.CSSProperties}>
-                  <Image src={m.src} alt="" width={m.w} height={m.h} sizes="(max-width: 700px) 45vw, 290px" />
-                  <span>
-                    CAM {i + 1} · {m.label}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
+    <div className="hm2">
         {/* ================= manifesto ================= */}
         <section id="manifesto" className="hm2-section hm2-manifesto" aria-labelledby="hm2-manifesto-title">
           <LogoCross className="hm2-manifesto__cross" />
@@ -582,9 +518,85 @@ export default function HomeView2({ courses, settings, offers, videos, posts }: 
             </a>
           </div>
         </section>
-      </main>
-      <Footer settings={settings} newLogo />
       <Motion />
+    </div>
+  );
+}
+
+/** Home2 (rascunho em /home2): topo "sala de controle" + as mesmas seções da home */
+export default function HomeView2(props: Props) {
+  return (
+    <>
+      <Navbar />
+      <main id="conteudo" tabIndex={-1}>
+        <div className="hm2">
+        {/* ================= topo ================= */}
+        <section className="hm2-hero" aria-labelledby="hm2-hero-title">
+          <div className="hm2-wrap hm2-hero__grid">
+            <div className="hm2-hero__text">
+              <p className="hm2-eyebrow hm2-in" style={{ "--d": "0ms" } as React.CSSProperties}>
+                <LogoCross className="hm2-eyebrow__cross" />
+                Formação · Tecnologia · Igreja
+              </p>
+              <h1 id="hm2-hero-title" className="hm2-hero__title" aria-label="A escola técnica para voluntários que servem na Igreja.">
+                {/* entrada palavra por palavra (sobe de dentro de uma máscara), uma vez */}
+                {["A", "escola", "técnica", "para", "voluntários", "que", "servem", "na", "Igreja."].map((w, i) => (
+                  <Fragment key={i}>
+                    <span className={`hm2-wl${i >= 5 ? " is-muted" : ""}`} aria-hidden="true">
+                      <span style={{ "--d": `${40 + Math.round(i * 46 - i * i * 1.6)}ms` } as React.CSSProperties}>{w}</span>
+                    </span>{" "}
+                  </Fragment>
+                ))}
+              </h1>
+              <p className="hm2-hero__lead hm2-in" style={{ "--d": "300ms" } as React.CSSProperties}>
+                O Culto em Off nasceu com um objetivo: tornar-se referência na formação de voluntários de igreja, transformando
+                conhecimento técnico em conteúdo simples, prático e acessível.
+              </p>
+              <div className="hm2-hero__ctas hm2-in" style={{ "--d": "370ms" } as React.CSSProperties}>
+                <a className="hm2-btn hm2-btn--primary" href="#formacoes">
+                  Explorar formações
+                  <Arrow />
+                </a>
+                <a className="hm2-btn hm2-btn--ghost" href="#manifesto">
+                  Conhecer o Culto em Off
+                </a>
+              </div>
+              <p className="hm2-hero__areas hm2-in hm2-in--fade" style={{ "--d": "430ms" } as React.CSSProperties}>
+                Áudio · Vídeo · Iluminação · Redes · Transmissão · Projeção · Automação
+              </p>
+            </div>
+
+            {/* monitor de programa: corta entre as câmeras (fotos reais das aulas) */}
+            <div className="hm2-pgm-wrap">
+              {/* cruz e barras do logo, grandes, atrás do monitor */}
+              <LogoMark className="hm2-hero__mark hm2-in hm2-in--fade" live />
+              <figure className="hm2-pgm hm2-in hm2-in--scale" style={{ "--d": "150ms" } as React.CSSProperties}>
+                <PgmSwitcher shots={SHOTS.map(({ src, alt, label }) => ({ src, alt, label }))} video={PGM_VIDEO} />
+              </figure>
+            </div>
+          </div>
+
+          {/* barras sonoras do logo tocando na base do topo */}
+          <EqBand count={72} className="hm2-hero__eq" />
+          {/* multiview: fotos reais das aulas */}
+          <div className="hm2-wrap">
+            <ul className="hm2-multi" aria-label="Câmeras do switcher (cenas das aulas)">
+              {SHOTS.map((m, i) => (
+                <li key={m.src} data-live={i === 0 ? "" : undefined} style={{ "--i": i } as React.CSSProperties}>
+                  <Image src={m.src} alt="" width={m.w} height={m.h} sizes="(max-width: 700px) 45vw, 290px" />
+                  <span>
+                    CAM {i + 1} · {m.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        </div>
+        <HomeSections {...props} />
+      </main>
+      <Footer settings={props.settings} />
     </>
   );
 }

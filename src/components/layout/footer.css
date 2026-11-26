@@ -136,10 +136,10 @@
   align-items: center;
   gap: 10px;
 }
-.footer__mark img {
+.footer__mark img.footer__mark-logo {
   flex: none;
-  width: 28px;
-  height: 28px;
+  width: auto;
+  height: 32px;
 }
 .footer__legal {
   display: flex;

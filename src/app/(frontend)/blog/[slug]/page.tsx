@@ -7,7 +7,7 @@ import ViewportFx from "@/components/fx/ViewportFx";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import ArrowButton from "@/components/ui/ArrowButton";
-import { LOGO_SRC, SITE_NAME } from "@/config/site";
+import { LOGO_SEO_SRC, SITE_NAME } from "@/config/site";
 import { getPost, getSiteSettings } from "@/lib/cms";
 import { JsonLd, OG_IMAGE, absoluteUrl } from "@/lib/seo";
 import { formatVideoDate } from "@/lib/youtube";
@@ -59,7 +59,7 @@ export default async function PostPage({ params }: Props) {
     image: absoluteUrl(post.seo.image || post.cover?.url || OG_IMAGE),
     mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
     author: { "@type": "Person", name: post.authorName || "Jonas Silva" },
-    publisher: { "@type": "Organization", name: SITE_NAME, logo: { "@type": "ImageObject", url: absoluteUrl(LOGO_SRC) } },
+    publisher: { "@type": "Organization", name: SITE_NAME, logo: { "@type": "ImageObject", url: absoluteUrl(LOGO_SEO_SRC) } },
     keywords: post.tags.join(", ") || undefined,
   };
 

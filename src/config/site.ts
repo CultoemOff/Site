@@ -9,8 +9,9 @@ export const SITE_DESCRIPTION =
   "Formação técnica para voluntários de igreja: áudio, vídeo, iluminação, redes, transmissão, projeção e automação — com linguagem simples, prática e acessível.";
 
 /** Logo principal (navbar, footer, metadados). */
+/** logo antigo (redondo). Não é mais usado no site desde 26/11/2026; fica só para referência */
 export const LOGO_SRC = "/images/logo-culto-em-off.png";
-/** logos novos (26/11/2026): horizontal no menu e no rodapé, vertical em destaques. Por enquanto só na home2 */
+/** logos novos (26/11/2026): horizontal no menu, no rodapé e nas páginas de venda; vertical em destaques */
 export const LOGO_H_SRC = "/images/brand/logo-culto-em-off-horizontal-480.webp";
 export const LOGO_H_SIZE = { width: 480, height: 206 };
 export const LOGO_V_SRC = "/images/brand/logo-culto-em-off-vertical-1040.webp";
@@ -20,10 +21,12 @@ export const LOGO_V_SIZE = { width: 1040, height: 1118 };
  * Imagem exibida (de forma discreta) no telão do palco do hero.
  * Pode ser trocada por outra arte sem alterar componentes.
  */
-export const STAGE_SCREEN_LOGO_SRC = "/images/logo-stage.webp";
+export const STAGE_SCREEN_LOGO_SRC = "/images/brand/logo-culto-em-off-horizontal-960.webp";
 /** ícones do navegador (versões pequenas da logo) */
-export const ICON_SRC = "/images/icon-96.png";
-export const APPLE_ICON_SRC = "/images/apple-icon-180.png";
+export const ICON_SRC = "/images/brand/icon-96.png";
+export const APPLE_ICON_SRC = "/images/brand/apple-icon-180.png";
+/** logo para buscadores (dados estruturados): vertical, PNG */
+export const LOGO_SEO_SRC = "/images/brand/logo-culto-em-off-vertical-600.png";
 
 
 // Redes sociais (valores padrão; podem ser alterados no admin)

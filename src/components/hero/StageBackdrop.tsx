@@ -489,9 +489,9 @@ export default function StageBackdrop() {
         <Waveform />
         <image
           href={STAGE_SCREEN_LOGO_SRC}
-          x="690"
+          x="560"
           y="336"
-          width="220"
+          width="480"
           height="220"
           preserveAspectRatio="xMidYMid meet"
           className="stage-screen__logo"
