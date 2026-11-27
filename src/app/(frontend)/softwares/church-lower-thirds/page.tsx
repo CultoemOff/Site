@@ -4,7 +4,8 @@ import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import ChurchLowerThirdsView from "@/components/software-page/ChurchLowerThirdsView";
 import { SOFTWARE } from "@/config/software";
-import { getSiteSettings } from "@/lib/cms";
+import ComboExitPopup from "@/components/sales/ComboExitPopup";
+import { getCourses, getSiteSettings } from "@/lib/cms";
 import { submitDownloadLead } from "@/lib/leadActions";
 import { JsonLd, SITE_URL } from "@/lib/seo";
 
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ChurchLowerThirdsPage() {
-  const settings = await getSiteSettings();
+  const [settings, courses] = await Promise.all([getSiteSettings(), getCourses()]);
   return (
     <>
       <JsonLd
@@ -43,6 +44,7 @@ export default async function ChurchLowerThirdsPage() {
       </main>
       <Footer settings={settings} />
       <ViewportFx />
+      <ComboExitPopup courses={courses} location="popup de saída (church-lower-thirds)" />
     </>
   );
 }

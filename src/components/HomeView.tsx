@@ -1,6 +1,7 @@
 import ViewportFx from "@/components/fx/ViewportFx";
 import Hero from "@/components/hero/Hero";
 import { HomeSections } from "@/components/home2/HomeView2";
+import ComboExitPopup from "@/components/sales/ComboExitPopup";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import type { Course } from "@/config/courses";
@@ -35,6 +36,7 @@ export default function HomeView({ courses, settings, offers, videos, posts }: P
       </main>
       <Footer settings={settings} />
       <ViewportFx />
+      <ComboExitPopup courses={courses} location="popup de saída (home)" />
     </>
   );
 }

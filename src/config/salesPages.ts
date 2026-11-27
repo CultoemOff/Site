@@ -226,9 +226,9 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     videoPoster: "/images/formacoes/redes-video-capa.jpg",
     videoVertical: true,
     videoSize: { width: 720, height: 1218 },
-    // Black November, sem contagem regressiva.
-    // Para ter prazo: promo: { label: "...", endsAt: "2026-11-30T23:59:59-03:00" }
-    promo: { label: "Preço Black November" },
+    // Black November até 30/11/2026 à meia-noite (contagem regressiva pedida pelo Jonas em 27/11/2026);
+    // depois do prazo o site volta sozinho ao preço cheio (priceFrom)
+    promo: { label: "Preço Black November", endsAt: "2026-11-30T23:59:59-03:00" },
     // faixa de números e seção "Você se reconhece?": removidas a pedido do Jonas (29/10/2026)
     showProof: false,
     // promessa + temas (prévia aprovada pelo Jonas antes de publicar)
@@ -809,7 +809,8 @@ export const SALES_PAGES: Record<string, SalesPage> = {
     exitPitch: "Você está a um passo de colocar o culto no ar sem susto.",
     heroNote: { icon: "monitorPlay", text: "Feito para PC simples, poucas câmeras, internet de operadora e equipe voluntária." },
     // Black November até 30/11/2026 (pedido do Jonas em 05/11/2026: "até 30/11" junto do selo)
-    promo: { label: "Preço Black November · até 30/11" },
+    // contagem regressiva até 30/11 à meia-noite (pedido do Jonas em 27/11/2026); depois volta ao preço cheio
+    promo: { label: "Preço Black November · até 30/11", endsAt: "2026-11-30T23:59:59-03:00" },
     cashLabel: "no Pix",
     ctaWithPrice: true,
     seals: true,

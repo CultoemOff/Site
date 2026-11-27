@@ -42,6 +42,8 @@ export default function ExitPopup({ id, title, text, priceFrom, price, badge, en
 
   const show = useCallback(() => {
     if (shown.current) return;
+    // não interrompe um popup que a pessoa já abriu (ex.: cadastro para download)
+    if (document.querySelector("dialog[open]")) return;
     shown.current = true;
     try {
       if (sessionStorage.getItem(key)) return;

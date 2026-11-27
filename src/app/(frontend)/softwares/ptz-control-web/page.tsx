@@ -4,7 +4,8 @@ import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import PtzControlWebView from "@/components/software-page/PtzControlWebView";
 import { SOFTWARE } from "@/config/software";
-import { getSiteSettings } from "@/lib/cms";
+import ComboExitPopup from "@/components/sales/ComboExitPopup";
+import { getCourses, getSiteSettings } from "@/lib/cms";
 import { JsonLd, SITE_URL } from "@/lib/seo";
 import { submitDownloadLead } from "@/lib/leadActions";
 
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PtzControlWebPage() {
-  const settings = await getSiteSettings();
+  const [settings, courses] = await Promise.all([getSiteSettings(), getCourses()]);
   // link fixo do instalador mais recente (o campo antigo do painel não é mais usado)
   const downloadUrl = PTZ.downloadUrl;
   const downloadUrlMac = PTZ.downloadUrlMac ?? "";
@@ -46,6 +47,7 @@ export default async function PtzControlWebPage() {
       </main>
       <Footer settings={settings} />
       <ViewportFx />
+      <ComboExitPopup courses={courses} location="popup de saída (ptz-control-web)" />
     </>
   );
 }
